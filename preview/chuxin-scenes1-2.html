@@ -189,9 +189,9 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   // 其他的燈都長在山稜線上，由第一盞燈向外一圈圈點亮。
   var LX = W / 2, LY = 1668;                         // 第一盞燈（與第一段相同位置）
   var LAY = [                                          // 與第一段完全相同的四層山
-    { base: 1330, amp: 150, seed: 1.0, d0: 20, v: 2,  n: 15, sz: .8 },
-    { base: 1450, amp: 190, seed: 2.4, d0: 40, v: 4,  n: 12, sz: 1.1 },
-    { base: 1600, amp: 230, seed: 4.1, d0: 70, v: 7,  n: 8,  sz: 1.5 }
+    { base: 1330, amp: 150, seed: 1.0, d0: 20, v: 2,  n: 9, sz: .8 },
+    { base: 1450, amp: 190, seed: 2.4, d0: 40, v: 4,  n: 7, sz: 1.1 },
+    { base: 1600, amp: 230, seed: 4.1, d0: 70, v: 7,  n: 5,  sz: 1.5 }
   ];
   var r2 = rng(33), lamps2 = [];
   LAY.forEach(function (L, li) {
@@ -206,6 +206,15 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   });
   var stars2 = []; for (var i2 = 0; i2 < 110; i2++) stars2.push({ x: r2() * W, y: r2() * 1000, s: .6 + r2() * 1.6, p: r2() * 6.28 });
 
+  function heart(x, y, r, a, f) {                     // 發光愛心：r 是大小，a 是亮度
+    cx.save(); cx.translate(x, y); cx.globalAlpha = clamp(a, 0, 1);
+    cx.beginPath(); cx.moveTo(0, r * .95);
+    cx.bezierCurveTo(-r * 1.7, -r * .1, -r * .95, -r * 1.25, 0, -r * .5);
+    cx.bezierCurveTo(r * .95, -r * 1.25, r * 1.7, -r * .1, 0, r * .95); cx.closePath();
+    var g = cx.createRadialGradient(0, -r * .1, 0, 0, 0, r * 1.5);
+    g.addColorStop(0, '#fff6e2'); g.addColorStop(.55, '#ffd2a0'); g.addColorStop(1, '#ff9f7a');
+    cx.fillStyle = g; cx.fill(); cx.restore();
+  }
   function lightPool(x, y, rad, a, flat) {             // 用「疊加」混色，讓光真的照亮背後的山
     cx.save(); cx.globalCompositeOperation = 'lighter'; cx.translate(x, y); cx.scale(1, flat);
     var g = cx.createRadialGradient(0, 0, 0, 0, 0, rad);
@@ -247,9 +256,10 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
         if (l.li !== li) return;
         var a = seg(s, l.t0, l.t0 + .9); if (a <= 0) return;
         var y = ridgeY(l.x, L.base, L.amp, L.seed, dr) - 3, f = .85 + .15 * Math.sin(s * 2.2 + l.ph);
-        lightPool(l.x, y + 6, 90 * l.sz, .55 * a * f, .45);
-        lightPool(l.x, y - 2, 28 * l.sz, .9 * a * f, 1);
-        cx.fillStyle = 'rgba(255,246,222,' + a + ')'; cx.beginPath(); cx.arc(l.x, y - 2, 2.2 * l.sz, 0, 6.283); cx.fill();
+        var hr = 17 * l.sz * (1 + .06 * Math.sin(s * 2.2 + l.ph));
+        lightPool(l.x, y + 8, 110 * l.sz, .5 * a * f, .45);
+        lightPool(l.x, y - hr * .6, 70 * l.sz, .85 * a * f, 1);
+        heart(l.x, y - hr * .9, hr, a, f);
       });
       if (li === 1) {                                  // 山谷薄霧
         var mg = cx.createLinearGradient(0, 1380, 0, 1700);
@@ -262,8 +272,10 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     ridge(s, 1760, 120, 6.7, 'rgb(6,8,18)', 100 + s * 10);
     var pulse = .88 + .12 * Math.sin((S1 + s) * 2.4);
     lightPool(LX, LY + 14, 340 * pulse, .5 + .3 * lit, .35);   // 照在腳下山坡的光
-    lightPool(LX, LY, 150 * pulse, .95, 1);
-    cx.fillStyle = '#fff4d6'; cx.beginPath(); cx.arc(LX, LY, 7, 0, 6.283); cx.fill();
+    var hh = seg(s, .5, 2.2);                           // 圓點 → 愛心
+    lightPool(LX, LY, lerp(150, 200, hh) * pulse, .95, 1);
+    cx.globalAlpha = 1 - hh; cx.fillStyle = '#fff4d6'; cx.beginPath(); cx.arc(LX, LY, 7, 0, 6.283); cx.fill(); cx.globalAlpha = 1;
+    heart(LX, LY - 40, 64 * (.9 + .1 * pulse), hh, 1);
 
     // 整片山的暖色天光，隨燈數增加
     var wg = cx.createLinearGradient(0, 1100, 0, 1750);
