@@ -33,6 +33,10 @@ h1 { font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter
 #t2-b { top: 560px; font-size: 96px; font-weight: 500; letter-spacing: .16em; padding-left: .16em; color: var(--glow); }
 #t2-c { top: 330px; font-size: 130px; font-weight: 900; letter-spacing: .12em; padding-left: .12em; line-height: 1.2; }
 #t2-d { top: 560px; font-size: 100px; font-weight: 500; letter-spacing: .16em; padding-left: .16em; }
+#t3-a { top: 250px; font-size: 130px; font-weight: 900; letter-spacing: .14em; padding-left: .14em; line-height: 1.2; }
+#t3-b { top: 440px; font-size: 100px; font-weight: 500; letter-spacing: .16em; padding-left: .16em; color: var(--glow); }
+#t3-c { top: 250px; font-size: 130px; font-weight: 900; letter-spacing: .14em; padding-left: .14em; line-height: 1.2; }
+#t3-d { top: 440px; font-size: 100px; font-weight: 500; letter-spacing: .12em; padding-left: .12em; }
 .jump { display: flex; gap: 8px; flex-wrap: wrap; }
 .jump button { font-size: .8125rem; padding: 6px 14px; min-height: 36px; }
 .ctl { display: flex; align-items: center; gap: 12px; }
@@ -53,7 +57,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
 
 <div class="wrap">
   <h1>115年義工教育成長研習營・宣傳影片</h1>
-  <p class="sub">第二階段預覽：第一段「回望初心」＋第二段「看見付出」（0～21 秒）。</p>
+  <p class="sub">第三階段預覽：前三段「回望初心」「看見付出」「重新省思」（0～31 秒）。</p>
 
   <div id="frame" aria-label="9:16 直式動畫預覽">
     <div id="stage">
@@ -61,26 +65,30 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
       <div class="tx" id="t-event">115年義工教育成長研習營</div>
       <div class="tx" id="t-small">回望</div>
       <div class="tx" id="t-main">初心</div>
-      <div class="tx" id="t2-a">一盞燈</div>
+      <div class="tx" id="t2-a">一顆心</div>
       <div class="tx" id="t2-b">一份心意</div>
       <div class="tx" id="t2-c">謝謝你</div>
       <div class="tx" id="t2-d">一直都在</div>
+      <div class="tx" id="t3-a">停一停</div>
+      <div class="tx" id="t3-b">看看自己</div>
+      <div class="tx" id="t3-c">這一路</div>
+      <div class="tx" id="t3-d">心還在嗎？</div>
       <div class="tx" id="t-line">還記得<br>當初為什麼出發嗎？</div>
     </div>
   </div>
 
   <div class="ctl">
     <button id="play" type="button">播放</button>
-    <input id="seek" type="range" min="0" max="21" step="0.01" value="0" aria-label="時間軸">
-    <span id="clock">0.0 / 21.0 秒</span>
+    <input id="seek" type="range" min="0" max="31" step="0.01" value="0" aria-label="時間軸">
+    <span id="clock">0.0 / 31.0 秒</span>
   </div>
 
-  <div class="jump"><button type="button" id="j1">看第一段</button><button type="button" id="j2">看第二段</button><button type="button" id="j3">看兩段連續</button></div>
+  <div class="jump"><button type="button" id="j1">看第一段</button><button type="button" id="j2">看第二段</button><button type="button" id="j3">看第三段</button><button type="button" id="j4">全部連續</button></div>
 
   <div class="tl" aria-label="全片五段規劃（共約 52 秒）">
     <div class="seg on" id="sg0"><b>回望初心</b>0–10 秒</div>
     <div class="seg todo" id="sg1"><b>看見付出</b>10–21 秒</div>
-    <div class="seg todo"><b>重新省思</b>21–31 秒</div>
+    <div class="seg todo" id="sg2"><b>重新省思</b>21–31 秒</div>
     <div class="seg todo"><b>再次出發</b>31–42 秒</div>
     <div class="seg todo"><b>預留時間</b>42–52 秒</div>
   </div>
@@ -90,7 +98,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
 
 <script>
 (function () {
-  var W = 1080, H = 1920, DUR = 21, S1 = 10;
+  var W = 1080, H = 1920, DUR = 31, S1 = 10, S2 = 21;
   var cv = document.getElementById('cv'), cx = cv.getContext('2d');
   var frame = document.getElementById('frame'), stage = document.getElementById('stage');
 
@@ -286,13 +294,46 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     var vg = cx.createRadialGradient(W / 2, H / 2, 500, W / 2, H / 2, 1250);
     vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
     cx.fillStyle = vg; cx.fillRect(0, 0, W, H);
-    cx.fillStyle = 'rgba(0,0,0,' + seg(s, 10.4, 11) + ')'; cx.fillRect(0, 0, W, H);   // 只在整段結尾淡出
   }
 
-  function draw(t) { if (t < S1) draw1(t); else draw2(t - S1); }
+
+  // ===== 第三段：重新省思（s = t - 21，共 10 秒）=====
+  // 承接第二段夜景，鏡頭往下移，露出一面湖，湖面映出滿山的愛心；一滴水落下，漣漪輕輕晃動倒影。
+  var off = document.createElement('canvas'); off.width = W; off.height = H; var offx = off.getContext('2d');
+  function drawLandTo(s) { var main = cx; cx = offx; draw2(s); cx = main; }
+
+  function draw3(s) {
+    drawLandTo(11 + s * .3);
+    var dy = 560 * ease(seg(s, .4, 4.6)), y0 = H - dy;       // y0：湖岸線在畫面上的位置
+    cx.clearRect(0, 0, W, H);
+    cx.drawImage(off, 0, -dy);
+    if (dy > 2) {
+      var drop = 0; for (var k = 0; k < 3; k++) { var ag = s - (4.8 + k * 1.2); if (ag > 0 && ag < 4) drop = Math.max(drop, 1 - ag / 4); }
+      for (var y = y0; y < H; y += 4) {
+        var sy = Math.max(0, Math.min(H - 4, 2 * y0 - y - 4 + dy));
+        var amp = 1.5 + (y - y0) * .018 + drop * (4 + (y - y0) * .03);
+        var ox = Math.sin(y * .05 + s * 1.9) * amp;
+        cx.drawImage(off, 0, sy, W, 4, ox, y, W, 4);
+      }
+      var wg = cx.createLinearGradient(0, y0, 0, H);
+      wg.addColorStop(0, 'rgba(6,10,26,.30)'); wg.addColorStop(1, 'rgba(4,7,18,.72)');
+      cx.fillStyle = wg; cx.fillRect(0, y0, W, H - y0);
+      cx.fillStyle = 'rgba(255,214,160,.28)'; cx.fillRect(0, y0 - 1, W, 2);          // 湖岸線
+      for (var q = 0; q < 3; q++) {                                                     // 漣漪
+        var a = s - (4.8 + q * 1.2); if (a <= 0 || a >= 4) continue;
+        var rr = a * 200; cx.strokeStyle = 'rgba(255,230,190,' + (1 - a / 4) * .55 + ')'; cx.lineWidth = 3;
+        cx.beginPath(); cx.ellipse(W / 2, y0 + 280, rr, rr * .28, 0, 0, 6.283); cx.stroke();
+      }
+      var dd = seg(s, 4.1, 4.8);                                                         // 落下的一滴光
+      if (dd > 0 && dd < 1) { var dyy = lerp(y0 - 260, y0 + 280, dd * dd); lightPool(W / 2, dyy, 40, .9, 1); }
+    }
+    cx.fillStyle = 'rgba(0,0,0,' + clamp(seg(s, 9.3, 10) + (1 - seg(s, 0, .01)) * 0, 0, 1) + ')'; cx.fillRect(0, 0, W, H);
+  }
+
+  function draw(t) { if (t < S1) draw1(t); else if (t < S2) draw2(t - S1); else draw3(t - S2); }
 
   // 文字層：全部是 HTML 文字，時間決定出現與淡出
-  var tx = { a: document.getElementById('t2-a'), b: document.getElementById('t2-b'), c: document.getElementById('t2-c'), d: document.getElementById('t2-d'), ev: document.getElementById('t-event'), sm: document.getElementById('t-small'), mn: document.getElementById('t-main'), ln: document.getElementById('t-line') };
+  var tx = { e: document.getElementById('t3-a'), f: document.getElementById('t3-b'), g: document.getElementById('t3-c'), h: document.getElementById('t3-d'), a: document.getElementById('t2-a'), b: document.getElementById('t2-b'), c: document.getElementById('t2-c'), d: document.getElementById('t2-d'), ev: document.getElementById('t-event'), sm: document.getElementById('t-small'), mn: document.getElementById('t-main'), ln: document.getElementById('t-line') };
   function put(el, t, a, b, c, d, rise) {            // a→b 淡入，c→d 淡出
     var o = seg(t, a, b) * (1 - seg(t, c, d));
     el.style.opacity = o; el.style.transform = 'translateY(' + ((1 - seg(t, a, b)) * rise) + 'px)';
@@ -306,11 +347,16 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     put(tx.ln, t, 6.4, 7.8, 9.2, 9.9, 20);
     put(tx.a, s, .8, 2.0, 6.0, 6.8, 20);       // 一盞燈
     put(tx.b, s, 3.0, 4.2, 6.0, 6.8, 20);       // 一份心意
-    put(tx.c, s, 7.0, 8.0, 10.4, 11, 20);       // 謝謝你
-    put(tx.d, s, 8.0, 9.0, 10.4, 11, 20);       // 一直都在
+    put(tx.c, s, 7.0, 8.0, 10.0, 10.6, 20);       // 謝謝你
+    put(tx.d, s, 8.0, 9.0, 10.0, 10.6, 20);     // 一直都在
+    var u = t - S2;
+    put(tx.e, u, 1.0, 2.0, 4.6, 5.4, 20);       // 停一停
+    put(tx.f, u, 2.2, 3.2, 4.6, 5.4, 20);       // 看看自己
+    put(tx.g, u, 5.8, 6.8, 9.2, 9.8, 20);       // 這一路
+    put(tx.h, u, 6.8, 7.8, 9.2, 9.8, 20);       // 心還在嗎？
   }
 
-  function render(t) { draw(t); text(t); document.getElementById('sg0').className = 'seg' + (t < S1 ? ' on' : ''); document.getElementById('sg1').className = 'seg' + (t >= S1 ? ' on' : ' todo'); document.getElementById('clock').textContent = t.toFixed(1) + ' / ' + DUR.toFixed(1) + ' 秒'; }
+  function render(t) { draw(t); text(t); document.getElementById('sg0').className = 'seg' + (t < S1 ? ' on' : ''); document.getElementById('sg1').className = 'seg' + (t >= S1 && t < S2 ? ' on' : ' todo'); document.getElementById('sg2').className = 'seg' + (t >= S2 ? ' on' : ' todo'); document.getElementById('clock').textContent = t.toFixed(1) + ' / ' + DUR.toFixed(1) + ' 秒'; }
   window.renderAt = render;                           // 之後輸出 MP4 時，逐格呼叫這個函式
 
   function fit() {
@@ -341,7 +387,8 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   function jump(a) { playing = false; btn.textContent = '播放'; t = a; seek.value = a; render(a); }
   document.getElementById('j1').onclick = function () { jump(7.2); };
   document.getElementById('j2').onclick = function () { jump(15.5); };
-  document.getElementById('j3').onclick = function () { jump(0); playing = true; btn.textContent = '暫停'; last = performance.now(); requestAnimationFrame(loop); };
+  document.getElementById('j3').onclick = function () { jump(26.5); };
+  document.getElementById('j4').onclick = function () { jump(0); playing = true; btn.textContent = '暫停'; last = performance.now(); requestAnimationFrame(loop); };
   render(7.2);                                        // 靜止時先停在能看到完整畫面的位置
   seek.value = 7.2; t = 7.2;
   document.fonts && document.fonts.ready.then(function () { render(t); });
