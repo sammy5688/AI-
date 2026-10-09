@@ -195,6 +195,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   // ===== 第二段：看見付出（s = t - 10，共 11 秒）=====
   // 同一個地方、同一盞燈：從第一段結尾接續，天色由清晨慢慢轉為傍晚，
   // 其他的燈都長在山稜線上，由第一盞燈向外一圈圈點亮。
+  var MODE = 0, YW = 1440;                           // MODE=1：只畫山與天空（倒影用，不含愛心與前景）；YW：湖面在畫面上的高度
   var LX = W / 2, LY = 1668;                         // 第一盞燈（與第一段相同位置）
   var LAY = [                                          // 與第一段完全相同的四層山
     { base: 1330, amp: 150, seed: 1.0, d0: 20, v: 2,  n: 9, sz: .8 },
@@ -261,7 +262,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
       ridge(s, L.base, L.amp, L.seed, cols[li], dr);
       // 這一層山上已經亮的燈：光落在稜線上，也照亮附近山坡
       lamps2.forEach(function (l) {
-        if (l.li !== li) return;
+        if (l.li !== li || MODE) return;
         var a = seg(s, l.t0, l.t0 + .9); if (a <= 0) return;
         var y = ridgeY(l.x, L.base, L.amp, L.seed, dr) - 3, f = .85 + .15 * Math.sin(s * 2.2 + l.ph);
         var hr = 17 * l.sz * (1 + .06 * Math.sin(s * 2.2 + l.ph));
@@ -276,6 +277,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
       }
     });
 
+    if (!MODE) {
     // 前景暗稜 + 第一盞燈（與第一段同一盞）
     ridge(s, 1760, 120, 6.7, 'rgb(6,8,18)', 100 + s * 10);
     var pulse = .88 + .12 * Math.sin((S1 + s) * 2.4);
@@ -284,6 +286,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     lightPool(LX, LY, lerp(150, 200, hh) * pulse, .95, 1);
     cx.globalAlpha = 1 - hh; cx.fillStyle = '#fff4d6'; cx.beginPath(); cx.arc(LX, LY, 7, 0, 6.283); cx.fill(); cx.globalAlpha = 1;
     heart(LX, LY - 40, 64 * (.9 + .1 * pulse), hh, 1);
+    }
 
     // 整片山的暖色天光，隨燈數增加
     var wg = cx.createLinearGradient(0, 1100, 0, 1750);
@@ -298,36 +301,73 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
 
 
   // ===== 第三段：重新省思（s = t - 21，共 10 秒）=====
-  // 承接第二段夜景，鏡頭往下移，露出一面湖，湖面映出滿山的愛心；一滴水落下，漣漪輕輕晃動倒影。
+  // 承接第二段夜景：腳下的山地慢慢化成一面平靜的湖。
+  // 倒影只翻轉山與天空，愛心改成垂直拉長、閃爍的光影；那顆大愛心漂在水面上，輕輕泛起漣漪。
   var off = document.createElement('canvas'); off.width = W; off.height = H; var offx = off.getContext('2d');
-  function drawLandTo(s) { var main = cx; cx = offx; draw2(s); cx = main; }
+
+  function glint(x, y, rx, ry, a) {                    // 一小段水面反光
+    cx.save(); cx.globalCompositeOperation = 'lighter'; cx.translate(x, y); cx.scale(1, ry / rx);
+    var g = cx.createRadialGradient(0, 0, 0, 0, 0, rx);
+    g.addColorStop(0, 'rgba(255,222,170,' + a + ')'); g.addColorStop(.45, 'rgba(255,170,90,' + a * .4 + ')'); g.addColorStop(1, 'rgba(255,150,70,0)');
+    cx.fillStyle = g; cx.fillRect(-rx, -rx, rx * 2, rx * 2); cx.restore();
+  }
+  function reflectLight(x, yr, sz, a, s, ph) {          // 一盞燈在水裡的倒影：一串斷開、會晃動的橫向光斑
+    for (var j = 0; j < 7; j++) {
+      var yj = yr + j * (15 + j * 4) * sz, fade = 1 - j / 7;
+      var wob = Math.sin(s * 2.1 + j * 1.3 + ph) * (3 + j * 2.2);
+      var on = .55 + .45 * Math.sin(s * 3.1 + j * 2.1 + ph);
+      glint(x + wob, yj, 30 * sz * (1 + j * .12), 6 * sz, a * fade * on);
+    }
+  }
 
   function draw3(s) {
-    drawLandTo(11 + s * .3);
-    var dy = 560 * ease(seg(s, .4, 4.6)), y0 = H - dy;       // y0：湖岸線在畫面上的位置
-    cx.clearRect(0, 0, W, H);
-    cx.drawImage(off, 0, -dy);
-    if (dy > 2) {
-      var drop = 0; for (var k = 0; k < 3; k++) { var ag = s - (4.8 + k * 1.2); if (ag > 0 && ag < 4) drop = Math.max(drop, 1 - ag / 4); }
-      for (var y = y0; y < H; y += 4) {
-        var sy = Math.max(0, Math.min(H - 4, 2 * y0 - y - 4 + dy));
-        var amp = 1.5 + (y - y0) * .018 + drop * (4 + (y - y0) * .03);
-        var ox = Math.sin(y * .05 + s * 1.9) * amp;
-        cx.drawImage(off, 0, sy, W, 4, ox, y, W, 4);
-      }
-      var wg = cx.createLinearGradient(0, y0, 0, H);
-      wg.addColorStop(0, 'rgba(6,10,26,.30)'); wg.addColorStop(1, 'rgba(4,7,18,.72)');
-      cx.fillStyle = wg; cx.fillRect(0, y0, W, H - y0);
-      cx.fillStyle = 'rgba(255,214,160,.28)'; cx.fillRect(0, y0 - 1, W, 2);          // 湖岸線
-      for (var q = 0; q < 3; q++) {                                                     // 漣漪
-        var a = s - (4.8 + q * 1.2); if (a <= 0 || a >= 4) continue;
-        var rr = a * 200; cx.strokeStyle = 'rgba(255,230,190,' + (1 - a / 4) * .55 + ')'; cx.lineWidth = 3;
-        cx.beginPath(); cx.ellipse(W / 2, y0 + 280, rr, rr * .28, 0, 0, 6.283); cx.stroke();
-      }
-      var dd = seg(s, 4.1, 4.8);                                                         // 落下的一滴光
-      if (dd > 0 && dd < 1) { var dyy = lerp(y0 - 260, y0 + 280, dd * dd); lightPool(W / 2, dyy, 40, .9, 1); }
+    var tl = 11 + s * .3, main = cx;
+    MODE = 1; cx = offx; draw2(tl); cx = main; MODE = 0;      // 倒影素材：只有山與天空
+    draw2(tl);                                                // 上半部：與第二段結尾完全相同的畫面
+    var wa = seg(s, 0, 3), ring = 0, k, ag;
+    for (k = 0; k < 5; k++) { ag = s - (2.6 + k * 1.5); if (ag > 0 && ag < 4.5) ring = Math.max(ring, 1 - ag / 4.5); }
+
+    cx.save(); cx.beginPath(); cx.rect(0, YW, W, H - YW); cx.clip(); cx.globalAlpha = wa;
+    var bg = cx.createLinearGradient(0, YW, 0, H); bg.addColorStop(0, 'rgb(34,38,70)'); bg.addColorStop(1, 'rgb(5,8,20)');
+    cx.fillStyle = bg; cx.fillRect(0, YW, W, H - YW);
+    for (var y = YW; y < H; y += 2) {                         // 倒影：天空與山，越遠離水平線越晃、越暗
+      var d = y - YW, amp = .6 + d * .009 + ring * (1.5 + d * .008);
+      var ox = amp * (Math.sin(y * .045 + s * 1.3) + .5 * Math.sin(y * .11 - s * 2.1));
+      cx.globalAlpha = wa * (.8 - .55 * d / (H - YW));
+      cx.drawImage(off, 0, Math.max(0, 2 * YW - y - 2), W, 2, ox, y, W, 2);
     }
-    cx.fillStyle = 'rgba(0,0,0,' + clamp(seg(s, 9.3, 10) + (1 - seg(s, 0, .01)) * 0, 0, 1) + ')'; cx.fillRect(0, 0, W, H);
+    cx.globalAlpha = wa;
+    var fr = cx.createLinearGradient(0, YW, 0, H); fr.addColorStop(0, 'rgba(6,9,24,.10)'); fr.addColorStop(1, 'rgba(3,5,14,.55)');
+    cx.fillStyle = fr; cx.fillRect(0, YW, W, H - YW);
+    cx.restore();
+
+    // 山上的愛心在水裡的倒影
+    lamps2.forEach(function (l) {
+      var L = LAY[l.li], a = seg(s, -9, -8) * wa;
+      var ly = ridgeY(l.x, L.base, L.amp, L.seed, L.d0 + tl * L.v) - 3 - 15 * l.sz;
+      if (ly > YW - 8) return;
+      var yr = 2 * YW - ly; if (yr > H) return;
+      reflectLight(l.x, yr, l.sz * .8, .5 * a * (1 - (yr - YW) / 700), s, l.ph);
+    });
+
+    // 水平線上的一層薄霧，讓山腳自然浸入水中
+    var hz = cx.createLinearGradient(0, YW - 40, 0, YW + 70);
+    hz.addColorStop(0, 'rgba(190,170,200,0)'); hz.addColorStop(.45, 'rgba(190,170,200,' + .11 * wa + ')'); hz.addColorStop(1, 'rgba(190,170,200,0)');
+    cx.save(); cx.globalCompositeOperation = 'lighter'; cx.fillStyle = hz; cx.fillRect(0, YW - 40, W, 110); cx.restore();
+
+    // 漂在水面上的大愛心：倒影、漣漪、輕輕起伏
+    var yc = LY + 22, bob = 3 * Math.sin(s * 1.6) * wa, pulse = .9 + .1 * Math.sin((S2 + s) * 2.4);
+    cx.save(); cx.translate(0, 2 * yc + 2 * bob); cx.scale(1, -1); heart(LX, LY - 40, 64 * (.9 + .1 * pulse), .28 * wa, 1); cx.restore();
+    reflectLight(LX, yc + 30, 3, .75 * wa, s, 0);
+    for (k = 0; k < 5; k++) {
+      ag = s - (2.6 + k * 1.5); if (ag <= 0 || ag >= 4.5) continue;
+      var rr = 40 + ag * 190; cx.strokeStyle = 'rgba(255,226,180,' + (1 - ag / 4.5) * .5 * wa + ')'; cx.lineWidth = 2.5;
+      cx.beginPath(); cx.ellipse(LX, yc + 8, rr, rr * .2, 0, 0, 6.283); cx.stroke();
+    }
+    lightPool(LX, LY - 10, 260 * pulse, .55 * wa, .8);
+    heart(LX, LY - 40 + bob, 64 * (.9 + .1 * pulse), wa > .9 ? 1 : 0, 1);
+
+    cx.fillStyle = 'rgba(0,0,0,' + clamp(seg(s, 9.3, 10), 0, 1) + ')'; cx.fillRect(0, 0, W, H);
   }
 
   function draw(t) { if (t < S1) draw1(t); else if (t < S2) draw2(t - S1); else draw3(t - S2); }
