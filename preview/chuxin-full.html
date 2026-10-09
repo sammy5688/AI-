@@ -80,7 +80,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
       <div class="tx" id="t3-a">靜下心</div>
       <div class="tx" id="t3-b">看見此刻的自己</div>
       <div class="tx" id="t3-c">這一路</div>
-      <div class="tx" id="t3-d">心還是那顆心嗎？</div>
+      <div class="tx" id="t3-d">一起回望那份初衷</div>
       <div class="tx" id="t4-a">帶著初心</div>
       <div class="tx" id="t4-b">同心・同願・同行</div>
       <div class="tx" id="t5-ev">115年義工教育成長研習營</div>
@@ -451,7 +451,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     put(tx.e, u, 1.0, 2.0, 4.6, 5.4, 20);       // 靜下心
     put(tx.f, u, 2.2, 3.2, 4.6, 5.4, 20);       // 看見此刻的自己
     put(tx.g, u, 5.8, 6.8, 9.2, 9.8, 20);       // 這一路
-    put(tx.h, u, 6.8, 7.8, 9.2, 9.8, 20);       // 心還是那顆心嗎？
+    put(tx.h, u, 6.8, 7.8, 9.2, 9.8, 20);       // 一起回望那份初衷
   }
 
   function render(t) { draw(t); text(t); document.getElementById('sg0').className = 'seg' + (t < S1 ? ' on' : ''); document.getElementById('sg1').className = 'seg' + (t >= S1 && t < S2 ? ' on' : ' todo'); document.getElementById('sg2').className = 'seg' + (t >= S2 && t < S3 ? ' on' : ' todo'); document.getElementById('sg3').className = 'seg' + (t >= S3 && t < S4 ? ' on' : ' todo'); document.getElementById('sg4').className = 'seg' + (t >= S4 ? ' on' : ' todo'); document.getElementById('clock').textContent = t.toFixed(1) + ' / ' + DUR.toFixed(1) + ' 秒'; }
