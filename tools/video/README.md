@@ -18,4 +18,11 @@ ffmpeg -i video.mp4 -i bgm.wav -c:v copy -c:a aac -b:a 192k -shortest -movflags 
 
 ## 目前正式版本
 
-`output/115年義工教育成長研習營-初心-宣傳影片.mp4`：第三版鋼琴配樂，合併時音量 -3.6 dB，整體約 -16 LUFS。
+`output/115年義工教育成長研習營-初心-宣傳影片.mp4`：使用者提供的山水荷花背景音樂。
+取原曲 0:55.6～1:47.6（第二段的開頭，音樂由安靜漸漸飽滿），音量調到約 -20 LUFS（刻意比一般影片小聲），淡入 0.8 秒、淡出 2.6 秒。
+
+```bash
+ffmpeg -ss 55.6 -t 52 -i 原曲.wav -af "volume=-5.7dB,alimiter=limit=0.7:level=false,afade=t=in:d=0.8,afade=t=out:st=49.4:d=2.6" bgm.wav
+```
+
+先前的配樂版本都在 `output/舊版/`。
