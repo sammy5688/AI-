@@ -1,4 +1,4 @@
-# 「初心」配樂 第二版：讓聲音更像真實樂器
+# 「初心」配樂 第三版：柔和溫馨的鋼琴獨奏
 # 鋼琴：三弦微差、琴弦非諧和性、琴槌聲、兩段式衰減；弦樂群：多聲部合奏與緩慢開合的濾波；
 # 演奏：時間與力道的人性化；空間：分頻衰減的音樂廳殘響；母帶：輕壓縮、軟飽和、限幅。
 import numpy as np, json, wave
@@ -25,7 +25,7 @@ def piano(m, vel=.5, length=None):
     n = int(length * SR); t = np.arange(n) / SR
     B = 4e-5 * (f0 / 130) ** 1.3                      # 琴弦的非諧和性（高次泛音略偏高）
     tau0 = float(np.clip(5.5 * (261.6 / f0) ** .7, 1.2, 9.0))
-    bright = .75 + .9 * vel
+    bright = .35 + .55 * vel                          # 柔和：高次泛音少
     out = np.zeros(n)
     for k in range(1, 26):
         fk = k * f0 * np.sqrt(1 + B * k * k)
@@ -35,13 +35,13 @@ def piano(m, vel=.5, length=None):
         env = .62 * np.exp(-t / (tau * .18)) + .38 * np.exp(-t / tau)     # 先快後慢的兩段衰減
         strings = 3 if k < 8 else 2
         for s in range(strings):                       # 同一個鍵的幾根弦，音高差一點點，產生自然的起伏
-            det = 1 + (s - (strings - 1) / 2) * .0009 * rng.uniform(.6, 1.4)
+            det = 1 + (s - (strings - 1) / 2) * .0006 * rng.uniform(.6, 1.4)
             out += amp / strings * env * np.sin(2 * np.pi * fk * det * t + rng.uniform(0, 6.28))
     hn = int(.012 * SR)                                # 琴槌的敲擊聲
     hammer = rng.standard_normal(hn) * np.exp(-np.arange(hn) / (hn / 4))
     hammer = signal.lfilter(*signal.butter(2, min(.9, (900 + 2600 * vel) / (SR / 2))), hammer)
-    out[:hn] += hammer * .05 * vel
-    out *= np.minimum(1, t / .0025)
+    out[:hn] += hammer * .018 * vel
+    out *= np.minimum(1, t / .007)                     # 起音放軟
     out *= np.minimum(1, np.maximum(0, (length - t) / .4))
     return out * vel * .2
 
@@ -54,7 +54,9 @@ def chord_roll(notes, t0, vel, spread=.09):          # 和弦由低到高輕輕�
         put(L, R, piano(m, vv), tt, pan=(m - 64) / 40)
 
 # ---------- 玻璃鈴（愛心、漣漪）：柔和的鐘琴音色 ----------
-def glass(m, vel=.3, length=4.5):
+def glass(m, vel=.3, length=4.5):                    # 第三版：改用鋼琴高音輕點
+    return piano(m, vel * .55)
+def _glass_old(m, vel=.3, length=4.5):
     f0 = f(m); n = int(length * SR); t = np.arange(n) / SR
     s = np.zeros(n)
     for r, a, d in [(1, 1, 2.2), (2.0, .25, 1.0), (3.01, .12, .6), (4.16, .06, .35)]:
@@ -82,16 +84,19 @@ chords = [(0, 5.2, [38, 50, 57, 62, 66]), (5.0, 10.2, [35, 47, 54, 62, 66]),
           (21, 26.2, [35, 47, 54, 62, 66]), (26, 31.2, [31, 43, 50, 59, 62]),
           (31, 34.2, [31, 43, 50, 59, 62]), (34, 37.2, [33, 45, 52, 61, 64]), (37, 39.7, [35, 47, 54, 62, 66]), (39.5, 42.2, [33, 45, 52, 61, 64]),
           (42, 52, [38, 50, 57, 62, 66, 69])]
-# 弦樂：每個和弦一層（不含最低音）
+# 左手：緩慢的分解和弦（低音 → 五度 → 八度 → 三度 → 八度），一個音一個音輕輕流動
 for a, b, notes in chords:
-    for k, m in enumerate(notes[1:]):
-        put(PL, PR, ensemble(m, b - a + 1.8, .018 if m < 55 else .03, None), a - .3, pan=(k - 1.8) * .35)
-# 鋼琴左手：每個和弦進來時，輕輕彈出低音與和弦
-for a, b, notes in chords:
-    if a < 1: a = .6
-    tt, vv = human(a + .05, .24)
-    put(L, R, piano(notes[0] + 12, vv), tt, pan=-.25)
-    chord_roll(notes[1:3], a + .35, .22, .14)
+    if 31 <= a < 42: continue                           # 第四段改由上行琶音帶動
+    step = 1.1 if 21 <= a < 31 else .62                 # 省思段落更疏
+    pat = [notes[1], notes[2], notes[3], notes[4], notes[3], notes[2]]
+    if 21 <= a < 31: pat = [notes[1], notes[3], notes[2]]
+    t0 = max(.6, a + .05); k = 0
+    while t0 < b - .1:
+        tt, vv = human(t0, (.2 if k == 0 else .14) * (1.1 if a >= 42 else 1), .012, .1)
+        put(L, R, piano(pat[k % len(pat)], vv), tt, pan=(pat[k % len(pat)] - 58) / 40)
+        t0 += step * rng.uniform(.97, 1.03); k += 1
+for a, b, notes in chords[7:11]:                        # 第四段：和弦換時只彈低音
+    tt, vv = human(a + .02, .22); put(L, R, piano(notes[1], vv), tt, -.2)
 
 # 右手旋律
 mel = [(1.0, 66), (2.2, 69), (3.2, 74, .62), (4.6, 73), (5.6, 71), (6.4, 69, .52), (7.4, 66), (8.6, 64), (9.4, 66),
@@ -100,7 +105,7 @@ mel = [(1.0, 66), (2.2, 69), (3.2, 74, .62), (4.6, 73), (5.6, 71), (6.4, 69, .52
        (36.0, 78, .66), (37.4, 81, .7), (38.6, 79), (39.8, 78), (40.8, 76),
        (42.4, 74), (43.6, 78), (44.0, 81, .62), (45.4, 78), (46.6, 76), (47.0, 74, .55), (48.4, 73), (49.6, 74, .6)]
 for e in mel:
-    tt, vv = human(e[0], e[2] if len(e) > 2 else .4)
+    tt, vv = human(e[0], (e[2] if len(e) > 2 else .4) * .82)
     put(L, R, piano(e[1], vv), tt, pan=(e[1] - 70) / 35)
 chord_roll([38, 50, 57, 62], 49.55, .4, .11)                  # 結尾和弦
 
@@ -119,21 +124,9 @@ arp = {0: [55, 59, 62, 67, 71, 74, 79], 1: [57, 61, 64, 69, 73, 76, 81], 2: [59,
 tcur = 32.0
 for i in range(16):
     c = 0 if tcur < 34 else (1 if tcur < 37 else 2)
-    tt, vv = human(tcur, .2 + .018 * i, .01)
+    tt, vv = human(tcur, .14 + .012 * i, .01)
     put(L, R, piano(arp[c][i % 7], vv), tt, pan=((i % 7) - 3) * .18)
-    tcur += .46 - .012 * i
-# 第四段：大提琴旋律線（有揉弦、慢慢漲起來）
-def cello(m, t0, length, amp):
-    n = int(length * SR); t = np.arange(n) / SR
-    vib = 7 * np.sin(2 * np.pi * 5.2 * t) * np.minimum(1, t / 1.2)
-    ph = 2 * np.pi * np.cumsum(f(m) * 2 ** (vib / 1200)) / SR
-    s = sum(np.sin(k * ph) / k ** 1.3 for k in range(1, 18))
-    s = signal.lfilter(*signal.butter(2, 1400 / (SR / 2)), s)
-    env = np.minimum(1, t / (length * .45)) ** 1.5 * np.minimum(1, np.maximum(0, (length - t) / .9))
-    put(PL, PR, s * env * amp, t0, -.2)
-for m, t0, ln in [(43, 31.4, 3.0), (45, 34.2, 3.0), (47, 37.0, 2.8), (45, 39.6, 2.8), (50, 42.2, 7.5)]:
-    cello(m, t0, ln, .05)
-
+    tcur += .48 - .008 * i
 # ========== 弦樂的明暗：隨段落開合（低通濾波截止頻率隨時間改變）==========
 cut_pts = [(0, 700), (10, 900), (20, 1100), (22, 650), (31, 700), (40, 2200), (44, 2600), (52, 1500)]
 def tv_lowpass(x):
@@ -146,7 +139,7 @@ def tv_lowpass(x):
     return y
 PL = tv_lowpass(PL); PR = tv_lowpass(PR)
 
-dyn_pts = [(0, 0), (1.2, .55), (10, .6), (20, .72), (22, .5), (31, .5), (40, .95), (44, .9), (49.5, .85), (52, 0)]
+dyn_pts = [(0, 0), (1.0, .7), (10, .72), (20, .78), (22, .66), (31, .68), (40, .88), (44, .86), (49.5, .82), (52, 0)]
 g = np.interp(np.arange(N) / SR, *zip(*dyn_pts))
 dryL = (L + PL) * g; dryR = (R + PR) * g
 
@@ -154,7 +147,7 @@ dryL = (L + PL) * g; dryR = (R + PR) * g
 def hall_ir(seed, length=3.8):
     r = np.random.default_rng(seed); n = int(length * SR); t = np.arange(n) / SR
     ir = np.zeros(n)
-    for lo, hi, t60 in [(20, 250, 2.2), (250, 1200, 2.6), (1200, 4000, 1.7), (4000, 12000, .8)]:
+    for lo, hi, t60 in [(20, 250, 1.9), (250, 1200, 2.1), (1200, 4000, 1.2), (4000, 12000, .5)]:
         b = signal.butter(2, [lo / (SR / 2), hi / (SR / 2)], 'band', output='sos')
         ir += signal.sosfilt(b, r.standard_normal(n)) * np.exp(-6.91 * t / t60)
     pre = int(.024 * SR); ir = np.concatenate([np.zeros(pre), ir])[:n]
@@ -163,7 +156,7 @@ def hall_ir(seed, length=3.8):
     ir[:int(.006 * SR)] *= np.linspace(0, 1, int(.006 * SR))
     return ir / np.sqrt(np.sum(ir ** 2))
 wetL = signal.fftconvolve(dryL, hall_ir(1))[:N]; wetR = signal.fftconvolve(dryR, hall_ir(2))[:N]
-mixL = .78 * dryL + .42 * wetL; mixR = .78 * dryR + .42 * wetR
+mixL = .8 * dryL + .38 * wetL; mixR = .8 * dryR + .38 * wetR
 
 # ========== 母帶：去超低頻、修整低頻與高頻、輕壓縮、軟飽和 ==========
 def shelf(x, gain_db, f0, kind):                       # RBJ 擱架式等化
@@ -174,7 +167,7 @@ def shelf(x, gain_db, f0, kind):                       # RBJ 擱架式等化
         b = [A*((A+1)+(A-1)*c+sA), -2*A*((A-1)+(A+1)*c), A*((A+1)+(A-1)*c-sA)]; a = [(A+1)-(A-1)*c+sA, 2*((A-1)-(A+1)*c), (A+1)-(A-1)*c-sA]
     return signal.lfilter(b, a, x)
 for side in ('L', 'R'):
-    v = globals()['mix' + side]; v = shelf(v, -5, 220, 'low'); v = shelf(v, 4.5, 2800, 'high'); globals()['mix' + side] = v
+    v = globals()['mix' + side]; v = shelf(v, 3.5, 180, 'low'); v = shelf(v, -4.5, 2600, 'high'); v = signal.sosfilt(signal.butter(2, 7000 / (SR / 2), output='sos'), v); globals()['mix' + side] = v
 hp = signal.butter(2, 38 / (SR / 2), 'high', output='sos')
 mixL = signal.sosfilt(hp, mixL); mixR = signal.sosfilt(hp, mixR)
 lvl = np.sqrt(signal.lfilter([1 - np.exp(-1 / (.12 * SR))], [1, -np.exp(-1 / (.12 * SR))], (mixL ** 2 + mixR ** 2) / 2))
@@ -187,6 +180,6 @@ mixL = np.tanh(1.25 * mixL / pk) / np.tanh(1.25); mixR = np.tanh(1.25 * mixR / p
 fade = np.ones(N); fn = int(2.4 * SR); fade[-fn:] = np.linspace(1, 0, fn) ** 1.6
 mixL *= fade * .89; mixR *= fade * .89
 out = (np.stack([mixL, mixR], 1) * 32767).astype('<i2')
-with wave.open('music2.wav', 'wb') as w:
+with wave.open('music3.wav', 'wb') as w:
     w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes(out.tobytes())
 print('ok')
