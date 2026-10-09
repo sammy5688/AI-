@@ -107,13 +107,13 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   for (var j = 0; j < 70; j++) motes.push({ x: 300 + r() * 480, y0: 900 + r() * 900, sp: 30 + r() * 70, sw: 10 + r() * 40, ph: r() * 6.28, s: 1.5 + r() * 3.5 });
 
   // 山稜線：用疊加的正弦波得到起伏
+  function ridgeY(x, base, amp, seed, drift) {
+    var u = (x + drift) / W;
+    return base - amp * (.55 * Math.sin(u * 5 + seed) + .3 * Math.sin(u * 11 + seed * 2.3) + .15 * Math.sin(u * 23 + seed * 4.1));
+  }
   function ridge(t, base, amp, seed, color, drift) {
     cx.beginPath(); cx.moveTo(0, H);
-    for (var x = 0; x <= W; x += 12) {
-      var u = (x + drift) / W;
-      var y = base - amp * (.55 * Math.sin(u * 5 + seed) + .3 * Math.sin(u * 11 + seed * 2.3) + .15 * Math.sin(u * 23 + seed * 4.1));
-      cx.lineTo(x, y);
-    }
+    for (var x = 0; x <= W; x += 12) cx.lineTo(x, ridgeY(x, base, amp, seed, drift));
     cx.lineTo(W, H); cx.closePath(); cx.fillStyle = color; cx.fill();
   }
 
@@ -180,83 +180,101 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
     cx.fillStyle = vg; cx.fillRect(0, 0, W, H);
     // 開場淡入
-    cx.fillStyle = 'rgba(0,0,0,' + clamp((1 - seg(t, 0, 1.2)) + seg(t, 9.3, 10), 0, 1) + ')'; cx.fillRect(0, 0, W, H);
+    cx.fillStyle = 'rgba(0,0,0,' + clamp(1 - seg(t, 0, 1.2), 0, 1) + ')'; cx.fillRect(0, 0, W, H);
   }
 
 
-  // ===== 第二段：看見付出（本段時間 s = t - 10，共 11 秒）=====
-  var r2 = rng(21), hill = [], lampsAve = [], i2;
-  for (i2 = 0; i2 < 70; i2++) hill.push({ x: 40 + r2() * 1000, y: 1330 + r2() * 300, s: 2.5 + r2() * 3.5, t0: 5.8 + r2() * 3.6, ph: r2() * 6.28 });
-  for (i2 = 0; i2 < 14; i2++) { var u = Math.pow(i2 / 13, 1.1); [-1, 1].forEach(function (sd) { lampsAve.push({ u: u, sd: sd, t0: 3.6 + i2 * .26 + (sd > 0 ? .08 : 0) }); }); }
-  var stars2 = []; for (i2 = 0; i2 < 110; i2++) stars2.push({ x: r2() * W, y: r2() * 1100, s: .6 + r2() * 1.6, p: r2() * 6.28 });
+  // ===== 第二段：看見付出（s = t - 10，共 11 秒）=====
+  // 同一個地方、同一盞燈：從第一段結尾接續，天色由清晨慢慢轉為傍晚，
+  // 其他的燈都長在山稜線上，由第一盞燈向外一圈圈點亮。
+  var LX = W / 2, LY = 1668;                         // 第一盞燈（與第一段相同位置）
+  var LAY = [                                          // 與第一段完全相同的四層山
+    { base: 1330, amp: 150, seed: 1.0, d0: 20, v: 2,  n: 15, sz: .8 },
+    { base: 1450, amp: 190, seed: 2.4, d0: 40, v: 4,  n: 12, sz: 1.1 },
+    { base: 1600, amp: 230, seed: 4.1, d0: 70, v: 7,  n: 8,  sz: 1.5 }
+  ];
+  var r2 = rng(33), lamps2 = [];
+  LAY.forEach(function (L, li) {
+    for (var q = 0; q < L.n; q++) {
+      var x = 30 + (q + .15 + r2() * .7) * (W - 60) / L.n;
+      lamps2.push({ li: li, x: x, sz: L.sz * (.8 + r2() * .5), ph: r2() * 6.28 });
+    }
+  });
+  lamps2.forEach(function (l) {
+    var L = LAY[l.li], y = ridgeY(l.x, L.base, L.amp, L.seed, L.d0);
+    l.t0 = 2.2 + Math.hypot(l.x - LX, y - LY) / 260;   // 離第一盞燈越遠，越晚亮
+  });
+  var stars2 = []; for (var i2 = 0; i2 < 110; i2++) stars2.push({ x: r2() * W, y: r2() * 1000, s: .6 + r2() * 1.6, p: r2() * 6.28 });
 
-  function glowDot(x, y, rad, a) {
-    var g = cx.createRadialGradient(x, y, 0, x, y, rad);
-    g.addColorStop(0, 'rgba(255,238,200,' + a + ')'); g.addColorStop(.25, 'rgba(255,196,118,' + a * .55 + ')'); g.addColorStop(1, 'rgba(255,170,90,0)');
-    cx.fillStyle = g; cx.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+  function lightPool(x, y, rad, a, flat) {             // 用「疊加」混色，讓光真的照亮背後的山
+    cx.save(); cx.globalCompositeOperation = 'lighter'; cx.translate(x, y); cx.scale(1, flat);
+    var g = cx.createRadialGradient(0, 0, 0, 0, 0, rad);
+    g.addColorStop(0, 'rgba(255,214,150,' + a + ')'); g.addColorStop(.35, 'rgba(255,160,80,' + a * .35 + ')'); g.addColorStop(1, 'rgba(255,140,60,0)');
+    cx.fillStyle = g; cx.fillRect(-rad, -rad, rad * 2, rad * 2); cx.restore();
   }
 
   function draw2(s) {
-    var lit = seg(s, 3.4, 9.5);                       // 全場亮燈比例
-    var pull = ease(seg(s, 1, 9.5));                  // 鏡頭慢慢拉遠
-    var k = lerp(1.32, 1, pull), px = W / 2, py = 1560;
+    var dawn = 1 - seg(s, .2, 3.4);                    // 清晨 → 傍晚（s=0 時與第一段結尾完全相同）
+    var lit = seg(s, 2.2, 9);                          // 全場亮燈比例
+    var k = lerp(1.06, 1.0, ease(seg(s, 0, 10)));      // 鏡頭從第一段的推進位置，慢慢退回
     cx.save(); cx.clearRect(0, 0, W, H);
+    cx.translate(W / 2, H * .62); cx.scale(k, k); cx.translate(-W / 2, -H * .62);
 
-    // 藍調夜空
-    var g = cx.createLinearGradient(0, 0, 0, H);
-    g.addColorStop(0, '#070b1c'); g.addColorStop(.55, mix([22, 32, 70], [40, 44, 84], lit)); g.addColorStop(.78, mix([38, 44, 86], [112, 80, 100], lit)); g.addColorStop(1, '#0a0d1c');
-    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
-    stars2.forEach(function (st) { cx.globalAlpha = .35 + .4 * Math.sin(s * 1.4 + st.p) * .5 + .2; cx.fillStyle = '#fff'; cx.beginPath(); cx.arc(st.x, st.y, st.s, 0, 6.283); cx.fill(); });
+    var g = cx.createLinearGradient(0, 0, 0, H * .85);
+    g.addColorStop(0, mix([8, 11, 26], [28, 38, 78], dawn));
+    g.addColorStop(.55, mix([18, 26, 52], [150, 98, 96], dawn));
+    g.addColorStop(1, mix([30, 36, 66], [244, 176, 108], dawn));
+    cx.fillStyle = g; cx.fillRect(-100, -100, W + 200, H + 200);
+
+    var sa = (1 - dawn) * .9;
+    stars2.forEach(function (st) { cx.globalAlpha = sa * (.45 + .45 * Math.sin(s * 1.6 + st.p)); cx.fillStyle = '#fff'; cx.beginPath(); cx.arc(st.x, st.y, st.s, 0, 6.283); cx.fill(); });
     cx.globalAlpha = 1;
 
-    cx.translate(px, py); cx.scale(k, k); cx.translate(-px, -py);
+    // 晨光退去的地平線暖光；之後由燈火接手
+    var hy = 1160, gr = lerp(300, 760, dawn);
+    var rg = cx.createRadialGradient(W / 2, hy, 0, W / 2, hy, gr);
+    var ha = dawn * dawn;
+    rg.addColorStop(0, 'rgba(255,226,170,' + (.35 + .55 * dawn) * ha + ')'); rg.addColorStop(.35, 'rgba(244,166,90,' + (.18 + .3 * dawn) * ha + ')'); rg.addColorStop(1, 'rgba(244,166,90,0)');
+    cx.fillStyle = rg; cx.fillRect(0, 0, W, H);
+    lightPool(W / 2, 1420, 700, .22 * lit, .5);       // 夜裡改由燈火在山後透出暖光
 
-    // 遠方整片暖光，隨燈數增加
-    var hg = cx.createRadialGradient(W / 2, 1330, 0, W / 2, 1330, 900);
-    hg.addColorStop(0, 'rgba(255,200,130,' + (.12 + .42 * lit) + ')'); hg.addColorStop(1, 'rgba(255,170,90,0)');
-    cx.fillStyle = hg; cx.fillRect(-200, 300, W + 400, 1600);
-
-    ridge(s, 1330, 150, 1.0, mix([22, 30, 62], [120, 88, 104], lit), 20 + s * 1.5);
-    ridge(s, 1450, 190, 2.4, mix([14, 20, 46], [70, 54, 78], lit), 40 + s * 3);
-    ridge(s, 1600, 230, 4.1, mix([8, 11, 26], [30, 24, 42], lit), 70 + s * 5);
-
-    // 山坡上一盞一盞亮起的燈
-    hill.forEach(function (h) {
-      var a = seg(s, h.t0, h.t0 + .8); if (a <= 0) return;
-      glowDot(h.x, h.y, h.s * 7, a * (.7 + .3 * Math.sin(s * 2 + h.ph)));
-      cx.fillStyle = 'rgba(255,244,214,' + a + ')'; cx.beginPath(); cx.arc(h.x, h.y, h.s * .7, 0, 6.283); cx.fill();
+    var cols = [mix([30, 40, 78], [190, 128, 110], dawn), mix([18, 26, 56], [106, 74, 92], dawn), mix([9, 13, 30], [44, 34, 50], dawn)];
+    LAY.forEach(function (L, li) {
+      var dr = L.d0 + s * L.v;
+      ridge(s, L.base, L.amp, L.seed, cols[li], dr);
+      // 這一層山上已經亮的燈：光落在稜線上，也照亮附近山坡
+      lamps2.forEach(function (l) {
+        if (l.li !== li) return;
+        var a = seg(s, l.t0, l.t0 + .9); if (a <= 0) return;
+        var y = ridgeY(l.x, L.base, L.amp, L.seed, dr) - 3, f = .85 + .15 * Math.sin(s * 2.2 + l.ph);
+        lightPool(l.x, y + 6, 90 * l.sz, .55 * a * f, .45);
+        lightPool(l.x, y - 2, 28 * l.sz, .9 * a * f, 1);
+        cx.fillStyle = 'rgba(255,246,222,' + a + ')'; cx.beginPath(); cx.arc(l.x, y - 2, 2.2 * l.sz, 0, 6.283); cx.fill();
+      });
+      if (li === 1) {                                  // 山谷薄霧
+        var mg = cx.createLinearGradient(0, 1380, 0, 1700);
+        mg.addColorStop(0, 'rgba(255,220,180,0)'); mg.addColorStop(.5, 'rgba(255,220,180,' + (.04 + .08 * lit) + ')'); mg.addColorStop(1, 'rgba(255,220,180,0)');
+        cx.fillStyle = mg; cx.fillRect(0, 1380, W, 320);
+      }
     });
 
-    ridge(s, 1780, 110, 6.7, 'rgb(5,7,16)', 90 + s * 8);
+    // 前景暗稜 + 第一盞燈（與第一段同一盞）
+    ridge(s, 1760, 120, 6.7, 'rgb(6,8,18)', 100 + s * 10);
+    var pulse = .88 + .12 * Math.sin((S1 + s) * 2.4);
+    lightPool(LX, LY + 14, 340 * pulse, .5 + .3 * lit, .35);   // 照在腳下山坡的光
+    lightPool(LX, LY, 150 * pulse, .95, 1);
+    cx.fillStyle = '#fff4d6'; cx.beginPath(); cx.arc(LX, LY, 7, 0, 6.283); cx.fill();
 
-    // 光之路：兩排燈往地平線收攏
-    lampsAve.forEach(function (l) {
-      var a = seg(s, l.t0, l.t0 + .6); if (a <= 0) return;
-      var u = l.u, w = lerp(330, 12, Math.pow(u, .7));
-      var x = 540 + l.sd * w + Math.sin(u * 4) * 40 * (1 - u), y = lerp(1800, 1345, Math.pow(u, .75)), rad = lerp(46, 10, u);
-      var flick = .88 + .12 * Math.sin(s * 3 + l.u * 9 + l.sd);
-      glowDot(x, y, rad * (.8 + .4 * a), a * flick);
-      cx.fillStyle = 'rgba(255,246,222,' + a + ')'; cx.beginPath(); cx.arc(x, y, lerp(9, 3, u), 0, 6.283); cx.fill();
-    });
-
-    // 雙手捧著第一盞燈，慢慢升起後化為遠方的光
-    var ha = 1 - seg(s, 2.4, 4.2);
-    var lampY = lerp(1610, 1340, ease(seg(s, 2.0, 4.4))), lampA = 1 - seg(s, 3.6, 4.6);
-    if (lampA > 0) { glowDot(W / 2, lampY, lerp(230, 120, ease(seg(s, 2, 4.4))), lampA); cx.fillStyle = 'rgba(255,248,226,' + lampA + ')'; cx.beginPath(); cx.arc(W / 2, lampY, 13, 0, 6.283); cx.fill(); }
-    if (ha > 0) {
-      cx.save(); cx.globalAlpha = ha; cx.translate(W / 2, 1700 + (1 - ha) * 160);
-      cx.fillStyle = '#04060d'; cx.strokeStyle = 'rgba(255,200,130,.55)'; cx.lineWidth = 3;
-      cx.beginPath(); cx.moveTo(-190, -10); cx.bezierCurveTo(-190, 120, -90, 200, 0, 200); cx.bezierCurveTo(90, 200, 190, 120, 190, -10);
-      cx.bezierCurveTo(120, 40, -120, 40, -190, -10); cx.closePath(); cx.fill(); cx.stroke();
-      cx.beginPath(); cx.moveTo(-190, -10); cx.quadraticCurveTo(-215, -60, -170, -95); cx.quadraticCurveTo(-150, -50, -120, 10); cx.moveTo(190, -10); cx.quadraticCurveTo(215, -60, 170, -95); cx.quadraticCurveTo(150, -50, 120, 10); cx.lineWidth = 26; cx.lineCap = 'round'; cx.strokeStyle = '#04060d'; cx.stroke();
-      cx.restore();
-    }
+    // 整片山的暖色天光，隨燈數增加
+    var wg = cx.createLinearGradient(0, 1100, 0, 1750);
+    wg.addColorStop(0, 'rgba(255,170,90,0)'); wg.addColorStop(1, 'rgba(255,170,90,' + (.10 * lit) + ')');
+    cx.save(); cx.globalCompositeOperation = 'lighter'; cx.fillStyle = wg; cx.fillRect(0, 1100, W, 650); cx.restore();
     cx.restore();
 
-    var vg = cx.createRadialGradient(W / 2, H / 2, 520, W / 2, H / 2, 1250);
+    var vg = cx.createRadialGradient(W / 2, H / 2, 500, W / 2, H / 2, 1250);
     vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
     cx.fillStyle = vg; cx.fillRect(0, 0, W, H);
-    cx.fillStyle = 'rgba(0,0,0,' + clamp((1 - seg(s, 0, .9)) + seg(s, 10.4, 11), 0, 1) + ')'; cx.fillRect(0, 0, W, H);
+    cx.fillStyle = 'rgba(0,0,0,' + seg(s, 10.4, 11) + ')'; cx.fillRect(0, 0, W, H);   // 只在整段結尾淡出
   }
 
   function draw(t) { if (t < S1) draw1(t); else draw2(t - S1); }
@@ -274,7 +292,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     put(tx.mn, t, 3.2, 5.2, 9.2, 9.9, 36);
     tx.mn.style.letterSpacing = lerp(.3, .12, seg(t, 3.2, 6)) + 'em';
     put(tx.ln, t, 6.4, 7.8, 9.2, 9.9, 20);
-    put(tx.a, s, 1.0, 2.2, 6.0, 6.8, 20);       // 一盞燈
+    put(tx.a, s, .8, 2.0, 6.0, 6.8, 20);       // 一盞燈
     put(tx.b, s, 3.0, 4.2, 6.0, 6.8, 20);       // 一份心意
     put(tx.c, s, 7.0, 8.0, 10.4, 11, 20);       // 謝謝你
     put(tx.d, s, 8.0, 9.0, 10.4, 11, 20);       // 一直都在
