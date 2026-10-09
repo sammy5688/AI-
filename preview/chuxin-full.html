@@ -233,6 +233,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     l.t0 = 2.2 + Math.hypot(l.x - LX, y - LY) / 260;   // 離第一盞燈越遠，越晚亮
     l.rd = (l.t0 - 2.2) * .45;                           // 第四段：離第一盞燈越遠，越晚升空
   });
+  window.__lampTimes = lamps2.map(function (l) { return l.t0; });   // 給配樂對拍用：每顆愛心亮起的時間
   var stars2 = []; for (var i2 = 0; i2 < 110; i2++) stars2.push({ x: r2() * W, y: r2() * 1000, s: .6 + r2() * 1.6, p: r2() * 6.28 });
 
   function heart(x, y, r, a, f) {                     // 發光愛心：r 是大小，a 是亮度
