@@ -45,6 +45,8 @@ h1 { font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter
 #t5-dt { top: 640px; font-size: 92px; font-weight: 900; letter-spacing: .04em; line-height: 1.35; }
 #t5-call { top: 1480px; font-size: 80px; font-weight: 900; letter-spacing: .06em; line-height: 1.5; }
 #t5-org { top: 1770px; font-size: 46px; font-weight: 500; letter-spacing: .12em; padding-left: .12em; color: #ffe2b8; }
+#t5-ev, #t5-th, #t5-yr, #t5-dt, #t5-call, #t5-org { color: #1a2850; text-shadow: 0 0 14px rgba(255,255,255,.9), 0 0 36px rgba(255,255,255,.7); }
+#t5-ev, #t5-yr, #t5-org { color: #2b3f6e; }
 .jump { display: flex; gap: 8px; flex-wrap: wrap; }
 .jump button { font-size: .8125rem; padding: 6px 14px; min-height: 36px; }
 .ctl { display: flex; align-items: center; gap: 12px; }
@@ -124,6 +126,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   var ease = function (x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
   var lerp = function (a, b, k) { return a + (b - a) * k; };
   var seg = function (t, a, b) { return ease((t - a) / (b - a)); };
+  function la(a, b, k) { return a.map(function (v, i) { return lerp(v, b[i], k); }); }
   function mix(c1, c2, k) { return 'rgb(' + [0, 1, 2].map(function (i) { return Math.round(lerp(c1[i], c2[i], k)); }).join(',') + ')'; }
 
   var r = rng(7), stars = [], motes = [];
@@ -211,7 +214,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   // ===== 第二段：看見付出（s = t - 10，共 11 秒）=====
   // 同一個地方、同一盞燈：從第一段結尾接續，天色由清晨慢慢轉為傍晚，
   // 其他的燈都長在山稜線上，由第一盞燈向外一圈圈點亮。
-  var MODE = 0, YW = 1440, DAWNO = null, SUN = 0, UP = -1, LIFT = 0, MF = 0;   // 第四段用：天色、日出、愛心升空、前景大愛心淡出                           // MODE=1：只畫山與天空（倒影用，不含愛心與前景）；YW：湖面在畫面上的高度
+  var MODE = 0, YW = 1440, DAWNO = null, SUN = 0, UP = -1, LIFT = 0, MF = 0, DAY = 0;   // DAY：第五段白天；第四段用：天色、日出、愛心升空、前景大愛心淡出                           // MODE=1：只畫山與天空（倒影用，不含愛心與前景）；YW：湖面在畫面上的高度
   var LX = W / 2, LY = 1668;                         // 第一盞燈（與第一段相同位置）
   var LAY = [                                          // 與第一段完全相同的四層山
     { base: 1330, amp: 150, seed: 1.0, d0: 20, v: 2,  n: 9, sz: .8 },
@@ -256,9 +259,9 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     cx.translate(W / 2, H * .62); cx.scale(k, k); cx.translate(-W / 2, -H * .62);
 
     var g = cx.createLinearGradient(0, 0, 0, H * .85);
-    g.addColorStop(0, mix([8, 11, 26], [28, 38, 78], dawn));
-    g.addColorStop(.55, mix([18, 26, 52], [150, 98, 96], dawn));
-    g.addColorStop(1, mix([30, 36, 66], [244, 176, 108], dawn));
+    g.addColorStop(0, mix(la([8, 11, 26], [28, 38, 78], dawn), [72, 138, 210], DAY));
+    g.addColorStop(.55, mix(la([18, 26, 52], [150, 98, 96], dawn), [150, 196, 236], DAY));
+    g.addColorStop(1, mix(la([30, 36, 66], [244, 176, 108], dawn), [222, 236, 244], DAY));
     cx.fillStyle = g; cx.fillRect(-100, -100, W + 200, H + 200);
 
     var sa = (1 - dawn) * .9;
@@ -268,19 +271,26 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     // 晨光退去的地平線暖光；之後由燈火接手
     var hy = 1160, gr = lerp(300, 760, dawn);
     var rg = cx.createRadialGradient(W / 2, hy, 0, W / 2, hy, gr);
-    var ha = dawn * dawn;
+    var ha = dawn * dawn * (1 - DAY);
     rg.addColorStop(0, 'rgba(255,226,170,' + (.35 + .55 * dawn) * ha + ')'); rg.addColorStop(.35, 'rgba(244,166,90,' + (.18 + .3 * dawn) * ha + ')'); rg.addColorStop(1, 'rgba(244,166,90,0)');
     cx.fillStyle = rg; cx.fillRect(0, 0, W, H);
-    lightPool(W / 2, 1420, 700, .22 * lit, .5);       // 夜裡改由燈火在山後透出暖光
+    lightPool(W / 2, 1420, 700, .22 * lit * (1 - DAY), .5);       // 夜裡改由燈火在山後透出暖光
 
     if (SUN > 0) {                                      // 日出：藏在遠山後面慢慢升起，湖面倒影也會帶出金色光路
       var sy = lerp(1480, 1070, ease(SUN)), sg = cx.createRadialGradient(W / 2, sy, 0, W / 2, sy, 620);
-      sg.addColorStop(0, 'rgba(255,224,170,' + .75 * SUN + ')'); sg.addColorStop(.3, 'rgba(255,176,100,' + .35 * SUN + ')'); sg.addColorStop(1, 'rgba(255,150,80,0)');
+      sg.addColorStop(0, 'rgba(255,224,170,' + .75 * SUN * (1 - DAY) + ')'); sg.addColorStop(.3, 'rgba(255,176,100,' + .35 * SUN * (1 - DAY) + ')'); sg.addColorStop(1, 'rgba(255,150,80,0)');
       cx.fillStyle = sg; cx.fillRect(0, 0, W, H);
       var sd = cx.createRadialGradient(W / 2, sy, 0, W / 2, sy, 78); sd.addColorStop(0, '#fff6dc'); sd.addColorStop(1, '#ffd08a');
-      cx.fillStyle = sd; cx.beginPath(); cx.arc(W / 2, sy, 78, 0, 6.283); cx.fill();
+      cx.globalAlpha = 1 - DAY; cx.fillStyle = sd; cx.beginPath(); cx.arc(W / 2, sy, 78, 0, 6.283); cx.fill(); cx.globalAlpha = 1;
     }
-    var cols = [mix([30, 40, 78], [190, 128, 110], dawn), mix([18, 26, 56], [106, 74, 92], dawn), mix([9, 13, 30], [44, 34, 50], dawn)];
+    if (DAY > 0) {                                      // 白天的太陽：右上角，光芒灑滿整個畫面
+      var dg = cx.createRadialGradient(960, 70, 0, 960, 70, 1000);
+      dg.addColorStop(0, 'rgba(255,255,240,' + .95 * DAY + ')'); dg.addColorStop(.1, 'rgba(255,250,222,' + .6 * DAY + ')');
+      dg.addColorStop(.45, 'rgba(255,248,215,' + .2 * DAY + ')'); dg.addColorStop(1, 'rgba(255,248,215,0)');
+      cx.fillStyle = dg; cx.fillRect(0, 0, W, H);
+      cx.globalAlpha = DAY; cx.fillStyle = '#fffef4'; cx.beginPath(); cx.arc(960, 70, 70, 0, 6.283); cx.fill(); cx.globalAlpha = 1;
+    }
+    var cols = [mix(la([30, 40, 78], [190, 128, 110], dawn), [138, 166, 190], DAY), mix(la([18, 26, 56], [106, 74, 92], dawn), [96, 128, 140], DAY), mix(la([9, 13, 30], [44, 34, 50], dawn), [62, 92, 92], DAY)];
     LAY.forEach(function (L, li) {
       var dr = L.d0 + s * L.v;
       ridge(s, L.base, L.amp, L.seed, cols[li], dr);
@@ -315,12 +325,12 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
 
     // 整片山的暖色天光，隨燈數增加
     var wg = cx.createLinearGradient(0, 1100, 0, 1750);
-    wg.addColorStop(0, 'rgba(255,170,90,0)'); wg.addColorStop(1, 'rgba(255,170,90,' + (.10 * lit) + ')');
+    wg.addColorStop(0, 'rgba(255,170,90,0)'); wg.addColorStop(1, 'rgba(255,170,90,' + (.10 * lit * (1 - DAY)) + ')');
     cx.save(); cx.globalCompositeOperation = 'lighter'; cx.fillStyle = wg; cx.fillRect(0, 1100, W, 650); cx.restore();
     cx.restore();
 
     var vg = cx.createRadialGradient(W / 2, H / 2, 500, W / 2, H / 2, 1250);
-    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,' + .55 * (1 - .8 * DAY) + ')');
     cx.fillStyle = vg; cx.fillRect(0, 0, W, H);
   }
 
@@ -353,7 +363,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     for (k = 0; k < 6; k++) { ag = s - (2.6 + k * 1.5); if (ag > 0 && ag < 4.5) ring = Math.max(ring, 1 - ag / 4.5); }
 
     cx.save(); cx.beginPath(); cx.rect(0, YW, W, H - YW); cx.clip(); cx.globalAlpha = wa;
-    var bg = cx.createLinearGradient(0, YW, 0, H); bg.addColorStop(0, mix([34, 38, 70], [176, 124, 118], dw)); bg.addColorStop(1, mix([5, 8, 20], [62, 52, 72], dw));
+    var bg = cx.createLinearGradient(0, YW, 0, H); bg.addColorStop(0, mix(la(la([34, 38, 70], [176, 124, 118], dw), [150, 196, 226], DAY), [0, 0, 0], 0)); bg.addColorStop(1, mix(la([5, 8, 20], [62, 52, 72], dw), [64, 110, 150], DAY));
     cx.fillStyle = bg; cx.fillRect(0, YW, W, H - YW);
     for (var y = YW; y < H; y += 2) {                         // 倒影：天空與山，越遠離水平線越晃、越暗
       var d = y - YW, amp = (.15 + d * .009 + ring * (1.5 + d * .008)) * (1 - .65 * dw);
@@ -362,7 +372,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
       cx.drawImage(off, 0, Math.max(0, 2 * YW - y - 2), W, 2, ox, y, W, 2);
     }
     cx.globalAlpha = wa;
-    var fr = cx.createLinearGradient(0, YW, 0, H); fr.addColorStop(0, 'rgba(6,9,24,' + .10 * (1 - dw) + ')'); fr.addColorStop(1, 'rgba(3,5,14,' + .55 * (1 - .45 * dw) + ')');
+    var fr = cx.createLinearGradient(0, YW, 0, H); fr.addColorStop(0, 'rgba(6,9,24,' + .10 * (1 - dw) + ')'); fr.addColorStop(1, 'rgba(3,5,14,' + .55 * (1 - .45 * dw) * (1 - .8 * DAY) + ')');
     cx.fillStyle = fr; cx.fillRect(0, YW, W, H - YW);
     cx.restore();
 
@@ -406,15 +416,40 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
 
   // ===== 第五段：預留時間（s = t - 42，共 10 秒）=====
   // 停在第四段結尾的晨光湖景，畫面幾乎靜止，只留水波；上下加一層淡淡的暗色，讓活動資訊清楚好讀。
+  var r5 = rng(55), glints = [];
+  for (var g5 = 0; g5 < 70; g5++) glints.push({ x: r5() * W, y: YW + 20 + Math.pow(r5(), 1.4) * 460, ph: r5() * 6.28, sp: 2 + r5() * 3, s: 1.5 + r5() * 2.5 });
+
   function draw5(s) {
+    DAY = ease(seg(s, 0, 2.6));
     DAWNO = 1; SUN = 1; UP = 30; LIFT = 848; MF = 1;
     draw3(21 + s);
     DAWNO = null; SUN = 0; UP = -1; LIFT = 0; MF = 0;
-    var k5 = seg(s, 0, 1.5);
-    var tg = cx.createLinearGradient(0, 0, 0, 960); tg.addColorStop(0, 'rgba(10,12,30,' + .55 * k5 + ')'); tg.addColorStop(1, 'rgba(10,12,30,0)');
-    cx.fillStyle = tg; cx.fillRect(0, 0, W, 960);
-    var bg5 = cx.createLinearGradient(0, 1380, 0, H); bg5.addColorStop(0, 'rgba(10,12,30,0)'); bg5.addColorStop(.35, 'rgba(10,12,30,' + .55 * k5 + ')'); bg5.addColorStop(1, 'rgba(10,12,30,' + .7 * k5 + ')');
-    cx.fillStyle = bg5; cx.fillRect(0, 1380, W, H - 1380);
+
+    // 陽光普照：從右上角灑下的柔和光束
+    cx.save(); cx.globalCompositeOperation = 'lighter';
+    for (var i = 0; i < 7; i++) {
+      var an = 1.95 + i * .16 + Math.sin(s * .4 + i) * .02, wd = .045;
+      var a = .06 * DAY * (.6 + .4 * Math.sin(s * .6 + i * 1.7));
+      var rg5 = cx.createLinearGradient(960, 70, 960 + Math.cos(an) * 2200, 70 + Math.sin(an) * 2200);
+      rg5.addColorStop(0, 'rgba(255,252,230,' + a + ')'); rg5.addColorStop(1, 'rgba(255,252,230,0)');
+      cx.fillStyle = rg5; cx.beginPath(); cx.moveTo(960, 70);
+      cx.lineTo(960 + Math.cos(an - wd) * 2400, 70 + Math.sin(an - wd) * 2400); cx.lineTo(960 + Math.cos(an + wd) * 2400, 70 + Math.sin(an + wd) * 2400); cx.closePath(); cx.fill();
+    }
+    // 湖面上閃爍的陽光
+    glints.forEach(function (g) {
+      var tw = Math.pow(Math.max(0, Math.sin(s * g.sp + g.ph)), 6) * DAY; if (tw < .02) return;
+      cx.fillStyle = 'rgba(255,255,245,' + tw + ')';
+      cx.fillRect(g.x - g.s * 3, g.y - .7, g.s * 6, 1.4); cx.fillRect(g.x - .7, g.y - g.s, 1.4, g.s * 2);
+    });
+    cx.restore();
+    DAY = 0;
+
+    // 上下各一層淡淡的白光，讓深色文字清楚好讀
+    var k5 = seg(s, .8, 2.6);
+    var tg = cx.createLinearGradient(0, 0, 0, 980); tg.addColorStop(0, 'rgba(255,255,255,' + .30 * k5 + ')'); tg.addColorStop(1, 'rgba(255,255,255,0)');
+    cx.fillStyle = tg; cx.fillRect(0, 0, W, 980);
+    var bg5 = cx.createLinearGradient(0, 1400, 0, H); bg5.addColorStop(0, 'rgba(255,255,255,0)'); bg5.addColorStop(.35, 'rgba(255,255,255,' + .38 * k5 + ')'); bg5.addColorStop(1, 'rgba(255,255,255,' + .48 * k5 + ')');
+    cx.fillStyle = bg5; cx.fillRect(0, 1400, W, H - 1400);
     cx.fillStyle = 'rgba(0,0,0,' + seg(s, 9.3, 10) + ')'; cx.fillRect(0, 0, W, H);
   }
 
@@ -438,12 +473,12 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     put(tx.c, s, 7.0, 8.0, 10.0, 10.6, 20);       // 謝謝你
     put(tx.d, s, 8.0, 9.0, 10.0, 10.6, 20);     // 一直都在
     var z = t - S4;                             // 第五段：資訊依序出現，停留到最後
-    put(tx.p, z, .4, 1.4, 9.3, 10, 16);
-    put(tx.q, z, 1.0, 2.2, 9.3, 10, 24);
-    put(tx.r, z, 2.4, 3.4, 9.3, 10, 16);
-    put(tx.v, z, 2.6, 3.8, 9.3, 10, 16);
-    put(tx.x, z, 4.4, 5.6, 9.3, 10, 16);
-    put(tx.y, z, 5.8, 6.8, 9.3, 10, 12);
+    put(tx.p, z, 1.6, 2.6, 9.3, 10, 16);
+    put(tx.q, z, 2.0, 3.2, 9.3, 10, 24);
+    put(tx.r, z, 3.2, 4.2, 9.3, 10, 16);
+    put(tx.v, z, 3.4, 4.6, 9.3, 10, 16);
+    put(tx.x, z, 5.0, 6.2, 9.3, 10, 16);
+    put(tx.y, z, 6.2, 7.2, 9.3, 10, 12);
     var w = t - S3;
     put(tx.i, w, 5.0, 6.0, 10.3, 10.9, 20);     // 帶著初心
     put(tx.j, w, 6.4, 7.4, 10.3, 10.9, 20);     // 同心・同願・同行
