@@ -28,7 +28,7 @@ h1 { font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter
 #t-event { top: 140px; font-size: 54px; letter-spacing: .2em; font-weight: 500; color: var(--glow); }
 #t-small { top: 540px; font-size: 76px; letter-spacing: .5em; padding-left: .5em; font-weight: 500; }
 #t-main { top: 640px; font-size: 300px; font-weight: 900; letter-spacing: .12em; padding-left: .12em; line-height: 1.1; }
-#t-line { top: 1100px; font-size: 80px; font-weight: 500; letter-spacing: .1em; line-height: 1.7; }
+#t-line { top: 1100px; font-size: 76px; font-weight: 500; letter-spacing: .04em; line-height: 1.7; }
 #t2-a { top: 300px; font-size: 190px; font-weight: 900; letter-spacing: .1em; padding-left: .1em; line-height: 1.2; }
 #t2-b { top: 560px; font-size: 96px; font-weight: 500; letter-spacing: .16em; padding-left: .16em; color: var(--glow); }
 #t2-c { top: 330px; font-size: 130px; font-weight: 900; letter-spacing: .12em; padding-left: .12em; line-height: 1.2; }
@@ -38,7 +38,13 @@ h1 { font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter
 #t3-c { top: 250px; font-size: 130px; font-weight: 900; letter-spacing: .14em; padding-left: .14em; line-height: 1.2; }
 #t3-d { top: 440px; font-size: 96px; font-weight: 500; letter-spacing: .06em; padding-left: .06em; }
 #t4-a { top: 250px; font-size: 130px; font-weight: 900; letter-spacing: .12em; padding-left: .12em; line-height: 1.2; }
-#t4-b { top: 440px; font-size: 120px; font-weight: 500; letter-spacing: .3em; padding-left: .3em; color: var(--glow); }
+#t4-b { top: 440px; font-size: 96px; font-weight: 500; letter-spacing: .08em; padding-left: .08em; color: #fff4e0; }
+#t5-ev { top: 190px; font-size: 62px; font-weight: 500; letter-spacing: .08em; padding-left: .08em; color: #fff4e0; }
+#t5-th { top: 290px; font-size: 220px; font-weight: 900; letter-spacing: .14em; padding-left: .14em; line-height: 1.1; }
+#t5-yr { top: 560px; font-size: 56px; font-weight: 500; letter-spacing: .2em; padding-left: .2em; color: #ffe2b8; }
+#t5-dt { top: 640px; font-size: 92px; font-weight: 900; letter-spacing: .04em; line-height: 1.35; }
+#t5-call { top: 1480px; font-size: 80px; font-weight: 900; letter-spacing: .06em; line-height: 1.5; }
+#t5-org { top: 1770px; font-size: 46px; font-weight: 500; letter-spacing: .12em; padding-left: .12em; color: #ffe2b8; }
 .jump { display: flex; gap: 8px; flex-wrap: wrap; }
 .jump button { font-size: .8125rem; padding: 6px 14px; min-height: 36px; }
 .ctl { display: flex; align-items: center; gap: 12px; }
@@ -59,7 +65,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
 
 <div class="wrap">
   <h1>115年義工教育成長研習營・宣傳影片</h1>
-  <p class="sub">第四階段預覽：前四段「回望初心」「看見付出」「重新省思」「再次出發」（0～42 秒）。</p>
+  <p class="sub">完整預覽：五段共 52 秒。建議按「全部連續」從頭看一次。</p>
 
   <div id="frame" aria-label="9:16 直式動畫預覽">
     <div id="stage">
@@ -71,30 +77,36 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
       <div class="tx" id="t2-b">一份心意</div>
       <div class="tx" id="t2-c">謝謝你</div>
       <div class="tx" id="t2-d">一直都在</div>
-      <div class="tx" id="t3-a">停一停</div>
-      <div class="tx" id="t3-b">看看自己</div>
+      <div class="tx" id="t3-a">靜下心</div>
+      <div class="tx" id="t3-b">看見此刻的自己</div>
       <div class="tx" id="t3-c">這一路</div>
       <div class="tx" id="t3-d">心還是那顆心嗎？</div>
       <div class="tx" id="t4-a">帶著初心</div>
-      <div class="tx" id="t4-b">再出發</div>
-      <div class="tx" id="t-line">還記得<br>當初為什麼出發嗎？</div>
+      <div class="tx" id="t4-b">同心・同願・同行</div>
+      <div class="tx" id="t5-ev">115年義工教育成長研習營</div>
+      <div class="tx" id="t5-th">初心</div>
+      <div class="tx" id="t5-yr">2026年</div>
+      <div class="tx" id="t5-dt">12月12日（六）<br>12月13日（日）</div>
+      <div class="tx" id="t5-call">天祥義工<br>請提早安排時間</div>
+      <div class="tx" id="t5-org">財團法人天祥宇宙聖道基金會</div>
+      <div class="tx" id="t-line">還記得<br>是什麼帶我們走進天祥？</div>
     </div>
   </div>
 
   <div class="ctl">
     <button id="play" type="button">播放</button>
-    <input id="seek" type="range" min="0" max="42" step="0.01" value="0" aria-label="時間軸">
-    <span id="clock">0.0 / 42.0 秒</span>
+    <input id="seek" type="range" min="0" max="52" step="0.01" value="0" aria-label="時間軸">
+    <span id="clock">0.0 / 52.0 秒</span>
   </div>
 
-  <div class="jump"><button type="button" id="j1">看第一段</button><button type="button" id="j2">看第二段</button><button type="button" id="j3">看第三段</button><button type="button" id="j5">看第四段</button><button type="button" id="j4">全部連續</button></div>
+  <div class="jump"><button type="button" id="j1">看第一段</button><button type="button" id="j2">看第二段</button><button type="button" id="j3">看第三段</button><button type="button" id="j5">看第四段</button><button type="button" id="j6">看第五段</button><button type="button" id="j4">全部連續</button></div>
 
   <div class="tl" aria-label="全片五段規劃（共約 52 秒）">
     <div class="seg on" id="sg0"><b>回望初心</b>0–10 秒</div>
     <div class="seg todo" id="sg1"><b>看見付出</b>10–21 秒</div>
     <div class="seg todo" id="sg2"><b>重新省思</b>21–31 秒</div>
     <div class="seg todo" id="sg3"><b>再次出發</b>31–42 秒</div>
-    <div class="seg todo"><b>預留時間</b>42–52 秒</div>
+    <div class="seg todo" id="sg4"><b>預留時間</b>42–52 秒</div>
   </div>
 
   <p class="note"><strong>這是動畫網頁預覽，還不是 MP4 影片。</strong>畫面由程式繪製，文字是另外疊上去的字幕層，所以不會有亂碼或錯字。確認方向後，才會進入輸出 MP4 的步驟。</p>
@@ -102,7 +114,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
 
 <script>
 (function () {
-  var W = 1080, H = 1920, DUR = 42, S1 = 10, S2 = 21, S3 = 31;
+  var W = 1080, H = 1920, DUR = 52, S1 = 10, S2 = 21, S3 = 31, S4 = 42;
   var cv = document.getElementById('cv'), cx = cv.getContext('2d');
   var frame = document.getElementById('frame'), stage = document.getElementById('stage');
 
@@ -392,10 +404,24 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     DAWNO = null; SUN = 0; UP = -1; LIFT = 0; MF = 0;
   }
 
-  function draw(t) { if (t < S1) draw1(t); else if (t < S2) draw2(t - S1); else if (t < S3) draw3(t - S2); else draw4(t - S3); }
+  // ===== 第五段：預留時間（s = t - 42，共 10 秒）=====
+  // 停在第四段結尾的晨光湖景，畫面幾乎靜止，只留水波；上下加一層淡淡的暗色，讓活動資訊清楚好讀。
+  function draw5(s) {
+    DAWNO = 1; SUN = 1; UP = 30; LIFT = 848; MF = 1;
+    draw3(21 + s);
+    DAWNO = null; SUN = 0; UP = -1; LIFT = 0; MF = 0;
+    var k5 = seg(s, 0, 1.5);
+    var tg = cx.createLinearGradient(0, 0, 0, 960); tg.addColorStop(0, 'rgba(10,12,30,' + .55 * k5 + ')'); tg.addColorStop(1, 'rgba(10,12,30,0)');
+    cx.fillStyle = tg; cx.fillRect(0, 0, W, 960);
+    var bg5 = cx.createLinearGradient(0, 1380, 0, H); bg5.addColorStop(0, 'rgba(10,12,30,0)'); bg5.addColorStop(.35, 'rgba(10,12,30,' + .55 * k5 + ')'); bg5.addColorStop(1, 'rgba(10,12,30,' + .7 * k5 + ')');
+    cx.fillStyle = bg5; cx.fillRect(0, 1380, W, H - 1380);
+    cx.fillStyle = 'rgba(0,0,0,' + seg(s, 9.3, 10) + ')'; cx.fillRect(0, 0, W, H);
+  }
+
+  function draw(t) { if (t < S1) draw1(t); else if (t < S2) draw2(t - S1); else if (t < S3) draw3(t - S2); else if (t < S4) draw4(t - S3); else draw5(t - S4); }
 
   // 文字層：全部是 HTML 文字，時間決定出現與淡出
-  var tx = { i: document.getElementById('t4-a'), j: document.getElementById('t4-b'), e: document.getElementById('t3-a'), f: document.getElementById('t3-b'), g: document.getElementById('t3-c'), h: document.getElementById('t3-d'), a: document.getElementById('t2-a'), b: document.getElementById('t2-b'), c: document.getElementById('t2-c'), d: document.getElementById('t2-d'), ev: document.getElementById('t-event'), sm: document.getElementById('t-small'), mn: document.getElementById('t-main'), ln: document.getElementById('t-line') };
+  var tx = { p: document.getElementById('t5-ev'), q: document.getElementById('t5-th'), r: document.getElementById('t5-yr'), v: document.getElementById('t5-dt'), x: document.getElementById('t5-call'), y: document.getElementById('t5-org'), i: document.getElementById('t4-a'), j: document.getElementById('t4-b'), e: document.getElementById('t3-a'), f: document.getElementById('t3-b'), g: document.getElementById('t3-c'), h: document.getElementById('t3-d'), a: document.getElementById('t2-a'), b: document.getElementById('t2-b'), c: document.getElementById('t2-c'), d: document.getElementById('t2-d'), ev: document.getElementById('t-event'), sm: document.getElementById('t-small'), mn: document.getElementById('t-main'), ln: document.getElementById('t-line') };
   function put(el, t, a, b, c, d, rise) {            // a→b 淡入，c→d 淡出
     var o = seg(t, a, b) * (1 - seg(t, c, d));
     el.style.opacity = o; el.style.transform = 'translateY(' + ((1 - seg(t, a, b)) * rise) + 'px)';
@@ -411,17 +437,24 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     put(tx.b, s, 3.0, 4.2, 6.0, 6.8, 20);       // 一份心意
     put(tx.c, s, 7.0, 8.0, 10.0, 10.6, 20);       // 謝謝你
     put(tx.d, s, 8.0, 9.0, 10.0, 10.6, 20);     // 一直都在
+    var z = t - S4;                             // 第五段：資訊依序出現，停留到最後
+    put(tx.p, z, .4, 1.4, 9.3, 10, 16);
+    put(tx.q, z, 1.0, 2.2, 9.3, 10, 24);
+    put(tx.r, z, 2.4, 3.4, 9.3, 10, 16);
+    put(tx.v, z, 2.6, 3.8, 9.3, 10, 16);
+    put(tx.x, z, 4.4, 5.6, 9.3, 10, 16);
+    put(tx.y, z, 5.8, 6.8, 9.3, 10, 12);
     var w = t - S3;
     put(tx.i, w, 5.0, 6.0, 10.3, 10.9, 20);     // 帶著初心
-    put(tx.j, w, 6.4, 7.4, 10.3, 10.9, 20);     // 再出發
+    put(tx.j, w, 6.4, 7.4, 10.3, 10.9, 20);     // 同心・同願・同行
     var u = t - S2;
-    put(tx.e, u, 1.0, 2.0, 4.6, 5.4, 20);       // 停一停
-    put(tx.f, u, 2.2, 3.2, 4.6, 5.4, 20);       // 看看自己
+    put(tx.e, u, 1.0, 2.0, 4.6, 5.4, 20);       // 靜下心
+    put(tx.f, u, 2.2, 3.2, 4.6, 5.4, 20);       // 看見此刻的自己
     put(tx.g, u, 5.8, 6.8, 9.2, 9.8, 20);       // 這一路
     put(tx.h, u, 6.8, 7.8, 9.2, 9.8, 20);       // 心還是那顆心嗎？
   }
 
-  function render(t) { draw(t); text(t); document.getElementById('sg0').className = 'seg' + (t < S1 ? ' on' : ''); document.getElementById('sg1').className = 'seg' + (t >= S1 && t < S2 ? ' on' : ' todo'); document.getElementById('sg2').className = 'seg' + (t >= S2 && t < S3 ? ' on' : ' todo'); document.getElementById('sg3').className = 'seg' + (t >= S3 ? ' on' : ' todo'); document.getElementById('clock').textContent = t.toFixed(1) + ' / ' + DUR.toFixed(1) + ' 秒'; }
+  function render(t) { draw(t); text(t); document.getElementById('sg0').className = 'seg' + (t < S1 ? ' on' : ''); document.getElementById('sg1').className = 'seg' + (t >= S1 && t < S2 ? ' on' : ' todo'); document.getElementById('sg2').className = 'seg' + (t >= S2 && t < S3 ? ' on' : ' todo'); document.getElementById('sg3').className = 'seg' + (t >= S3 && t < S4 ? ' on' : ' todo'); document.getElementById('sg4').className = 'seg' + (t >= S4 ? ' on' : ' todo'); document.getElementById('clock').textContent = t.toFixed(1) + ' / ' + DUR.toFixed(1) + ' 秒'; }
   window.renderAt = render;                           // 之後輸出 MP4 時，逐格呼叫這個函式
 
   function fit() {
@@ -454,6 +487,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   document.getElementById('j2').onclick = function () { jump(15.5); };
   document.getElementById('j3').onclick = function () { jump(26.5); };
   document.getElementById('j5').onclick = function () { jump(36.5); };
+  document.getElementById('j6').onclick = function () { jump(49); };
   document.getElementById('j4').onclick = function () { jump(0); playing = true; btn.textContent = '暫停'; last = performance.now(); requestAnimationFrame(loop); };
   render(7.2);                                        // 靜止時先停在能看到完整畫面的位置
   seek.value = 7.2; t = 7.2;
