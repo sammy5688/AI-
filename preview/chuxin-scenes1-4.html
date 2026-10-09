@@ -36,7 +36,9 @@ h1 { font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter
 #t3-a { top: 250px; font-size: 130px; font-weight: 900; letter-spacing: .14em; padding-left: .14em; line-height: 1.2; }
 #t3-b { top: 440px; font-size: 100px; font-weight: 500; letter-spacing: .16em; padding-left: .16em; color: var(--glow); }
 #t3-c { top: 250px; font-size: 130px; font-weight: 900; letter-spacing: .14em; padding-left: .14em; line-height: 1.2; }
-#t3-d { top: 440px; font-size: 100px; font-weight: 500; letter-spacing: .12em; padding-left: .12em; }
+#t3-d { top: 440px; font-size: 96px; font-weight: 500; letter-spacing: .06em; padding-left: .06em; }
+#t4-a { top: 250px; font-size: 130px; font-weight: 900; letter-spacing: .12em; padding-left: .12em; line-height: 1.2; }
+#t4-b { top: 440px; font-size: 120px; font-weight: 500; letter-spacing: .3em; padding-left: .3em; color: var(--glow); }
 .jump { display: flex; gap: 8px; flex-wrap: wrap; }
 .jump button { font-size: .8125rem; padding: 6px 14px; min-height: 36px; }
 .ctl { display: flex; align-items: center; gap: 12px; }
@@ -57,7 +59,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
 
 <div class="wrap">
   <h1>115年義工教育成長研習營・宣傳影片</h1>
-  <p class="sub">第三階段預覽：前三段「回望初心」「看見付出」「重新省思」（0～31 秒）。</p>
+  <p class="sub">第四階段預覽：前四段「回望初心」「看見付出」「重新省思」「再次出發」（0～42 秒）。</p>
 
   <div id="frame" aria-label="9:16 直式動畫預覽">
     <div id="stage">
@@ -72,24 +74,26 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
       <div class="tx" id="t3-a">停一停</div>
       <div class="tx" id="t3-b">看看自己</div>
       <div class="tx" id="t3-c">這一路</div>
-      <div class="tx" id="t3-d">心還是那顆心</div>
+      <div class="tx" id="t3-d">心還是那顆心嗎？</div>
+      <div class="tx" id="t4-a">帶著初心</div>
+      <div class="tx" id="t4-b">再出發</div>
       <div class="tx" id="t-line">還記得<br>當初為什麼出發嗎？</div>
     </div>
   </div>
 
   <div class="ctl">
     <button id="play" type="button">播放</button>
-    <input id="seek" type="range" min="0" max="31" step="0.01" value="0" aria-label="時間軸">
-    <span id="clock">0.0 / 31.0 秒</span>
+    <input id="seek" type="range" min="0" max="42" step="0.01" value="0" aria-label="時間軸">
+    <span id="clock">0.0 / 42.0 秒</span>
   </div>
 
-  <div class="jump"><button type="button" id="j1">看第一段</button><button type="button" id="j2">看第二段</button><button type="button" id="j3">看第三段</button><button type="button" id="j4">全部連續</button></div>
+  <div class="jump"><button type="button" id="j1">看第一段</button><button type="button" id="j2">看第二段</button><button type="button" id="j3">看第三段</button><button type="button" id="j5">看第四段</button><button type="button" id="j4">全部連續</button></div>
 
   <div class="tl" aria-label="全片五段規劃（共約 52 秒）">
     <div class="seg on" id="sg0"><b>回望初心</b>0–10 秒</div>
     <div class="seg todo" id="sg1"><b>看見付出</b>10–21 秒</div>
     <div class="seg todo" id="sg2"><b>重新省思</b>21–31 秒</div>
-    <div class="seg todo"><b>再次出發</b>31–42 秒</div>
+    <div class="seg todo" id="sg3"><b>再次出發</b>31–42 秒</div>
     <div class="seg todo"><b>預留時間</b>42–52 秒</div>
   </div>
 
@@ -98,7 +102,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
 
 <script>
 (function () {
-  var W = 1080, H = 1920, DUR = 31, S1 = 10, S2 = 21;
+  var W = 1080, H = 1920, DUR = 42, S1 = 10, S2 = 21, S3 = 31;
   var cv = document.getElementById('cv'), cx = cv.getContext('2d');
   var frame = document.getElementById('frame'), stage = document.getElementById('stage');
 
@@ -195,7 +199,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   // ===== 第二段：看見付出（s = t - 10，共 11 秒）=====
   // 同一個地方、同一盞燈：從第一段結尾接續，天色由清晨慢慢轉為傍晚，
   // 其他的燈都長在山稜線上，由第一盞燈向外一圈圈點亮。
-  var MODE = 0, YW = 1440;                           // MODE=1：只畫山與天空（倒影用，不含愛心與前景）；YW：湖面在畫面上的高度
+  var MODE = 0, YW = 1440, DAWNO = null, SUN = 0, UP = -1, LIFT = 0, MF = 0;   // 第四段用：天色、日出、愛心升空、前景大愛心淡出                           // MODE=1：只畫山與天空（倒影用，不含愛心與前景）；YW：湖面在畫面上的高度
   var LX = W / 2, LY = 1668;                         // 第一盞燈（與第一段相同位置）
   var LAY = [                                          // 與第一段完全相同的四層山
     { base: 1330, amp: 150, seed: 1.0, d0: 20, v: 2,  n: 9, sz: .8 },
@@ -212,6 +216,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   lamps2.forEach(function (l) {
     var L = LAY[l.li], y = ridgeY(l.x, L.base, L.amp, L.seed, L.d0);
     l.t0 = 2.2 + Math.hypot(l.x - LX, y - LY) / 260;   // 離第一盞燈越遠，越晚亮
+    l.rd = (l.t0 - 2.2) * .45;                           // 第四段：離第一盞燈越遠，越晚升空
   });
   var stars2 = []; for (var i2 = 0; i2 < 110; i2++) stars2.push({ x: r2() * W, y: r2() * 1000, s: .6 + r2() * 1.6, p: r2() * 6.28 });
 
@@ -232,7 +237,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   }
 
   function draw2(s) {
-    var dawn = 1 - seg(s, .2, 3.4);                    // 清晨 → 傍晚（s=0 時與第一段結尾完全相同）
+    var dawn = DAWNO === null ? 1 - seg(s, .2, 3.4) : DAWNO;                    // 清晨 → 傍晚（s=0 時與第一段結尾完全相同）
     var lit = seg(s, 2.2, 9);                          // 全場亮燈比例
     var k = lerp(1.06, 1.0, ease(seg(s, 0, 10)));      // 鏡頭從第一段的推進位置，慢慢退回
     cx.save(); cx.clearRect(0, 0, W, H);
@@ -256,6 +261,13 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     cx.fillStyle = rg; cx.fillRect(0, 0, W, H);
     lightPool(W / 2, 1420, 700, .22 * lit, .5);       // 夜裡改由燈火在山後透出暖光
 
+    if (SUN > 0) {                                      // 日出：藏在遠山後面慢慢升起，湖面倒影也會帶出金色光路
+      var sy = lerp(1480, 1070, ease(SUN)), sg = cx.createRadialGradient(W / 2, sy, 0, W / 2, sy, 620);
+      sg.addColorStop(0, 'rgba(255,224,170,' + .75 * SUN + ')'); sg.addColorStop(.3, 'rgba(255,176,100,' + .35 * SUN + ')'); sg.addColorStop(1, 'rgba(255,150,80,0)');
+      cx.fillStyle = sg; cx.fillRect(0, 0, W, H);
+      var sd = cx.createRadialGradient(W / 2, sy, 0, W / 2, sy, 78); sd.addColorStop(0, '#fff6dc'); sd.addColorStop(1, '#ffd08a');
+      cx.fillStyle = sd; cx.beginPath(); cx.arc(W / 2, sy, 78, 0, 6.283); cx.fill();
+    }
     var cols = [mix([30, 40, 78], [190, 128, 110], dawn), mix([18, 26, 56], [106, 74, 92], dawn), mix([9, 13, 30], [44, 34, 50], dawn)];
     LAY.forEach(function (L, li) {
       var dr = L.d0 + s * L.v;
@@ -265,10 +277,11 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
         if (l.li !== li || MODE) return;
         var a = seg(s, l.t0, l.t0 + .9); if (a <= 0) return;
         var y = ridgeY(l.x, L.base, L.amp, L.seed, dr) - 3, f = .85 + .15 * Math.sin(s * 2.2 + l.ph);
-        var hr = 17 * l.sz * (1 + .06 * Math.sin(s * 2.2 + l.ph));
-        lightPool(l.x, y + 8, 110 * l.sz, .5 * a * f, .45);
-        lightPool(l.x, y - hr * .6, 70 * l.sz, .85 * a * f, 1);
-        heart(l.x, y - hr * .9, hr, a, f);
+        var up = UP > 0 ? Math.max(0, UP - l.rd) : 0;                // 第四段：愛心一顆接一顆升空
+        var rise = up * 140 + up * up * 70, a2 = a * (1 - seg(up, 2.2, 4.6)), hx = l.x + (l.x - LX) * .04 * up;
+        var hr = 17 * l.sz * (1 + .06 * Math.sin(s * 2.2 + l.ph)) * (1 - .35 * seg(up, 0, 4));
+        lightPool(l.x, y + 8, 110 * l.sz, .5 * a * f * (1 - seg(up, 0, 1.2)), .45);
+        if (a2 > .01) { lightPool(hx, y - rise - hr * .6, 70 * l.sz, .85 * a2 * f, 1); heart(hx, y - rise - hr * .9, hr, a2, f); }
       });
       if (li === 1) {                                  // 山谷薄霧
         var mg = cx.createLinearGradient(0, 1380, 0, 1700);
@@ -281,11 +294,11 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     // 前景暗稜 + 第一盞燈（與第一段同一盞）
     ridge(s, 1760, 120, 6.7, 'rgb(6,8,18)', 100 + s * 10);
     var pulse = .88 + .12 * Math.sin((S1 + s) * 2.4);
-    lightPool(LX, LY + 14, 340 * pulse, .5 + .3 * lit, .35);   // 照在腳下山坡的光
+    lightPool(LX, LY + 14, 340 * pulse, (.5 + .3 * lit) * (1 - MF), .35);   // 照在腳下山坡的光
     var hh = seg(s, .5, 2.2);                           // 圓點 → 愛心
-    lightPool(LX, LY, lerp(150, 200, hh) * pulse, .95, 1);
+    lightPool(LX, LY, lerp(150, 200, hh) * pulse, .95 * (1 - MF), 1);
     cx.globalAlpha = 1 - hh; cx.fillStyle = '#fff4d6'; cx.beginPath(); cx.arc(LX, LY, 7, 0, 6.283); cx.fill(); cx.globalAlpha = 1;
-    heart(LX, LY - 40, 64 * (.9 + .1 * pulse), hh, 1);
+    heart(LX, LY - 40, 64 * (.9 + .1 * pulse), hh * (1 - MF), 1);
     }
 
     // 整片山的暖色天光，隨燈數增加
@@ -321,23 +334,23 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   }
 
   function draw3(s) {
-    var tl = 11 + s * .3, main = cx;
+    var tl = 11 + s * .3, main = cx, dw = DAWNO === null ? 0 : DAWNO;
     MODE = 1; cx = offx; draw2(tl); cx = main; MODE = 0;      // 倒影素材：只有山與天空
     draw2(tl);                                                // 上半部：與第二段結尾完全相同的畫面
     var wa = seg(s, 0, 3), ring = 0, k, ag;
-    for (k = 0; k < 5; k++) { ag = s - (2.6 + k * 1.5); if (ag > 0 && ag < 4.5) ring = Math.max(ring, 1 - ag / 4.5); }
+    for (k = 0; k < 6; k++) { ag = s - (2.6 + k * 1.5); if (ag > 0 && ag < 4.5) ring = Math.max(ring, 1 - ag / 4.5); }
 
     cx.save(); cx.beginPath(); cx.rect(0, YW, W, H - YW); cx.clip(); cx.globalAlpha = wa;
-    var bg = cx.createLinearGradient(0, YW, 0, H); bg.addColorStop(0, 'rgb(34,38,70)'); bg.addColorStop(1, 'rgb(5,8,20)');
+    var bg = cx.createLinearGradient(0, YW, 0, H); bg.addColorStop(0, mix([34, 38, 70], [176, 124, 118], dw)); bg.addColorStop(1, mix([5, 8, 20], [62, 52, 72], dw));
     cx.fillStyle = bg; cx.fillRect(0, YW, W, H - YW);
     for (var y = YW; y < H; y += 2) {                         // 倒影：天空與山，越遠離水平線越晃、越暗
-      var d = y - YW, amp = .6 + d * .009 + ring * (1.5 + d * .008);
+      var d = y - YW, amp = (.15 + d * .009 + ring * (1.5 + d * .008)) * (1 - .65 * dw);
       var ox = amp * (Math.sin(y * .045 + s * 1.3) + .5 * Math.sin(y * .11 - s * 2.1));
       cx.globalAlpha = wa * (.8 - .55 * d / (H - YW));
       cx.drawImage(off, 0, Math.max(0, 2 * YW - y - 2), W, 2, ox, y, W, 2);
     }
     cx.globalAlpha = wa;
-    var fr = cx.createLinearGradient(0, YW, 0, H); fr.addColorStop(0, 'rgba(6,9,24,.10)'); fr.addColorStop(1, 'rgba(3,5,14,.55)');
+    var fr = cx.createLinearGradient(0, YW, 0, H); fr.addColorStop(0, 'rgba(6,9,24,' + .10 * (1 - dw) + ')'); fr.addColorStop(1, 'rgba(3,5,14,' + .55 * (1 - .45 * dw) + ')');
     cx.fillStyle = fr; cx.fillRect(0, YW, W, H - YW);
     cx.restore();
 
@@ -347,6 +360,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
       var ly = ridgeY(l.x, L.base, L.amp, L.seed, L.d0 + tl * L.v) - 3 - 15 * l.sz;
       if (ly > YW - 8) return;
       var yr = 2 * YW - ly; if (yr > H) return;
+      var up = UP > 0 ? Math.max(0, UP - l.rd) : 0; a *= 1 - seg(up, 0, 1.2); if (a <= .01) return;
       reflectLight(l.x, yr, l.sz * .8, .5 * a * (1 - (yr - YW) / 700), s, l.ph);
     });
 
@@ -356,24 +370,32 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     cx.save(); cx.globalCompositeOperation = 'lighter'; cx.fillStyle = hz; cx.fillRect(0, YW - 40, W, 110); cx.restore();
 
     // 漂在水面上的大愛心：倒影、漣漪、輕輕起伏
-    var yc = LY + 22, bob = 3 * Math.sin(s * 1.6) * wa, pulse = .9 + .1 * Math.sin((S2 + s) * 2.4);
-    cx.save(); cx.translate(0, 2 * yc + 2 * bob); cx.scale(1, -1); heart(LX, LY - 40, 64 * (.9 + .1 * pulse), .28 * wa, 1); cx.restore();
-    reflectLight(LX, yc + 30, 3, .75 * wa, s, 0);
-    for (k = 0; k < 5; k++) {
+    var yc = LY + 22, bob = 3 * Math.sin(s * 1.6) * wa * (1 - seg(LIFT, 0, 40)), pulse = .9 + .1 * Math.sin((S2 + s) * 2.4);
+    var hs = 64 * (.9 + .1 * pulse) * (1 - .3 * seg(LIFT, 0, 848)), hxx = LX + 60 * Math.sin(LIFT / 260) * seg(LIFT, 0, 300), hyy = LY - 40 + bob - LIFT;
+    cx.save(); cx.translate(0, 2 * yc); cx.scale(1, -1); heart(hxx, LY - 40 - LIFT, hs, .28 * wa * (1 - seg(LIFT, 0, 400)), 1); cx.restore();
+    reflectLight(LX, yc + 30, 3, .75 * wa * (1 - seg(LIFT, 0, 260)), s, 0);
+    for (k = 0; k < 6; k++) {
       ag = s - (2.6 + k * 1.5); if (ag <= 0 || ag >= 4.5) continue;
       var rr = 40 + ag * 190; cx.strokeStyle = 'rgba(255,226,180,' + (1 - ag / 4.5) * .5 * wa + ')'; cx.lineWidth = 2.5;
       cx.beginPath(); cx.ellipse(LX, yc + 8, rr, rr * .2, 0, 0, 6.283); cx.stroke();
     }
-    lightPool(LX, LY - 10, 260 * pulse, .55 * wa, .8);
-    heart(LX, LY - 40 + bob, 64 * (.9 + .1 * pulse), wa > .9 ? 1 : 0, 1);
-
-    cx.fillStyle = 'rgba(0,0,0,' + clamp(seg(s, 9.3, 10), 0, 1) + ')'; cx.fillRect(0, 0, W, H);
+    lightPool(hxx, hyy + 30, 260 * pulse * (1 + LIFT / 1200), .55 * wa * (1 - seg(LIFT, 600, 848)), .8);
+    heart(hxx, hyy, hs, wa > .9 ? 1 - seg(LIFT, 740, 848) : 0, 1);
+    if (LIFT > 300) lightPool(hxx, hyy, 140 + 360 * seg(LIFT, 400, 848), .7 * seg(LIFT, 300, 848) * (1 - seg(dw, .5, .85)), 1);   // 愛心升到高處，化成一片晨光
   }
 
-  function draw(t) { if (t < S1) draw1(t); else if (t < S2) draw2(t - S1); else draw3(t - S2); }
+  // ===== 第四段：再次出發（s = t - 31，共 11 秒）=====
+  // 同一面湖：大愛心離開水面升向天空，山上的愛心一顆接一顆跟著升起；天色由夜轉為黎明，太陽從山後升起。
+  function draw4(s) {
+    DAWNO = seg(s, 2.5, 10.3); SUN = seg(s, 4, 10.8); UP = s - 1.4; LIFT = 848 * ease(seg(s, 1, 6.8)); MF = seg(s, .8, 2);
+    draw3(10 + s);
+    DAWNO = null; SUN = 0; UP = -1; LIFT = 0; MF = 0;
+  }
+
+  function draw(t) { if (t < S1) draw1(t); else if (t < S2) draw2(t - S1); else if (t < S3) draw3(t - S2); else draw4(t - S3); }
 
   // 文字層：全部是 HTML 文字，時間決定出現與淡出
-  var tx = { e: document.getElementById('t3-a'), f: document.getElementById('t3-b'), g: document.getElementById('t3-c'), h: document.getElementById('t3-d'), a: document.getElementById('t2-a'), b: document.getElementById('t2-b'), c: document.getElementById('t2-c'), d: document.getElementById('t2-d'), ev: document.getElementById('t-event'), sm: document.getElementById('t-small'), mn: document.getElementById('t-main'), ln: document.getElementById('t-line') };
+  var tx = { i: document.getElementById('t4-a'), j: document.getElementById('t4-b'), e: document.getElementById('t3-a'), f: document.getElementById('t3-b'), g: document.getElementById('t3-c'), h: document.getElementById('t3-d'), a: document.getElementById('t2-a'), b: document.getElementById('t2-b'), c: document.getElementById('t2-c'), d: document.getElementById('t2-d'), ev: document.getElementById('t-event'), sm: document.getElementById('t-small'), mn: document.getElementById('t-main'), ln: document.getElementById('t-line') };
   function put(el, t, a, b, c, d, rise) {            // a→b 淡入，c→d 淡出
     var o = seg(t, a, b) * (1 - seg(t, c, d));
     el.style.opacity = o; el.style.transform = 'translateY(' + ((1 - seg(t, a, b)) * rise) + 'px)';
@@ -389,14 +411,17 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
     put(tx.b, s, 3.0, 4.2, 6.0, 6.8, 20);       // 一份心意
     put(tx.c, s, 7.0, 8.0, 10.0, 10.6, 20);       // 謝謝你
     put(tx.d, s, 8.0, 9.0, 10.0, 10.6, 20);     // 一直都在
+    var w = t - S3;
+    put(tx.i, w, 5.0, 6.0, 10.3, 10.9, 20);     // 帶著初心
+    put(tx.j, w, 6.4, 7.4, 10.3, 10.9, 20);     // 再出發
     var u = t - S2;
     put(tx.e, u, 1.0, 2.0, 4.6, 5.4, 20);       // 停一停
     put(tx.f, u, 2.2, 3.2, 4.6, 5.4, 20);       // 看看自己
     put(tx.g, u, 5.8, 6.8, 9.2, 9.8, 20);       // 這一路
-    put(tx.h, u, 6.8, 7.8, 9.2, 9.8, 20);       // 心還是那顆心
+    put(tx.h, u, 6.8, 7.8, 9.2, 9.8, 20);       // 心還是那顆心嗎？
   }
 
-  function render(t) { draw(t); text(t); document.getElementById('sg0').className = 'seg' + (t < S1 ? ' on' : ''); document.getElementById('sg1').className = 'seg' + (t >= S1 && t < S2 ? ' on' : ' todo'); document.getElementById('sg2').className = 'seg' + (t >= S2 ? ' on' : ' todo'); document.getElementById('clock').textContent = t.toFixed(1) + ' / ' + DUR.toFixed(1) + ' 秒'; }
+  function render(t) { draw(t); text(t); document.getElementById('sg0').className = 'seg' + (t < S1 ? ' on' : ''); document.getElementById('sg1').className = 'seg' + (t >= S1 && t < S2 ? ' on' : ' todo'); document.getElementById('sg2').className = 'seg' + (t >= S2 && t < S3 ? ' on' : ' todo'); document.getElementById('sg3').className = 'seg' + (t >= S3 ? ' on' : ' todo'); document.getElementById('clock').textContent = t.toFixed(1) + ' / ' + DUR.toFixed(1) + ' 秒'; }
   window.renderAt = render;                           // 之後輸出 MP4 時，逐格呼叫這個函式
 
   function fit() {
@@ -428,6 +453,7 @@ input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44
   document.getElementById('j1').onclick = function () { jump(7.2); };
   document.getElementById('j2').onclick = function () { jump(15.5); };
   document.getElementById('j3').onclick = function () { jump(26.5); };
+  document.getElementById('j5').onclick = function () { jump(36.5); };
   document.getElementById('j4').onclick = function () { jump(0); playing = true; btn.textContent = '暫停'; last = performance.now(); requestAnimationFrame(loop); };
   render(7.2);                                        // 靜止時先停在能看到完整畫面的位置
   seek.value = 7.2; t = 7.2;
