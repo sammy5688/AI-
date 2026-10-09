@@ -1,0 +1,319 @@
+<title>初心 動畫預覽</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;900&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* 版面：直式 9:16 舞台置中，下方為播放控制與五段時間軸 */
+:root {
+  --ink: #0b1020;
+  --night: #121a33;
+  --dawn: #f2a65a;
+  --glow: #ffd9a0;
+  --paper: #f6ecd9;
+  --mute: #8d93a8;
+  --line: #2a3354;
+  --font-display: "Noto Serif TC", "Songti TC", serif;
+  --font-body: "Noto Sans TC", "PingFang TC", sans-serif;
+  color-scheme: dark;
+}
+html, body { height: auto; }
+body { background: var(--ink); color: var(--paper); font-family: var(--font-body); padding-inline: 16px; padding-block: 20px 32px; }
+.wrap { max-width: 520px; margin-inline: auto; display: flex; flex-direction: column; gap: 16px; }
+h1 { font-family: var(--font-display); font-weight: 500; font-size: 1rem; letter-spacing: .12em; margin: 0; color: var(--glow); }
+.sub { margin: 0; font-size: .8125rem; color: var(--mute); line-height: 1.6; }
+#frame { align-self: center; position: relative; overflow: hidden; border-radius: 6px; background: #000; box-shadow: 0 0 0 1px var(--line); }
+#stage { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; transform-origin: 0 0; }
+#cv { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+.tx { position: absolute; left: 0; width: 1080px; text-align: center; color: var(--paper); font-family: var(--font-display); opacity: 0; will-change: opacity, transform; text-shadow: 0 4px 40px rgba(0,0,0,.55); }
+#t-event { top: 140px; font-size: 54px; letter-spacing: .2em; font-weight: 500; color: var(--glow); }
+#t-small { top: 540px; font-size: 76px; letter-spacing: .5em; padding-left: .5em; font-weight: 500; }
+#t-main { top: 640px; font-size: 300px; font-weight: 900; letter-spacing: .12em; padding-left: .12em; line-height: 1.1; }
+#t-line { top: 1100px; font-size: 80px; font-weight: 500; letter-spacing: .1em; line-height: 1.7; }
+#t2-a { top: 300px; font-size: 190px; font-weight: 900; letter-spacing: .1em; padding-left: .1em; line-height: 1.2; }
+#t2-b { top: 560px; font-size: 96px; font-weight: 500; letter-spacing: .16em; padding-left: .16em; color: var(--glow); }
+#t2-c { top: 330px; font-size: 130px; font-weight: 900; letter-spacing: .12em; padding-left: .12em; line-height: 1.2; }
+#t2-d { top: 560px; font-size: 100px; font-weight: 500; letter-spacing: .16em; padding-left: .16em; }
+.jump { display: flex; gap: 8px; flex-wrap: wrap; }
+.jump button { font-size: .8125rem; padding: 6px 14px; min-height: 36px; }
+.ctl { display: flex; align-items: center; gap: 12px; }
+button { font: inherit; background: var(--night); color: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 10px 18px; min-height: 44px; cursor: pointer; }
+button:hover { border-color: var(--dawn); }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--dawn); outline-offset: 2px; }
+input[type=range] { flex: 1; min-width: 0; accent-color: var(--dawn); height: 44px; }
+#clock { font-variant-numeric: tabular-nums; font-size: .8125rem; color: var(--mute); min-width: 5.5em; text-align: right; }
+.tl { display: grid; grid-template-columns: 10fr 11fr 10fr 11fr 10fr; gap: 4px; }
+.seg { min-width: 0; border-top: 3px solid var(--line); padding-top: 6px; font-size: .75rem; color: var(--mute); line-height: 1.4; }
+.seg b { display: block; font-weight: 500; color: var(--paper); font-size: .8125rem; }
+.seg.on { border-color: var(--dawn); }
+.seg.todo { opacity: .55; }
+.note { border-left: 3px solid var(--dawn); padding: 4px 0 4px 12px; font-size: .8125rem; color: var(--mute); line-height: 1.7; }
+.note strong { color: var(--paper); font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .tx { transition: none; } }
+</style>
+
+<div class="wrap">
+  <h1>115年義工教育成長研習營・宣傳影片</h1>
+  <p class="sub">第二階段預覽：第一段「回望初心」＋第二段「看見付出」（0～21 秒）。</p>
+
+  <div id="frame" aria-label="9:16 直式動畫預覽">
+    <div id="stage">
+      <canvas id="cv" width="1080" height="1920"></canvas>
+      <div class="tx" id="t-event">115年義工教育成長研習營</div>
+      <div class="tx" id="t-small">回望</div>
+      <div class="tx" id="t-main">初心</div>
+      <div class="tx" id="t2-a">一盞燈</div>
+      <div class="tx" id="t2-b">一份心意</div>
+      <div class="tx" id="t2-c">謝謝你</div>
+      <div class="tx" id="t2-d">一直都在</div>
+      <div class="tx" id="t-line">還記得<br>當初為什麼出發嗎？</div>
+    </div>
+  </div>
+
+  <div class="ctl">
+    <button id="play" type="button">播放</button>
+    <input id="seek" type="range" min="0" max="21" step="0.01" value="0" aria-label="時間軸">
+    <span id="clock">0.0 / 21.0 秒</span>
+  </div>
+
+  <div class="jump"><button type="button" id="j1">看第一段</button><button type="button" id="j2">看第二段</button><button type="button" id="j3">看兩段連續</button></div>
+
+  <div class="tl" aria-label="全片五段規劃（共約 52 秒）">
+    <div class="seg on" id="sg0"><b>回望初心</b>0–10 秒</div>
+    <div class="seg todo" id="sg1"><b>看見付出</b>10–21 秒</div>
+    <div class="seg todo"><b>重新省思</b>21–31 秒</div>
+    <div class="seg todo"><b>再次出發</b>31–42 秒</div>
+    <div class="seg todo"><b>預留時間</b>42–52 秒</div>
+  </div>
+
+  <p class="note"><strong>這是動畫網頁預覽，還不是 MP4 影片。</strong>畫面由程式繪製，文字是另外疊上去的字幕層，所以不會有亂碼或錯字。確認方向後，才會進入輸出 MP4 的步驟。</p>
+</div>
+
+<script>
+(function () {
+  var W = 1080, H = 1920, DUR = 21, S1 = 10;
+  var cv = document.getElementById('cv'), cx = cv.getContext('2d');
+  var frame = document.getElementById('frame'), stage = document.getElementById('stage');
+
+  // 固定亂數：同一個時間點永遠畫出同一張圖，之後才能逐格輸出影片
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+  var ease = function (x) { x = clamp(x, 0, 1); return x * x * (3 - 2 * x); };
+  var lerp = function (a, b, k) { return a + (b - a) * k; };
+  var seg = function (t, a, b) { return ease((t - a) / (b - a)); };
+  function mix(c1, c2, k) { return 'rgb(' + [0, 1, 2].map(function (i) { return Math.round(lerp(c1[i], c2[i], k)); }).join(',') + ')'; }
+
+  var r = rng(7), stars = [], motes = [];
+  for (var i = 0; i < 90; i++) stars.push({ x: r() * W, y: r() * 1000, s: .6 + r() * 1.8, p: r() * 6.28 });
+  for (var j = 0; j < 70; j++) motes.push({ x: 300 + r() * 480, y0: 900 + r() * 900, sp: 30 + r() * 70, sw: 10 + r() * 40, ph: r() * 6.28, s: 1.5 + r() * 3.5 });
+
+  // 山稜線：用疊加的正弦波得到起伏
+  function ridge(t, base, amp, seed, color, drift) {
+    cx.beginPath(); cx.moveTo(0, H);
+    for (var x = 0; x <= W; x += 12) {
+      var u = (x + drift) / W;
+      var y = base - amp * (.55 * Math.sin(u * 5 + seed) + .3 * Math.sin(u * 11 + seed * 2.3) + .15 * Math.sin(u * 23 + seed * 4.1));
+      cx.lineTo(x, y);
+    }
+    cx.lineTo(W, H); cx.closePath(); cx.fillStyle = color; cx.fill();
+  }
+
+  function draw1(t) {
+    var dawn = seg(t, 0.5, 8.5);                    // 天色由夜轉晨
+    var push = 1 + .06 * (t / DUR);                  // 鏡頭緩慢推進
+    cx.save();
+    cx.clearRect(0, 0, W, H);
+    cx.translate(W / 2, H * .62); cx.scale(push, push); cx.translate(-W / 2, -H * .62);
+
+    // 天空
+    var g = cx.createLinearGradient(0, 0, 0, H * .85);
+    g.addColorStop(0, mix([8, 11, 26], [28, 38, 78], dawn));
+    g.addColorStop(.55, mix([18, 26, 52], [150, 98, 96], dawn));
+    g.addColorStop(1, mix([30, 36, 66], [244, 176, 108], dawn));
+    cx.fillStyle = g; cx.fillRect(-100, -100, W + 200, H + 200);
+
+    // 星星漸隱
+    var sa = 1 - seg(t, 1, 6);
+    stars.forEach(function (s) { cx.globalAlpha = sa * (.45 + .45 * Math.sin(t * 1.6 + s.p)); cx.fillStyle = '#fff'; cx.beginPath(); cx.arc(s.x, s.y, s.s, 0, 6.283); cx.fill(); });
+    cx.globalAlpha = 1;
+
+    // 初心之光：地平線上的暖光
+    var hx = W / 2, hy = lerp(1330, 1160, ease(t / DUR));
+    var gr = lerp(260, 760, dawn);
+    var rg = cx.createRadialGradient(hx, hy, 0, hx, hy, gr);
+    rg.addColorStop(0, 'rgba(255,226,170,' + (.35 + .55 * dawn) + ')');
+    rg.addColorStop(.35, 'rgba(244,166,90,' + (.18 + .3 * dawn) + ')');
+    rg.addColorStop(1, 'rgba(244,166,90,0)');
+    cx.fillStyle = rg; cx.fillRect(0, 0, W, H);
+
+    // 三層遠山，越遠越亮、移動越慢
+    ridge(t, 1330, 150, 1.0, mix([30, 40, 78], [190, 128, 110], dawn), t * 2);
+    ridge(t, 1450, 190, 2.4, mix([18, 26, 56], [106, 74, 92], dawn), t * 4);
+    ridge(t, 1600, 230, 4.1, mix([9, 13, 30], [44, 34, 50], dawn), t * 7);
+
+    // 山谷薄霧
+    var mg = cx.createLinearGradient(0, 1380, 0, 1700);
+    mg.addColorStop(0, 'rgba(255,220,180,0)'); mg.addColorStop(.5, 'rgba(255,220,180,' + (.10 * dawn + .03) + ')'); mg.addColorStop(1, 'rgba(255,220,180,0)');
+    cx.fillStyle = mg; cx.fillRect(0, 1380, W, 320);
+
+    // 前景暗稜 + 一盞小燈（初心）
+    ridge(t, 1760, 120, 6.7, 'rgb(6,8,18)', t * 10);
+    var lx = W / 2, ly = 1668, pulse = .85 + .15 * Math.sin(t * 2.4);
+    var lg = cx.createRadialGradient(lx, ly, 0, lx, ly, 150 * pulse);
+    lg.addColorStop(0, 'rgba(255,236,190,.95)'); lg.addColorStop(.3, 'rgba(255,190,110,.5)'); lg.addColorStop(1, 'rgba(255,170,90,0)');
+    cx.fillStyle = lg; cx.fillRect(lx - 200, ly - 200, 400, 400);
+    cx.fillStyle = '#fff4d6'; cx.beginPath(); cx.arc(lx, ly, 7, 0, 6.283); cx.fill();
+
+    // 從小燈升起的光點
+    var ma = seg(t, 1.2, 3.2);
+    motes.forEach(function (m) {
+      var y = m.y0 - m.sp * t; if (y < 150) y += 1700; if (y < 150 || y > 1700) return;
+      var x = lx + (m.x - 540) * .35 + Math.sin(t * .8 + m.ph) * m.sw;
+      var fade = clamp((1700 - y) / 300, 0, 1) * clamp((y - 150) / 300, 0, 1);
+      cx.globalAlpha = .75 * ma * fade; cx.fillStyle = '#ffe1a8';
+      cx.beginPath(); cx.arc(x, y, m.s, 0, 6.283); cx.fill();
+    });
+    cx.globalAlpha = 1;
+    cx.restore();
+
+    // 暗角（不隨鏡頭移動）
+    var vg = cx.createRadialGradient(W / 2, H / 2, 500, W / 2, H / 2, 1250);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
+    cx.fillStyle = vg; cx.fillRect(0, 0, W, H);
+    // 開場淡入
+    cx.fillStyle = 'rgba(0,0,0,' + clamp((1 - seg(t, 0, 1.2)) + seg(t, 9.3, 10), 0, 1) + ')'; cx.fillRect(0, 0, W, H);
+  }
+
+
+  // ===== 第二段：看見付出（本段時間 s = t - 10，共 11 秒）=====
+  var r2 = rng(21), hill = [], lampsAve = [], i2;
+  for (i2 = 0; i2 < 70; i2++) hill.push({ x: 40 + r2() * 1000, y: 1330 + r2() * 300, s: 2.5 + r2() * 3.5, t0: 5.8 + r2() * 3.6, ph: r2() * 6.28 });
+  for (i2 = 0; i2 < 14; i2++) { var u = Math.pow(i2 / 13, 1.1); [-1, 1].forEach(function (sd) { lampsAve.push({ u: u, sd: sd, t0: 3.6 + i2 * .26 + (sd > 0 ? .08 : 0) }); }); }
+  var stars2 = []; for (i2 = 0; i2 < 110; i2++) stars2.push({ x: r2() * W, y: r2() * 1100, s: .6 + r2() * 1.6, p: r2() * 6.28 });
+
+  function glowDot(x, y, rad, a) {
+    var g = cx.createRadialGradient(x, y, 0, x, y, rad);
+    g.addColorStop(0, 'rgba(255,238,200,' + a + ')'); g.addColorStop(.25, 'rgba(255,196,118,' + a * .55 + ')'); g.addColorStop(1, 'rgba(255,170,90,0)');
+    cx.fillStyle = g; cx.fillRect(x - rad, y - rad, rad * 2, rad * 2);
+  }
+
+  function draw2(s) {
+    var lit = seg(s, 3.4, 9.5);                       // 全場亮燈比例
+    var pull = ease(seg(s, 1, 9.5));                  // 鏡頭慢慢拉遠
+    var k = lerp(1.32, 1, pull), px = W / 2, py = 1560;
+    cx.save(); cx.clearRect(0, 0, W, H);
+
+    // 藍調夜空
+    var g = cx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#070b1c'); g.addColorStop(.55, mix([22, 32, 70], [40, 44, 84], lit)); g.addColorStop(.78, mix([38, 44, 86], [112, 80, 100], lit)); g.addColorStop(1, '#0a0d1c');
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+    stars2.forEach(function (st) { cx.globalAlpha = .35 + .4 * Math.sin(s * 1.4 + st.p) * .5 + .2; cx.fillStyle = '#fff'; cx.beginPath(); cx.arc(st.x, st.y, st.s, 0, 6.283); cx.fill(); });
+    cx.globalAlpha = 1;
+
+    cx.translate(px, py); cx.scale(k, k); cx.translate(-px, -py);
+
+    // 遠方整片暖光，隨燈數增加
+    var hg = cx.createRadialGradient(W / 2, 1330, 0, W / 2, 1330, 900);
+    hg.addColorStop(0, 'rgba(255,200,130,' + (.12 + .42 * lit) + ')'); hg.addColorStop(1, 'rgba(255,170,90,0)');
+    cx.fillStyle = hg; cx.fillRect(-200, 300, W + 400, 1600);
+
+    ridge(s, 1330, 150, 1.0, mix([22, 30, 62], [120, 88, 104], lit), 20 + s * 1.5);
+    ridge(s, 1450, 190, 2.4, mix([14, 20, 46], [70, 54, 78], lit), 40 + s * 3);
+    ridge(s, 1600, 230, 4.1, mix([8, 11, 26], [30, 24, 42], lit), 70 + s * 5);
+
+    // 山坡上一盞一盞亮起的燈
+    hill.forEach(function (h) {
+      var a = seg(s, h.t0, h.t0 + .8); if (a <= 0) return;
+      glowDot(h.x, h.y, h.s * 7, a * (.7 + .3 * Math.sin(s * 2 + h.ph)));
+      cx.fillStyle = 'rgba(255,244,214,' + a + ')'; cx.beginPath(); cx.arc(h.x, h.y, h.s * .7, 0, 6.283); cx.fill();
+    });
+
+    ridge(s, 1780, 110, 6.7, 'rgb(5,7,16)', 90 + s * 8);
+
+    // 光之路：兩排燈往地平線收攏
+    lampsAve.forEach(function (l) {
+      var a = seg(s, l.t0, l.t0 + .6); if (a <= 0) return;
+      var u = l.u, w = lerp(330, 12, Math.pow(u, .7));
+      var x = 540 + l.sd * w + Math.sin(u * 4) * 40 * (1 - u), y = lerp(1800, 1345, Math.pow(u, .75)), rad = lerp(46, 10, u);
+      var flick = .88 + .12 * Math.sin(s * 3 + l.u * 9 + l.sd);
+      glowDot(x, y, rad * (.8 + .4 * a), a * flick);
+      cx.fillStyle = 'rgba(255,246,222,' + a + ')'; cx.beginPath(); cx.arc(x, y, lerp(9, 3, u), 0, 6.283); cx.fill();
+    });
+
+    // 雙手捧著第一盞燈，慢慢升起後化為遠方的光
+    var ha = 1 - seg(s, 2.4, 4.2);
+    var lampY = lerp(1610, 1340, ease(seg(s, 2.0, 4.4))), lampA = 1 - seg(s, 3.6, 4.6);
+    if (lampA > 0) { glowDot(W / 2, lampY, lerp(230, 120, ease(seg(s, 2, 4.4))), lampA); cx.fillStyle = 'rgba(255,248,226,' + lampA + ')'; cx.beginPath(); cx.arc(W / 2, lampY, 13, 0, 6.283); cx.fill(); }
+    if (ha > 0) {
+      cx.save(); cx.globalAlpha = ha; cx.translate(W / 2, 1700 + (1 - ha) * 160);
+      cx.fillStyle = '#04060d'; cx.strokeStyle = 'rgba(255,200,130,.55)'; cx.lineWidth = 3;
+      cx.beginPath(); cx.moveTo(-190, -10); cx.bezierCurveTo(-190, 120, -90, 200, 0, 200); cx.bezierCurveTo(90, 200, 190, 120, 190, -10);
+      cx.bezierCurveTo(120, 40, -120, 40, -190, -10); cx.closePath(); cx.fill(); cx.stroke();
+      cx.beginPath(); cx.moveTo(-190, -10); cx.quadraticCurveTo(-215, -60, -170, -95); cx.quadraticCurveTo(-150, -50, -120, 10); cx.moveTo(190, -10); cx.quadraticCurveTo(215, -60, 170, -95); cx.quadraticCurveTo(150, -50, 120, 10); cx.lineWidth = 26; cx.lineCap = 'round'; cx.strokeStyle = '#04060d'; cx.stroke();
+      cx.restore();
+    }
+    cx.restore();
+
+    var vg = cx.createRadialGradient(W / 2, H / 2, 520, W / 2, H / 2, 1250);
+    vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.55)');
+    cx.fillStyle = vg; cx.fillRect(0, 0, W, H);
+    cx.fillStyle = 'rgba(0,0,0,' + clamp((1 - seg(s, 0, .9)) + seg(s, 10.4, 11), 0, 1) + ')'; cx.fillRect(0, 0, W, H);
+  }
+
+  function draw(t) { if (t < S1) draw1(t); else draw2(t - S1); }
+
+  // 文字層：全部是 HTML 文字，時間決定出現與淡出
+  var tx = { a: document.getElementById('t2-a'), b: document.getElementById('t2-b'), c: document.getElementById('t2-c'), d: document.getElementById('t2-d'), ev: document.getElementById('t-event'), sm: document.getElementById('t-small'), mn: document.getElementById('t-main'), ln: document.getElementById('t-line') };
+  function put(el, t, a, b, c, d, rise) {            // a→b 淡入，c→d 淡出
+    var o = seg(t, a, b) * (1 - seg(t, c, d));
+    el.style.opacity = o; el.style.transform = 'translateY(' + ((1 - seg(t, a, b)) * rise) + 'px)';
+  }
+  function text(t) {
+    var s = t - S1;
+    put(tx.ev, t, .8, 2.2, 9.2, 9.9, 0);
+    put(tx.sm, t, 2.0, 3.4, 9.2, 9.9, 24);
+    put(tx.mn, t, 3.2, 5.2, 9.2, 9.9, 36);
+    tx.mn.style.letterSpacing = lerp(.3, .12, seg(t, 3.2, 6)) + 'em';
+    put(tx.ln, t, 6.4, 7.8, 9.2, 9.9, 20);
+    put(tx.a, s, 1.0, 2.2, 6.0, 6.8, 20);       // 一盞燈
+    put(tx.b, s, 3.0, 4.2, 6.0, 6.8, 20);       // 一份心意
+    put(tx.c, s, 7.0, 8.0, 10.4, 11, 20);       // 謝謝你
+    put(tx.d, s, 8.0, 9.0, 10.4, 11, 20);       // 一直都在
+  }
+
+  function render(t) { draw(t); text(t); document.getElementById('sg0').className = 'seg' + (t < S1 ? ' on' : ''); document.getElementById('sg1').className = 'seg' + (t >= S1 ? ' on' : ' todo'); document.getElementById('clock').textContent = t.toFixed(1) + ' / ' + DUR.toFixed(1) + ' 秒'; }
+  window.renderAt = render;                           // 之後輸出 MP4 時，逐格呼叫這個函式
+
+  function fit() {
+    var availW = Math.min(frame.parentNode.clientWidth, 520);
+    var availH = Math.max(window.innerHeight - 260, 380);
+    var w = Math.min(availW, availH * 9 / 16);
+    frame.style.width = w + 'px'; frame.style.height = (w * 16 / 9) + 'px';
+    stage.style.transform = 'scale(' + (w / W) + ')';
+  }
+  window.addEventListener('resize', fit); fit();
+
+  var seek = document.getElementById('seek'), btn = document.getElementById('play');
+  var t = 0, playing = false, last = 0;
+  function loop(now) {
+    if (!playing) return;
+    t += (now - last) / 1000; last = now;
+    if (t >= DUR) { t = DUR; playing = false; btn.textContent = '重播'; }
+    seek.value = t; render(t);
+    if (playing) requestAnimationFrame(loop);
+  }
+  btn.onclick = function () {
+    if (playing) { playing = false; btn.textContent = '播放'; return; }
+    if (t >= DUR) t = 0;
+    playing = true; btn.textContent = '暫停'; last = performance.now(); requestAnimationFrame(loop);
+  };
+  seek.oninput = function () { t = parseFloat(seek.value); render(t); };
+
+  function jump(a) { playing = false; btn.textContent = '播放'; t = a; seek.value = a; render(a); }
+  document.getElementById('j1').onclick = function () { jump(7.2); };
+  document.getElementById('j2').onclick = function () { jump(15.5); };
+  document.getElementById('j3').onclick = function () { jump(0); playing = true; btn.textContent = '暫停'; last = performance.now(); requestAnimationFrame(loop); };
+  render(7.2);                                        // 靜止時先停在能看到完整畫面的位置
+  seek.value = 7.2; t = 7.2;
+  document.fonts && document.fonts.ready.then(function () { render(t); });
+})();
+</script>
