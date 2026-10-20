@@ -1,0 +1,30 @@
+{
+  "name": "每日問心",
+  "short_name": "每日問心",
+  "description": "財團法人天祥宇宙聖道基金會製作｜天祥家人的個人日常功課：靜心、祈誦、省察、感恩、祈禱、願行",
+  "lang": "zh-Hant-TW",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDF1EE",
+  "theme_color": "#4E806D",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

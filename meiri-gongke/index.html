@@ -1,0 +1,1377 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4E806D">
+<meta name="description" content="每日問心：天祥家人的個人日常功課｜財團法人天祥宇宙聖道基金會製作">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="每日問心">
+<title>每日問心</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* Layout: one quiet evening screen — step chips, a large timer ring, the current question, big buttons. Celadon (青瓷) palette, large type for older readers. */
+:root{
+  --bg:#EDF1EE; --surface:#F8FAF8; --ink:#1F2B27; --muted:#55645E; --line:#CBD6D0;
+  --accent:#4E806D; --accent-ink:#FFFFFF; --warm:#B07A3A; --dim:rgba(20,28,25,.55);
+  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121916; --surface:#1A2420; --ink:#E3EBE6; --muted:#9AABA3; --line:#2E3D37;
+  --accent:#86BBA5; --accent-ink:#0F1613; --warm:#D9A866; --dim:rgba(0,0,0,.55); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121916; --surface:#1A2420; --ink:#E3EBE6; --muted:#9AABA3; --line:#2E3D37;
+  --accent:#86BBA5; --accent-ink:#0F1613; --warm:#D9A866; --dim:rgba(0,0,0,.55); color-scheme:dark}
+
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:20px;line-height:1.6}
+.wrap{max-width:600px;margin:0 auto;padding-inline:16px;padding-block:18px 40px;display:flex;flex-direction:column;gap:18px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--serif);font-size:1.6rem;margin:0;font-weight:700;letter-spacing:.1em;line-height:1.3}
+.tag{margin:0;color:var(--muted);font-size:.95rem}
+.date{color:var(--muted);font-size:1rem}
+
+.steps{display:flex;gap:5px;flex-wrap:nowrap;list-style:none;margin:0;padding:0}
+.steps li{flex:1 1 0;min-width:0;text-align:center;padding:6px 1px;white-space:nowrap;border-radius:999px;border:1.5px solid var(--line);color:var(--muted);font-size:.9rem}
+.steps li.now{border-color:var(--accent);color:var(--ink);font-weight:700}
+.steps li.done{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.steps small{display:block;font-size:.7rem;opacity:.85;line-height:1.2;font-variant-numeric:tabular-nums}
+
+main{background:var(--surface);border-radius:20px;padding:22px 18px 24px;border:1px solid var(--line);position:relative;z-index:1}
+.run{display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.stepname{font-family:var(--serif);font-size:2.3rem;font-weight:700;margin:0;letter-spacing:.2em;padding-left:.2em;line-height:1.3}
+.sub{color:var(--muted);margin:-8px 0 0;font-size:1.05rem}
+
+.ring{position:relative;width:min(220px,58vw);aspect-ratio:1;max-width:100%}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .track{stroke:var(--line);fill:none}
+.ring .bar{stroke:var(--accent);fill:none;stroke-linecap:round;transition:stroke-dashoffset .3s linear}
+.ring .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.breath{position:absolute;inset:18%;border-radius:50%;background:var(--accent);opacity:0;transform:scale(.6);transition:opacity 1s}
+.breathing .breath{opacity:.14}
+.breathing .breath{animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%{transform:scale(.6)}40%{transform:scale(1)}100%{transform:scale(.6)}}
+.time{font-size:2.4rem;font-weight:500;font-variant-numeric:tabular-nums;position:relative;min-height:1.4em;line-height:1.4}
+.hint{color:var(--muted);font-size:1rem;position:relative;min-height:1.6em}
+
+.prompt{font-family:var(--serif);font-size:1.4rem;line-height:1.7;height:3.4em;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;max-width:22em;text-wrap:balance;margin:0}
+.prompt small{font-family:var(--sans);font-size:1rem;color:var(--muted);display:block;margin-top:6px}
+.prompt.fade{animation:softin 2s ease-out both}
+.prompt.fade-slow{animation:softin 2.8s ease-out both}
+.prompt.fading{animation:softout .6s ease-in forwards}
+@keyframes softout{from{opacity:1;filter:none}to{opacity:0;filter:blur(2px)}}
+@keyframes softin{from{opacity:0;filter:blur(3px)}60%{filter:blur(0)}to{opacity:1;filter:none}}
+.prompt.big{font-size:min(1.85rem,7vw);line-height:1.75;height:3.5em;letter-spacing:.06em;max-width:none}
+.prompt.big.fade,.prompt.big.fade-slow,.prompt.fade.turn,.prompt.fade-slow.turn{animation-duration:1.2s} /* 念的途中換頁：淡入較快，跟上聲音 */ /* 迴向文：淡入較快，與念的聲音同步 */
+.prompt.free{height:auto;min-height:3.4em} /* 祈誦時四句真言直排 */
+.pdots{display:flex;gap:7px;justify-content:center;min-height:8px;margin-top:-6px}
+.pdots i{width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .3s}
+.pdots i.on{background:var(--accent)}
+.pmeasure{position:absolute;visibility:hidden;pointer-events:none;left:-9999px;top:0;display:block!important;min-height:0!important;height:auto!important;text-wrap:balance}
+.prompt .silent{font-size:.7em;color:var(--muted)}
+.time.small{font-size:1.3rem;color:var(--muted)}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+.mantra{display:flex;flex-direction:column;gap:2px;font-family:var(--serif);font-size:1.7rem;line-height:1.55;letter-spacing:.18em;padding-left:.18em}
+.mantra span{color:var(--muted);opacity:.55;transition:color .2s,opacity .2s}
+.mantra span.on{color:var(--accent);opacity:1;font-weight:700}
+.mantra span.past{opacity:.85}
+.example{margin:0;font-size:1.05rem;color:var(--ink);background:var(--bg);border-radius:12px;padding:10px 14px;max-width:24em;text-align:left}
+.example b{color:var(--accent)}
+.lead{margin:0;color:var(--muted);font-size:1.05rem;max-width:22em}
+
+.controls{display:flex;gap:10px;width:100%;justify-content:center;align-items:center}
+button{font-family:var(--sans);font-size:1.1rem;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:12px 16px;cursor:pointer;min-height:56px}
+button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--warm);outline-offset:2px}
+.main-btn{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700;flex:1 1 auto;max-width:230px;font-size:1.25rem}
+.side-btn{flex:0 0 auto;min-width:0;padding-inline:12px}
+.hold{width:100%;max-width:360px;border-color:var(--accent);color:var(--accent);font-weight:700;font-size:1.2rem;background:transparent}
+.hold[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+button:disabled{opacity:.4;cursor:default}
+.total{color:var(--muted);font-size:.95rem;margin:0}
+
+.yesterday{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 18px;display:flex;flex-direction:column;gap:4px}
+.yesterday .lbl{color:var(--muted);font-size:.95rem}
+.yesterday .wishtext{font-family:var(--serif);font-size:1.25rem;margin:0;overflow-wrap:anywhere}
+
+.veil{position:fixed;inset:0;background:var(--dim);pointer-events:none;opacity:0;transition:opacity 1.5s}
+body.praying .veil{opacity:1}
+
+details{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:6px 18px}
+summary{cursor:pointer;padding:10px 0;font-weight:500}
+.field{display:flex;flex-direction:column;gap:8px;padding-block:12px;border-top:1px solid var(--line)}
+.lbl{font-weight:500}
+.note{color:var(--muted);font-size:.9rem;margin:0}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg button{flex:1;min-height:48px}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+input[type=range]{width:100%;accent-color:var(--accent);height:36px}
+input[type=text],textarea,select{font:inherit;font-size:1.1rem;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--ink);width:100%;box-sizing:border-box}
+input.char{width:4.2em;text-align:center;font-family:var(--serif);font-size:1.6rem}
+
+.done-panel{display:flex;flex-direction:column;gap:14px}
+.done-panel h2{font-family:var(--serif);text-align:center;margin:0;font-size:1.8rem;letter-spacing:.1em}
+.done-panel .field{padding-block:12px 0}
+.notes{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px}
+.notes li{border-left:3px solid var(--warm);padding:2px 0 2px 12px;font-size:1rem;overflow-wrap:anywhere}
+.notes li.empty{border-color:var(--line);color:var(--muted)}
+.notes time{display:block;color:var(--muted);font-size:.85rem}
+.notes .w{display:block;color:var(--accent)}
+.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+.toast{color:var(--accent);font-size:.95rem;min-height:1.4em;margin:0}
+
+
+/* ===== 一頁式版面：所有內容都在手機一個畫面內，不需要上下滑動 ===== */
+html,body{height:100%;margin:0;overflow:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.app{max-width:600px;margin:0 auto;height:100vh;height:100dvh;height:var(--appH,100dvh);box-sizing:border-box;
+  padding:max(10px,env(safe-area-inset-top)) 14px max(8px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:clamp(6px,1.4dvh,12px)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex:0 0 auto}
+.top h1{font-size:clamp(1.25rem,3.4dvh,1.6rem);letter-spacing:.12em}
+.top .date{display:block;font-size:.85rem;line-height:1.3}
+.gear{min-height:44px;padding:6px 14px;font-size:1rem;border-radius:999px;display:flex;align-items:center;gap:6px;color:var(--ink)}
+.gear svg{width:20px;height:20px}
+body.running .gear{visibility:hidden}
+.steps{flex:0 0 auto}
+.steps li{padding:clamp(2px,.6dvh,6px) 1px;font-size:.85rem;line-height:1.35}
+.steps small{font-size:.66rem}
+main{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;padding:clamp(10px,1.8dvh,20px) 14px;overflow:hidden}
+.run{flex:1 1 auto;min-height:0;gap:clamp(4px,1.2dvh,12px)}
+.run[hidden],.done-panel[hidden]{display:none}
+.stepname{font-size:clamp(1.5rem,4.6dvh,2.3rem);flex:0 0 auto}
+.sub{margin:-4px 0 0;font-size:clamp(.88rem,2.2dvh,1.05rem);flex:0 0 auto;line-height:1.4}
+.ringbox{flex:0 1 min(210px,30dvh);min-height:84px;width:100%;display:flex;align-items:center;justify-content:center;container-type:size}
+.ring{width:min(220px,60vw,100cqh);height:auto;container-type:inline-size}
+.time{font-size:max(1.4rem,18cqw)}
+.time.small{font-size:max(1.1rem,11cqw)}
+.hint{font-size:max(.85rem,7.5cqw);min-height:1.4em}
+.prompt,.pdots,.controls,.hold,.example,.lead,.total{flex:0 0 auto}
+.example{opacity:0;visibility:hidden;transition:opacity 1.8s ease,visibility 0s 1.8s}
+.example.show{opacity:1;visibility:visible;transition:opacity 1.8s ease,visibility 0s}
+.hold{transition:opacity .8s ease}
+.hold.off{opacity:0;visibility:hidden;pointer-events:none}
+.sp1{flex:1 1 0;min-height:0}
+.sp2{flex:1.8 1 0;min-height:0}
+.lead{font-size:.98rem;line-height:1.5}
+.example{font-size:.98rem;padding:8px 12px;line-height:1.5}
+.controls button{min-height:52px;white-space:nowrap}
+@media (max-width:350px){.controls{gap:6px}.side-btn{padding-inline:8px;font-size:1rem}.main-btn{padding-inline:10px}}
+.hold{min-height:48px;padding-block:8px}
+.total{font-size:.9rem}
+body.running .total{display:none}
+.embedded .app{padding-top:10px;margin-top:var(--appTop,0px)}
+.vsent{position:fixed;inset:0;pointer-events:none;visibility:hidden}
+.credit{flex:0 0 auto;text-align:center;color:var(--muted);font-size:.82rem;letter-spacing:.08em;margin:0;line-height:1.4}
+body.running .credit{display:none}
+@media (max-height:600px){
+  .steps small{display:none}
+  .sub{display:none}
+  .ringbox{min-height:70px}
+  .example{font-size:.92rem;padding:6px 10px}
+}
+@media (max-height:640px){
+  .stepname{letter-spacing:.14em}
+  .controls button{min-height:48px;padding-block:8px}
+  .hold{min-height:44px}
+  .prompt{font-size:1.3rem}
+}
+/* 完成畫面 */
+.done-panel{flex:1 1 auto;min-height:0;gap:clamp(6px,1.2dvh,12px)}
+.done-panel h2{font-size:clamp(1.4rem,3.8dvh,1.8rem)}
+.done-panel .thanks{text-align:center;color:var(--muted);margin:0;font-size:.98rem;line-height:1.5}
+.done-panel .field{padding-block:8px 0;gap:6px}
+.done-panel input[type=text]{padding:8px 12px}
+.done-row{display:flex;gap:10px}
+.done-row button{flex:1;min-height:50px}
+.toast:empty{display:none}
+body.done .steps{display:none}
+.recent{flex:1 1 auto;min-height:6.5em;overflow:auto;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:8px}
+.recent .notes li{font-size:.95rem}
+/* 設定：蓋在畫面上的一頁，不需要滑動 */
+.sheet{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet-in{width:100%;max-width:600px;box-sizing:border-box;height:100%;overflow:auto;padding:max(12px,env(safe-area-inset-top)) 16px max(10px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:clamp(4px,1.2dvh,10px)}
+.sheet-head{display:flex;justify-content:space-between;align-items:center}
+.sheet-head h2{font-family:var(--serif);margin:0;font-size:1.4rem;letter-spacing:.15em}
+.sheet .field{padding-block:clamp(4px,1.1dvh,10px);gap:clamp(3px,.8dvh,6px)}
+.sheet .lbl{font-size:1rem;line-height:1.4}
+.sheet .seg button{min-height:44px;padding-block:4px}
+.sheet .note{font-size:.85rem;line-height:1.4}
+.sheet .sheet-head button{min-height:44px;padding-block:6px}
+.vol{display:flex;align-items:center;gap:10px;font-size:.95rem;color:var(--muted)}
+.vol input[type=range]{height:30px;flex:1}
+@media (max-height:600px){.sheet .note.opt{display:none}}
+.sheet .credit{margin-top:auto}
+
+/* ===== 立體玻璃質感：按鈕像一顆有光澤的玻璃鍵，文字框像一片半透明的玻璃 ===== */
+:root{--g-top:rgba(255,255,255,.86);--g-bot:rgba(255,255,255,.50);--g-edge:rgba(255,255,255,.95);--g-line:rgba(78,128,109,.24);--g-shade:rgba(40,80,65,.18);
+  --g-sink:rgba(255,255,255,.62);--acc-hi:#6EA38D;--acc-lo:#3D6C5A;--acc-glow:rgba(78,128,109,.45);--acc-ts:0 1px 1px rgba(0,0,0,.22)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--g-top:rgba(255,255,255,.11);--g-bot:rgba(255,255,255,.035);--g-edge:rgba(255,255,255,.20);--g-line:rgba(134,187,165,.22);--g-shade:rgba(0,0,0,.5);
+  --g-sink:rgba(0,0,0,.22);--acc-hi:#A9D6C3;--acc-lo:#6FA48E;--acc-glow:rgba(134,187,165,.30);--acc-ts:none}}
+:root[data-theme="dark"]{--g-top:rgba(255,255,255,.11);--g-bot:rgba(255,255,255,.035);--g-edge:rgba(255,255,255,.20);--g-line:rgba(134,187,165,.22);--g-shade:rgba(0,0,0,.5);
+  --g-sink:rgba(0,0,0,.22);--acc-hi:#A9D6C3;--acc-lo:#6FA48E;--acc-glow:rgba(134,187,165,.30);--acc-ts:none}
+/* 背景加一層淡淡的光暈，玻璃才看得出透光感 */
+body,.sheet{background:radial-gradient(120% 55% at 0% 0%,rgba(134,187,165,.30),transparent 62%),radial-gradient(110% 55% at 100% 100%,rgba(176,122,58,.13),transparent 62%),var(--bg)}
+/* 文字框：半透明玻璃片，上緣一道亮光，下方淡淡的影子 */
+main,.yesterday,details,.example{background:linear-gradient(180deg,var(--g-top),var(--g-bot));border:1px solid var(--g-line);
+  box-shadow:inset 0 1px 0 var(--g-edge),inset 0 -1px 0 rgba(0,0,0,.03),0 12px 30px -10px var(--g-shade)}
+.example{border-radius:14px}
+input[type=text],textarea,select{background:var(--g-sink);border:1px solid var(--g-line);box-shadow:inset 0 2px 5px rgba(0,0,0,.07),inset 0 -1px 0 var(--g-edge)}
+/* 一般按鈕：凸起的玻璃鍵 */
+button{background:linear-gradient(180deg,var(--g-top),var(--g-bot));border:1px solid var(--g-line);
+  box-shadow:inset 0 1px 0 var(--g-edge),inset 0 -3px 6px rgba(0,0,0,.05),0 5px 12px -3px var(--g-shade);
+  transition:transform .12s ease,box-shadow .12s ease,opacity .8s ease}
+.hold{background:linear-gradient(180deg,var(--g-top),var(--g-bot));border-color:var(--accent)}
+/* 主要按鈕：綠色玻璃，上半部有一道光澤 */
+.main-btn,.primary,.seg button[aria-pressed="true"],.hold[aria-pressed="true"]{color:var(--accent-ink);border:1px solid var(--acc-lo);text-shadow:var(--acc-ts);
+  background:linear-gradient(180deg,rgba(255,255,255,.34) 0%,rgba(255,255,255,.10) 48%,rgba(255,255,255,0) 52%),linear-gradient(180deg,var(--acc-hi),var(--acc-lo));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -3px 7px rgba(0,0,0,.18),0 7px 16px -4px var(--acc-glow)}
+.steps li.done{background:linear-gradient(180deg,rgba(255,255,255,.30) 0%,rgba(255,255,255,.08) 48%,rgba(255,255,255,0) 52%),linear-gradient(180deg,var(--acc-hi),var(--acc-lo));
+  border-color:var(--acc-lo);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.steps li{background-color:var(--g-bot)}
+/* 按下去：玻璃鍵往下沉 */
+button:not(:disabled):active{transform:translateY(2px);box-shadow:inset 0 2px 6px rgba(0,0,0,.14),0 1px 3px var(--g-shade)}
+button:disabled{box-shadow:none}
+
+@media (prefers-reduced-motion: reduce){.breathing .breath{animation:none;transform:scale(.85)}.prompt.fade,.prompt.fade-slow{animation:fadein 1.2s ease}.prompt.fading{animation:fadeout .8s forwards}}
+@keyframes fadeout{to{opacity:0}}
+</style>
+</head>
+<body>
+
+
+<div class="veil" aria-hidden="true"></div>
+<div class="app">
+  <header class="top">
+    <div>
+      <h1>每日問心</h1>
+      <span class="date" id="date"></span>
+    </div>
+    <button class="gear" id="setBtn" aria-haspopup="dialog" aria-controls="settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      設定
+    </button>
+  </header>
+
+  <ol class="steps" id="steps" aria-label="功課段落"></ol>
+
+  <main id="main">
+    <div class="run" id="runView" aria-live="polite">
+      <h2 class="stepname" id="stepName">準備</h2>
+      <p class="sub" id="stepSub">看見起心動念，讓體會落實生活</p>
+      <div class="ringbox">
+      <div class="ring" id="ring">
+        <div class="breath"></div>
+        <svg viewBox="0 0 240 240" aria-hidden="true">
+          <circle class="track" cx="120" cy="120" r="108" stroke-width="10"></circle>
+          <circle class="bar" id="bar" cx="120" cy="120" r="108" stroke-width="10"></circle>
+        </svg>
+        <div class="center">
+          <div class="time" id="time"></div>
+          <div class="hint" id="hint"></div>
+        </div>
+      </div>
+      </div>
+      <div class="sp1" aria-hidden="true"></div>
+      <div class="prompt" id="prompt"></div>
+      <div class="pdots" id="pdots" aria-hidden="true"></div>
+      <div class="sp2" aria-hidden="true"></div>
+      <p class="lead" id="lead" hidden></p>
+      <p class="example" id="example" hidden></p>
+      <button class="hold" id="holdBtn" aria-pressed="false" hidden>還在想，等我一下</button>
+      <div class="controls">
+        <button class="side-btn" id="prevBtn" disabled>上一段</button>
+        <button class="main-btn" id="playBtn">開始功課</button>
+        <button class="side-btn" id="nextBtn" disabled>下一段</button>
+      </div>
+      <p class="total" id="total"></p>
+    </div>
+
+    <div id="doneView" class="done-panel" hidden>
+      <h2>今天的功課完成了</h2>
+      <p class="thanks">謝謝自己願意停下來，<br>認真看見今天的心。</p>
+      <div class="field">
+        <label class="lbl" for="insight">一句今日體會</label>
+        <input type="text" id="insight" maxlength="60" placeholder="例如：原來我很希望被理解。">
+        <label class="lbl" for="wish">明日願行</label>
+        <input type="text" id="wish" maxlength="40" placeholder="例如：先等對方說完再回應。">
+      </div>
+      <div class="done-row">
+        <button class="primary" id="saveNote">記下來</button>
+        <button id="againBtn">回到開始</button>
+      </div>
+      <p class="toast" id="toast" role="status"></p>
+      <div class="recent">
+        <span class="lbl">最近的記錄</span>
+        <ul class="notes" id="notes"></ul>
+        <p class="note">記錄只存在這支手機，不會上傳，別人看不到。換手機或清除瀏覽器資料就會消失。</p>
+      </div>
+    </div>
+  </main>
+
+  <p class="credit" id="credit">財團法人天祥宇宙聖道基金會　製作</p>
+</div>
+
+<div class="sheet" id="settings" role="dialog" aria-modal="true" aria-labelledby="setTitle" hidden>
+  <div class="sheet-in">
+    <div class="sheet-head">
+      <h2 id="setTitle">設定</h2>
+      <button class="primary" id="setDone">完成</button>
+    </div>
+    <div class="field">
+      <span class="lbl">功課長度</span>
+      <div class="seg" id="lenSeg">
+        <button data-m="5">短一點</button>
+        <button data-m="10">適中</button>
+        <button data-m="15">從容</button>
+      </div>
+      <p class="note" id="lenNote"></p>
+    </div>
+    <div class="field">
+      <span class="lbl">鉉元祈誦（天祥真言 11 遍）</span>
+      <div class="seg" id="mantraSeg">
+        <button data-on="1">加入</button>
+        <button data-on="0">不加入</button>
+      </div>
+      <p class="note" id="paceNote"></p>
+    </div>
+    <div class="field" hidden>
+      <label class="lbl" for="charInput" id="charLabel">本週修身一字（可不填）</label>
+      <input type="text" class="char" id="charInput" maxlength="1" placeholder="○">
+      <select id="charSelect" hidden aria-labelledby="charLabel"></select>
+    </div>
+    <div class="field">
+      <span class="lbl">背景音樂</span>
+      <div class="seg" id="musicSeg">
+        <button data-k="track">冥想曲</button>
+        <button data-k="none">不要音樂</button>
+      </div>
+      <label class="vol">音量<input type="range" id="musicVol" min="5" max="100" step="5"></label>
+      <p class="note opt">說話時，音樂會自動變小。</p>
+    </div>
+    <div class="field">
+      <span class="lbl">語音導引</span>
+      <div class="seg" id="voiceSeg">
+        <button data-v="1">開</button>
+        <button data-v="0">關（只看文字）</button>
+      </div>
+      <p class="note opt">沒有聲音時，請確認手機音量已打開。</p>
+    </div>
+    <p class="credit">財團法人天祥宇宙聖道基金會　製作</p>
+  </div>
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const store={
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let settings=Object.assign({mins:10,voice:1,ch:'',music:'track',vol:35,mantra:1,pace:'mid'},store.get('dg_settings',{}));
+if(settings.music!=='none')settings.music='track';
+if(![5,10,15].includes(settings.mins))settings.mins=10;
+if(settings.pace!=='mid'&&settings.pace!=='slow')settings.pace=(+settings.pace>=3)?'slow':'mid';
+const SCALE={5:.55,10:1,15:1.5};
+const NO_TTS_FALLBACK=true; // 沒有錄音的句子不用手機機器聲，只顯示文字
+const XIU_ENABLED=false; // 本版暫不納入「本週修身一字」；要恢復時改成 true
+const BOWL_GAP=7;        // 三聲缽之間的間隔（秒），讓每一聲的餘韻有空間散開
+const BOWL_WAIT_MS=9000; // 缽聲約 8.5 秒；每次敲缽後，等缽聲完全結束才開始引導說話
+const PRELUDE_MS=BOWL_WAIT_MS; // 開場一聲缽
+
+/* 大同真言二十字：請只填入經確認的清單（依正確順序，共二十個字）。
+   填好後，設定裡的「本週修身一字」會變成選單；沒填時維持手動輸入。不可自行猜測。 */
+const DATONG_20=[];
+
+/* 每一句引導語都有編號；若 audio 資料夾裡有同名錄音檔（mp3 或 m4a），就播真人錄音 */
+const L={
+ calm_intro:'我們開始今天的功課。請找個舒服的姿勢，感受呼吸自然的律動，讓心慢慢安靜下來，陪自己回到當下。',
+ calm_1:'吸氣時，感受空氣輕輕進來；吐氣時，讓肩膀慢慢放鬆。今天的忙碌不必立刻消失，先給自己一點安靜的空間。',
+ mantra_intro:'接下來，讓我們進入鉉元祈誦。依自己的節奏，跟著音樂一起誦唸。如果一時分心了，也沒關係，再把心輕輕帶回來即可。',
+ huixiang:'願以此天祥真言功德，迴向給我自己。願我身心安定，平安喜樂，智慧增長，道炁長存。',
+ thanks_intro:'接下來是感恩。讓我們慢一點，看看今天有哪些人、事、物，值得被看見與珍惜。',
+ thanks_1:'今天有哪一件小事，讓我感受到支持、善意，或覺得值得珍惜？',
+ thanks_r1:'今天，我是否留意到有人為我付出、提供幫助，或默默做好了一件事？這些付出，讓我有什麼感受？',
+ thanks_r2:'今天，有沒有誰的處境，是我原本沒有注意到的？如果多一分理解，我可以怎麼做？',
+ thanks_r3:'明天，我可以用哪一個具體而自然的行動，表達感謝或關懷？',
+ wen_intro:'此刻，回想今天的經歷。不急著判斷對錯，也不急著責怪自己。慢慢看看自己的心裡，有什麼感受與體會。',
+ wen_1:'今天，有哪一件事，仍然留在心裡？讓我們停下來，慢慢回想。',
+ wen_2:'回想那個時候，我的心裡有什麼感受？當時，我在意的是什麼，又期待著什麼？',
+ wen_3:'回想當時，我說了什麼，做了什麼？這些言行，帶來了什麼影響？從這段經歷中，我可以看見什麼？',
+ wen_r1:'當時，那份期待的背後，我真正需要的是什麼？是被理解、被尊重，還是被肯定？',
+ wen_r2:'當時，我是怎麼看待這件事的？如果從對方的角度來看，他可能有什麼感受，又有什麼考量？',
+ wen_r3:'當時，我有沒有讓對方知道，自己的感受與需要？如果下次再遇到類似的情況，我還可以怎麼表達？',
+ wen_r4:'回想今天的自己，有哪些地方，我願意再多做一點調整？又有哪些事情，我已經盡了自己的努力？讓自己看清楚，也給自己一些理解。',
+ xiu_intro:'接下來是修身。用本週這一個字，照見今天的自己。不打分數，只是看見。',
+ xiu_1:'本週這個字，今天在哪一件生活小事中，和我有關？',
+ xiu_2:'今天，我有沒有實踐它？如果沒有，當時發生了什麼？',
+ yuan_intro:'接著是願行。從今天看見的自己出發，選一件明天做得到的小事。不必很大，具體、真實，就好。',
+ yuan_1:'明天，我願意實際去做的一件小事是什麼？請想得具體一點，讓自己知道可以從哪一步開始。',
+ pray_intro:'接著是祈禱。請放下手機，用自己的話向上天祈禱。可以感謝、說出心中的願望，也可以坦然面對自己的不足。不必刻意修飾，只要真誠。時間到了，缽聲會提醒你。',
+ close:'今天看見的，不必今晚全部解決。願意看見，是開始；願意理解自己，也是一種勇氣；願意調整，就從一步一步的實踐開始。願我待人時多一分理解，遇事時多一分清明，面對自己時多一分誠實。明天，就從一件做得到的小事開始。'
+};
+const EXAMPLES=[
+ ['若發現自己常打斷別人','明天先讓對方把話說完，再回應。'],
+ ['若發現自己容易先責怪別人','明天先了解事情的來龍去脈，再表達看法。'],
+ ['若發現自己情緒上來時說話太急','明天情緒升起時，先停一下、呼吸，再開口。'],
+ ['若發現自己忽略了別人的付出','明天找個自然的時機，向對方說一聲謝謝。'],
+ ['','明天找一個自然的時機，主動關心一位家人或朋友。'],
+ ['','明天完成一件一直想做、卻還沒開始的小事。']
+];
+
+/* 天祥真言：四句連續誦唸，一遍接一遍，中間不停頓 */
+const MANTRA=['一靈常照','照我智慧','智慧開啟','萬事皆通'],MANTRA_TIMES=11;
+/* 音樂唱誦：audio/mantra_chant.mp3（含前奏與尾奏）。
+   第 1 遍從 first 秒開始，每遍 period 秒，共 11 遍；換檔案時要一起修改這兩個數字。 */
+const CHANT={id:'mantra_chant',first:26.0,period:24.0,dur:302.3}; // dur＝唱誦檔總長（秒）
+let chantRec=null;
+const useChant=()=>!!(chantRec&&settings.voice);
+/* 祈誦段：唱誦進行中（含開場）為 mantra 階段；唱完後進入迴向文 */
+const inMantra=s=>!!(s&&s.type==='mantra'&&String(state.sub).startsWith('mantra'));
+const MANTRA_SPOKEN='一靈常照 照我智慧 智慧開啟 萬事皆通';
+const MANTRA_RATE={mid:.85,slow:.68};
+const MANTRA_DEFAULT_LEN={mid:5,slow:6.5}; // 每遍秒數的預估；手機實際念過後會自動校正
+/* 真言錄音：適中 = audio/mantra.mp3，慢 = audio/mantra_slow.mp3。
+   每個檔案是「一遍」，結尾含換氣停頓（秒數見 MANTRA_BREATH），App 會連續播放 21 遍。 */
+const mantraRec={mid:null,slow:null};
+const MANTRA_BREATH={mid:1.0,slow:1.2};
+const curMantraRec=()=>settings.voice?mantraRec[settings.pace]:null;
+const learnedLen={mid:0,slow:0};
+function mantraLen(){
+  if(curMantraRec())return curMantraRec().dur;
+  if(settings.voice&&learnedLen[settings.pace])return learnedLen[settings.pace];
+  return MANTRA_DEFAULT_LEN[settings.pace];
+}
+
+/* 依日期輪替部分題目，讓每天略有不同 */
+const now0=new Date();
+const DAY=Math.floor((now0.getTime()-now0.getTimezoneOffset()*60000)/86400000);
+const pick=(arr,off=0)=>arr[(DAY+off)%arr.length];
+const isoDay=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const TODAY=isoDay(now0);
+
+function buildSteps(){
+  const k=SCALE[settings.mins],T=s=>Math.round(s*k);
+  const ch=(settings.ch||'').trim();
+  const it=(id,think,o={})=>{
+    const x=Object.assign({id,say:L[id],text:esc(L[id]),think},o);
+    // 開場白、結語這類「不是提問」的句子：念完不跑倒數圈，文字慢慢淡去後進入下一句
+    if(!x.q&&!x.breath&&!x.dim&&x.think<=8){x.quietEnd=true;x.think=Math.max(3,x.think)}
+    return x;
+  };
+  const steps=[];
+  steps.push({key:'calm',name:'靜心',sub:'回到當下',items:[it('calm_intro',3),it('calm_1',T(45),{breath:true})]});
+  if(settings.mantra){
+    const hx=it('huixiang',3,{quietEnd:true,softIn:true,noTts:true,hint:'默念迴向',
+      text:'願以此天祥真言功德，<br>迴向給我自己：||<span class="silent">（默念自己的名字）</span>||願我身心安定，<br>平安喜樂，||<span style="white-space:nowrap">智慧增長，道炁長存。</span>'});
+    steps.push({key:'mantra',name:'祈誦',sub:'天祥真言・十一遍',type:'mantra',items:[hx],
+      est:Math.round(L.mantra_intro.length*.3+BOWL_WAIT_MS/1000+3+(useChant()?chantRec.dur:MANTRA_TIMES*mantraLen())+itemEst(hx)+2.6)});
+  }
+  steps.push({key:'wen',name:'省察',sub:'照見起心動念',items:[it('wen_intro',3),it('wen_1',T(50),{q:true}),it('wen_2',T(55),{q:true}),it('wen_3',T(55),{q:true}),it(pick(['wen_r1','wen_r2','wen_r3','wen_r4'],1),T(45),{q:true})]});
+  if(ch&&XIU_ENABLED){
+    steps.push({key:'xiu',name:'修身',sub:'以本週「'+ch+'」字照見自己',items:[it('xiu_intro',2),
+      it('xiu_1',T(45),{q:true,text:'本週修身的「'+esc(ch)+'」字，<br>今天在哪一件生活小事中，和我有關？'}),
+      it('xiu_2',T(45),{q:true})]});
+  }
+  steps.push({key:'thanks',name:'感恩',sub:'看見愛與付出',items:[it('thanks_intro',2),it('thanks_1',T(40),{q:true}),it(pick(['thanks_r1','thanks_r2','thanks_r3']),T(40),{q:true})]});
+  steps.push({key:'pray',name:'祈禱',sub:'開啟心門，與上天對話',items:[it('pray_intro',2),
+    {id:null,say:'',text:'請放下手機。若你覺得自在，可以輕輕閉上眼睛。<br>用自己的話祈禱，或安靜地整理心中的感受。<br>缽聲響起時，再慢慢回到畫面。',think:Math.max(40,T(80)),dim:true}]});
+  const ex=pick(EXAMPLES,2);
+  steps.push({key:'yuan',name:'願行',sub:'帶著願心走向明天',example:'<b>例如：</b>'+(ex[0]?esc(ex[0])+'，':'')+esc(ex[1]),
+    items:[it('yuan_intro',3),it('yuan_1',T(45),{q:true}),it('close',5)]});
+  steps.forEach(s=>{if(s.items&&s.type!=='mantra')s.est=s.items.reduce((a,x)=>a+itemEst(x),0)+BOWL_WAIT_MS/1000});
+  return steps;
+}
+function itemEst(x){return (x.say?x.say.length*.3+2:.6)+x.think+.7}
+let STEPS=buildSteps();
+
+/* ---------- 聲音 ---------- */
+let ac=null;
+function audio(){
+  try{if(navigator.audioSession&&navigator.audioSession.type!=='playback')navigator.audioSession.type='playback'}catch(e){} // iPhone 靜音鍵開著時也能播放音樂與缽聲
+  try{if(!ac)ac=new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume()}catch(e){}
+  return ac;
+}
+/* 段落轉換的缽聲：audio/bowl.mp3（約 8.5 秒自然消散，已去除忽大忽小的起伏）；讀不到時改用程式合成的鐘聲 */
+let bowlBuf=null,bowlRaw=null,bowlDecoding=null;
+fetch('audio/bowl.mp3').then(r=>r.ok?r.arrayBuffer():null).then(b=>{bowlRaw=b;decodeBowl()}).catch(()=>{});
+function decodeBowl(){
+  if(bowlBuf||bowlDecoding||!bowlRaw||!ac)return bowlDecoding;
+  const raw=bowlRaw;bowlRaw=null;
+  bowlDecoding=new Promise(res=>{try{ac.decodeAudioData(raw,b=>{bowlBuf=b;res()},()=>res())}catch(e){res()}});
+  return bowlDecoding;
+}
+function playBowl(c,delay,gainMul){
+  const src=c.createBufferSource(),g=c.createGain();
+  src.buffer=bowlBuf;g.gain.value=gainMul;
+  src.connect(g).connect(c.destination);src.start(c.currentTime+delay);
+}
+function chime(delay=0,gainMul=1){
+  const c=audio();if(!c)return;
+  const dec=decodeBowl();
+  if(bowlBuf){try{playBowl(c,delay,gainMul);return}catch(e){}}
+  else if(dec){dec.then(()=>{if(bowlBuf)try{playBowl(c,delay,gainMul)}catch(e){}else synthChime(c,delay,gainMul)});return}
+  synthChime(c,delay,gainMul);
+}
+function synthChime(c,delay,gainMul){
+  try{
+    const t0=c.currentTime+delay;
+    [[220,.5,6],[440*1.38,.18,4],[220*5.4,.06,2.5],[220*8.9,.025,1.6]].forEach(([f,g,d])=>{
+      const o=c.createOscillator(),v=c.createGain();
+      o.type='sine';o.frequency.value=f;
+      v.gain.setValueAtTime(0,t0);v.gain.linearRampToValueAtTime(g*.6*gainMul,t0+.02);
+      v.gain.exponentialRampToValueAtTime(.0001,t0+d);
+      o.connect(v).connect(c.destination);o.start(t0);o.stop(t0+d+.1);
+    });
+  }catch(e){}
+}
+
+/* ---------- 背景音樂：全部用 Web Audio 播放 ----------
+   iPhone 不允許網頁直接調整音樂播放器的音量，所以「淡入淡出、說話時變小」都會失效。
+   改成先把音樂解碼，再用 Web Audio 播放（和缽聲同一種方式），音量就能平順控制。
+   audio/music_loop.mp3 是冥想曲中一段約 4 分半的單聲道版本，循環播放時前後 4 秒交叉淡化，聽不出接縫。 */
+const MUSIC_URL='audio/music_loop.mp3',XF=4;
+const music={bus:null,buf:null,raw:null,decoding:null,kind:'none',ducked:false,previewT:null,tok:0,ptok:0,
+  playing:false,srcs:[],loopT:null,segStart:0,segOff:0,offset:0,chantOff:false,chantT:null,ramp:{from:0,to:0,t0:0,t1:0}};
+fetch(MUSIC_URL).then(r=>r.ok?r.arrayBuffer():null).then(b=>{music.raw=b;decodeMusic()}).catch(()=>{});
+function decodeMusic(){
+  if(music.buf||music.decoding||!music.raw||!ac)return music.decoding;
+  const raw=music.raw;music.raw=null;
+  music.decoding=new Promise(res=>{try{ac.decodeAudioData(raw,b=>{music.buf=b;res()},()=>res())}catch(e){res()}});
+  return music.decoding;
+}
+function ensureBus(){
+  const c=audio();if(!c)return false;
+  if(!music.bus){try{music.bus=c.createGain();music.bus.gain.value=0;music.bus.connect(c.destination)}catch(e){return false}}
+  decodeMusic();return true;
+}
+function musicLevel(){return (settings.vol/100)*(music.ducked?0.28:1)}
+/* 目前音量（自己計算，不讀 gain.value：Safari 在漸變途中讀到的值不準，會造成音量突然跳動） */
+function curGain(){
+  const r=music.ramp,t=ac?ac.currentTime:0;
+  if(t>=r.t1)return r.to;if(t<=r.t0)return r.from;
+  const x=(t-r.t0)/(r.t1-r.t0);return r.from+(r.to-r.from)*(1-Math.cos(Math.PI*x))/2;
+}
+function setMusicGain(sec=1.2,target){
+  if(!music.bus||!ac)return;
+  const v=Math.max(0,target===undefined?musicLevel():target);
+  const g=music.bus.gain,t=ac.currentTime,from=curGain();sec=Math.max(.05,sec);
+  try{
+    g.cancelScheduledValues(t);
+    // S 形曲線：開始和結束都很柔和，不會有「突然變大／突然切斷」的感覺
+    const n=Math.max(8,Math.round(sec*30)),curve=new Float32Array(n);
+    for(let i=0;i<n;i++){const x=i/(n-1);curve[i]=from+(v-from)*(1-Math.cos(Math.PI*x))/2}
+    g.setValueAtTime(from,t);g.setValueCurveAtTime(curve,t+.01,sec);
+  }catch(e){try{g.setValueAtTime(v,t)}catch(e2){}}
+  music.ramp={from,to:v,t0:t+.01,t1:t+.01+sec};
+}
+/* 循環播放：每一輪結束前 XF 秒，下一輪就開始淡入，上一輪同時淡出 */
+function playFrom(off){
+  const c=ac,b=music.buf;if(!c||!b)return;
+  const tok=++music.ptok;
+  if(off>b.duration-XF*2-1)off=0;
+  const sched=(when,o,cont)=>{
+    if(tok!==music.ptok||!music.playing)return;
+    const src=c.createBufferSource(),g=c.createGain();src.buffer=b;src.connect(g);g.connect(music.bus);
+    const end=when+(b.duration-o);
+    g.gain.setValueAtTime(cont?0:1,when);if(cont)g.gain.linearRampToValueAtTime(1,when+XF);
+    g.gain.setValueAtTime(1,end-XF);g.gain.linearRampToValueAtTime(0,end);
+    try{src.start(when,o);src.stop(end+.05)}catch(e){return}
+    music.srcs.push(src);src.onended=()=>{music.srcs=music.srcs.filter(x=>x!==src)};
+    music.segStart=when;music.segOff=o;
+    const nextAt=end-XF;
+    clearTimeout(music.loopT);
+    music.loopT=setTimeout(()=>sched(Math.max(nextAt,c.currentTime+.05),0,true),Math.max(0,(nextAt-c.currentTime-1.5)*1000));
+  };
+  sched(c.currentTime+.05,off,false);
+}
+function stopSources(){
+  if(!music.playing)return;
+  music.playing=false;music.ptok++;clearTimeout(music.loopT);
+  if(ac&&music.buf){let pos=music.segOff+(ac.currentTime-music.segStart);music.offset=(pos>0&&pos<music.buf.duration-XF*2-1)?pos:0}
+  music.srcs.forEach(x=>{try{x.stop()}catch(e){}});music.srcs=[];
+}
+function stopMusic(fade=2){
+  if(music.kind==='none')return;
+  music.kind='none';const tok=++music.tok;
+  setMusicGain(fade,0);
+  setTimeout(()=>{if(tok===music.tok&&music.kind==='none')stopSources()},fade*1000+200);
+}
+function startMusic(kind){
+  if(kind==='none'){stopMusic(1.5);return}
+  music.chantOff=false;clearTimeout(music.chantT);
+  if(!ensureBus())return;
+  music.tok++;music.kind='track';
+  const go=()=>{
+    if(music.kind!=='track'||music.chantOff)return;
+    if(!music.playing&&music.buf){music.playing=true;playFrom(music.offset||0)}
+    setMusicGain(3);
+  };
+  if(music.buf)go();else{const d=decodeMusic();if(d)d.then(go)}
+}
+/* 按下「開始功課」的那一刻先啟動聲音系統、開始解碼音樂；音樂等開場缽聲結束後才慢慢淡入 */
+function primeMusic(){
+  if(settings.music==='none')return;
+  ensureBus();
+}
+/* 進入唱誦：背景音樂慢慢淡出（約 4 秒），完全安靜後才停止；唱誦結束再接著播放 */
+const CHANT_FADE=4;
+function chantMusicOff(sec=CHANT_FADE){
+  if(music.kind==='none'||music.chantOff)return;
+  music.chantOff=true;setMusicGain(sec,0);
+  clearTimeout(music.chantT);music.chantT=setTimeout(()=>{if(music.chantOff)stopSources()},sec*1000+300);
+}
+function chantMusicOn(){
+  if(!music.chantOff)return;
+  music.chantOff=false;clearTimeout(music.chantT);
+  if(music.kind!=='none'&&!music.playing&&music.buf){music.playing=true;playFrom(music.offset||0)}
+}
+function duck(on){
+  const s=STEPS[state.idx];
+  if(!on&&state.phase==='running'&&state.sub==='mantra-intro'&&useChant())return; // 祈誦開場白念完：音樂不再變大，直接慢慢淡出進入唱誦
+  if(state.phase==='running'&&inMantra(s)&&state.sub==='mantra-run'){ // 祈誦開場白念的時候照常（音樂變小但不停）
+    // 唱誦本身有配樂：這一段背景音樂完全靜音
+    if(useChant()){music.ducked=true;chantMusicOff();return}
+    on=true;
+  }
+  music.ducked=on;if(music.kind!=='none')setMusicGain(on?.8:2.5);
+}
+
+/* ---------- 語音：優先播真人錄音，沒有才用手機語音 ---------- */
+const voiceEl=new Audio();voiceEl.preload='auto';
+const SILENT='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
+const recCache={};
+let zhVoice=null,voiceTok=0;
+function pickVoice(){
+  try{
+    const vs=speechSynthesis.getVoices().filter(v=>/^zh/i.test(v.lang));
+    const tw=vs.filter(v=>/TW|Hant/i.test(v.lang)),pool=tw.length?tw:vs;
+    const score=v=>(/natural|neural|online|premium|enhanced|增強|高品質/i.test(v.name)?10:0)+(/Google/i.test(v.name)?4:0)+(/Mei-?Jia|美佳|HsiaoChen|HsiaoYu|曉臻|曉雨/i.test(v.name)?3:0)+(/TW/i.test(v.lang)?2:0);
+    zhVoice=pool.sort((a,b)=>score(b)-score(a))[0]||null;
+  }catch(e){}
+}
+try{pickVoice();speechSynthesis.onvoiceschanged=pickVoice}catch(e){}
+function utter(text,rate){
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=zhVoice?zhVoice.lang:'zh-TW';if(zhVoice)u.voice=zhVoice;u.rate=rate;
+  return u;
+}
+
+/* audio/list.json 列出已有的錄音編號；讀不到時，才逐一詢問檔案是否存在 */
+let recList=null;
+/* audio/timing.json：每句錄音中，換頁處的實際時間（從錄音的停頓量出來），讓翻頁和聲音同步 */
+let recTiming={};
+fetch('audio/timing.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(t=>{if(t&&typeof t==='object')recTiming=t}).catch(()=>{});
+const recListReady=fetch('audio/list.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(a=>{if(Array.isArray(a))recList=a}).catch(()=>{});
+function findRecording(id){
+  if(!id)return Promise.resolve(false);
+  if(id in recCache)return Promise.resolve(recCache[id]);
+  return recListReady.then(()=>{
+    if(recList)return recCache[id]=recList.includes(id)?'audio/'+id+'.mp3':false;
+    return probeRecording(id);
+  });
+}
+function probeRecording(id){
+  const tryExt=exts=>{
+    if(!exts.length)return Promise.resolve(recCache[id]=false);
+    const url='audio/'+id+'.'+exts[0];
+    return fetch(url,{method:'HEAD'}).then(r=>r.ok?(recCache[id]=url):tryExt(exts.slice(1))).catch(()=>tryExt(exts.slice(1)));
+  };
+  return tryExt(['mp3','m4a']);
+}
+/* 錄音先整個下載到手機記憶體再播放：
+   手機邊下載邊播時，網路一不穩就可能中斷或從頭重播（唱誦檔較大，特別容易發生） */
+const blobs={},blobReady={};
+function blobUrl(url){
+  if(!url)return Promise.resolve(url);
+  if(!blobs[url])blobs[url]=fetch(url).then(r=>r.ok?r.blob():Promise.reject()).then(b=>{const u=URL.createObjectURL(b);blobReady[url]=u;return u}).catch(()=>{delete blobs[url];return url});
+  return blobs[url];
+}
+/* 一打開 App 就在背景下載所有錄音（引導語先、唱誦最後），開始頁顯示準備進度 */
+let audioReady=0,audioTotal=0,prefetchStarted=false;
+function prefetchAudio(){
+  if(prefetchStarted)return;prefetchStarted=true;
+  recListReady.then(()=>{
+    // 依功課的順序下載：先用到的先下載；唱誦檔最大，排在前幾句之後
+    const FLOW=['calm_intro','calm_1','mantra_intro','huixiang','wen_intro','wen_1','wen_2','wen_3','wen_r1','wen_r2','wen_r3','wen_r4','thanks_intro','thanks_1','thanks_r1','thanks_r2','thanks_r3','pray_intro','yuan_intro','yuan_1','close'];
+    const ids=(recList||[]).slice(),rank=x=>x===CHANT.id?2.5:(FLOW.indexOf(x)<0?99:FLOW.indexOf(x));
+    const list=ids.filter(x=>x!==CHANT.id||settings.mantra).sort((a,b)=>rank(a)-rank(b));
+    audioTotal=list.length;let i=0;
+    const next=()=>{if(i>=list.length)return;const id=list[i++];blobUrl('audio/'+id+'.mp3').then(u=>{if(u&&String(u).startsWith('blob:'))audioReady++;if(state.phase==='idle')render();next()})};
+    next();next();next(); // 同時下載三個
+  });
+}
+/* 少數手機會擋住自動播放：請使用者輕觸一下畫面，再接著播放 */
+let tapCb=null;
+function needTap(cb){tapCb=cb;$('hint').textContent='請輕觸畫面開始聲音';}
+document.addEventListener('pointerdown',()=>{try{if(ac&&ac.state==='suspended')ac.resume()}catch(e){}if(tapCb){const c=tapCb;tapCb=null;c()}},true);
+/* 播一句；播完（或失敗）呼叫 done 一次 */
+let speakProg=null; // 目前這句念到哪裡（0～1），用來決定翻頁
+let speakRecId=null; // 目前播放的錄音編號
+function readMs(text){return Math.max(3000,String(text).length*230)} // 沒有聲音時的閱讀時間
+function timedProg(ms){const t0=performance.now();return ()=>(performance.now()-t0)/ms}
+function playVoice(id,text,done,noTts){
+  const vt=++voiceTok;let ended=false;
+  const fin=()=>{if(ended||vt!==voiceTok)return;ended=true;duck(false);setTimeout(()=>{if(vt===voiceTok)done()},700)};
+  speakProg=null;speakRecId=null;
+  if(!settings.voice||!text){const ms=text?readMs(text):300;speakProg=timedProg(ms);setTimeout(fin,ms);return}
+  duck(true);
+  findRecording(id).then(url=>{
+    if(vt!==voiceTok)return;
+    if(url){
+      // 失敗時：重新下載再試一次；還是不行就安靜地留閱讀時間（不改用機器聲）
+      const silentRead=()=>{if(vt!==voiceTok)return;const ms=readMs(text);speakRecId=null;speakProg=timedProg(ms);setTimeout(fin,ms)};
+      const playRec=(src,tries)=>{
+        if(vt!==voiceTok)return;
+        voiceEl.loop=false;voiceEl.onended=fin;
+        voiceEl.onerror=()=>{if(vt!==voiceTok)return;if(tries>0){delete blobs[url];delete blobReady[url];blobUrl(url).then(u=>playRec(u||url,tries-1))}else silentRead()};
+        voiceEl.src=src;
+        const p=voiceEl.play();
+        if(p&&p.catch)p.catch(e=>{if(vt!==voiceTok)return;if(e&&e.name==='NotAllowedError')needTap(()=>{if(vt===voiceTok)voiceEl.play().catch(silentRead)})});
+        speakProg=()=>voiceEl.duration?voiceEl.currentTime/voiceEl.duration:0;speakRecId=id;
+      };
+      // 錄音還沒下載完：最多等 8 秒（網路慢的第一次），等到了就從手機記憶體播放
+      if(blobReady[url])playRec(blobReady[url],1);
+      else Promise.race([blobUrl(url),new Promise(r=>setTimeout(()=>r(null),8000))]).then(u=>playRec(blobReady[url]||u||url,1));
+    }else if(noTts||NO_TTS_FALLBACK){const ms=noTts?1200:readMs(text);speakProg=timedProg(ms);setTimeout(fin,ms)} // 沒有錄音：只顯示文字，留閱讀時間，不用機器聲
+    else{speakProg=timedProg(text.length*330);speak(text,fin)}
+  });
+}
+function speak(text,fin){
+  try{
+    const u=utter(text,.85);u.onend=fin;u.onerror=fin;
+    speechSynthesis.speak(u);
+    setTimeout(fin,(text.length*.38+4)*1000); // 有些手機不會回報念完
+  }catch(e){fin()}
+}
+function hush(){
+  voiceTok++;state.tok++;speakProg=null;speakRecId=null;
+  try{voiceEl.pause();voiceEl.onended=null;voiceEl.ontimeupdate=null}catch(e){}
+  try{speechSynthesis.cancel()}catch(e){}
+  duck(false);
+}
+
+/* ---------- 螢幕不熄 ---------- */
+let lock=null;
+async function keepAwake(){try{if('wakeLock' in navigator&&!lock){lock=await navigator.wakeLock.request('screen');lock.addEventListener('release',()=>lock=null)}}catch(e){}}
+function releaseAwake(){try{lock&&lock.release()}catch(e){}lock=null}
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState!=='visible'||state.phase!=='running')return;
+  keepAwake();
+  // 電腦切到別的視窗時，瀏覽器會放慢畫面更新；回來時，字幕直接跳到聲音念到的那一頁
+  try{if(state.sub==='speak'&&speakRecId){const w=recPageAt(speakRecId);if(w>state.pageIdx){state.maxSeen=Math.max(state.maxSeen||0,w);state.pageIdx=w-1;showPage(w)}}}catch(e){}
+});
+
+/* ---------- 流程 ----------
+   每段由幾句組成：念出（speak）→ 思考時間倒數（think）→ 下一句。
+   思考時間從語音念完才開始算；按「還在想，等我一下」會停在這一題。 */
+const state={phase:'idle',idx:0,qi:0,sub:'wait',el:0,last:0,hold:false,tok:0,text:'',
+  mn:0,mBase:0,mLen:5,mMode:'timer',mStarted:false};
+const C=2*Math.PI*108;$('bar').style.strokeDasharray=C;
+const fmt=s=>{s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const cur=()=>STEPS[state.idx];
+const curItem=()=>{const s=cur();return s&&s.items?s.items[state.qi]:null};
+const IDLE_TEXT='這段時間，留給自己。<br>慢慢來。';
+
+/* ---------- 分頁：每頁最多兩行 ----------
+   長句在逗號、句號等自然停頓處分頁；念的時候跟著聲音翻頁，思考時間慢慢輪流顯示。
+   文字中用「||」可以手動指定分頁。 */
+const MAX_LINES=2;
+let measureEl=null;
+function measureLines(html){
+  const p=$('prompt');
+  if(!measureEl){measureEl=document.createElement('div');document.body.appendChild(measureEl)}
+  measureEl.className='prompt pmeasure'+(p.classList.contains('big')?' big':'');
+  const cs=getComputedStyle(p),fs=parseFloat(cs.fontSize)||22;
+  const w=Math.min($('runView').clientWidth||320,fs*22);
+  measureEl.style.width=w+'px';measureEl.innerHTML=html;
+  const lh=parseFloat(getComputedStyle(measureEl).lineHeight)||fs*1.7;
+  return Math.round(measureEl.scrollHeight/lh);
+}
+function paginate(html){
+  if(html.includes('||'))return html.split('||');
+  if(measureLines(html)<=MAX_LINES)return [breakAtComma(html)];
+  const fits=h=>measureLines(h)<=MAX_LINES;
+  const txt=h=>h.replace(/<[^>]*>/g,'').length;
+  // 先依句號、問號等「整句」分頁，一頁放得下就把整句放在一起，不從句子中間斷開
+  const sents=html.replace(/<br\s*\/?>/g,'\n').split(/(?<=[。？！；\n])/).map(x=>x.replace(/\n/g,'')).filter(x=>x.trim());
+  const pages=[];let cur='';
+  for(const sen of sents){
+    if(fits(sen)){
+      if(cur&&!fits(cur+sen)){pages.push(cur);cur=sen}else cur+=sen;
+      continue;
+    }
+    if(cur){pages.push(cur);cur=''}
+    // 一句太長：在逗號處切開，並讓每頁字數盡量平均（避免最後只剩兩三個字）
+    const parts=sen.split(/(?<=[，：])/).filter(x=>x.trim());
+    let best=null;
+    for(let n=2;n<=parts.length&&!best;n++){
+      const rec=(start,left,acc)=>{
+        if(left===1){const pg=parts.slice(start).join('');if(!fits(pg))return;const r=acc.concat([pg]);
+          const m=Math.max(...r.map(txt));if(!best||m<best.m)best={m,r};return}
+        for(let e=start+1;e<=parts.length-left+1;e++){const pg=parts.slice(start,e).join('');if(!fits(pg))break;rec(e,left-1,acc.concat([pg]))}
+      };
+      rec(0,n,[]);
+    }
+    if(best)pages.push(...best.r);else pages.push(...parts);
+  }
+  if(cur)pages.push(cur);
+  return pages.map(breakAtComma);
+}
+/* 兩行的頁面：盡量在逗號處換行（例如「請找個舒服的姿勢，／感受呼吸自然的律動，」），讀起來比較順 */
+function breakAtComma(pg){
+  if(/<br|<span/.test(pg)||measureLines(pg)!==2)return pg;
+  let best=null;const n=pg.length;
+  for(let i=1;i<n-1;i++){
+    if(!'，；：。？！'.includes(pg[i]))continue;
+    const a=pg.slice(0,i+1),b=pg.slice(i+1);
+    if(!b.trim()||measureLines(a)!==1||measureLines(b)!==1)continue;
+    const d=Math.abs(a.length-b.length);if(!best||d<best.d)best={d,a,b};
+  }
+  return best?best.a+'<br>'+best.b:pg;
+}
+let pageTok=0;
+function showPage(i,slow){
+  const pg=state.pages||[];if(!pg.length)return;
+  i=Math.max(0,Math.min(pg.length-1,i));
+  if(i===state.pageIdx)return;
+  const turning=state.pageIdx>=0; // 同一句的下一頁：先慢慢淡去，再慢慢浮現
+  state.pageIdx=i;state.pageShownAt=performance.now()+(turning?620:0);state.maxSeen=Math.max(state.maxSeen||0,i);
+  const p=$('prompt'),tok=++pageTok;
+  const reveal=()=>{
+    if(tok!==pageTok)return;
+    p.classList.remove('fade','fade-slow','fading');void p.offsetWidth;
+    p.innerHTML=pg[i];p.classList.add(slow?'fade-slow':'fade');p.classList.toggle('turn',state.sub==='speak');
+    state.pageShownAt=performance.now();
+  };
+  if(turning&&p.innerHTML){p.classList.remove('fade','fade-slow');p.classList.add('fading');setTimeout(reveal,620)}
+  else reveal();
+  const d=$('pdots');d.textContent='';
+  if(pg.length>1)pg.forEach((_,k)=>{const e=document.createElement('i');if(k===i)e.className='on';d.appendChild(e)});
+}
+function setPrompt(html,slow){
+  const p=$('prompt');p.style.opacity='';p.style.transition='';p.classList.remove('free');
+  if(state.text===html)return;state.text=html;
+  state.pages=paginate(html);state.pageIdx=-1;state.pageT0=performance.now();speakProg=null;state.maxSeen=0;
+  pageTok++;$('prompt').classList.remove('fading');
+  showPage(0,slow);
+}
+/* 依進度（0～1）找出該顯示的頁：按字數比例分配 */
+function pageAt(frac){
+  const pg=state.pages||[];if(pg.length<2)return 0;
+  const len=pg.map(x=>x.replace(/<[^>]*>/g,'').length),tot=len.reduce((a,b)=>a+b,0);
+  let acc=0;for(let k=0;k<pg.length;k++){acc+=len[k];if(frac*tot<acc)return k}
+  return pg.length-1;
+}
+/* 這一句的每一頁都已顯示過，且最後顯示的那頁也停留夠久 */
+function allPagesSeen(){const n=(state.pages||[]).length;return n<2||((state.maxSeen||0)>=n-1&&nextPageOk())}
+const PAGE_MIN_MS=3300;
+const PAGE_LEAD=0.3; // 秒：換頁時機＝前一頁念完、停頓開始的那一刻 // 每一頁至少停留的時間（含約 2 秒浮現）
+function nextPageOk(){const it=curItem();const min=speakRecId?(it&&it.id==='huixiang'?2400:2200):PAGE_MIN_MS;/* 有錄音時以跟上聲音為優先（字在開口前已淡入，實際可讀時間仍超過 3 秒）*//* 迴向文有錄音時跟著聲音換頁 */return performance.now()-(state.pageShownAt||0)>=min}
+/* 依錄音的實際時間點找出該顯示的頁 */
+function recPageAt(id){
+  const tm=recTiming[id],pg=state.pages||[],t=(voiceEl.currentTime||0)+(tm&&tm.pageStarts?0:PAGE_LEAD); // 提早一點換頁：淡出淡入的時間剛好讓新的字在聲音開始時出現
+  if(!tm)return pageAt(Math.min(1,speakProg?speakProg():0));
+  if(tm.pageStarts&&tm.pageStarts.length===pg.length){let k=0;tm.pageStarts.forEach((s,i)=>{if(t>=s)k=i});return k}
+  if(Array.isArray(tm)&&tm.length>=2){
+    // 由時間換算成念到第幾個字，再看那個字在哪一頁（不同手機寬度的分頁都適用）
+    let ch=tm[tm.length-1][0];
+    for(let i=0;i<tm.length-1;i++){const [c0,t0]=tm[i],[c1,t1]=tm[i+1];if(t<t1){ch=t<=t0?c0:c0+(c1-c0)*(t-t0)/(t1-t0);break}}
+    const lens=pg.map(x=>x.replace(/<[^>]*>/g,'').length),tot=lens.reduce((a,b)=>a+b,0);
+    if(tot!==tm[tm.length-1][0])return pageAt(Math.min(1,speakProg?speakProg():0));
+    let acc=0;for(let k=0;k<pg.length;k++){acc+=lens[k];if(ch<acc-0.5)return k}
+    return pg.length-1;
+  }
+  return pageAt(Math.min(1,speakProg?speakProg():0));
+}
+function updatePage(){
+  const pg=state.pages||[];if(pg.length<2)return;
+  const n=pg.length,cur=Math.max(0,state.pageIdx);
+  // 開始頁、開場前奏：慢慢輪流
+  if(state.phase==='idle')return; // 開始畫面不輪播
+  if(state.phase!=='running')return;
+  if(state.sub==='wait'){
+    if(state.prelude&&cur<n-1&&nextPageOk()&&performance.now()-state.pageT0>=4500*(cur+1))showPage(cur+1);
+    return; // 其他段落：等缽聲時停在第一頁
+  }
+  if(state.sub==='speak'||state.sub==='mantra-intro'){
+    if(!speakProg)return; // 還沒開始念：停在第一頁
+    const want=speakRecId?recPageAt(speakRecId):pageAt(Math.min(1,Math.max(0,speakProg())));
+    if(want>cur&&nextPageOk())showPage(cur+1); // 只往後、一次一頁
+    return;
+  }
+  if(state.sub==='think'){
+    if(state.hold)return;
+    const ti=curItem();
+    if(ti&&ti.dim){ // 祈禱時的畫面文字：每頁停約 8 秒，慢慢換頁，最後停在「缽聲響起時……」
+      if((state.maxSeen||0)<n-1&&performance.now()-(state.pageShownAt||0)>=8000)showPage(cur+1,true);
+      return;
+    }
+    if((state.maxSeen||0)<n-1){if(nextPageOk())showPage(cur+1);return} // 念完時還有頁沒顯示過：先依序補完，不跳頁
+    // 念完後停在最後一頁，不再回頭輪流重複顯示（避免干擾）
+  }
+}
+window.__paginate=t=>paginate(t);
+window.__audioDebug=()=>({musicPaused:!music.playing,gain:+curGain().toFixed(3),chantOff:!!music.chantOff,kind:music.kind,voice:(voiceEl.src||'').split('/').pop(),vt:voiceEl.currentTime,vdur:voiceEl.duration}); // 供檢查用
+window.__seekVoice=t=>{try{voiceEl.currentTime=t}catch(e){}};
+window.__voiceErr=()=>{try{voiceEl.onerror&&voiceEl.onerror()}catch(e){}};window.__blobs=()=>Object.keys(blobReady).length;
+window.__musicSeek=o=>{if(!music.buf)return;stopSources();music.playing=true;playFrom(o);return music.buf.duration};
+window.__pageDebug=()=>({pages:(state.pages||[]).map(x=>x.replace(/<[^>]*>/g,'')),item:(curItem()||{}).id,text:state.text,idx:state.pageIdx,n:(state.pages||[]).length,sub:state.sub,step:(cur()||{}).name,phase:state.phase}); // 供檢查用，不影響使用
+/* 手機網址列收合、鍵盤跳出都會觸發 resize：只有寬度真的改變（例如轉向）才重新分頁，
+   並停在原本念到的位置，不會回到第一頁重複顯示 */
+let lastW=window.innerWidth;
+window.addEventListener('resize',()=>{
+  if(Math.abs(window.innerWidth-lastW)<2)return;lastW=window.innerWidth;
+  const t=state.text,pg=state.pages||[];if(!t||!pg.length)return;
+  const len=x=>x.replace(/<[^>]*>/g,'').length;
+  let ch=0;for(let k=0;k<Math.max(0,state.pageIdx);k++)ch+=len(pg[k]);
+  const np=paginate(t);let acc=0,k=0;for(;k<np.length-1;k++){if(ch<acc+len(np[k]))break;acc+=len(np[k])}
+  state.pages=np;state.maxSeen=Math.max(k,Math.min(np.length-1,state.maxSeen||0));state.pageIdx=-1;pageTok++;
+  const p=$('prompt');p.classList.remove('fading','fade','fade-slow');showPage(k);
+});
+function totalEst(){return STEPS.reduce((a,s)=>a+s.est,0)}
+function mantraFrac(){return Math.min(.999,Math.max(0,(state.el-state.mBase)/state.mLen))}
+function remainEst(){
+  const s=cur();let r=STEPS.slice(state.idx+1).reduce((a,x)=>a+x.est,0);
+  if(inMantra(s)){
+    if(state.sub!=='mantra-run')r+=s.est;
+    else if(state.mMode==='chant')r+=Math.max(0,chantRec.dur-(voiceEl.currentTime||0));
+    else r+=(MANTRA_TIMES-state.mn-mantraFrac())*state.mLen;
+    r+=itemEst(s.items[0])+2.6;
+  }
+  else{
+    const it=curItem();
+    r+=s.items.slice(state.qi+1).reduce((a,x)=>a+itemEst(x),0);
+    r+=state.sub==='think'?Math.max(0,it.think-state.el):itemEst(it);
+  }
+  return r;
+}
+function renderSteps(){
+  const ol=$('steps');ol.textContent='';
+  STEPS.forEach((s,i)=>{
+    const li=document.createElement('li');
+    if(state.phase==='done'||(state.phase!=='idle'&&i<state.idx))li.className='done';
+    else if(state.phase!=='idle'&&i===state.idx)li.className='now';
+    li.textContent=s.name;
+    const sm=document.createElement('small');sm.textContent=fmt(s.est);li.appendChild(sm);
+    ol.appendChild(li);
+  });
+}
+function render(){
+  renderSteps();
+  document.body.classList.toggle('running',state.phase==='running'||state.phase==='paused');
+  $('prompt').classList.remove('big');$('time').classList.remove('small');
+  const run=state.phase==='running';
+  if(state.phase==='idle'){
+    $('stepName').textContent='準備';$('stepSub').textContent='看見起心動念，讓體會落實生活';
+    $('time').textContent='約 '+Math.round(totalEst()/60)+' 分';$('hint').textContent='預計時間';
+    $('bar').style.strokeDashoffset=C;
+    setPrompt(IDLE_TEXT);
+    $('lead').hidden=!yText;$('lead').textContent=yText;
+    $('example').hidden=true;$('holdBtn').hidden=true;
+    $('playBtn').textContent='開始功課';
+    $('prevBtn').disabled=$('nextBtn').disabled=true;
+    $('total').textContent=(audioTotal&&audioReady<audioTotal)?'聲音準備中… '+Math.round(audioReady/audioTotal*100)+'%（也可以直接開始）':'長度、音樂等，可按右上角「設定」調整';
+    $('ring').classList.remove('breathing');document.body.classList.remove('praying');
+    return;
+  }
+  const s=cur();
+  $('lead').hidden=true;
+  $('stepName').textContent=s.name;$('stepSub').textContent=s.sub;
+  // 願行的「例如」：位置先保留（不讓上面的字跳動），等提問念完、開始思考時才慢慢浮現
+  $('example').hidden=!s.example;if(s.example&&$('example').innerHTML!==s.example)$('example').innerHTML=s.example;
+  {const ci=curItem();$('example').classList.toggle('show',!!s.example&&!!ci&&ci.id==='yuan_1'&&state.sub==='think')}
+  $('playBtn').textContent=run?'暫停':'繼續';
+  $('prevBtn').disabled=state.idx===0;$('nextBtn').disabled=false;
+  $('total').textContent='全部約還剩 '+Math.max(1,Math.ceil(remainEst()/60))+' 分鐘';
+  if(inMantra(s)){
+    const going=state.sub==='mantra-run';
+    let n=0,ph=-1,prog=0,hint=!run?'已暫停':'準備誦唸';
+    if(going&&state.mMode==='chant'){
+      // 依唱誦播放的位置，算出第幾遍、第幾句
+      const ct=voiceEl.currentTime||0,t=ct-CHANT.first;
+      prog=Math.min(1,ct/chantRec.dur);
+      if(t<0){n=0;hint=run?'前奏':hint}
+      else if(t>=MANTRA_TIMES*CHANT.period){n=MANTRA_TIMES;ph=4;hint=run?'圓滿':hint}
+      else{const k=Math.floor(t/CHANT.period);n=k+1;ph=Math.floor((t-k*CHANT.period)/CHANT.period*4);if(run)hint='第 '+n+' 遍'}
+    }else if(going){
+      n=Math.min(MANTRA_TIMES,state.mn+1);prog=(state.mn+mantraFrac())/MANTRA_TIMES;
+      const speech=state.mMode==='rec'?state.mLen-MANTRA_BREATH[settings.pace]:state.mLen;
+      const f=(state.el-state.mBase)/speech;ph=f>=1?4:Math.floor(Math.max(0,f)*4);
+      if(run)hint='第 '+n+' 遍';
+    }
+    $('time').textContent=n+'／'+MANTRA_TIMES;
+    $('hint').textContent=hint;
+    $('bar').style.strokeDashoffset=C*(1-prog);
+    if(going)$('prompt').querySelectorAll('.mantra span').forEach((el,i)=>{el.classList.toggle('on',i===ph);el.classList.toggle('past',ph>=0&&i<ph)});
+    $('holdBtn').hidden=false;$('holdBtn').classList.add('off');$('ring').classList.remove('breathing');document.body.classList.remove('praying');
+    return;
+  }
+  const it=curItem(),think=state.sub==='think';
+  const hx=!!it&&it.id==='huixiang'; // 迴向文：字放大，秒數縮小
+  $('prompt').classList.toggle('big',hx);$('time').classList.toggle('small',hx);
+  if(think&&it.quietEnd){
+    // 迴向文念完：不再跑倒數圈、不再顯示提示，文字慢慢淡去後進入下一段
+    $('bar').style.strokeDashoffset=C;$('time').textContent='';$('hint').textContent='';
+    const p=$('prompt');if(p.style.opacity!=='0'){p.style.transition='opacity 2.6s ease';p.style.opacity='0'}
+    $('holdBtn').hidden=false;$('holdBtn').classList.add('off');$('ring').classList.remove('breathing');
+    return;
+  }
+  $('bar').style.strokeDashoffset=think?C*(1-Math.min(1,state.el/it.think)):C;
+  $('time').textContent=think?fmt(it.think-state.el):'';
+  let hint;
+  if(!run)hint='已暫停';
+  else if(state.hold)hint='慢慢想，不急';
+  else if(state.sub==='wait')hint=state.prelude?'靜心前奏':'';
+  else if(!think)hint=it.noTts?(it.hint||''):(recCache[it.id]?'請聆聽':'');
+  else if(it.breath)hint=(state.el%10)<4?'吸氣':'吐氣';
+  else if(it.dim)hint='祈禱中';
+  else if(it.hint)hint=it.hint;
+  else if(it.q)hint='想一想';
+  else hint='';
+  $('hint').textContent=hint;
+  $('ring').classList.toggle('breathing',!!it.breath&&think&&run);
+  document.body.classList.toggle('praying',!!it.dim&&run);
+  const showHold=!!it.q&&think&&run;
+  $('holdBtn').hidden=false;$('holdBtn').classList.toggle('off',!showHold);
+  $('holdBtn').setAttribute('aria-pressed',state.hold);
+  $('holdBtn').textContent=state.hold?'想好了，繼續':'還在想，等我一下';
+}
+
+/* 新的一段：缽聲響時畫面先留白，引導的字和聲音一起慢慢浮現 */
+const TEXT_IN_MS=BOWL_WAIT_MS-1000; // 開口前約 1 秒開始浮現，聲音出來時字正好清楚起來
+function clearPrompt(){const p=$('prompt');state.text='';state.pages=[];state.pageIdx=-1;pageTok++;p.classList.remove('fade','fade-slow','fading','turn');p.style.opacity='';p.style.transition='';p.innerHTML='';$('pdots').textContent=''}
+function enterStep(i){
+  hush();
+  if(music.chantOff){chantMusicOn();music.ducked=false;if(music.kind!=='none')setMusicGain(2)} // 唱誦中途跳到別段：音樂接回來
+  Object.assign(state,{idx:i,qi:0,el:0,hold:false,sub:'wait',prelude:false,mn:0,mBase:0,last:performance.now()});
+  const s=cur();
+  const tok=state.tok;
+  if(s.key==='calm'){
+    // 靜心前奏：敲一聲缽，讓餘韻散開，再開始引導
+    chime();
+    state.prelude=true;
+    setPrompt('聽著這一聲缽響，<br>讓呼吸慢下來，<br>也讓心慢慢回到當下。',true);
+    setTimeout(()=>{if(tok===state.tok){state.prelude=false;startMusic(settings.music);startItem()}},PRELUDE_MS);
+    render();return;
+  }
+  if(state.phase==='running'&&music.kind==='none'&&settings.music!=='none')startMusic(settings.music); // 例如在開場時直接按「下一段」
+  chime();
+  if(s.type==='mantra'){
+    state.sub='mantra-intro';
+    clearPrompt();setTimeout(()=>{if(tok===state.tok)setPrompt(esc(L.mantra_intro))},TEXT_IN_MS);
+    setTimeout(()=>{if(tok===state.tok&&state.phase==='running')playVoice('mantra_intro',L.mantra_intro,()=>{if(tok===state.tok)beginMantra(0)})},BOWL_WAIT_MS);
+  }else{
+    clearPrompt();setTimeout(()=>{if(tok===state.tok)setPrompt(s.items[0].text)},TEXT_IN_MS);
+    setTimeout(()=>{if(tok===state.tok)startItem()},BOWL_WAIT_MS);
+  }
+  render();
+}
+
+/* 真言：從第 from 遍開始，連續誦唸到第 21 遍 */
+function beginMantra(from){
+  if(state.phase!=='running')return;
+  const tok=state.tok;
+  state.sub='mantra-run';state.mn=from;state.mBase=state.el;state.mLen=mantraLen();
+  state.text='';
+  const p=$('prompt');p.classList.remove('fade');
+  state.pages=[];state.pageIdx=-1;$('pdots').textContent='';p.classList.add('free');
+  p.innerHTML='<span class="mantra">'+MANTRA.map(m=>'<span>'+m+'</span>').join('')+'</span>';
+  // 背景音樂還在播：先慢慢淡出，完全安靜後才開始唱誦
+  const fadeWait=(useChant()&&music.kind!=='none'&&!music.chantOff)?CHANT_FADE*1000+600:0;
+  duck(true);
+  const rec=curMantraRec();
+  if(useChant()){
+    // 音樂唱誦：整段播放一次（含前奏、11 遍、尾奏），播完進入下一段
+    state.mMode='chant';
+    voiceEl.loop=false;voiceEl.src=blobReady[chantRec.url]||chantRec.url;state.chantPos=0;state.chantErr=0;
+    if(fadeWait)setTimeout(()=>{if(tok===state.tok&&state.phase==='running')playChant(tok)},fadeWait);
+    else playChant(tok);
+  }else if(rec){
+    // 真人錄音：一遍播完立刻接下一遍
+    state.mMode='rec';
+    voiceEl.loop=false;voiceEl.src=rec.url;
+    voiceEl.ontimeupdate=()=>{if(tok===state.tok&&isFinite(voiceEl.duration)){state.mLen=voiceEl.duration;state.mBase=state.el-voiceEl.currentTime}};
+    voiceEl.onended=()=>{
+      if(tok!==state.tok)return;
+      state.mn++;
+      if(state.mn>=MANTRA_TIMES){finishMantra();return}
+      state.mBase=state.el;voiceEl.currentTime=0;voiceEl.play().catch(()=>{});
+    };
+    voiceEl.play().catch(()=>{state.mMode='timer'});
+  }else if(settings.voice&&'speechSynthesis' in window){
+    // 手機語音：把剩下的遍數一次排進佇列，一遍接一遍，不留空檔
+    state.mMode='tts';
+    try{
+      speechSynthesis.cancel();
+      for(let k=from;k<MANTRA_TIMES;k++){
+        const u=utter(MANTRA_SPOKEN,MANTRA_RATE[settings.pace]);
+        u.onstart=()=>{
+          if(tok!==state.tok)return;
+          if(k>from&&k===state.mn+1){const len=state.el-state.mBase;if(len>2&&len<20){state.mLen=len;learnedLen[settings.pace]=len}}
+          state.mn=k;state.mBase=state.el;
+        };
+        if(k===MANTRA_TIMES-1)u.onend=u.onerror=()=>{if(tok===state.tok){state.mn=MANTRA_TIMES;finishMantra()}};
+        speechSynthesis.speak(u);
+      }
+    }catch(e){state.mMode='timer'}
+  }else state.mMode='timer';
+  render();
+}
+/* 11 遍圓滿後：接迴向文 */
+function finishMantra(){
+  // 不敲缽：真言慢慢淡去，安靜一下，迴向文再慢慢浮現；背景音樂輕輕回來
+  hush();state.qi=0;state.el=0;state.sub='wait';
+  const p=$('prompt');p.style.transition='opacity 1.5s ease';p.style.opacity='0';
+  chantMusicOn();
+  if(music.kind!=='none'){music.ducked=false;setMusicGain(6)}
+  const tok=state.tok;
+  setTimeout(()=>{if(tok===state.tok&&state.phase==='running'){state.text='';startItem()}},1900);
+  render();
+}
+function playChant(tok){
+  // 記住唱到哪裡；萬一中斷，從原處接著唱，絕不從頭重來
+  voiceEl.ontimeupdate=()=>{if(tok===state.tok&&voiceEl.currentTime>0)state.chantPos=voiceEl.currentTime};
+  const recover=()=>{
+    if(tok!==state.tok)return;
+    state.chantErr=(state.chantErr||0)+1;
+    if(state.chantErr>4){finishMantra();return} // 一直失敗：直接進入迴向文，不重頭播
+    const pos=state.chantPos||0;
+    setTimeout(()=>{
+      if(tok!==state.tok||state.phase!=='running')return;
+      voiceEl.src=blobReady[chantRec.url]||chantRec.url;
+      voiceEl.onloadedmetadata=()=>{voiceEl.onloadedmetadata=null;try{voiceEl.currentTime=pos}catch(e){}};
+      voiceEl.play().catch(()=>{});
+    },800);
+  };
+  voiceEl.onended=()=>{
+    if(tok!==state.tok)return;
+    if((state.chantPos||0)<(chantRec.dur||CHANT.dur)-8){recover();return} // 還沒唱完就停了：接著唱
+    finishMantra();
+  };
+  voiceEl.onerror=recover;
+  if(state.chantPos>0&&Math.abs(voiceEl.currentTime-state.chantPos)>1){try{voiceEl.currentTime=state.chantPos}catch(e){}}
+  voiceEl.play().catch(e=>{if(e&&e.name==='NotAllowedError'&&tok===state.tok)needTap(()=>{if(tok===state.tok)voiceEl.play().catch(()=>{})})});
+}
+function mantraTick(){
+  if(state.sub!=='mantra-run'||state.mMode==='chant')return;
+  const over=state.el-state.mBase;
+  if(state.mMode==='timer'){
+    if(over>=state.mLen){state.mn++;state.mBase+=state.mLen;if(state.mn>=MANTRA_TIMES){finishMantra();return true}}
+  }else if(state.mMode==='tts'&&over>state.mLen*2.5+3){
+    // 有些手機不回報每遍開始：改用時間估算，聲音照常繼續
+    state.mMode='tts-est';
+  }else if(state.mMode==='tts-est'&&over>=state.mLen){
+    if(state.mn>=MANTRA_TIMES-1){finishMantra();return true}
+    state.mn++;state.mBase+=state.mLen;
+  }
+  return false;
+}
+
+function startItem(){
+  const it=curItem();
+  state.sub='speak';state.el=0;state.hold=false;
+  setPrompt(it.text,it.softIn);
+  if(state.phase!=='running'){render();return}
+  if(it.chime)chime();
+  const tok=state.tok;
+  const go=()=>playVoice(it.id,it.say,()=>{
+    if(tok!==state.tok||state.phase!=='running')return;
+    state.sub='think';state.el=0;state.last=performance.now();render();
+  },it.noTts);
+  if(it.chime)setTimeout(()=>{if(tok===state.tok)go()},2600);
+  else if(it.softIn)setTimeout(()=>{if(tok===state.tok)go()},2200);
+  else go();
+  render();
+}
+function nextItem(){
+  const s=cur();
+  if(s.items&&state.qi<s.items.length-1){hush();state.qi++;startItem()}
+  else advanceStep();
+}
+function advanceStep(){
+  if(state.idx<STEPS.length-1)enterStep(state.idx+1);else finish();
+}
+function finish(){
+  hush();state.phase='done';releaseAwake();
+  chime(0);chime(BOWL_GAP);chime(BOWL_GAP*2); // 結束：三聲缽
+  stopMusic(9);
+  document.body.classList.remove('praying','running');document.body.classList.add('done');
+  $('runView').hidden=true;$('doneView').hidden=false;
+  renderNotes();renderSteps();
+}
+function tick(){
+  updatePage();
+  if(state.phase!=='running')return;
+  const now=performance.now(),dt=Math.min(1,(now-state.last)/1000);state.last=now;
+  const s=cur();
+  if(inMantra(s)){
+    state.el+=dt;
+    if(mantraTick())return;
+  }else if(state.sub==='think'&&!state.hold){
+    state.el+=dt;
+    if(state.el>=curItem().think&&allPagesSeen()){nextItem();return}
+  }
+  render();
+}
+/* 若有「一遍」的真人錄音，就用錄音長度來定節奏 */
+function loadMantraRec(){
+  findRecording(CHANT.id).then(url=>{
+    if(!url)return;
+    // 手機（尤其 iPhone）在按下開始前不會預先讀取音檔長度，所以先用已知長度，讀得到時再更新
+    chantRec={url,dur:CHANT.dur};
+    if(state.phase==='idle'){STEPS=buildSteps();render()}paintSeg();
+    const a=new Audio();a.preload='metadata';
+    a.onloadedmetadata=()=>{if(isFinite(a.duration)&&a.duration>CHANT.first){chantRec.dur=a.duration;if(state.phase==='idle'){STEPS=buildSteps();render()}paintSeg()}};
+    a.src=url;
+  });
+}
+setInterval(tick,250);
+
+function resume(){
+  state.phase='running';state.last=performance.now();keepAwake();startMusic(settings.music);
+  const s=cur();
+  if(inMantra(s)){
+    if(state.sub==='mantra-run'&&state.mMode==='chant'){duck(true);playChant(state.tok)} // 唱誦從暫停處接著播
+    else if(state.sub==='mantra-run')beginMantra(state.mn); // 從這一遍的開頭接著念
+    else enterStep(state.idx);
+  }else if(state.sub!=='think')startItem();
+  render();
+}
+$('playBtn').onclick=()=>{
+  if(state.phase==='idle'){
+    audio();
+    try{voiceEl.src=SILENT;voiceEl.play().catch(()=>{})}catch(e){}
+    primeMusic();prefetchAudio();
+    clearTimeout(music.previewT);
+    STEPS=buildSteps();state.phase='running';keepAwake();
+    enterStep(0); // 背景音樂等開場缽聲結束後才進來
+  }else if(state.phase==='running'){
+    state.phase='paused';hush();stopMusic(2);render();
+  }else if(state.phase==='paused')resume();
+};
+$('holdBtn').onclick=()=>{
+  if(state.phase!=='running')return;
+  if(!state.hold){state.hold=true;render()}
+  else{state.hold=false;nextItem()}
+};
+$('nextBtn').onclick=()=>{
+  if(state.phase==='paused'){state.phase='running';keepAwake();startMusic(settings.music)}
+  advanceStep();
+};
+$('prevBtn').onclick=()=>{
+  if(state.idx===0)return;
+  if(state.phase==='paused'){state.phase='running';keepAwake();startMusic(settings.music)}
+  enterStep(state.idx-1);
+};
+$('againBtn').onclick=()=>{
+  state.phase='idle';state.text='';document.body.classList.remove('done');
+  $('doneView').hidden=true;$('runView').hidden=false;
+  STEPS=buildSteps();showYesterday();render();
+};
+
+/* ---------- 設定 ---------- */
+function paintSeg(){
+  [...$('lenSeg').children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.m===settings.mins));
+  [...$('voiceSeg').children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.v===settings.voice));
+  [...$('musicSeg').children].forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===settings.music));
+  [...$('mantraSeg').children].forEach(b=>b.setAttribute('aria-pressed',+b.dataset.on===settings.mantra));
+  const steps=buildSteps(),m=steps.find(x=>x.type==='mantra');
+  const tot=Math.round(steps.reduce((a,s)=>a+s.est,0)/60);
+  $('lenNote').textContent='全部約 '+tot+' 分鐘'+(m?'（含祈誦）':'')+'，每題約想 '+Math.round(50*SCALE[settings.mins])+' 秒。';
+  $('paceNote').textContent=!m?'這一段會略過。':(useChant()?'音樂唱誦帶領 11 遍，約 '+Math.max(1,Math.round(m.est/60))+' 分鐘。':'共 11 遍，約 '+Math.max(1,Math.round(m.est/60))+' 分鐘。');
+  $('musicVol').value=settings.vol;$('musicVol').disabled=settings.music==='none';
+  if(DATONG_20.length===20)$('charSelect').value=settings.ch||'';else $('charInput').value=settings.ch||'';
+}
+function saveSettings(){store.set('dg_settings',settings);if(state.phase==='idle'){STEPS=buildSteps();render()}paintSeg()}
+$('lenSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;settings.mins=+b.dataset.m;saveSettings()};
+$('voiceSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;settings.voice=+b.dataset.v;if(!settings.voice){try{speechSynthesis.cancel();voiceEl.pause()}catch(err){}}saveSettings()};
+$('mantraSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;settings.mantra=+b.dataset.on;saveSettings()};
+function preview(){
+  clearTimeout(music.previewT);
+  startMusic(settings.music);
+  if(state.phase!=='running')music.previewT=setTimeout(()=>{if(state.phase!=='running')stopMusic(3)},8000);
+}
+$('musicSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;settings.music=b.dataset.k;saveSettings();
+  if(state.phase==='running')startMusic(settings.music);else if(settings.music!=='none')preview();else stopMusic(1)};
+$('musicVol').oninput=e=>{settings.vol=+e.target.value;setMusicGain(.3)};
+$('musicVol').onchange=e=>{settings.vol=+e.target.value;saveSettings();if(state.phase!=='running'&&settings.music!=='none')preview()};
+$('charInput').oninput=e=>{settings.ch=[...e.target.value.trim()].slice(0,1).join('');saveSettings()};
+if(DATONG_20.length===20){
+  const sel=$('charSelect');sel.hidden=false;$('charInput').hidden=true;
+  const o0=document.createElement('option');o0.value='';o0.textContent='（不選）';sel.appendChild(o0);
+  DATONG_20.forEach((c,i)=>{const o=document.createElement('option');o.value=c;o.textContent=(i+1)+'. '+c;sel.appendChild(o)});
+  sel.onchange=()=>{settings.ch=sel.value;saveSettings()};
+}
+if(settings.ch&&[...settings.ch].length>1)settings.ch=[...settings.ch].slice(0,1).join('');
+
+/* ---------- 記錄（只存在本機） ---------- */
+function getNotes(){const n=store.get('dg_notes',[]);return Array.isArray(n)?n:[]}
+function renderNotes(){
+  const ul=$('notes'),n=getNotes().slice(0,3);ul.textContent='';
+  if(!n.length){const li=document.createElement('li');li.className='empty';li.textContent='還沒有記錄。寫下一句，明天再回來看看。';ul.appendChild(li);return}
+  n.forEach(x=>{
+    const li=document.createElement('li');
+    const t=document.createElement('time');t.textContent=String(x.d||'');li.appendChild(t);
+    const body=String(x.insight||x.t||'');
+    if(body)li.appendChild(document.createTextNode(body));
+    if(x.wish){const w=document.createElement('span');w.className='w';w.textContent='願行：'+x.wish;li.appendChild(w)}
+    ul.appendChild(li);
+  });
+}
+let yText='';
+function showYesterday(){
+  const n=getNotes().find(x=>x&&x.wish&&x.iso&&x.iso!==TODAY);
+  if(!n){yText='';return}
+  const y=new Date(now0);y.setDate(y.getDate()-1);
+  yText=(n.iso===isoDay(y)?'昨天的願行：':'上次的願行：')+String(n.wish);
+}
+let toastT=null;
+function toast(t){$('toast').textContent=t;clearTimeout(toastT);toastT=setTimeout(()=>{$('toast').textContent=''},3500)}
+$('saveNote').onclick=()=>{
+  const insight=$('insight').value.trim(),wish=$('wish').value.trim();
+  if(!insight&&!wish){toast('先寫下一句體會或一件願行，再按記下來。');return}
+  const d=new Date(),n=getNotes();
+  n.unshift({d:d.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'short'}),iso:isoDay(d),insight,wish});
+  store.set('dg_notes',n.slice(0,60));
+  $('insight').value='';$('wish').value='';renderNotes();
+  toast(getNotes().length?'已記下。':'這個瀏覽器無法儲存記錄（可能是無痕模式）。');
+};
+
+function openSettings(){paintSeg();$('settings').hidden=false;$('setDone').focus()}
+function closeSettings(){$('settings').hidden=true;$('setBtn').focus()}
+/* 依手機實際看得到的高度排版（避免被瀏覽器的網址列、工具列遮住） */
+let visTop=0,visH=0;
+function fitH(){
+  let h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;
+  if(visH>=320&&visH<h-4)h=visH; // 被包在別的 App 畫面裡（例如 Claude、LINE 的預覽視窗）：只用看得到的那一塊
+  document.documentElement.style.setProperty('--appH',Math.round(h)+'px');
+  document.documentElement.style.setProperty('--appTop',Math.round(visH>=320?visTop:0)+'px');
+}
+fitH();window.addEventListener('resize',fitH);if(window.visualViewport)window.visualViewport.addEventListener('resize',fitH);
+/* 嵌在其他頁面裡時，用「實際露出來的範圍」排版，避免下方按鈕被外框切掉 */
+(function(){
+  let inFrame=false;try{inFrame=window.self!==window.top}catch(e){inFrame=true}
+  if(!inFrame||!('IntersectionObserver' in window))return;
+  document.documentElement.classList.add('embedded');
+  const el=document.createElement('div');el.className='vsent';document.body.appendChild(el);
+  const th=[];for(let i=0;i<=100;i++)th.push(i/100);
+  new IntersectionObserver(es=>{const r=es[es.length-1].intersectionRect;
+    if(r&&r.height>=320){visTop=Math.max(0,r.top);visH=r.height;fitH()}},{threshold:th}).observe(el);
+})();
+$('setBtn').onclick=openSettings;$('setDone').onclick=closeSettings;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('settings').hidden)closeSettings()});
+$('date').textContent=now0.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'long'});
+loadMantraRec();showYesterday();paintSeg();render();prefetchAudio();
+})();
+</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}</script>
+</body>
+</html>
