@@ -129,7 +129,7 @@ textarea::placeholder{color:#B0A7BE}
 .close p{margin:0;font-family:var(--serif);color:var(--accent-deep)}
 .note{font-size:.7em;color:var(--muted);margin:0;text-align:center;padding:0 8px}
 
-/* 重點本 */
+/* 我的收藏 */
 .pagehead{display:flex;flex-direction:column;gap:4px;padding:6px 4px 0}
 .list{display:flex;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
 .list li{background:var(--paper);border-radius:22px;padding:18px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px}
@@ -190,7 +190,7 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
 <nav class="bar" aria-label="主選單">
   <div class="bar-in">
     <button id="nav-today" data-go="today">今天</button>
-    <button id="nav-notes" data-go="notes">重點本</button>
+    <button id="nav-notes" data-go="notes">我的收藏</button>
     <button id="nav-intro" data-go="intro">說明</button>
     <button id="nav-big" aria-pressed="false">大字</button>
   </div>
@@ -270,7 +270,7 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
     <div class="step act">
       <h2><span class="num">四</span>實踐於行</h2>
       <div class="trybox"><p class="lab"><b>今天可以試試</b>編輯整理</p><p class="p" id="d-try"></p></div>
-      <div class="row"><button class="primary" id="carry">把今日重點帶著走</button></div>
+      <div class="row"><button class="primary" id="carry">收藏這一句，帶著走</button></div>
       <p class="saved" id="carry-msg" aria-live="polite"></p>
     </div>
 
@@ -278,11 +278,11 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
     <p class="note">「原文」與「今日重點」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文（試讀版，內容待審閱）。</p>
   </section>
 
-  <!-- 重點本 -->
+  <!-- 我的收藏 -->
   <section class="view col" id="v-notes" hidden>
     <div class="pagehead">
-      <p class="daytag">重點本</p>
-      <p class="hint">按過「帶著走」或寫過一句話的日子，會收在這裡，隨時可以回來看看。</p>
+      <p class="daytag">我的收藏</p>
+      <p class="hint">按過「收藏這一句」或寫過一句話的日子，會收在這裡，隨時可以回來看看。</p>
     </div>
     <ul class="list" id="n-list"></ul>
   </section>
@@ -349,7 +349,7 @@ function render(){
   const msg = $('c-msg');
   msg.hidden = state.mode === 'on';
   if (state.mode === 'before') msg.textContent = '試讀從 10 月 21 日開始。今天可以先看看第 1 天。';
-  if (state.mode === 'after') msg.textContent = '三天試讀已經讀完，謝謝您。這三天的內容都可以在「重點本」回頭看。';
+  if (state.mode === 'after') msg.textContent = '三天試讀已經讀完，謝謝您。這三天的內容都可以在「我的收藏」回頭看。';
   if (state.mode === 'preview') msg.textContent = `預覽第 ${D.n} 天。`;
 
   $('d-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
@@ -371,7 +371,7 @@ function render(){
     past.hidden = false;
     past.textContent = `上一次讀到這篇時，你寫下：「${mine.text}」`;
   } else past.hidden = true;
-  $('note-msg').textContent = ''; $('carry-msg').textContent = mine.carried ? '已經收進重點本。' : '';
+  $('note-msg').textContent = ''; $('carry-msg').textContent = mine.carried ? '已經收藏，在「我的收藏」看得到。' : '';
 }
 
 function show(name){
@@ -388,7 +388,7 @@ function renderNotes(){
   const notes = store.get('sx-notes', {});
   const ul = $('n-list'); ul.textContent = '';
   const keys = Object.keys(notes).sort((a,b) => (notes[b].at||0) - (notes[a].at||0));
-  if (!keys.length){ const li = document.createElement('p'); li.className='empty'; li.textContent='這裡還空空的。讀完一天，按「把今日重點帶著走」，那一句就會來到這裡。'; ul.appendChild(li); return; }
+  if (!keys.length){ const li = document.createElement('p'); li.className='empty'; li.textContent='這裡還空空的。讀完一天，按「收藏這一句，帶著走」，那一句就會來到這裡。'; ul.appendChild(li); return; }
   keys.forEach(k => {
     const d = DAYS.find(x => x.n == k), n = notes[k];
     if (!d) return;
@@ -409,10 +409,10 @@ function upsert(patch){
 $('save-note').onclick = () => {
   const t = $('note').value.trim();
   if (!t){ $('note-msg').textContent = '還沒寫字。不寫也沒關係。'; return; }
-  $('note-msg').textContent = upsert({ text: t }) ? '存好了，在「重點本」看得到。' : '這支手機現在沒辦法存，把這句話放在心裡就好。';
+  $('note-msg').textContent = upsert({ text: t }) ? '存好了，在「我的收藏」看得到。' : '這支手機現在沒辦法存，把這句話放在心裡就好。';
 };
 $('carry').onclick = () => {
-  $('carry-msg').textContent = upsert({ carried: true }) ? `收好了。今天就帶著這一句，慢慢走：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，把這一句放在心裡就好。';
+  $('carry-msg').textContent = upsert({ carried: true }) ? `收好了，在「我的收藏」看得到。今天就帶著這一句，慢慢走：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，把這一句放在心裡就好。';
 };
 
 // 唸給我聽：用手機內建語音
