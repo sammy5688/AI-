@@ -144,6 +144,20 @@ textarea::placeholder{color:#B0A7BE}
 .intro h3:first-child{margin-top:0}
 .intro p{margin:0}
 .center{justify-content:center}
+
+/* 立體層次：外層卡片「浮起來」，內層方框「微微凹進去」 */
+:root{--float:0 14px 32px -10px rgba(91,74,138,.20),0 4px 10px rgba(91,74,138,.07),0 0 0 1px rgba(124,104,174,.07),inset 0 1px 0 #fff,inset 0 -2px 0 rgba(124,104,174,.05);
+  --well:inset 0 2px 5px rgba(91,74,138,.10),inset 0 0 0 1px rgba(124,104,174,.07),0 1px 0 rgba(255,255,255,.9)}
+.todaycard,.step,.list li,.intro .card,.empty{background:linear-gradient(180deg,#FFFFFF 0%,#FFFCFA 60%,#FBF8FD 100%);border:1px solid rgba(255,255,255,.95);box-shadow:var(--float)}
+.hero{box-shadow:var(--float);border:1px solid rgba(255,255,255,.8)}
+.quote{background:linear-gradient(180deg,#ECE5F7,#F2EDFA);box-shadow:var(--well)}
+.keybox{background:linear-gradient(160deg,#FBEBE5,#F0E8F9);box-shadow:var(--well)}
+.trybox{background:linear-gradient(180deg,#E2EDE6,#EAF2ED);box-shadow:var(--well)}
+details.fold{background:linear-gradient(180deg,#F6F2FB,#FBF9FD);border:0;box-shadow:var(--well)}
+textarea{border:0;background:#FBF9FD;box-shadow:var(--well)}
+textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:none}
+.past,.list .mine{box-shadow:var(--well)}
+.step h2 .num{box-shadow:0 3px 6px rgba(91,74,138,.15),inset 0 1px 0 #fff,inset 0 -2px 3px rgba(124,104,174,.12)}
 @media (prefers-reduced-motion:no-preference){.view{animation:in .35s ease-out}@keyframes in{from{opacity:.3;transform:translateY(6px)}to{opacity:1;transform:none}}}
 </style>
 
