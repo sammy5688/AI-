@@ -18,7 +18,7 @@
   --dawn:#FBEDE8;       /* 晨光暖粉 */
   --paper:#FFFDFB;      /* 暖白紙 */
   --ink:#3A3347;        /* 主文字：柔和的深紫灰 */
-  --muted:#7A7088;      /* 次要文字 */
+  --muted:#5F5570;      /* 次要文字（加深，長輩看得清楚） */
   --line:#E8E1F0;
   --accent:#7C68AE;     /* 主色：薰衣草紫 */
   --accent-deep:#5B4A8A;
@@ -32,7 +32,8 @@
   --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
   --fs:20px; color-scheme:light;
 }
-html.big{--fs:24px}
+html.fs1{--fs:24px}
+html.fs2{--fs:28px}
 html,body{background:var(--sky)}
 body{color:var(--ink);font-family:var(--sans);font-size:var(--fs);line-height:1.85;
   background:linear-gradient(180deg,var(--dawn) 0,var(--sky) 420px) no-repeat,var(--sky)}
@@ -46,11 +47,17 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;
   background:rgba(251,247,252,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
   padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.bar-in{max-width:34rem;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+.bar-wrap{max-width:34rem;margin:0 auto;display:flex;gap:8px;align-items:center}
+.bar-in{flex:1;min-width:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;
   background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.5));-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);
   border:1px solid rgba(255,255,255,.9);border-radius:999px;padding:5px;
   box-shadow:0 8px 24px rgba(91,74,138,.12),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(124,104,174,.08)}
-.bar button{min-height:50px;border:0;border-radius:999px;background:transparent;font-size:.8em;font-weight:500;color:var(--muted);transition:background .25s,color .25s,box-shadow .25s}
+.bar button{min-height:50px;border:0;border-radius:999px;background:transparent;font-size:17px;font-weight:500;color:var(--muted);padding:0 4px;white-space:nowrap;transition:background .25s,color .25s,box-shadow .25s}
+/* 字的大小：跟分頁分開，長得也不一樣（白底方圓鈕） */
+.bar .fsbtn{flex:none;min-height:60px;min-width:64px;border-radius:18px;padding:4px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;
+  background:#fff;color:var(--accent-deep);font-weight:700;border:1.5px solid rgba(91,74,138,.35);box-shadow:0 6px 14px rgba(91,74,138,.14)}
+.fsbtn .a{font-family:var(--serif);font-size:22px}
+.fsbtn .s{font-size:13px;font-weight:500}
 .bar button[aria-current="page"],.bar button[aria-pressed="true"]{color:var(--accent-ink);
   background:linear-gradient(180deg,#9A86C8 0%,#7C68AE 55%,#6A579C 100%);
   box-shadow:0 4px 10px rgba(91,74,138,.3),inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 4px rgba(60,40,110,.18)}
@@ -61,20 +68,21 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 
 /* 封面 */
 .hero{position:relative;border-radius:28px;overflow:hidden;background:linear-gradient(170deg,#FCEFEA 0%,#F3EAF8 55%,#ECE5F7 100%);box-shadow:var(--shadow)}
-.hero svg{display:block;width:100%;height:auto}
+.hero svg{display:block;width:100%;height:110px}
 .hero-text{padding:0 24px 26px;display:flex;flex-direction:column;gap:10px;margin-top:-6px;background:#ECE5F7}
-.trial{position:absolute;top:14px;right:14px;font-size:.62em;color:var(--accent-deep);background:rgba(255,255,255,.7);border-radius:999px;padding:2px 12px}
+.trial{position:absolute;top:14px;right:14px;font-size:.8em;color:var(--accent-deep);background:rgba(255,255,255,.7);border-radius:999px;padding:2px 12px}
 .greet{margin:0;color:var(--accent-deep);font-size:.85em;letter-spacing:.06em}
 .brand{font-family:var(--serif);font-size:1.9em;font-weight:700;line-height:1.3;color:var(--accent-deep);margin:0;text-wrap:balance}
 .sub{margin:0;color:var(--ink);font-size:.88em}
-.motto{margin:0;color:var(--muted);font-size:.72em;letter-spacing:.14em}
+.motto{margin:0;color:var(--muted);font-size:.8em;letter-spacing:.08em}
 
 .todaycard{background:var(--paper);border-radius:24px;padding:22px 22px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
 .meta{margin:0;font-size:.8em;color:var(--muted)}
 .daytag{font-family:var(--serif);font-size:1.2em;font-weight:700;margin:0;color:var(--ink)}
 .bigkey{font-family:var(--serif);font-size:1.4em;line-height:1.65;font-weight:600;color:var(--accent-deep);margin:4px 0 0;text-wrap:balance}
 
-.breath{display:flex;align-items:center;gap:16px;padding:4px 6px}
+.breath{display:flex;align-items:center;gap:16px;padding:4px 0}
+.todaycard .primary{align-self:stretch;margin-top:4px}
 .orb{flex:none;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#FFF6F2,var(--glow) 55%,#E9D6F0);box-shadow:0 0 0 8px rgba(246,217,207,.35)}
 .breath p{margin:0;color:var(--muted);font-size:.85em}
 @media (prefers-reduced-motion:no-preference){.orb{animation:breathe 8s ease-in-out infinite}
@@ -103,7 +111,7 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .step h2 .num{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--veil);color:var(--accent-deep);font-size:.8em;font-family:var(--sans)}
 .step.act h2 .num{background:var(--sage);color:var(--sage-ink)}
 .step.act h2{color:var(--sage-ink)}
-.lab{font-size:.7em;color:var(--muted);margin:0 0 4px;letter-spacing:.04em}
+.lab{font-size:.8em;color:var(--muted);margin:0 0 4px;letter-spacing:.04em}
 .lab b{font-weight:700;color:var(--ink);margin-right:8px;letter-spacing:.08em}
 .quote{background:var(--veil);border-radius:18px;padding:18px 18px}
 .quote .p{font-family:var(--serif);font-size:1.05em;line-height:2}
@@ -112,7 +120,7 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 details.fold{border-radius:18px;background:#FAF7FD;border:1px solid var(--line)}
 details.fold summary{list-style:none;min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 16px 6px 18px;font-weight:500;cursor:pointer}
 details.fold summary::-webkit-details-marker{display:none}
-details.fold summary::after{content:"點開看";font-size:.75em;color:var(--accent-deep);border-radius:999px;padding:5px 18px;white-space:nowrap;
+details.fold summary::after{content:"點開看";font-size:.8em;color:var(--accent-deep);border-radius:999px;padding:5px 18px;white-space:nowrap;
   background:linear-gradient(180deg,#fff,rgba(239,233,248,.8));border:1px solid #fff;
   box-shadow:0 4px 10px rgba(91,74,138,.13),inset 0 1px 0 #fff,inset 0 -2px 3px rgba(124,104,174,.12),0 0 0 1px rgba(124,104,174,.12)}
 details[open].fold summary::after{content:"收起來"}
@@ -127,13 +135,13 @@ textarea::placeholder{color:#B0A7BE}
 .close{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 12px 0}
 .close .orb{width:28px;height:28px;box-shadow:0 0 0 6px rgba(246,217,207,.3)}
 .close p{margin:0;font-family:var(--serif);color:var(--accent-deep)}
-.note{font-size:.7em;color:var(--muted);margin:0;text-align:center;padding:0 8px}
+.note{font-size:.8em;color:var(--muted);margin:0;text-align:center;padding:0 8px}
 
 /* 我的收藏 */
 .pagehead{display:flex;flex-direction:column;gap:4px;padding:6px 4px 0}
 .list{display:flex;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
 .list li{background:var(--paper);border-radius:22px;padding:18px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px}
-.list .m{font-size:.75em;color:var(--muted)}
+.list .m{font-size:.8em;color:var(--muted)}
 .list .k{font-family:var(--serif);font-weight:700;color:var(--accent-deep)}
 .list .mine{font-size:.9em;background:#FCF4F0;border-radius:12px;padding:8px 12px}
 .empty{color:var(--muted);background:var(--paper);border-radius:22px;padding:22px;box-shadow:var(--shadow);margin:0}
@@ -183,20 +191,58 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
 .past,.list .mine{box-shadow:var(--well)}
 .step h2 .num{box-shadow:0 3px 6px rgba(91,74,138,.15),inset 0 1px 0 #fff,inset 0 -2px 3px rgba(124,104,174,.12)}
 @media (prefers-reduced-motion:no-preference){.view{animation:in .35s ease-out}@keyframes in{from{opacity:.3;transform:translateY(6px)}to{opacity:1;transform:none}}}
+
+/* 淺色按鈕加一圈清楚的邊，讓人看得出是按鈕 */
+.ghost{border:1.5px solid rgba(91,74,138,.38)}
+
+/* 第一次來：封面上的小說明 */
+.firstcard{background:linear-gradient(180deg,#FFFFFF,#FBF8FD);border:1px solid rgba(255,255,255,.95);box-shadow:var(--float);border-radius:24px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.firstcard .t{font-family:var(--serif);font-weight:700;color:var(--accent-deep);margin:0}
+.firstcard p{margin:0}
+.linkbtn{align-self:flex-start;border:0;background:none;padding:6px 0;min-height:44px;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+
+/* 在 LINE 裡打開的提醒 */
+.linehint{max-width:34rem;margin:0 auto 18px;background:#FFF6E8;border:1.5px solid #E8C48A;border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;color:#5A4120}
+.linehint .t{font-weight:700;margin:0}
+.linehint p{margin:0;font-size:.9em}
+.linehint .ghost{align-self:flex-start;min-height:48px}
+
+/* 讀完之後 */
+.after{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.after p{margin:0;color:var(--muted);font-size:.9em}
+
+/* 唸給我聽：固定在畫面下方 */
+.speakbar{position:fixed;left:0;right:0;bottom:0;z-index:6;
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:rgba(255,253,251,.97);border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(91,74,138,.12)}
+.speakbar-in{max-width:34rem;margin:0 auto;display:flex;align-items:center;gap:12px}
+.speakbar .primary{flex:none;min-height:58px;padding:0 24px;font-size:18px}
+.speakbar .now{margin:0;font-size:16px;color:var(--muted);line-height:1.4}
+body.has-speak main{padding-bottom:120px}
 </style>
 
 </head>
 <body>
 <nav class="bar" aria-label="主選單">
-  <div class="bar-in">
-    <button id="nav-today" data-go="today">今天</button>
-    <button id="nav-notes" data-go="notes">我的收藏</button>
-    <button id="nav-intro" data-go="intro">說明</button>
-    <button id="nav-big" aria-pressed="false">大字</button>
+  <div class="bar-wrap">
+    <div class="bar-in">
+      <button id="nav-today" data-go="today">今天</button>
+      <button id="nav-notes" data-go="notes">我的收藏</button>
+      <button id="nav-intro" data-go="intro">說明</button>
+    </div>
+    <button class="fsbtn" id="nav-fs" aria-live="polite"><span class="a">字</span><span class="s" id="fs-lab">標準</span></button>
   </div>
 </nav>
 
 <main>
+  <!-- 在 LINE 裡打開時才出現 -->
+  <div class="linehint" id="line-hint" hidden>
+    <p class="t">您現在是在 LINE 裡面打開的</p>
+    <p>在 LINE 裡，「唸給我聽」可能沒有聲音，寫下的話也可能存不住。</p>
+    <p>建議：點畫面角落的「⋯」或「⋮」，選「用預設瀏覽器開啟」（或「以其他應用程式開啟」）。</p>
+    <button class="ghost" id="line-ok">知道了</button>
+  </div>
+
   <!-- 封面 -->
   <section class="view col" id="v-cover">
     <div class="hero">
@@ -223,11 +269,18 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
       <p class="meta" id="c-date"></p>
       <p class="daytag" id="c-day"></p>
       <p class="bigkey" id="c-key"></p>
+      <div class="breath"><span class="orb" aria-hidden="true"></span><p>讀之前，先慢慢吸一口氣，再慢慢吐出來。</p></div>
+      <button class="primary" id="go-read">開始讀</button>
     </div>
-
-    <div class="breath"><span class="orb" aria-hidden="true"></span><p>讀之前，先慢慢吸一口氣，再慢慢吐出來。</p></div>
-    <div class="row center"><button class="primary" id="go-read">開始讀</button></div>
     <p class="msg" id="c-msg" hidden></p>
+
+    <div class="firstcard" id="c-first" hidden>
+      <p class="t">第一次來嗎？</p>
+      <p>每天讀一篇，分四步：讀聖訓、悟道理、觀自心、實踐於行。</p>
+      <p>每天只要記住「今日重點」那一句，帶著走就好。</p>
+      <p>字太小，可以按右上角的「字」放大。</p>
+      <button class="linkbtn" id="c-intro">看完整說明</button>
+    </div>
   </section>
 
   <!-- 每日頁 -->
@@ -236,8 +289,6 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
       <p class="meta" id="d-date"></p>
       <p class="daytag" id="d-title"></p>
     </div>
-    <div class="row"><button class="ghost" id="speak">唸給我聽</button></div>
-
     <div class="step">
       <h2><span class="num">一</span>讀聖訓</h2>
       <div><p class="lab"><b>開篇</b>編輯整理</p><p class="p" id="d-open"></p></div>
@@ -261,7 +312,7 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
       <h2><span class="num">三</span>觀自心</h2>
       <div><p class="lab"><b>問問自己</b>編輯整理</p><p class="p" id="d-ask"></p></div>
       <div class="past" id="d-past" hidden></div>
-      <label class="hint" for="note">想寫就寫一句話給自己，不寫也可以。只存在這支手機裡。</label>
+      <label class="hint" for="note">想寫就寫一句話給自己，不寫也可以。寫了會自動存好，只存在這支手機裡。</label>
       <textarea id="note" placeholder="例如：今天我差點又急著……"></textarea>
       <div class="row"><button class="ghost" id="save-note">存下這句話</button></div>
       <p class="saved" id="note-msg" aria-live="polite"></p>
@@ -275,6 +326,10 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
     </div>
 
     <div class="close"><span class="orb" aria-hidden="true"></span><p>今天讀到這裡，就很好了。</p></div>
+    <div class="after">
+      <p id="d-next"></p>
+      <button class="ghost" id="to-top">回到最上面</button>
+    </div>
     <p class="note">「原文」與「今日重點」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文（試讀版，內容待審閱）。</p>
   </section>
 
@@ -304,6 +359,14 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
     <div class="row center"><button class="primary" id="intro-ok">我知道了，開始讀</button></div>
   </section>
 </main>
+
+<!-- 唸給我聽：只在每日頁出現，往下滑也一直在 -->
+<div class="speakbar" id="speakbar" hidden>
+  <div class="speakbar-in">
+    <button class="primary" id="speak">▶ 唸給我聽</button>
+    <p class="now" id="speak-now" aria-live="polite">會唸：原文、今日重點、白話理解</p>
+  </div>
+</div>
 
 <script>
 const DAYS = [{"n": 1, "theme": "定心", "who": "玉虛真人", "date": "108 年 1 月 7 日", "開篇": "心一亂，我們常常急著做點什麼。今天這篇，玉虛真人請我們先停下來：心定了，才看得清方向。", "原文": "「心有安了嗎？有定了嗎？先把心定了、安了，你才知道是往這裡衝，而不是往那裡衝。衝錯了，不叫衝破。所以，覺得煩躁不安時，就應慎思、再慎思。」", "今日重點": "「先把心定了、安了，你才知道是往這裡衝」", "白話理解": "心慌的時候，人最想做的就是趕快做點什麼。玉虛真人卻說，先停下來。心沒定，往前衝也可能衝錯方向；衝錯了，不叫衝破，只是更累。煩躁的時候，不是加快腳步，而是慢下來，想一想、再想一想。", "情境範例": "孩子的成績單攤在桌上，數學三十八分。她的火一下子上來，已經走到房門口，手都舉起來要敲門了。她停了一下，轉身去廚房倒了一杯水，站在窗邊喝完。回到房門口時，她想說的話已經不一樣了：「這次考卷，可以拿給我看看嗎？」", "問問自己": "最近哪一次，我是心還沒定就急著往前衝？那時如果先停一下，結果會不會不一樣？", "今天可以試試": "覺得煩躁時，先去喝一杯水，再決定要說什麼、做什麼。"}, {"n": 2, "theme": "看透自己", "who": "慈航道人", "date": "108 年 1 月 13 日", "開篇": "最難看清的，常常是自己。今天跟著慈航道人，誠實地看一看自己的計較和面子。", "原文": "「莫要覺得我計較、我比較，面子上放不下，這就是人性。面對它、瞭解它……瞭解之後你才可以轉化，你才可以人心轉化為道心。」", "今日重點": "「看透、澈透自己，是一件很重要的事。」", "白話理解": "「我哪有計較？」很多時候，最看不清的就是自己。慈航道人說，計較、比較、放不下面子，這就是人性，不必假裝沒有。先承認它，才有辦法轉。", "情境範例": "孫子做滿月，親家送了一條很粗的金鍊子，她送的是一對小手鐲。她嘴上說「親家真大方」，回家卻整晚悶悶的，跟先生講話也特別衝。睡前她問自己：到底在不舒服什麼？想了很久，她承認了：是在比。承認的那一刻，心裡反而鬆了一點。", "問問自己": "今天讓我不舒服的事，背後有沒有一點計較、比較或面子？我看得見嗎？", "今天可以試試": "心裡不舒服時，問自己一句：「我到底在意的是什麼？」"}, {"n": 3, "theme": "轉個彎", "who": "懼留孫", "date": "108 年 1 月 14 日", "開篇": "遇到過不去的事，一直硬撞只會更累。今天懼留孫告訴我們：方向不變，方法可以轉個彎。", "原文": "「所以，不是什麼事都是傻傻的撞上去，有的時候要轉個彎就進去了。雖然，道只有一條，那是說吾之心不變，一心向道。要靈活、靈活、靈活。」", "今日重點": "「有的時候要轉個彎就進去了。」", "白話理解": "鑽地鑽到大石頭，硬鑽只會滿頭包，往旁邊轉個彎就過去了。懼留孫說，方向不變，方法要靈活。轉個彎不是放棄，是換一條走得通的路。", "情境範例": "父親中風後，一說要去復健就發脾氣。他勸了一個月，越勸父親越不肯。有一天他不勸了，只說：「爸，我們去公園看看你以前下棋的朋友。」為了走到棋桌前，父親自己慢慢走了兩百公尺。回家的路上，父親說：「明天還要來。」", "問問自己": "有哪一件事，我一直用同一個方法，卻一直撞牆？", "今天可以試試": "挑一件卡住的事，想一個以前沒試過的方法，今天試一次。"}];
@@ -340,16 +403,19 @@ function greeting(){
 const strip = s => s.replace(/^「|」$/g, '');
 
 let state, D;
+const SD = new Date(START);
+const startLabel = `${SD.getUTCMonth()+1} 月 ${SD.getUTCDate()} 日`;
 function render(){
   state = todayState(); D = state.day;
   $('c-greet').textContent = greeting();
   $('c-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
   $('c-day').textContent = `第 ${D.n} 天｜${D.theme}・${D.who}`;
   $('c-key').textContent = D['今日重點'];
+  $('c-first').hidden = store.get('sx-intro', false);
   const msg = $('c-msg');
   msg.hidden = state.mode === 'on';
-  if (state.mode === 'before') msg.textContent = '試讀從 10 月 21 日開始。今天可以先看看第 1 天。';
-  if (state.mode === 'after') msg.textContent = '三天試讀已經讀完，謝謝您。這三天的內容都可以在「我的收藏」回頭看。';
+  if (state.mode === 'before') msg.textContent = `試讀從 ${startLabel}開始。今天可以先看看第 1 天。`;
+  if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的收藏」看得到。`;
   if (state.mode === 'preview') msg.textContent = `預覽第 ${D.n} 天。`;
 
   $('d-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
@@ -362,6 +428,11 @@ function render(){
   $('d-story').textContent = D['情境範例'];
   $('d-ask').textContent = D['問問自己'];
   $('d-try').textContent = D['今天可以試試'];
+  $('d-next').textContent =
+    state.mode === 'before' ? `試讀從 ${startLabel}清晨 5 點開始。` :
+    state.mode === 'after' ? `${DAYS.length} 天試讀已經讀完，謝謝您。` :
+    state.mode === 'preview' ? '這是預覽。' :
+    D.n < DAYS.length ? `明天清晨 5 點，會換成第 ${D.n + 1} 天。` : '今天是試讀的最後一天，謝謝您一起讀。';
 
   const notes = store.get('sx-notes', {});
   const mine = notes[D.n] || {};
@@ -380,6 +451,9 @@ function show(name){
     const b = $('nav-'+v);
     if ((name === v) || (name === 'cover' && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
   });
+  if (name !== 'today') stopSpeak();
+  const bar = name === 'today' && canSpeak;
+  $('speakbar').hidden = !bar; document.body.classList.toggle('has-speak', bar);
   if (name === 'notes') renderNotes();
   window.scrollTo(0, 0);
 }
@@ -387,7 +461,7 @@ function show(name){
 function renderNotes(){
   const notes = store.get('sx-notes', {});
   const ul = $('n-list'); ul.textContent = '';
-  const keys = Object.keys(notes).sort((a,b) => (notes[b].at||0) - (notes[a].at||0));
+  const keys = Object.keys(notes).filter(k => notes[k].text || notes[k].carried).sort((a,b) => (notes[b].at||0) - (notes[a].at||0));
   if (!keys.length){ const li = document.createElement('p'); li.className='empty'; li.textContent='這裡還空空的。讀完一天，按「收藏這一句，帶著走」，那一句就會來到這裡。'; ul.appendChild(li); return; }
   keys.forEach(k => {
     const d = DAYS.find(x => x.n == k), n = notes[k];
@@ -406,43 +480,94 @@ function upsert(patch){
   notes[D.n] = Object.assign({}, notes[D.n], patch, { today: dateLabel(), at: Date.now() });
   return store.set('sx-notes', notes);
 }
+const FAIL = '這支手機現在沒辦法存，把這句話放在心裡就好。';
+let autoT;
 $('save-note').onclick = () => {
+  clearTimeout(autoT);
   const t = $('note').value.trim();
   if (!t){ $('note-msg').textContent = '還沒寫字。不寫也沒關係。'; return; }
-  $('note-msg').textContent = upsert({ text: t }) ? '存好了，在「我的收藏」看得到。' : '這支手機現在沒辦法存，把這句話放在心裡就好。';
+  $('note-msg').textContent = upsert({ text: t }) ? '存好了，在「我的收藏」看得到。' : FAIL;
 };
+// 寫字時自動存（停筆一下就存）
+$('note').addEventListener('input', () => {
+  clearTimeout(autoT);
+  autoT = setTimeout(() => {
+    const t = $('note').value.trim();
+    const had = (store.get('sx-notes', {})[D.n] || {}).text;
+    if (!t && !had) return;
+    $('note-msg').textContent = upsert({ text: t }) ? (t ? '已經自動存好了。' : '') : FAIL;
+  }, 800);
+});
 $('carry').onclick = () => {
   $('carry-msg').textContent = upsert({ carried: true }) ? `收好了，在「我的收藏」看得到。今天就帶著這一句，慢慢走：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，把這一句放在心裡就好。';
 };
 
-// 唸給我聽：用手機內建語音
+// 唸給我聽：用手機內建語音。一句一句排隊唸，比較不會唸到一半停掉
 const canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
-const sp = $('speak');
-if (!canSpeak) sp.hidden = true;
-let speaking = false;
+const sp = $('speak'), spNow = $('speak-now');
+const SP_IDLE = '會唸：原文、今日重點、白話理解';
+let speakRun = 0;
+function stopSpeak(){
+  if (!canSpeak) return;
+  speakRun++; sp.dataset.on = ''; window.speechSynthesis.cancel();
+  sp.textContent = '▶ 唸給我聽'; spNow.textContent = SP_IDLE;
+}
+if (canSpeak) window.speechSynthesis.getVoices();
 sp.onclick = () => {
   const s = window.speechSynthesis;
-  if (speaking){ s.cancel(); speaking = false; sp.textContent = '唸給我聽'; return; }
-  const text = ['原文。', strip(D['原文']), '今日重點。', strip(D['今日重點']), '白話理解。', D['白話理解']].join('');
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'zh-TW'; u.rate = 0.85;
-  const v = s.getVoices().find(v => /zh[-_]TW/i.test(v.lang)) || s.getVoices().find(v => /^zh/i.test(v.lang));
-  if (v) u.voice = v;
-  u.onend = u.onerror = () => { speaking = false; sp.textContent = '唸給我聽'; };
-  s.cancel(); s.speak(u); speaking = true; sp.textContent = '停止唸';
+  if (sp.dataset.on === '1'){ stopSpeak(); return; }
+  const run = ++speakRun;
+  const vs = s.getVoices();
+  const v = vs.find(v => /zh[-_]TW/i.test(v.lang)) || vs.find(v => /^zh/i.test(v.lang));
+  const parts = [['原文', strip(D['原文'])], ['今日重點', strip(D['今日重點'])], ['白話理解', D['白話理解']]];
+  const queue = [];
+  parts.forEach(([name, text]) => {
+    queue.push([name, name + '。']);
+    (text.match(/[^。！？]+[。！？」]*/g) || [text]).forEach(t => queue.push([name, t]));
+  });
+  s.cancel();
+  queue.forEach(([name, t], i) => {
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = 'zh-TW'; u.rate = 0.85; if (v) u.voice = v;
+    u.onstart = () => { if (run === speakRun) spNow.textContent = `正在唸：${name}`; };
+    if (i === queue.length - 1) u.onend = () => { if (run === speakRun) stopSpeak(); };
+    u.onerror = () => { if (run === speakRun) stopSpeak(); };
+    s.speak(u);
+  });
+  sp.dataset.on = '1'; sp.textContent = '■ 停止';
 };
 
-// 大字
-function applyBig(on){ document.documentElement.classList.toggle('big', on); $('nav-big').setAttribute('aria-pressed', on ? 'true' : 'false'); }
-applyBig(store.get('sx-big', false));
-$('nav-big').onclick = () => { const on = !document.documentElement.classList.contains('big'); applyBig(on); store.set('sx-big', on); };
+// 字的大小：標準 → 大 → 特大，再按回到標準
+const FS = ['標準', '大', '特大'];
+function applyFs(i){
+  document.documentElement.classList.remove('fs1', 'fs2');
+  if (i) document.documentElement.classList.add('fs' + i);
+  $('fs-lab').textContent = FS[i];
+  $('nav-fs').setAttribute('aria-label', `字的大小：${FS[i]}。點一下換大小`);
+}
+let fsLevel = store.get('sx-fs', store.get('sx-big', false) ? 1 : 0);
+if (!(fsLevel >= 0 && fsLevel < FS.length)) fsLevel = 0;
+applyFs(fsLevel);
+$('nav-fs').onclick = () => { fsLevel = (fsLevel + 1) % FS.length; applyFs(fsLevel); store.set('sx-fs', fsLevel); };
+
+// 在 LINE 裡打開：先試著自動改用手機瀏覽器開；沒成功就顯示提醒
+const inLine = /\bLine\//i.test(navigator.userAgent);
+if (inLine && !/openExternalBrowser=1/.test(location.search)){
+  let tried = false; try{ tried = sessionStorage.getItem('sx-ext') === '1'; sessionStorage.setItem('sx-ext', '1'); }catch(e){}
+  if (!tried){ const u = new URL(location.href); u.searchParams.set('openExternalBrowser', '1'); location.replace(u.href); }
+}
+let lineOk = false; try{ lineOk = sessionStorage.getItem('sx-line-ok') === '1'; }catch(e){}
+$('line-hint').hidden = !inLine || lineOk;
+$('line-ok').onclick = () => { $('line-hint').hidden = true; try{ sessionStorage.setItem('sx-line-ok', '1'); }catch(e){} };
 
 document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => show(b.dataset.go));
-$('go-read').onclick = () => show('today');
-$('intro-ok').onclick = () => { store.set('sx-intro', true); show('today'); };
+$('go-read').onclick = () => { store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
+$('c-intro').onclick = () => show('intro');
+$('intro-ok').onclick = () => { store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
+$('to-top').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
 render();
-show(store.get('sx-intro', false) ? 'cover' : 'intro');
+show('cover');
 // 清晨 5:00 換篇：回到畫面時重新判斷
 document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n) show('cover'); } });
 window.addEventListener('hashchange', () => { render(); show('cover'); });
