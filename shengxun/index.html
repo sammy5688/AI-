@@ -10,7 +10,7 @@
 <meta name="color-scheme" content="light only">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap">
 <style>
 /* 晨光一欄：像清晨的天色，淡紫轉暖粉；一頁只放一件事，圓潤柔和，大量留白 */
 :root{
@@ -230,8 +230,106 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
 .speakbar .primary{flex:none;min-height:58px;padding:0 24px;font-size:18px}
 .speakbar .now{margin:0;font-size:16px;color:var(--muted);line-height:1.4}
 body.has-speak main{padding-bottom:120px}
+
+/* ===== 書本版（散文版）：像翻開一本書。紙色、楷書內文、朱紅小印、原文像夜裡亮燈的家 ===== */
+html.book{
+  --sky:#F3F1EA; --dawn:#F3F1EA; --paper:#F3F1EA; --ink:#262A33; --muted:#5B606B; --line:#D6D5CE;
+  --accent:#A8352A; --accent-deep:#33394A; --veil:#ECE9E0; --sage:#ECE9E0; --sage-ink:#33394A;
+  --seal:#A8352A; --lamp:#F6E7C8; --lamp-dim:#D3BE98;
+  --kai:"LXGW WenKai TC","Kaiti TC","BiauKai","DFKai-SB",serif;
+}
+html.book body{background:var(--paper)}
+html.book body::before{background:var(--paper)}
+/* 閱讀進度細線 */
+.readbar{display:none}
+html.book .readbar{display:block;position:fixed;top:env(safe-area-inset-top,0px);left:0;height:3px;width:0;background:var(--seal);z-index:12}
+/* 上方選單：素面，選到的加朱紅底線 */
+html.book .bar{background:rgba(243,241,234,.96);-webkit-backdrop-filter:none;backdrop-filter:none;border-bottom:1px solid var(--line)}
+html.book .bar-in{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0}
+html.book .bar button{color:var(--muted)}
+html.book .bar button[aria-current="page"],html.book .bar button[aria-pressed="true"]{background:transparent;color:var(--ink);font-weight:700;box-shadow:inset 0 -3px 0 var(--seal);border-radius:0}
+html.book .bar button[aria-current="page"]::before{display:none}
+html.book .bar .fsbtn{background:transparent;box-shadow:none;border:1px solid var(--line);color:var(--ink);border-radius:10px}
+/* 按鈕：墨色實心、細框空心，不用玻璃 */
+html.book .primary{background:var(--ink);border:0;text-shadow:none;letter-spacing:.1em;box-shadow:0 4px 10px rgba(38,42,51,.18)}
+html.book .primary::before,html.book .primary::after,html.book .ghost::before,html.book .ghost::after{display:none}
+html.book .primary:active{background:#11141A;box-shadow:none}
+html.book .ghost{background:transparent;border:1.5px solid var(--ink);color:var(--ink);box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+html.book .ghost:active{background:rgba(38,42,51,.06)}
+/* 卡片全部攤平成書頁 */
+html.book .todaycard,html.book .step,html.book .list li,html.book .intro .card,html.book .empty,html.book .firstcard,html.book .daylist button,html.book .hero{
+  background:transparent;box-shadow:none;border:0;border-radius:0}
+/* 封面：朱紅小印＋大標 */
+html.book .hero{overflow:visible}
+html.book .hero svg{display:none}
+html.book .hero-text{background:transparent;padding:30px 4px 6px;gap:14px}
+html.book .hero-text::before{content:"今\A日";white-space:pre;width:56px;height:56px;background:var(--seal);color:#FBEDEA;border-radius:6px;display:grid;place-items:center;
+  font-family:var(--serif);font-weight:700;font-size:1.05em;line-height:1.05;text-align:center;margin-bottom:6px}
+html.book .trial{background:transparent;border:1px solid var(--line);color:var(--muted);top:30px;right:4px}
+html.book .greet{font-family:var(--kai);color:var(--muted);letter-spacing:.12em}
+html.book .brand{color:var(--ink);font-weight:700}
+html.book .sub{font-family:var(--kai);color:#454B58;font-size:1em}
+html.book .motto{color:var(--muted)}
+html.book .todaycard{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:26px 4px}
+html.book .bigkey{color:var(--ink);font-weight:700}
+html.book .orb{background:radial-gradient(circle,#FFE2A8 0%,rgba(255,217,140,.5) 45%,rgba(255,217,140,0) 72%);box-shadow:none}
+html.book .breath p{font-family:var(--kai)}
+/* 每日頁：每一步像書裡的一節 */
+html.book .step{padding:30px 4px 6px;border-top:1px solid var(--line);gap:18px}
+html.book .step h2{font-family:var(--sans);font-size:.8em;letter-spacing:.3em;color:var(--seal);font-weight:700}
+html.book .step h2 .num{width:30px;height:30px;border-radius:4px;background:var(--seal);color:#FBEDEA;box-shadow:none;font-family:var(--serif);letter-spacing:0}
+html.book .step.act h2{color:var(--seal)}
+html.book .step.act h2 .num{background:var(--seal);color:#FBEDEA}
+html.book .lab b{color:var(--ink)}
+html.book #d-open,html.book #d-plain,html.book #d-story,html.book #d-try,html.book .past,html.book .list .mine{font-family:var(--kai);font-size:1.08em;line-height:2.1}
+html.book #d-ask{font-family:var(--serif);font-size:1.12em;line-height:1.9}
+html.book #d-story::first-letter{font-family:var(--serif);font-weight:700;font-size:2.5em;float:left;line-height:1;margin:6px 10px 0 0;color:var(--seal)}
+/* 原文：夜裡亮著燈的家 */
+html.book .quote{position:relative;border-radius:8px;padding:72px 22px 26px;color:var(--lamp);box-shadow:none;
+  background:radial-gradient(90% 55% at 50% 0%,#4A3B28 0%,#3A2F23 45%,#2A221A 100%)}
+html.book .quote::before{content:"";position:absolute;top:16px;left:50%;width:44px;height:44px;margin-left:-22px;border-radius:50%;
+  background:radial-gradient(circle,#FFD98C 0%,rgba(255,217,140,.45) 40%,rgba(255,217,140,0) 72%)}
+html.book .quote .lab,html.book .quote .lab b{color:var(--lamp-dim)}
+html.book .quote .p{font-size:1.15em;line-height:2.2;text-align:justify}
+html.book .keybox{background:transparent;box-shadow:none;border-radius:0;border-left:3px solid var(--seal);padding:4px 0 4px 18px}
+html.book .keybox .p{color:var(--ink)}
+/* 點開看：像書裡的「續讀」 */
+html.book details.fold{background:transparent;box-shadow:none;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);border-radius:0}
+html.book details.fold summary{padding-left:0;padding-right:0}
+html.book details.fold summary::after{background:transparent;box-shadow:none;border:1px solid var(--ink);color:var(--ink)}
+html.book details.fold .inner{padding:4px 0 20px}
+/* 寫字：橫線信紙 */
+html.book textarea{border:0;border-radius:0;box-shadow:none;border-bottom:1.5px solid var(--ink);padding:4px 2px;font-family:var(--kai);font-size:1.08em;
+  line-height:2em;background:repeating-linear-gradient(transparent 0 calc(2em - 1px),#D9D7CF calc(2em - 1px) 2em)}
+html.book textarea:focus{box-shadow:none;border-bottom-color:var(--seal)}
+html.book .past,html.book .list .mine{background:transparent;box-shadow:none;border-left:2px solid var(--line);border-radius:0;padding:2px 0 2px 14px}
+/* 今天可以試試：框起來，左上角一枚「行」字印 */
+html.book .trybox{position:relative;background:transparent;box-shadow:none;border:1.5px solid var(--ink);border-radius:4px;padding:30px 20px 20px;margin-top:10px}
+html.book .trybox::before{content:"行";position:absolute;top:-16px;left:16px;width:32px;height:32px;background:var(--seal);color:#FBEDEA;border-radius:4px;
+  display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:.85em}
+html.book .saved{color:var(--seal)}
+html.book .close p{font-family:var(--kai);color:var(--ink)}
+/* 收藏、前幾天、說明：像書的目錄 */
+html.book .list{gap:0}
+html.book .list li{border-top:1px solid var(--line);padding:20px 4px}
+html.book .list .k,html.book .daylist .k{color:var(--ink)}
+html.book .daylist{gap:0}
+html.book .daylist button{border-top:1px solid var(--line);padding:18px 4px}
+html.book .intro .card{padding:6px 4px}
+html.book .intro h3{color:var(--seal);font-family:var(--sans);font-size:.85em;letter-spacing:.25em}
+html.book .intro p{font-family:var(--kai);font-size:1.05em;line-height:2.05}
+html.book .storenote{background:transparent;border-top:1px solid var(--line);border-radius:0;padding:12px 4px 0}
+html.book .firstcard{border-top:1px solid var(--line);padding:20px 4px}
+html.book .firstcard .t{color:var(--ink)}
+html.book .linkbtn{color:var(--seal)}
+html.book .speakbar{background:rgba(243,241,234,.98);box-shadow:0 -4px 14px rgba(38,42,51,.08)}
+/* 版面樣式切換 */
+.stylepick{display:flex;flex-direction:column;gap:10px}
+.stylepick .row button{flex:1;min-width:8em}
+.stylepick button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:2px}
 </style>
 
+<div class="readbar" id="readbar" aria-hidden="true"></div>
 </head>
 <body>
 <nav class="bar" aria-label="主選單">
@@ -284,6 +382,7 @@ body.has-speak main{padding-bottom:120px}
       <button class="primary" id="go-read">開始讀</button>
     </div>
     <p class="msg" id="c-msg" hidden></p>
+    <div class="row center"><button class="linkbtn" id="c-style">換成書本版</button></div>
 
     <div class="firstcard" id="c-first" hidden>
       <p class="t">第一次來嗎？</p>
@@ -375,6 +474,11 @@ body.has-speak main{padding-bottom:120px}
       <p>一共 56 天，分兩輪。第一輪 28 天，每天讀一位仙家的一段話；第二輪再回到同一批仙家，讀另一段話。每天只要記住「今日重點」那一句，帶著走就好。今天沒做到也沒關係，明天再讀一次。</p>
       <h3>讀的時候請記得</h3>
       <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
+      <h3>版面樣式</h3>
+      <div class="stylepick">
+        <p>喜歡哪一種看起來舒服，就選哪一種，隨時可以換。</p>
+        <div class="row"><button class="ghost" id="st-card">卡片版</button><button class="ghost" id="st-book">書本版</button></div>
+      </div>
       <h3>頁面上的內容</h3>
       <p>「原文」與「今日重點」是開示紀錄的原句，只統一了字形。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
       <h3 id="contact-h" hidden>有問題找誰</h3>
@@ -618,6 +722,29 @@ $('go-read').onclick = () => { viewN = null; render(); store.set('sx-intro', tru
 $('c-intro').onclick = () => show('intro');
 $('intro-ok').onclick = () => { store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
 $('to-top').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+// 版面樣式：卡片版／書本版（網址加 ?style=book 可直接開書本版）
+function applyStyle(st){
+  const book = st === 'book';
+  document.documentElement.classList.toggle('book', book);
+  $('c-style').textContent = book ? '換回卡片版' : '換成書本版';
+  $('st-card').setAttribute('aria-pressed', book ? 'false' : 'true');
+  $('st-book').setAttribute('aria-pressed', book ? 'true' : 'false');
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', book ? '#F3F1EA' : '#FBEDE8');
+}
+let viewStyle = store.get('sx-style', 'card');
+const qs = (location.search.match(/[?&]style=(book|card)\b/) || [])[1];
+if (qs){ viewStyle = qs; store.set('sx-style', qs); }
+applyStyle(viewStyle);
+function setStyle(st){ viewStyle = st; applyStyle(st); store.set('sx-style', st); }
+$('c-style').onclick = () => setStyle(viewStyle === 'book' ? 'card' : 'book');
+$('st-card').onclick = () => setStyle('card');
+$('st-book').onclick = () => setStyle('book');
+addEventListener('scroll', () => {
+  if (viewStyle !== 'book') return;
+  const d = document.documentElement, p = d.scrollTop / ((d.scrollHeight - d.clientHeight) || 1);
+  $('readbar').style.width = (Math.min(1, Math.max(0, p)) * 100) + '%';
+}, { passive: true });
 
 render();
 show('cover');
