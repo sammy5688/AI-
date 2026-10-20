@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>聖訓在生活</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap">
+<style>
+/* 一欄閱讀：上方固定三顆大按鈕，下面一頁只放一件事；原文用淡紫底，編輯整理用白底 */
+:root{
+  --bg:#F3F0F8; --paper:#FFFFFF; --ink:#2A2436; --muted:#5F5770; --line:#DCD5E8;
+  --accent:#5E4B8B; --accent-ink:#FFFFFF; --quote:#ECE6F5; --quote-edge:#B9A9D6; --key:#3B2F52;
+  --soft:#F7F4FB;
+  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --fs:20px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1C1824; --paper:#262030; --ink:#EEE9F5; --muted:#B6ADC6; --line:#3B3349;
+  --accent:#B9A6E4; --accent-ink:#1C1824; --quote:#2F2840; --quote-edge:#6E5C99; --key:#E6DDF7; --soft:#221D2B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1C1824; --paper:#262030; --ink:#EEE9F5; --muted:#B6ADC6; --line:#3B3349;
+  --accent:#B9A6E4; --accent-ink:#1C1824; --quote:#2F2840; --quote-edge:#6E5C99; --key:#E6DDF7; --soft:#221D2B; color-scheme:dark}
+html.big{--fs:24px}
+html,body{background:var(--bg)}
+body{color:var(--ink);font-family:var(--sans);font-size:var(--fs);line-height:1.8}
+*{box-sizing:border-box}
+button,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar-in{max-width:36rem;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.bar button{min-height:52px;border-radius:14px;border:1px solid var(--line);background:var(--paper);font-size:.8em;font-weight:500;padding:4px}
+.bar button[aria-current="page"],.bar button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+main{padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.col{max-width:36rem;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+
+.trial{align-self:flex-start;font-size:.7em;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 12px}
+.cover{display:flex;flex-direction:column;gap:14px;padding-block:8px 4px}
+.brand{font-family:var(--serif);font-size:2em;font-weight:700;line-height:1.3;color:var(--key);margin:0;text-wrap:balance}
+.sub{margin:0;color:var(--muted);font-size:.9em}
+.motto{margin:0;color:var(--muted);font-size:.75em;letter-spacing:.12em}
+.today{font-size:.85em;color:var(--muted);margin:10px 0 0}
+.daytag{font-family:var(--serif);font-size:1.25em;font-weight:700;margin:0;color:var(--ink)}
+.bigkey{font-family:var(--serif);font-size:1.45em;line-height:1.6;font-weight:700;color:var(--key);margin:0;text-wrap:balance}
+.primary{min-height:60px;border:0;border-radius:16px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:1em;padding:0 24px}
+.ghost{min-height:52px;border:1px solid var(--line);border-radius:14px;background:var(--paper);padding:0 18px;font-size:.9em}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+
+.step{display:flex;flex-direction:column;gap:12px}
+.step h2{margin:0;font-size:.85em;letter-spacing:.14em;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:10px}
+.step h2::after{content:"";flex:1;height:1px;background:var(--line)}
+.lab{font-size:.7em;color:var(--muted);margin:0 0 4px;letter-spacing:.05em}
+.lab b{font-weight:700;color:var(--ink);margin-right:6px;letter-spacing:.1em}
+.p{margin:0}
+.quote{background:var(--quote);border-left:4px solid var(--quote-edge);border-radius:4px 14px 14px 4px;padding:16px 18px}
+.quote .p{font-family:var(--serif);font-size:1.05em;line-height:1.9}
+.keybox{background:var(--quote);border-radius:14px;padding:16px 18px}
+.keybox .p{font-family:var(--serif);font-size:1.3em;font-weight:700;color:var(--key);line-height:1.6}
+.edit{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+details.edit summary{list-style:none;min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:700;cursor:pointer}
+details.edit summary::-webkit-details-marker{display:none}
+details.edit summary::after{content:"點開看";font-size:.75em;font-weight:500;color:var(--accent);border:1px solid var(--line);border-radius:999px;padding:4px 14px;white-space:nowrap}
+details[open].edit summary::after{content:"收起來"}
+details.edit .inner{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+.hint{font-size:.8em;color:var(--muted);margin:0}
+textarea{width:100%;min-height:6.5em;border:1px solid var(--line);border-radius:12px;background:var(--soft);padding:12px 14px;line-height:1.7;resize:vertical}
+.saved{font-size:.8em;color:var(--muted);min-height:1.6em;margin:0}
+.past{background:var(--soft);border:1px dashed var(--quote-edge);border-radius:12px;padding:12px 14px;font-size:.9em}
+.note{font-size:.72em;color:var(--muted);margin:0;border-top:1px solid var(--line);padding-top:14px}
+
+.list{display:flex;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
+.list li{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;gap:6px}
+.list .meta{font-size:.75em;color:var(--muted)}
+.list .k{font-family:var(--serif);font-weight:700;color:var(--key)}
+.list .mine{font-size:.9em}
+.empty{color:var(--muted)}
+.intro h3{margin:8px 0 0;font-size:1em;color:var(--key)}
+.intro p{margin:0}
+@media (prefers-reduced-motion:no-preference){.view{animation:in .25s ease-out}@keyframes in{from{opacity:.4}to{opacity:1}}}
+</style>
+
+</head>
+<body>
+<nav class="bar" aria-label="主選單">
+  <div class="bar-in">
+    <button id="nav-today" data-go="today">今天</button>
+    <button id="nav-notes" data-go="notes">重點本</button>
+    <button id="nav-intro" data-go="intro">說明</button>
+    <button id="nav-big" aria-pressed="false">大字</button>
+  </div>
+</nav>
+
+<main>
+  <!-- 封面 -->
+  <section class="view col" id="v-cover">
+    <span class="trial" id="trialchip">試讀版・前 3 天</span>
+    <div class="cover">
+      <h1 class="brand">《聖訓在生活》</h1>
+      <p class="sub">讓聖訓走進生活，讓道落在行動中。</p>
+      <p class="motto">讀聖訓・悟道理・觀自心・實踐於行</p>
+      <p class="today" id="c-date"></p>
+      <p class="daytag" id="c-day"></p>
+      <p class="bigkey" id="c-key"></p>
+    </div>
+    <div class="row"><button class="primary" id="go-read">開始讀</button></div>
+    <p class="hint" id="c-msg" hidden></p>
+  </section>
+
+  <!-- 每日頁 -->
+  <section class="view col" id="v-today" hidden>
+    <p class="today" id="d-date" style="margin:0"></p>
+    <p class="daytag" id="d-title" style="margin-top:-14px"></p>
+    <div class="row"><button class="ghost" id="speak">唸給我聽</button></div>
+
+    <div class="step">
+      <h2>讀聖訓</h2>
+      <div><p class="lab"><b>開篇</b>編輯整理</p><p class="p" id="d-open"></p></div>
+      <div class="quote"><p class="lab"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
+      <div class="keybox"><p class="lab"><b>今日重點</b>原文句子</p><p class="p" id="d-key"></p></div>
+    </div>
+
+    <div class="step">
+      <h2>悟道理</h2>
+      <p class="hint">先自己想一想上面那句話，再點開。</p>
+      <details class="edit" id="d-more">
+        <summary>白話理解與生活例子</summary>
+        <div class="inner">
+          <div><p class="lab"><b>白話理解</b>編輯整理</p><p class="p" id="d-plain"></p></div>
+          <div><p class="lab"><b>生活例子</b>編輯整理</p><p class="p" id="d-story"></p></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="step">
+      <h2>觀自心</h2>
+      <div><p class="lab"><b>問問自己</b>編輯整理</p><p class="p" id="d-ask"></p></div>
+      <div class="past" id="d-past" hidden></div>
+      <label class="hint" for="note">想寫就寫一句話給自己，不寫也可以。只存在這支手機裡。</label>
+      <textarea id="note" placeholder="例如：今天我差點又急著……"></textarea>
+      <div class="row"><button class="ghost" id="save-note">存下這句話</button></div>
+      <p class="saved" id="note-msg" aria-live="polite"></p>
+    </div>
+
+    <div class="step">
+      <h2>實踐於行</h2>
+      <div class="edit"><p class="lab"><b>今天可以試試</b>編輯整理</p><p class="p" id="d-try"></p></div>
+      <div class="row"><button class="primary" id="carry">把今日重點帶著走</button></div>
+      <p class="saved" id="carry-msg" aria-live="polite"></p>
+    </div>
+
+    <p class="note">「原文」與「今日重點」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文（試讀版，內容待審閱）。</p>
+  </section>
+
+  <!-- 重點本 -->
+  <section class="view col" id="v-notes" hidden>
+    <p class="daytag">重點本</p>
+    <p class="hint">按過「帶著走」或寫過一句話的日子，會收在這裡。</p>
+    <ul class="list" id="n-list"></ul>
+  </section>
+
+  <!-- 說明（前言） -->
+  <section class="view col intro" id="v-intro" hidden>
+    <p class="daytag">讀之前</p>
+    <h3>玉虛篇是什麼</h3>
+    <p>天祥三年（民國 108 年）一月，天祥的道主、道母陸續聽到多位仙家的開示。這些仙家大多自稱是「玉虛」門下，所以這批開示紀錄被整理為「玉虛仙宗聖訓」。</p>
+    <p>這是天祥的信仰紀錄。對天祥家人來說，是仙家的教導；對第一次接觸的親友來說，也可以把它當作一段段談修心、談做人的話來讀。</p>
+    <h3>怎麼讀</h3>
+    <p>一共 56 天，分兩輪。第一輪 28 天，每天讀一位仙家的一段話；第二輪再回到同一批仙家，讀另一段話。每天只要記住「今日重點」那一句，帶著走就好。今天沒做到也沒關係，明天再讀一次。</p>
+    <h3>讀的時候請記得</h3>
+    <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
+    <h3>頁面上的內容</h3>
+    <p>「原文」與「今日重點」是開示紀錄的原句，只統一了字形。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
+    <div class="row"><button class="primary" id="intro-ok">我知道了，開始讀</button></div>
+  </section>
+</main>
+
+<script>
+const DAYS = [{"n": 1, "theme": "定心", "who": "玉虛真人", "date": "108 年 1 月 7 日", "開篇": "心一亂，我們常常急著做點什麼。今天這篇，玉虛真人請我們先停下來：心定了，才看得清方向。", "原文": "「心有安了嗎？有定了嗎？先把心定了、安了，你才知道是往這裡衝，而不是往那裡衝。衝錯了，不叫衝破。所以，覺得煩躁不安時，就應慎思、再慎思。」", "今日重點": "「先把心定了、安了，你才知道是往這裡衝」", "白話理解": "心慌的時候，人最想做的就是趕快做點什麼。玉虛真人卻說，先停下來。心沒定，往前衝也可能衝錯方向；衝錯了，不叫衝破，只是更累。煩躁的時候，不是加快腳步，而是慢下來，想一想、再想一想。", "情境範例": "孩子的成績單攤在桌上，數學三十八分。她的火一下子上來，已經走到房門口，手都舉起來要敲門了。她停了一下，轉身去廚房倒了一杯水，站在窗邊喝完。回到房門口時，她想說的話已經不一樣了：「這次考卷，可以拿給我看看嗎？」", "問問自己": "最近哪一次，我是心還沒定就急著往前衝？那時如果先停一下，結果會不會不一樣？", "今天可以試試": "覺得煩躁時，先去喝一杯水，再決定要說什麼、做什麼。"}, {"n": 2, "theme": "看透自己", "who": "慈航道人", "date": "108 年 1 月 13 日", "開篇": "最難看清的，常常是自己。今天跟著慈航道人，誠實地看一看自己的計較和面子。", "原文": "「莫要覺得我計較、我比較，面子上放不下，這就是人性。面對它、瞭解它……瞭解之後你才可以轉化，你才可以人心轉化為道心。」", "今日重點": "「看透、澈透自己，是一件很重要的事。」", "白話理解": "「我哪有計較？」很多時候，最看不清的就是自己。慈航道人說，計較、比較、放不下面子，這就是人性，不必假裝沒有。先承認它，才有辦法轉。", "情境範例": "孫子做滿月，親家送了一條很粗的金鍊子，她送的是一對小手鐲。她嘴上說「親家真大方」，回家卻整晚悶悶的，跟先生講話也特別衝。睡前她問自己：到底在不舒服什麼？想了很久，她承認了：是在比。承認的那一刻，心裡反而鬆了一點。", "問問自己": "今天讓我不舒服的事，背後有沒有一點計較、比較或面子？我看得見嗎？", "今天可以試試": "心裡不舒服時，問自己一句：「我到底在意的是什麼？」"}, {"n": 3, "theme": "轉個彎", "who": "懼留孫", "date": "108 年 1 月 14 日", "開篇": "遇到過不去的事，一直硬撞只會更累。今天懼留孫告訴我們：方向不變，方法可以轉個彎。", "原文": "「所以，不是什麼事都是傻傻的撞上去，有的時候要轉個彎就進去了。雖然，道只有一條，那是說吾之心不變，一心向道。要靈活、靈活、靈活。」", "今日重點": "「有的時候要轉個彎就進去了。」", "白話理解": "鑽地鑽到大石頭，硬鑽只會滿頭包，往旁邊轉個彎就過去了。懼留孫說，方向不變，方法要靈活。轉個彎不是放棄，是換一條走得通的路。", "情境範例": "父親中風後，一說要去復健就發脾氣。他勸了一個月，越勸父親越不肯。有一天他不勸了，只說：「爸，我們去公園看看你以前下棋的朋友。」為了走到棋桌前，父親自己慢慢走了兩百公尺。回家的路上，父親說：「明天還要來。」", "問問自己": "有哪一件事，我一直用同一個方法，卻一直撞牆？", "今天可以試試": "挑一件卡住的事，想一個以前沒試過的方法，今天試一次。"}];
+// 試讀開始日（台灣時間清晨 5:00 換篇）。大家同一天讀同一篇。
+const START = Date.UTC(2026, 9, 21); // 2026-10-21
+const DAY = 864e5;
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+};
+const $ = id => document.getElementById(id);
+
+function taipeiShifted(){ return Date.now() + 8*3600e3 - 5*3600e3; }
+function todayState(){
+  const idx = Math.floor((taipeiShifted() - START) / DAY);
+  const h = (location.hash || '').match(/^#d([123])$/);
+  if (h) return { day: DAYS[+h[1]-1], mode: 'preview' };
+  if (idx < 0) return { day: DAYS[0], mode: 'before' };
+  if (idx >= DAYS.length) return { day: DAYS[DAYS.length-1], mode: 'after' };
+  return { day: DAYS[idx], mode: 'on' };
+}
+function dateLabel(){
+  const t = new Date(Date.now() + 8*3600e3);
+  const w = '日一二三四五六'[t.getUTCDay()];
+  return `${t.getUTCMonth()+1} 月 ${t.getUTCDate()} 日（星期${w}）`;
+}
+const strip = s => s.replace(/^「|」$/g, '');
+
+let state, D;
+function render(){
+  state = todayState(); D = state.day;
+  $('c-date').textContent = dateLabel();
+  $('c-day').textContent = `第 ${D.n} 天｜${D.theme}・${D.who}`;
+  $('c-key').textContent = D['今日重點'];
+  const msg = $('c-msg');
+  msg.hidden = state.mode === 'on';
+  if (state.mode === 'before') msg.textContent = '試讀從 10 月 21 日開始。今天可以先看看第 1 天。';
+  if (state.mode === 'after') msg.textContent = '三天試讀已經讀完，謝謝您。這三天的內容都可以在「重點本」回頭看。';
+  if (state.mode === 'preview') msg.textContent = `預覽第 ${D.n} 天。`;
+
+  $('d-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
+  $('d-title').textContent = `第 ${D.n} 天｜${D.theme}`;
+  $('d-open').textContent = D['開篇'];
+  $('d-src').textContent = `${D.who}，${D.date}`;
+  $('d-text').textContent = D['原文'];
+  $('d-key').textContent = D['今日重點'];
+  $('d-plain').textContent = D['白話理解'];
+  $('d-story').textContent = D['情境範例'];
+  $('d-ask').textContent = D['問問自己'];
+  $('d-try').textContent = D['今天可以試試'];
+
+  const notes = store.get('sx-notes', {});
+  const mine = notes[D.n] || {};
+  $('note').value = mine.today === dateLabel() ? (mine.text || '') : '';
+  const past = $('d-past');
+  if (mine.text && mine.today !== dateLabel()){
+    past.hidden = false;
+    past.textContent = `上一次讀到這篇時，你寫下：「${mine.text}」`;
+  } else past.hidden = true;
+  $('note-msg').textContent = ''; $('carry-msg').textContent = mine.carried ? '已經收進重點本。' : '';
+}
+
+function show(name){
+  ['cover','today','notes','intro'].forEach(v => $('v-'+v).hidden = v !== name);
+  ['today','notes','intro'].forEach(v => {
+    const b = $('nav-'+v);
+    if ((name === v) || (name === 'cover' && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+  });
+  if (name === 'notes') renderNotes();
+  window.scrollTo(0, 0);
+}
+
+function renderNotes(){
+  const notes = store.get('sx-notes', {});
+  const ul = $('n-list'); ul.textContent = '';
+  const keys = Object.keys(notes).sort((a,b) => (notes[b].at||0) - (notes[a].at||0));
+  if (!keys.length){ const li = document.createElement('p'); li.className='empty'; li.textContent='還沒有內容。讀完一天，按「把今日重點帶著走」，就會出現在這裡。'; ul.appendChild(li); return; }
+  keys.forEach(k => {
+    const d = DAYS.find(x => x.n == k), n = notes[k];
+    if (!d) return;
+    const li = document.createElement('li');
+    const m = document.createElement('span'); m.className='meta'; m.textContent = `${n.today || ''}・第 ${d.n} 天｜${d.theme}・${d.who}`;
+    const kk = document.createElement('span'); kk.className='k'; kk.textContent = d['今日重點'];
+    li.append(m, kk);
+    if (n.text){ const t = document.createElement('span'); t.className='mine'; t.textContent = `我寫下：${n.text}`; li.append(t); }
+    ul.appendChild(li);
+  });
+}
+
+function upsert(patch){
+  const notes = store.get('sx-notes', {});
+  notes[D.n] = Object.assign({}, notes[D.n], patch, { today: dateLabel(), at: Date.now() });
+  return store.set('sx-notes', notes);
+}
+$('save-note').onclick = () => {
+  const t = $('note').value.trim();
+  if (!t){ $('note-msg').textContent = '還沒寫字。不寫也沒關係。'; return; }
+  $('note-msg').textContent = upsert({ text: t }) ? '存好了，在「重點本」看得到。' : '這支手機現在沒辦法存，請把這句話記在心裡就好。';
+};
+$('carry').onclick = () => {
+  $('carry-msg').textContent = upsert({ carried: true }) ? `已經收進重點本。今天就帶著這一句：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，請把這一句記在心裡就好。';
+};
+
+// 唸給我聽：用手機內建語音
+const canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+const sp = $('speak');
+if (!canSpeak) sp.hidden = true;
+let speaking = false;
+sp.onclick = () => {
+  const s = window.speechSynthesis;
+  if (speaking){ s.cancel(); speaking = false; sp.textContent = '唸給我聽'; return; }
+  const text = ['原文。', strip(D['原文']), '今日重點。', strip(D['今日重點']), '白話理解。', D['白話理解']].join('');
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-TW'; u.rate = 0.85;
+  const v = s.getVoices().find(v => /zh[-_]TW/i.test(v.lang)) || s.getVoices().find(v => /^zh/i.test(v.lang));
+  if (v) u.voice = v;
+  u.onend = u.onerror = () => { speaking = false; sp.textContent = '唸給我聽'; };
+  s.cancel(); s.speak(u); speaking = true; sp.textContent = '停止唸';
+};
+
+// 大字
+function applyBig(on){ document.documentElement.classList.toggle('big', on); $('nav-big').setAttribute('aria-pressed', on ? 'true' : 'false'); }
+applyBig(store.get('sx-big', false));
+$('nav-big').onclick = () => { const on = !document.documentElement.classList.contains('big'); applyBig(on); store.set('sx-big', on); };
+
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => show(b.dataset.go));
+$('go-read').onclick = () => show('today');
+$('intro-ok').onclick = () => { store.set('sx-intro', true); show('today'); };
+
+render();
+show(store.get('sx-intro', false) ? 'cover' : 'intro');
+// 清晨 5:00 換篇：回到畫面時重新判斷
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n) show('cover'); } });
+window.addEventListener('hashchange', () => { render(); show('cover'); });
+</script>
+
+</body>
+</html>
