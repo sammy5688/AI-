@@ -77,7 +77,7 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .motto{margin:0;color:var(--muted);font-size:.8em;letter-spacing:.08em}
 
 .todaycard{background:var(--paper);border-radius:24px;padding:22px 22px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
-.meta{margin:0;font-size:.8em;color:var(--muted)}
+.meta{margin:0;font-size:.85em;color:var(--muted)}
 .daytag{font-family:var(--serif);font-size:1.2em;font-weight:700;margin:0;color:var(--ink)}
 .bigkey{font-family:var(--serif);font-size:1.4em;line-height:1.65;font-weight:600;color:var(--accent-deep);margin:4px 0 0;text-wrap:balance}
 
@@ -125,7 +125,7 @@ details.fold summary::after{content:"點開看";font-size:.8em;color:var(--accen
   box-shadow:0 4px 10px rgba(91,74,138,.13),inset 0 1px 0 #fff,inset 0 -2px 3px rgba(124,104,174,.12),0 0 0 1px rgba(124,104,174,.12)}
 details[open].fold summary::after{content:"收起來"}
 details.fold .inner{display:flex;flex-direction:column;gap:16px;padding:4px 18px 18px}
-.hint{font-size:.8em;color:var(--muted);margin:0}
+.hint{font-size:.85em;color:var(--muted);margin:0}
 textarea{width:100%;min-height:6.5em;border:1.5px solid var(--line);border-radius:18px;background:#FCFAFE;padding:14px 16px;line-height:1.75;resize:vertical}
 textarea::placeholder{color:#B0A7BE}
 .saved{font-size:.82em;color:var(--sage-ink);min-height:1.6em;margin:0}
@@ -211,6 +211,17 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
 .after{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
 .after p{margin:0;color:var(--muted);font-size:.9em}
 
+/* 前幾天 */
+.daylist{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.daylist button{width:100%;text-align:left;display:flex;flex-direction:column;gap:2px;padding:16px 20px;border-radius:22px;
+  border:1px solid rgba(255,255,255,.95);background:linear-gradient(180deg,#FFFFFF 0%,#FFFCFA 60%,#FBF8FD 100%);box-shadow:var(--float)}
+.daylist button:active{transform:translateY(2px)}
+.daylist .t{font-family:var(--serif);font-weight:700;color:var(--ink)}
+.daylist .s{font-size:.85em;color:var(--muted)}
+.daylist .k{font-family:var(--serif);color:var(--accent-deep);font-size:.95em}
+.list li .ghost{align-self:flex-start;margin-top:6px;min-height:48px;font-size:.8em;padding:0 18px}
+.storenote{font-size:.8em;color:var(--muted);margin:0;background:#FCF4F0;border-radius:14px;padding:10px 14px}
+
 /* 唸給我聽：固定在畫面下方 */
 .speakbar{position:fixed;left:0;right:0;bottom:0;z-index:6;
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
@@ -289,6 +300,7 @@ body.has-speak main{padding-bottom:120px}
       <p class="meta" id="d-date"></p>
       <p class="daytag" id="d-title"></p>
     </div>
+    <div class="row" id="d-nav"><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-today" hidden>回到今天</button></div>
     <div class="step">
       <h2><span class="num">一</span>讀聖訓</h2>
       <div><p class="lab"><b>開篇</b>編輯整理</p><p class="p" id="d-open"></p></div>
@@ -340,6 +352,16 @@ body.has-speak main{padding-bottom:120px}
       <p class="hint">按過「收藏這一句」或寫過一句話的日子，會收在這裡，隨時可以回來看看。</p>
     </div>
     <ul class="list" id="n-list"></ul>
+    <p class="storenote">收藏和寫下的話，只存在這支手機的這個瀏覽器裡。換手機、換瀏覽器，或清除瀏覽紀錄，就不會跟著過去。</p>
+  </section>
+
+  <!-- 前幾天 -->
+  <section class="view col" id="v-past" hidden>
+    <div class="pagehead">
+      <p class="daytag">前幾天</p>
+      <p class="hint">錯過的日子都在這裡，想讀哪一篇就點哪一篇。</p>
+    </div>
+    <ul class="daylist" id="p-list"></ul>
   </section>
 
   <!-- 說明（前言） -->
@@ -355,6 +377,8 @@ body.has-speak main{padding-bottom:120px}
       <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
       <h3>頁面上的內容</h3>
       <p>「原文」與「今日重點」是開示紀錄的原句，只統一了字形。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
+      <h3 id="contact-h" hidden>有問題找誰</h3>
+      <p id="contact" hidden></p>
     </div>
     <div class="row center"><button class="primary" id="intro-ok">我知道了，開始讀</button></div>
   </section>
@@ -373,6 +397,8 @@ const DAYS = [{"n": 1, "theme": "定心", "who": "玉虛真人", "date": "108 �
 // 試讀開始日（台灣時間清晨 5:00 換篇）。大家同一天讀同一篇。
 const START = Date.UTC(2026, 9, 21); // 2026-10-21
 const DAY = 864e5;
+// 聯絡人：填上後才會出現在「說明」頁，例如 '文教部 王小明（LINE：xxxx）'
+const CONTACT = '';
 const store = {
   get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
@@ -402,11 +428,18 @@ function greeting(){
 }
 const strip = s => s.replace(/^「|」$/g, '');
 
-let state, D;
+let state, D, viewN = null;
+function openDays(){
+  if (state.mode === 'before') return [DAYS[0]];
+  if (state.mode === 'on'){ const idx = Math.floor((taipeiShifted() - START) / DAY); return DAYS.slice(0, idx + 1); }
+  return DAYS.slice();
+}
 const SD = new Date(START);
 const startLabel = `${SD.getUTCMonth()+1} 月 ${SD.getUTCDate()} 日`;
 function render(){
-  state = todayState(); D = state.day;
+  state = todayState();
+  const pastView = !!viewN && viewN !== state.day.n;
+  D = pastView ? DAYS[viewN - 1] : state.day;
   $('c-greet').textContent = greeting();
   $('c-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
   $('c-day').textContent = `第 ${D.n} 天｜${D.theme}・${D.who}`;
@@ -418,7 +451,10 @@ function render(){
   if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的收藏」看得到。`;
   if (state.mode === 'preview') msg.textContent = `預覽第 ${D.n} 天。`;
 
-  $('d-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
+  $('d-date').textContent = pastView ? '前幾天的內容' : (state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel());
+  $('to-past').hidden = pastView || openDays().length < 2;
+  $('to-today').hidden = !pastView;
+  $('d-nav').hidden = $('to-past').hidden && $('to-today').hidden;
   $('d-title').textContent = `第 ${D.n} 天｜${D.theme}`;
   $('d-open').textContent = D['開篇'];
   $('d-src').textContent = `${D.who}，${D.date}`;
@@ -433,6 +469,7 @@ function render(){
     state.mode === 'after' ? `${DAYS.length} 天試讀已經讀完，謝謝您。` :
     state.mode === 'preview' ? '這是預覽。' :
     D.n < DAYS.length ? `明天清晨 5 點，會換成第 ${D.n + 1} 天。` : '今天是試讀的最後一天，謝謝您一起讀。';
+  if (pastView) $('d-next').textContent = '這是前幾天的內容。按上面的「回到今天」，回到今天這一篇。';
 
   const notes = store.get('sx-notes', {});
   const mine = notes[D.n] || {};
@@ -446,11 +483,12 @@ function render(){
 }
 
 function show(name){
-  ['cover','today','notes','intro'].forEach(v => $('v-'+v).hidden = v !== name);
+  ['cover','today','notes','intro','past'].forEach(v => $('v-'+v).hidden = v !== name);
   ['today','notes','intro'].forEach(v => {
     const b = $('nav-'+v);
-    if ((name === v) || (name === 'cover' && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+    if ((name === v) || ((name === 'cover' || name === 'past') && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
   });
+  if (name === 'past') renderPast();
   if (name !== 'today') stopSpeak();
   const bar = name === 'today' && canSpeak;
   $('speakbar').hidden = !bar; document.body.classList.toggle('has-speak', bar);
@@ -471,10 +509,22 @@ function renderNotes(){
     const kk = document.createElement('span'); kk.className='k'; kk.textContent = d['今日重點'];
     li.append(m, kk);
     if (n.text){ const t = document.createElement('span'); t.className='mine'; t.textContent = `我寫下：${n.text}`; li.append(t); }
+    if (openDays().some(x => x.n === d.n)){ const b = document.createElement('button'); b.className='ghost'; b.textContent='再讀這一篇'; b.onclick = () => openDay(d.n); li.append(b); }
     ul.appendChild(li);
   });
 }
 
+function openDay(n){ viewN = n; render(); show('today'); }
+function renderPast(){
+  const ul = $('p-list'); ul.textContent = '';
+  openDays().slice().reverse().forEach(d => {
+    const li = document.createElement('li'), b = document.createElement('button');
+    const t = document.createElement('span'); t.className='t'; t.textContent = `第 ${d.n} 天｜${d.theme}` + (d.n === state.day.n ? '（今天）' : '');
+    const s = document.createElement('span'); s.className='s'; s.textContent = d.who;
+    const k = document.createElement('span'); k.className='k'; k.textContent = d['今日重點'];
+    b.append(t, s, k); b.onclick = () => openDay(d.n); li.append(b); ul.appendChild(li);
+  });
+}
 function upsert(patch){
   const notes = store.get('sx-notes', {});
   notes[D.n] = Object.assign({}, notes[D.n], patch, { today: dateLabel(), at: Date.now() });
@@ -560,8 +610,11 @@ let lineOk = false; try{ lineOk = sessionStorage.getItem('sx-line-ok') === '1'; 
 $('line-hint').hidden = !inLine || lineOk;
 $('line-ok').onclick = () => { $('line-hint').hidden = true; try{ sessionStorage.setItem('sx-line-ok', '1'); }catch(e){} };
 
-document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => show(b.dataset.go));
-$('go-read').onclick = () => { store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { if (b.dataset.go === 'today'){ viewN = null; render(); } show(b.dataset.go); });
+$('to-past').onclick = () => show('past');
+$('to-today').onclick = () => { viewN = null; render(); show('today'); };
+if (CONTACT){ $('contact').textContent = CONTACT; $('contact').hidden = false; $('contact-h').hidden = false; }
+$('go-read').onclick = () => { viewN = null; render(); store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
 $('c-intro').onclick = () => show('intro');
 $('intro-ok').onclick = () => { store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
 $('to-top').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -569,8 +622,8 @@ $('to-top').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 render();
 show('cover');
 // 清晨 5:00 換篇：回到畫面時重新判斷
-document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n) show('cover'); } });
-window.addEventListener('hashchange', () => { render(); show('cover'); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n && !viewN) show('cover'); } });
+window.addEventListener('hashchange', () => { viewN = null; render(); show('cover'); });
 </script>
 
 </body>
