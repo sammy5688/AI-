@@ -18,7 +18,7 @@
   --dawn:#FBEDE8;       /* 晨光暖粉 */
   --paper:#FFFDFB;      /* 暖白紙 */
   --ink:#3A3347;        /* 主文字：柔和的深紫灰 */
-  --muted:#7A7088;      /* 次要文字 */
+  --muted:#5E556C;      /* 次要文字（加深，長輩看得清楚） */
   --line:#E8E1F0;
   --accent:#7C68AE;     /* 主色：薰衣草紫 */
   --accent-deep:#5B4A8A;
@@ -70,7 +70,7 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .motto{margin:0;color:var(--muted);font-size:.72em;letter-spacing:.14em}
 
 .todaycard{background:var(--paper);border-radius:24px;padding:22px 22px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
-.meta{margin:0;font-size:.8em;color:var(--muted)}
+.meta{margin:0;font-size:.85em;color:var(--muted)}
 .daytag{font-family:var(--serif);font-size:1.2em;font-weight:700;margin:0;color:var(--ink)}
 .bigkey{font-family:var(--serif);font-size:1.4em;line-height:1.65;font-weight:600;color:var(--accent-deep);margin:4px 0 0;text-wrap:balance}
 
@@ -103,7 +103,7 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .step h2 .num{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--veil);color:var(--accent-deep);font-size:.8em;font-family:var(--sans)}
 .step.act h2 .num{background:var(--sage);color:var(--sage-ink)}
 .step.act h2{color:var(--sage-ink)}
-.lab{font-size:.7em;color:var(--muted);margin:0 0 4px;letter-spacing:.04em}
+.lab{font-size:.78em;color:var(--muted);margin:0 0 4px;letter-spacing:.04em}
 .lab b{font-weight:700;color:var(--ink);margin-right:8px;letter-spacing:.08em}
 .quote{background:var(--veil);border-radius:18px;padding:18px 18px}
 .quote .p{font-family:var(--serif);font-size:1.05em;line-height:2}
@@ -117,7 +117,7 @@ details.fold summary::after{content:"點開看";font-size:.75em;color:var(--acce
   box-shadow:0 4px 10px rgba(91,74,138,.13),inset 0 1px 0 #fff,inset 0 -2px 3px rgba(124,104,174,.12),0 0 0 1px rgba(124,104,174,.12)}
 details[open].fold summary::after{content:"收起來"}
 details.fold .inner{display:flex;flex-direction:column;gap:16px;padding:4px 18px 18px}
-.hint{font-size:.8em;color:var(--muted);margin:0}
+.hint{font-size:.85em;color:var(--muted);margin:0}
 textarea{width:100%;min-height:6.5em;border:1.5px solid var(--line);border-radius:18px;background:#FCFAFE;padding:14px 16px;line-height:1.75;resize:vertical}
 textarea::placeholder{color:#B0A7BE}
 .saved{font-size:.82em;color:var(--sage-ink);min-height:1.6em;margin:0}
@@ -127,7 +127,16 @@ textarea::placeholder{color:#B0A7BE}
 .close{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 12px 0}
 .close .orb{width:28px;height:28px;box-shadow:0 0 0 6px rgba(246,217,207,.3)}
 .close p{margin:0;font-family:var(--serif);color:var(--accent-deep)}
-.note{font-size:.7em;color:var(--muted);margin:0;text-align:center;padding:0 8px}
+.note{font-size:.78em;color:var(--muted);margin:0;text-align:center;padding:0 8px}
+.daylist{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.daylist button{width:100%;text-align:left;display:flex;flex-direction:column;gap:2px;padding:16px 20px;border-radius:22px;
+  border:1px solid rgba(255,255,255,.95);background:linear-gradient(180deg,#FFFFFF 0%,#FFFCFA 60%,#FBF8FD 100%);box-shadow:var(--float)}
+.daylist button:active{transform:translateY(2px)}
+.daylist .t{font-family:var(--serif);font-weight:700;color:var(--ink)}
+.daylist .s{font-size:.85em;color:var(--muted)}
+.daylist .k{font-family:var(--serif);color:var(--accent-deep);font-size:.95em}
+.list li .ghost{align-self:flex-start;margin-top:6px;min-height:46px;font-size:.8em;padding:0 18px}
+.storenote{font-size:.8em;color:var(--muted);margin:0;background:#FCF4F0;border-radius:14px;padding:10px 14px}
 
 /* 我的收藏 */
 .pagehead{display:flex;flex-direction:column;gap:4px;padding:6px 4px 0}
@@ -236,7 +245,7 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
       <p class="meta" id="d-date"></p>
       <p class="daytag" id="d-title"></p>
     </div>
-    <div class="row"><button class="ghost" id="speak">唸給我聽</button></div>
+    <div class="row"><button class="ghost" id="speak">唸給我聽</button><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-today" hidden>回到今天</button></div>
 
     <div class="step">
       <h2><span class="num">一</span>讀聖訓</h2>
@@ -285,6 +294,16 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
       <p class="hint">按過「收藏這一句」或寫過一句話的日子，會收在這裡，隨時可以回來看看。</p>
     </div>
     <ul class="list" id="n-list"></ul>
+    <p class="storenote">收藏和寫下的話，只存在這支手機的這個瀏覽器裡。換手機、換瀏覽器，或清除瀏覽紀錄，就不會跟著過去。</p>
+  </section>
+
+  <!-- 前幾天 -->
+  <section class="view col" id="v-past" hidden>
+    <div class="pagehead">
+      <p class="daytag">前幾天</p>
+      <p class="hint">錯過的日子都在這裡，想讀哪一篇就點哪一篇。</p>
+    </div>
+    <ul class="daylist" id="p-list"></ul>
   </section>
 
   <!-- 說明（前言） -->
@@ -300,6 +319,8 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
       <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
       <h3>頁面上的內容</h3>
       <p>「原文」與「今日重點」是開示紀錄的原句，只統一了字形。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
+      <h3 id="contact-h" hidden>有問題找誰</h3>
+      <p id="contact" hidden></p>
     </div>
     <div class="row center"><button class="primary" id="intro-ok">我知道了，開始讀</button></div>
   </section>
@@ -310,6 +331,8 @@ const DAYS = [{"n": 1, "theme": "定心", "who": "玉虛真人", "date": "108 �
 // 試讀開始日（台灣時間清晨 5:00 換篇）。大家同一天讀同一篇。
 const START = Date.UTC(2026, 9, 21); // 2026-10-21
 const DAY = 864e5;
+// 聯絡人：填上後才會出現在「說明」頁，例如 '文教部 王小明（LINE：xxxx）'
+const CONTACT = '';
 const store = {
   get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
@@ -339,9 +362,16 @@ function greeting(){
 }
 const strip = s => s.replace(/^「|」$/g, '');
 
-let state, D;
+function openDays(){
+  if (state.mode === 'before') return [DAYS[0]];
+  if (state.mode === 'on'){ const idx = Math.floor((taipeiShifted() - START) / DAY); return DAYS.slice(0, idx + 1); }
+  return DAYS.slice();
+}
+let state, D, viewN = null;
 function render(){
-  state = todayState(); D = state.day;
+  state = todayState();
+  const pastView = viewN && viewN !== state.day.n;
+  D = pastView ? DAYS[viewN - 1] : state.day;
   $('c-greet').textContent = greeting();
   $('c-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
   $('c-day').textContent = `第 ${D.n} 天｜${D.theme}・${D.who}`;
@@ -352,7 +382,9 @@ function render(){
   if (state.mode === 'after') msg.textContent = '三天試讀已經讀完，謝謝您。這三天的內容都可以在「我的收藏」回頭看。';
   if (state.mode === 'preview') msg.textContent = `預覽第 ${D.n} 天。`;
 
-  $('d-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
+  $('d-date').textContent = pastView ? '前幾天的內容' : (state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel());
+  $('to-past').hidden = pastView || openDays().length < 2;
+  $('to-today').hidden = !pastView;
   $('d-title').textContent = `第 ${D.n} 天｜${D.theme}`;
   $('d-open').textContent = D['開篇'];
   $('d-src').textContent = `${D.who}，${D.date}`;
@@ -375,12 +407,13 @@ function render(){
 }
 
 function show(name){
-  ['cover','today','notes','intro'].forEach(v => $('v-'+v).hidden = v !== name);
+  ['cover','today','notes','intro','past'].forEach(v => $('v-'+v).hidden = v !== name);
   ['today','notes','intro'].forEach(v => {
     const b = $('nav-'+v);
-    if ((name === v) || (name === 'cover' && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+    if ((name === v) || ((name === 'cover' || name === 'past') && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
   });
   if (name === 'notes') renderNotes();
+  if (name === 'past') renderPast();
   window.scrollTo(0, 0);
 }
 
@@ -397,10 +430,22 @@ function renderNotes(){
     const kk = document.createElement('span'); kk.className='k'; kk.textContent = d['今日重點'];
     li.append(m, kk);
     if (n.text){ const t = document.createElement('span'); t.className='mine'; t.textContent = `我寫下：${n.text}`; li.append(t); }
+    if (openDays().some(x => x.n === d.n)){ const b = document.createElement('button'); b.className='ghost'; b.textContent='再讀這一篇'; b.onclick = () => openDay(d.n); li.append(b); }
     ul.appendChild(li);
   });
 }
 
+function openDay(n){ viewN = n; render(); show('today'); }
+function renderPast(){
+  const ul = $('p-list'); ul.textContent = '';
+  openDays().slice().reverse().forEach(d => {
+    const li = document.createElement('li'), b = document.createElement('button');
+    const t = document.createElement('span'); t.className='t'; t.textContent = `第 ${d.n} 天｜${d.theme}` + (d.n === state.day.n ? '（今天）' : '');
+    const s = document.createElement('span'); s.className='s'; s.textContent = d.who;
+    const k = document.createElement('span'); k.className='k'; k.textContent = d['今日重點'];
+    b.append(t, s, k); b.onclick = () => openDay(d.n); li.append(b); ul.appendChild(li);
+  });
+}
 function upsert(patch){
   const notes = store.get('sx-notes', {});
   notes[D.n] = Object.assign({}, notes[D.n], patch, { today: dateLabel(), at: Date.now() });
@@ -437,15 +482,18 @@ function applyBig(on){ document.documentElement.classList.toggle('big', on); $('
 applyBig(store.get('sx-big', false));
 $('nav-big').onclick = () => { const on = !document.documentElement.classList.contains('big'); applyBig(on); store.set('sx-big', on); };
 
-document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => show(b.dataset.go));
-$('go-read').onclick = () => show('today');
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { if (b.dataset.go === 'today'){ viewN = null; render(); } show(b.dataset.go); });
+$('go-read').onclick = () => { viewN = null; render(); show('today'); };
+$('to-past').onclick = () => show('past');
+$('to-today').onclick = () => { viewN = null; render(); show('today'); };
+if (CONTACT){ $('contact').textContent = CONTACT; $('contact').hidden = false; $('contact-h').hidden = false; }
 $('intro-ok').onclick = () => { store.set('sx-intro', true); show('today'); };
 
 render();
 show(store.get('sx-intro', false) ? 'cover' : 'intro');
 // 清晨 5:00 換篇：回到畫面時重新判斷
-document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n) show('cover'); } });
-window.addEventListener('hashchange', () => { render(); show('cover'); });
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n && !viewN) show('cover'); } });
+window.addEventListener('hashchange', () => { viewN = null; render(); show('cover'); });
 </script>
 
 </body>
