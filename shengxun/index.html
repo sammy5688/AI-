@@ -145,6 +145,30 @@ textarea::placeholder{color:#B0A7BE}
 .intro p{margin:0}
 .center{justify-content:center}
 
+/* 玻璃按鈕：半透明底、上半部光澤、底部透光、邊緣折射亮線 */
+.primary,.ghost,.bar button[aria-current="page"],.bar button[aria-pressed="true"]{isolation:isolate}
+.primary{background:linear-gradient(180deg,rgba(160,140,214,.95) 0%,rgba(124,104,174,.94) 50%,rgba(98,80,152,.96) 100%);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 12px 24px -6px rgba(91,74,138,.42),0 2px 4px rgba(91,74,138,.18),inset 0 1px 1px rgba(255,255,255,.75),inset 0 -6px 12px rgba(255,255,255,.14),inset 0 -2px 3px rgba(40,20,90,.25)}
+.primary::before{left:6%;right:6%;top:2px;height:48%;border-radius:999px 999px 40% 40%/999px 999px 60% 60%;
+  background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.06));z-index:-1}
+.primary::after{content:"";position:absolute;left:22%;right:22%;bottom:3px;height:30%;border-radius:999px;
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,230,240,.38),rgba(255,255,255,0) 70%);pointer-events:none;z-index:-1}
+.ghost{background:linear-gradient(140deg,rgba(255,255,255,.88) 0%,rgba(240,233,250,.62) 55%,rgba(226,214,244,.55) 100%);
+  border:1px solid rgba(255,255,255,1);
+  box-shadow:0 10px 22px -6px rgba(91,74,138,.25),0 2px 4px rgba(91,74,138,.10),0 0 0 1px rgba(124,104,174,.16),inset 0 1px 1px #fff,inset 0 -4px 8px rgba(124,104,174,.12)}
+.ghost::before{content:"";position:absolute;left:8%;right:8%;top:2px;height:46%;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,0));pointer-events:none;z-index:-1}
+.ghost::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-30%;width:28%;transform:skewX(-20deg);
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none;z-index:-1}
+.bar button[aria-current="page"],.bar button[aria-pressed="true"]{position:relative;overflow:hidden;
+  background:linear-gradient(180deg,rgba(160,140,214,.95),rgba(110,90,165,.96));
+  box-shadow:0 6px 12px -2px rgba(91,74,138,.38),inset 0 1px 1px rgba(255,255,255,.7),inset 0 -4px 8px rgba(255,255,255,.12),inset 0 -2px 3px rgba(40,20,90,.22)}
+.bar button[aria-current="page"]::before,.bar button[aria-pressed="true"]::before{content:"";position:absolute;left:10%;right:10%;top:2px;height:46%;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));pointer-events:none;z-index:-1}
+@media (prefers-reduced-motion:no-preference){.ghost::after{animation:shine 7s ease-in-out infinite}
+  @keyframes shine{0%,70%{left:-30%}100%{left:120%}}}
+
 /* 立體層次：外層卡片「浮起來」，內層方框「微微凹進去」 */
 :root{--float:0 14px 32px -10px rgba(91,74,138,.20),0 4px 10px rgba(91,74,138,.07),0 0 0 1px rgba(124,104,174,.07),inset 0 1px 0 #fff,inset 0 -2px 0 rgba(124,104,174,.05);
   --well:inset 0 2px 5px rgba(91,74,138,.10),inset 0 0 0 1px rgba(124,104,174,.07),0 1px 0 rgba(255,255,255,.9)}
