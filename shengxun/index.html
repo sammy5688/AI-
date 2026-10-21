@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#FBEDE8">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>聖訓在生活</title>
-<meta name="color-scheme" content="light only">
+<meta name="color-scheme" content="light dark">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap">
@@ -230,6 +230,49 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
 .speakbar .primary{flex:none;min-height:58px;padding:0 24px;font-size:18px}
 .speakbar .now{margin:0;font-size:16px;color:var(--muted);line-height:1.4}
 body.has-speak main{padding-bottom:120px}
+
+/* ===== 夜間模式：深紫夜色、暖白字，不刺眼；晚上 7 點到清晨 5 點自動開 ===== */
+html.night{
+  --sky:#1B1722; --dawn:#221C2B; --paper:#27212F; --ink:#ECE6F1; --muted:#BDB3CA; --line:#3A3245;
+  --accent:#9C88D0; --accent-deep:#CDBEF0; --accent-ink:#FFFFFF; --veil:#312A3D;
+  --sage:#22302A; --sage-ink:#A9CFB9; --glow:#8E7FB0;
+  --float:0 14px 30px -12px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.05),inset 0 1px 0 rgba(255,255,255,.05);
+  --well:inset 0 2px 6px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.04);
+  color-scheme:dark;
+}
+html.night body::before{background:var(--dawn)}
+html.night .bar{background:rgba(27,23,34,.9)}
+html.night .bar-in{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border-color:rgba(255,255,255,.08);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+html.night .bar .fsbtn{background:#2E2738;color:var(--ink);border-color:rgba(205,190,240,.35);box-shadow:none}
+html.night .hero{background:linear-gradient(170deg,#2B2235 0%,#241E2E 60%,#211B2A 100%);border-color:rgba(255,255,255,.06)}
+html.night .hero-text{background:#211B2A}
+html.night .hero .sunglow{opacity:.35}
+html.night .hero .sun{fill:#D9D0EA;opacity:.75}
+html.night .hero .h1{fill:#2E2640} html.night .hero .h2{fill:#28213A} html.night .hero .h3{fill:#211B2A}
+html.night .trial{background:rgba(33,27,42,.88);color:var(--accent-deep);z-index:1}
+html.night .orb{background:radial-gradient(circle at 40% 35%,#F3EEFA,#B9A9DA 55%,#6E5E96);box-shadow:0 0 0 8px rgba(185,169,218,.12)}
+html.night .todaycard,html.night .step,html.night .list li,html.night .intro .card,html.night .empty,html.night .firstcard,html.night .daylist button{
+  background:linear-gradient(180deg,#2C2535,#28212F);border-color:rgba(255,255,255,.05)}
+html.night .quote{background:linear-gradient(180deg,#342C42,#2F283B)}
+html.night .keybox{background:linear-gradient(160deg,#3A2D3A,#30283E)}
+html.night .trybox{background:linear-gradient(180deg,#22302A,#25332D)}
+html.night details.fold{background:linear-gradient(180deg,#2F2839,#2B2434)}
+html.night details.fold summary::after{background:#3A3247;border-color:transparent;color:var(--ink);box-shadow:none}
+html.night textarea{background:#2F2839;color:var(--ink)}
+html.night textarea::placeholder{color:#8C829A}
+html.night .past,html.night .list .mine,html.night .storenote{background:#352B37}
+html.night .ghost{background:linear-gradient(140deg,rgba(255,255,255,.12),rgba(255,255,255,.05));border-color:rgba(205,190,240,.4);color:var(--ink);
+  box-shadow:0 8px 18px -6px rgba(0,0,0,.5),inset 0 1px 1px rgba(255,255,255,.12)}
+html.night .ghost::before{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0))}
+html.night .ghost::after{background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.12),rgba(255,255,255,0))}
+html.night .primary{background:linear-gradient(180deg,#8F7BC6 0%,#6F5BA4 55%,#5C4B8C 100%);box-shadow:0 10px 22px -6px rgba(0,0,0,.6),inset 0 1px 1px rgba(255,255,255,.35)}
+html.night .step h2 .num{box-shadow:none}
+html.night .linehint{background:#3A3122;border-color:#7A6334;color:#F2E2C0}
+html.night .speakbar{background:rgba(31,26,38,.97);box-shadow:0 -6px 20px rgba(0,0,0,.4)}
+html.night .close .orb{box-shadow:0 0 0 6px rgba(185,169,218,.12)}
+.nighthint{margin:0;text-align:center;font-size:.85em;color:var(--muted)}
+.nighthint button{min-height:44px;border:0;background:none;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:0 6px}
+.modepick .row button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:2px}
 </style>
 
 </head>
@@ -262,11 +305,11 @@ body.has-speak main{padding-bottom:120px}
         <defs>
           <radialGradient id="sun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFF8F3"/><stop offset=".6" stop-color="#F9DDD2"/><stop offset="1" stop-color="#F9DDD2" stop-opacity="0"/></radialGradient>
         </defs>
-        <circle cx="290" cy="92" r="70" fill="url(#sun)"/>
-        <circle cx="290" cy="92" r="26" fill="#FDE9E1"/>
-        <path d="M0 120 C60 96 110 104 160 116 S270 132 400 104 V170 H0Z" fill="#E6DCF3"/>
-        <path d="M0 140 C70 122 140 128 210 140 S330 150 400 132 V170 H0Z" fill="#DDD1EF"/>
-        <path d="M0 158 C90 146 180 150 260 158 S360 162 400 154 V170 H0Z" fill="#ECE5F7"/>
+        <circle class="sunglow" cx="290" cy="92" r="70" fill="url(#sun)"/>
+        <circle class="sun" cx="290" cy="92" r="26" fill="#FDE9E1"/>
+        <path d="M0 120 C60 96 110 104 160 116 S270 132 400 104 V170 H0Z" class="h1" fill="#E6DCF3"/>
+        <path d="M0 140 C70 122 140 128 210 140 S330 150 400 132 V170 H0Z" class="h2" fill="#DDD1EF"/>
+        <path d="M0 158 C90 146 180 150 260 158 S360 162 400 154 V170 H0Z" class="h3" fill="#ECE5F7"/>
       </svg>
       <div class="hero-text">
         <p class="greet" id="c-greet">早安，歡迎回來</p>
@@ -284,6 +327,7 @@ body.has-speak main{padding-bottom:120px}
       <button class="primary" id="go-read">開始讀</button>
     </div>
     <p class="msg" id="c-msg" hidden></p>
+    <p class="nighthint" id="c-night" hidden>晚上了，畫面已經自動調暗，比較不刺眼。<button id="c-night-off">改回白天的樣子</button></p>
 
     <div class="firstcard" id="c-first" hidden>
       <p class="t">第一次來嗎？</p>
@@ -375,6 +419,11 @@ body.has-speak main{padding-bottom:120px}
       <p>一共 56 天，分兩輪。第一輪 28 天，每天讀一位仙家的一段話；第二輪再回到同一批仙家，讀另一段話。每天只要記住「今日重點」那一句，帶著走就好。今天沒做到也沒關係，明天再讀一次。</p>
       <h3>讀的時候請記得</h3>
       <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
+      <h3>夜間模式</h3>
+      <div class="modepick">
+        <p>晚上讀的時候，畫面變暗比較不刺眼。</p>
+        <div class="row"><button class="ghost" id="nm-auto">晚上自動變暗</button><button class="ghost" id="nm-on">一直用夜間</button><button class="ghost" id="nm-off">一直用白天</button></div>
+      </div>
       <h3>頁面上的內容</h3>
       <p>「原文」與「今日重點」是開示紀錄的原句，只統一了字形。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
       <h3 id="contact-h" hidden>有問題找誰</h3>
@@ -618,6 +667,25 @@ $('go-read').onclick = () => { viewN = null; render(); store.set('sx-intro', tru
 $('c-intro').onclick = () => show('intro');
 $('intro-ok').onclick = () => { store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
 $('to-top').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+// 夜間模式：auto＝晚上 7 點到清晨 5 點自動變暗（看手機時間）；on／off＝固定
+let nightMode = store.get('sx-night', 'auto');
+function isNightHour(){ const h = new Date().getHours(); return h >= 19 || h < 5; }
+function applyNight(){
+  const on = nightMode === 'on' || (nightMode === 'auto' && isNightHour());
+  document.documentElement.classList.toggle('night', on);
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', on ? '#221C2B' : '#FBEDE8');
+  $('c-night').hidden = !(on && nightMode === 'auto');
+  [['auto','nm-auto'],['on','nm-on'],['off','nm-off']].forEach(([k,id]) => $(id).setAttribute('aria-pressed', nightMode === k ? 'true' : 'false'));
+}
+function setNight(m){ nightMode = m; store.set('sx-night', m); applyNight(); }
+$('nm-auto').onclick = () => setNight('auto');
+$('nm-on').onclick = () => setNight('on');
+$('nm-off').onclick = () => setNight('off');
+$('c-night-off').onclick = () => setNight('off');
+applyNight();
+setInterval(applyNight, 5 * 60 * 1000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) applyNight(); });
 
 render();
 show('cover');
