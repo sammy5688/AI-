@@ -199,6 +199,8 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:no
 .firstcard{background:linear-gradient(180deg,#FFFFFF,#FBF8FD);border:1px solid rgba(255,255,255,.95);box-shadow:var(--float);border-radius:24px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
 .firstcard .t{font-family:var(--serif);font-weight:700;color:var(--accent-deep);margin:0}
 .firstcard p{margin:0}
+.firsthead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.firstcard .firstbtn{min-height:48px;padding:0 18px;font-size:.85em}
 .linkbtn{align-self:flex-start;border:0;background:none;padding:6px 0;min-height:44px;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px}
 
 /* 在 LINE 裡打開的提醒 */
@@ -328,11 +330,10 @@ html.night .close .orb{box-shadow:0 0 0 6px rgba(185,169,218,.12)}
     <p class="nighthint" id="c-night" hidden>晚上了，畫面已經自動調暗，比較不刺眼。<button id="c-night-off">改回白天的樣子</button></p>
 
     <div class="firstcard" id="c-first" hidden>
-      <p class="t">第一次來嗎？</p>
+      <div class="firsthead"><p class="t">第一次來嗎？</p><button class="ghost firstbtn" id="c-intro">使用說明</button></div>
       <p>每天讀一篇，分四步：讀聖訓、悟道理、觀自心、實踐於行。</p>
       <p>每天只要記住「今日重點」那一句，帶著走就好。</p>
       <p>字太小，可以按右上角的「字」放大。</p>
-      <button class="linkbtn" id="c-intro">看完整說明</button>
     </div>
   </section>
 
