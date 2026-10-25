@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#FBEDE8">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>聖訓在生活・幹部試讀</title>
+<meta name="color-scheme" content="light dark">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap">
+<style>
+/* 晨光一欄：像清晨的天色，淡紫轉暖粉；一頁只放一件事，圓潤柔和，大量留白 */
+:root{
+  --sky:#F4F0FA;        /* 底色：晨霧淡紫 */
+  --dawn:#FBEDE8;       /* 晨光暖粉 */
+  --paper:#FFFDFB;      /* 暖白紙 */
+  --ink:#3A3347;        /* 主文字：柔和的深紫灰 */
+  --muted:#5F5570;      /* 次要文字（加深，長輩看得清楚） */
+  --line:#E8E1F0;
+  --accent:#7C68AE;     /* 主色：薰衣草紫 */
+  --accent-deep:#5B4A8A;
+  --accent-ink:#FFFFFF;
+  --veil:#EFE9F8;       /* 原文底 */
+  --sage:#E7F0EA;       /* 實踐：淡綠 */
+  --sage-ink:#4F6B5A;
+  --glow:#F6D9CF;
+  --shadow:0 6px 24px rgba(91,74,138,.08),0 1px 3px rgba(91,74,138,.06);
+  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --fs:20px; color-scheme:light;
+}
+html.fs1{--fs:24px}
+html.fs2{--fs:28px}
+html,body{background:var(--sky)}
+body{color:var(--ink);font-family:var(--sans);font-size:var(--fs);line-height:1.85;
+  background:linear-gradient(180deg,var(--dawn) 0,var(--sky) 420px) no-repeat,var(--sky)}
+*{box-sizing:border-box}
+button,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--dawn)}
+
+/* 上方選單 */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;
+  background:rgba(251,247,252,.88);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar-wrap{max-width:34rem;margin:0 auto;display:flex;gap:8px;align-items:center}
+.bar-in{flex:1;min-width:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;
+  background:linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.5));-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%);
+  border:1px solid rgba(255,255,255,.9);border-radius:999px;padding:5px;
+  box-shadow:0 8px 24px rgba(91,74,138,.12),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(124,104,174,.08)}
+.bar button{min-height:50px;border:0;border-radius:999px;background:transparent;font-size:17px;font-weight:500;color:var(--muted);padding:0 4px;white-space:nowrap;transition:background .25s,color .25s,box-shadow .25s}
+/* 字的大小：跟分頁分開，長得也不一樣（白底方圓鈕） */
+.bar .fsbtn{flex:none;min-height:60px;min-width:64px;border-radius:18px;padding:4px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;
+  background:#fff;color:var(--accent-deep);font-weight:700;border:1.5px solid rgba(91,74,138,.35);box-shadow:0 6px 14px rgba(91,74,138,.14)}
+.fsbtn .a{font-family:var(--serif);font-size:22px}
+.fsbtn .s{font-size:13px;font-weight:500}
+.bar button[aria-current="page"],.bar button[aria-pressed="true"]{color:var(--accent-ink);
+  background:linear-gradient(180deg,#9A86C8 0%,#7C68AE 55%,#6A579C 100%);
+  box-shadow:0 4px 10px rgba(91,74,138,.3),inset 0 1px 0 rgba(255,255,255,.45),inset 0 -2px 4px rgba(60,40,110,.18)}
+
+main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.col{max-width:34rem;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.p{margin:0}
+
+/* 封面 */
+.hero{position:relative;border-radius:28px;overflow:hidden;background:linear-gradient(170deg,#FCEFEA 0%,#F3EAF8 55%,#ECE5F7 100%);box-shadow:var(--shadow)}
+.hero svg{display:block;width:100%;height:110px}
+.hero-text{padding:0 24px 26px;display:flex;flex-direction:column;gap:10px;margin-top:-6px;background:#ECE5F7}
+.trial{position:absolute;top:14px;right:14px;font-size:.8em;color:var(--accent-deep);background:rgba(255,255,255,.7);border-radius:999px;padding:2px 12px}
+.greet{margin:0;color:var(--accent-deep);font-size:.85em;letter-spacing:.06em}
+.brand{font-family:var(--serif);font-size:1.9em;font-weight:700;line-height:1.3;color:var(--accent-deep);margin:0;text-wrap:balance}
+.sub{margin:0;color:var(--ink);font-size:.88em}
+.motto{margin:0;color:var(--muted);font-size:.8em;letter-spacing:.08em}
+
+.todaycard{background:var(--paper);border-radius:24px;padding:22px 22px 24px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.meta{margin:0;font-size:.85em;color:var(--muted)}
+.daytag{font-family:var(--serif);font-size:1.2em;font-weight:700;margin:0;color:var(--ink)}
+.bigkey{font-family:var(--serif);font-size:1.4em;line-height:1.65;font-weight:600;color:var(--accent-deep);margin:4px 0 0;text-wrap:balance}
+
+.breath{display:flex;align-items:center;gap:16px;padding:4px 0}
+.todaycard .primary{align-self:stretch;margin-top:4px}
+.orb{flex:none;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#FFF6F2,var(--glow) 55%,#E9D6F0);box-shadow:0 0 0 8px rgba(246,217,207,.35)}
+.breath p{margin:0;color:var(--muted);font-size:.85em}
+@media (prefers-reduced-motion:no-preference){.orb{animation:breathe 8s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:scale(.82);box-shadow:0 0 0 4px rgba(246,217,207,.25)}50%{transform:scale(1.08);box-shadow:0 0 0 14px rgba(246,217,207,.35)}}}
+
+.primary{position:relative;overflow:hidden;min-height:62px;border:1px solid rgba(255,255,255,.35);border-radius:999px;color:var(--accent-ink);font-weight:700;font-size:1em;padding:0 34px;letter-spacing:.06em;
+  background:linear-gradient(180deg,#A592D2 0%,#7C68AE 52%,#6A579C 100%);
+  box-shadow:0 10px 22px rgba(91,74,138,.30),0 2px 4px rgba(91,74,138,.2),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -3px 6px rgba(50,30,100,.22);
+  text-shadow:0 1px 1px rgba(50,30,100,.25);transition:transform .15s,box-shadow .15s}
+.primary::before{content:"";position:absolute;left:8%;right:8%;top:2px;height:42%;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.26),rgba(255,255,255,0));pointer-events:none}
+.primary:active{transform:translateY(2px);box-shadow:0 4px 10px rgba(91,74,138,.28),inset 0 1px 0 rgba(255,255,255,.4),inset 0 -1px 3px rgba(50,30,100,.2)}
+.ghost{position:relative;overflow:hidden;min-height:54px;border-radius:999px;padding:0 24px;font-size:.88em;font-weight:500;color:var(--accent-deep);
+  background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(243,238,250,.65));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.95);
+  box-shadow:0 6px 16px rgba(91,74,138,.13),0 1px 2px rgba(91,74,138,.12),inset 0 1px 0 #fff,inset 0 -2px 4px rgba(124,104,174,.10),0 0 0 1px rgba(124,104,174,.10);
+  transition:transform .15s,box-shadow .15s}
+.ghost:active{transform:translateY(2px);box-shadow:0 2px 6px rgba(91,74,138,.12),inset 0 1px 2px rgba(124,104,174,.15),0 0 0 1px rgba(124,104,174,.12)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.msg{margin:0;font-size:.82em;color:var(--muted);text-align:center}
+
+/* 每日頁 */
+.dayhead{display:flex;flex-direction:column;gap:2px;padding:6px 4px 0}
+.step{background:var(--paper);border-radius:24px;padding:22px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:16px}
+.step h2{margin:0;display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:1.05em;font-weight:700;color:var(--accent-deep)}
+.step h2 .num{flex:none;width:1.75em;height:1.75em;border-radius:50%;display:grid;place-items:center;background:var(--accent-deep);color:var(--paper);font-size:1em;font-weight:900;line-height:1;font-family:var(--serif)}
+.step.act h2 .num{background:var(--sage-ink);color:var(--paper)}
+.step.act h2{color:var(--sage-ink)}
+.lab{font-size:.8em;color:var(--muted);margin:0 0 4px;letter-spacing:.04em}
+.lab b{font-weight:700;color:var(--ink);margin-right:8px;letter-spacing:.08em}
+.quote{background:var(--veil);border-radius:18px;padding:18px 18px}
+.quote .p{font-family:var(--serif);font-size:1.05em;line-height:2}
+.keybox{border-radius:18px;padding:18px;background:linear-gradient(160deg,#FCEFEA,#F1EAF9)}
+.keybox .p{font-family:var(--serif);font-size:1.28em;font-weight:700;color:var(--accent-deep);line-height:1.7}
+details.fold{border-radius:18px;background:#FAF7FD;border:1px solid var(--line)}
+details.fold summary{list-style:none;min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 16px 6px 18px;font-weight:500;cursor:pointer}
+details.fold summary::-webkit-details-marker{display:none}
+details.fold summary::after{content:"點開看";font-size:.8em;color:var(--accent-deep);border-radius:999px;padding:5px 18px;white-space:nowrap;
+  background:linear-gradient(180deg,#fff,rgba(239,233,248,.8));border:1px solid #fff;
+  box-shadow:0 4px 10px rgba(91,74,138,.13),inset 0 1px 0 #fff,inset 0 -2px 3px rgba(124,104,174,.12),0 0 0 1px rgba(124,104,174,.12)}
+details[open].fold summary::after{content:"收起來"}
+details.fold .inner{display:flex;flex-direction:column;gap:16px;padding:4px 18px 18px}
+.hint{font-size:.85em;color:var(--muted);margin:0}
+textarea{width:100%;min-height:6.5em;border:1.5px solid var(--line);border-radius:18px;background:#FCFAFE;padding:14px 16px;line-height:1.75;resize:vertical}
+textarea::placeholder{color:#B0A7BE}
+.saved{font-size:.82em;color:var(--sage-ink);min-height:1.6em;margin:0}
+.past{background:#FCF4F0;border-radius:16px;padding:12px 16px;font-size:.9em}
+.trybox{background:var(--sage);border-radius:18px;padding:18px}
+.trybox .lab b{color:var(--sage-ink)}
+.close{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 12px 0}
+.close .orb{width:28px;height:28px;box-shadow:0 0 0 6px rgba(246,217,207,.3)}
+.close p{margin:0;font-family:var(--serif);color:var(--accent-deep)}
+.note{font-size:.8em;color:var(--muted);margin:0;text-align:center;padding:0 8px}
+
+/* 我的收藏 */
+.pagehead{display:flex;flex-direction:column;gap:4px;padding:6px 4px 0}
+.list{display:flex;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
+.list li{background:var(--paper);border-radius:22px;padding:18px 20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px}
+.list .m{font-size:.8em;color:var(--muted)}
+.list .k{font-family:var(--serif);font-weight:700;color:var(--accent-deep)}
+.list .mine{font-size:.9em;background:#FCF4F0;border-radius:12px;padding:8px 12px}
+.empty{color:var(--muted);background:var(--paper);border-radius:22px;padding:22px;box-shadow:var(--shadow);margin:0}
+
+/* 說明 */
+.intro .card{background:var(--paper);border-radius:24px;padding:22px 22px 26px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.intro h3{margin:10px 0 0;font-family:var(--serif);font-size:1.02em;color:var(--accent-deep)}
+.intro h3:first-child{margin-top:0}
+.intro p{margin:0}
+.center{justify-content:center}
+
+/* 玻璃按鈕：半透明底、上半部光澤、底部透光、邊緣折射亮線 */
+.primary,.ghost,.bar button[aria-current="page"],.bar button[aria-pressed="true"]{isolation:isolate}
+.primary{background:linear-gradient(180deg,rgba(160,140,214,.95) 0%,rgba(124,104,174,.94) 50%,rgba(98,80,152,.96) 100%);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:0 12px 24px -6px rgba(91,74,138,.42),0 2px 4px rgba(91,74,138,.18),inset 0 1px 1px rgba(255,255,255,.75),inset 0 -6px 12px rgba(255,255,255,.14),inset 0 -2px 3px rgba(40,20,90,.25)}
+.primary::before{left:6%;right:6%;top:2px;height:48%;border-radius:999px 999px 40% 40%/999px 999px 60% 60%;
+  background:linear-gradient(180deg,rgba(255,255,255,.42),rgba(255,255,255,.06));z-index:-1}
+.primary::after{content:"";position:absolute;left:22%;right:22%;bottom:3px;height:30%;border-radius:999px;
+  background:radial-gradient(ellipse at 50% 100%,rgba(255,230,240,.38),rgba(255,255,255,0) 70%);pointer-events:none;z-index:-1}
+.ghost{background:linear-gradient(140deg,rgba(255,255,255,.88) 0%,rgba(240,233,250,.62) 55%,rgba(226,214,244,.55) 100%);
+  border:1px solid rgba(255,255,255,1);
+  box-shadow:0 10px 22px -6px rgba(91,74,138,.25),0 2px 4px rgba(91,74,138,.10),0 0 0 1px rgba(124,104,174,.16),inset 0 1px 1px #fff,inset 0 -4px 8px rgba(124,104,174,.12)}
+.ghost::before{content:"";position:absolute;left:8%;right:8%;top:2px;height:46%;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,0));pointer-events:none;z-index:-1}
+.ghost::after{content:"";position:absolute;top:-20%;bottom:-20%;left:-30%;width:28%;transform:skewX(-20deg);
+  background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none;z-index:-1}
+.bar button[aria-current="page"],.bar button[aria-pressed="true"]{position:relative;overflow:hidden;
+  background:linear-gradient(180deg,rgba(160,140,214,.95),rgba(110,90,165,.96));
+  box-shadow:0 6px 12px -2px rgba(91,74,138,.38),inset 0 1px 1px rgba(255,255,255,.7),inset 0 -4px 8px rgba(255,255,255,.12),inset 0 -2px 3px rgba(40,20,90,.22)}
+.bar button[aria-current="page"]::before,.bar button[aria-pressed="true"]::before{content:"";position:absolute;left:10%;right:10%;top:2px;height:46%;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,0));pointer-events:none;z-index:-1}
+@media (prefers-reduced-motion:no-preference){.ghost::after{animation:shine 7s ease-in-out infinite}
+  @keyframes shine{0%,70%{left:-30%}100%{left:120%}}}
+
+/* 立體層次：外層卡片「浮起來」，內層方框「微微凹進去」 */
+:root{--float:0 14px 32px -10px rgba(91,74,138,.20),0 4px 10px rgba(91,74,138,.07),0 0 0 1px rgba(124,104,174,.07),inset 0 1px 0 #fff,inset 0 -2px 0 rgba(124,104,174,.05);
+  --well:inset 0 2px 5px rgba(91,74,138,.10),inset 0 0 0 1px rgba(124,104,174,.07),0 1px 0 rgba(255,255,255,.9)}
+.todaycard,.step,.list li,.intro .card,.empty{background:linear-gradient(180deg,#FFFFFF 0%,#FFFCFA 60%,#FBF8FD 100%);border:1px solid rgba(255,255,255,.95);box-shadow:var(--float)}
+.hero{box-shadow:var(--float);border:1px solid rgba(255,255,255,.8)}
+.quote{background:linear-gradient(180deg,#ECE5F7,#F2EDFA);box-shadow:var(--well)}
+.keybox{background:linear-gradient(160deg,#FBEBE5,#F0E8F9);box-shadow:var(--well)}
+.trybox{background:linear-gradient(180deg,#E2EDE6,#EAF2ED);box-shadow:var(--well)}
+details.fold{background:linear-gradient(180deg,#F6F2FB,#FBF9FD);border:0;box-shadow:var(--well)}
+textarea{border:0;background:#FBF9FD;box-shadow:var(--well)}
+textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(124,104,174,.25);outline:none}
+.past,.list .mine{box-shadow:var(--well)}
+.step h2 .num{box-shadow:0 3px 6px rgba(91,74,138,.15),inset 0 1px 0 #fff,inset 0 -2px 3px rgba(124,104,174,.12)}
+@media (prefers-reduced-motion:no-preference){.view{animation:in .35s ease-out}@keyframes in{from{opacity:.3;transform:translateY(6px)}to{opacity:1;transform:none}}}
+
+/* 淺色按鈕加一圈清楚的邊，讓人看得出是按鈕 */
+.ghost{border:1.5px solid rgba(91,74,138,.38)}
+
+/* 第一次來：封面上的小說明 */
+.firstcard{background:linear-gradient(180deg,#FFFFFF,#FBF8FD);border:1px solid rgba(255,255,255,.95);box-shadow:var(--float);border-radius:24px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.firstcard .t{font-family:var(--serif);font-weight:700;color:var(--accent-deep);margin:0}
+.firstcard p{margin:0}
+.firsthead{display:flex;align-items:center;justify-content:flex-start;gap:14px;flex-wrap:wrap}
+.firstcard .firstbtn{min-height:48px;padding:0 18px;font-size:.85em}
+.linkbtn{align-self:flex-start;border:0;background:none;padding:6px 0;min-height:44px;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+
+/* 在 LINE 裡打開的提醒 */
+.linehint{max-width:34rem;margin:0 auto 18px;background:#FFF6E8;border:1.5px solid #E8C48A;border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;color:#5A4120}
+.linehint .t{font-weight:700;margin:0}
+.linehint p{margin:0;font-size:.9em}
+.linehint .ghost{align-self:flex-start;min-height:48px}
+
+/* 讀完之後 */
+.after{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.after p{margin:0;color:var(--muted);font-size:.9em}
+
+/* 前幾天 */
+.daylist{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.daylist button{width:100%;text-align:left;display:flex;flex-direction:column;gap:2px;padding:16px 20px;border-radius:22px;
+  border:1px solid rgba(255,255,255,.95);background:linear-gradient(180deg,#FFFFFF 0%,#FFFCFA 60%,#FBF8FD 100%);box-shadow:var(--float)}
+.daylist button:active{transform:translateY(2px)}
+.daylist .t{font-family:var(--serif);font-weight:700;color:var(--ink)}
+.daylist .s{font-size:.85em;color:var(--muted)}
+.daylist .k{font-family:var(--serif);color:var(--accent-deep);font-size:.95em}
+.list li .ghost{align-self:flex-start;margin-top:6px;min-height:48px;font-size:.8em;padding:0 18px}
+.storenote{font-size:.8em;color:var(--muted);margin:0;background:#FCF4F0;border-radius:14px;padding:10px 14px}
+
+/* 唸給我聽：固定在畫面下方 */
+.speakbar{position:fixed;left:0;right:0;bottom:0;z-index:6;
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:rgba(255,253,251,.97);border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(91,74,138,.12)}
+.speakbar-in{max-width:34rem;margin:0 auto;display:flex;align-items:center;gap:12px}
+.speakbar .primary{flex:none;min-height:58px;padding:0 24px;font-size:18px}
+.speakbar .now{margin:0;font-size:16px;color:var(--muted);line-height:1.4}
+body.has-speak main{padding-bottom:120px}
+
+/* ===== 夜間模式：深紫夜色、暖白字，不刺眼；晚上 7 點到清晨 5 點自動開 ===== */
+html.night{
+  --sky:#1B1722; --dawn:#221C2B; --paper:#27212F; --ink:#ECE6F1; --muted:#BDB3CA; --line:#3A3245;
+  --accent:#9C88D0; --accent-deep:#CDBEF0; --accent-ink:#FFFFFF; --veil:#312A3D;
+  --sage:#22302A; --sage-ink:#A9CFB9; --glow:#8E7FB0;
+  --float:0 14px 30px -12px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.05),inset 0 1px 0 rgba(255,255,255,.05);
+  --well:inset 0 2px 6px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.04);
+  color-scheme:dark;
+}
+html.night body::before{background:var(--dawn)}
+html.night .bar{background:rgba(27,23,34,.9)}
+html.night .bar-in{background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border-color:rgba(255,255,255,.08);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+html.night .bar .fsbtn{background:#2E2738;color:var(--ink);border-color:rgba(205,190,240,.35);box-shadow:none}
+html.night .hero{background:linear-gradient(170deg,#2B2235 0%,#241E2E 60%,#211B2A 100%);border-color:rgba(255,255,255,.06)}
+html.night .hero-text{background:#211B2A}
+html.night .hero .sunglow{opacity:.35}
+html.night .hero .sun{fill:#D9D0EA;opacity:.75}
+html.night .hero .h1{fill:#2E2640} html.night .hero .h2{fill:#28213A} html.night .hero .h3{fill:#211B2A}
+html.night .trial{background:rgba(33,27,42,.88);color:var(--accent-deep);z-index:1}
+html.night .orb{background:radial-gradient(circle at 40% 35%,#F3EEFA,#B9A9DA 55%,#6E5E96);box-shadow:0 0 0 8px rgba(185,169,218,.12)}
+html.night .todaycard,html.night .step,html.night .list li,html.night .intro .card,html.night .empty,html.night .firstcard,html.night .daylist button{
+  background:linear-gradient(180deg,#2C2535,#28212F);border-color:rgba(255,255,255,.05)}
+html.night .quote{background:linear-gradient(180deg,#342C42,#2F283B)}
+html.night .keybox{background:linear-gradient(160deg,#3A2D3A,#30283E)}
+html.night .trybox{background:linear-gradient(180deg,#22302A,#25332D)}
+html.night details.fold{background:linear-gradient(180deg,#2F2839,#2B2434)}
+html.night details.fold summary::after{background:#3A3247;border-color:transparent;color:var(--ink);box-shadow:none}
+html.night textarea{background:#2F2839;color:var(--ink)}
+html.night textarea::placeholder{color:#8C829A}
+html.night .past,html.night .list .mine,html.night .storenote{background:#352B37}
+html.night .ghost{background:linear-gradient(140deg,rgba(255,255,255,.12),rgba(255,255,255,.05));border-color:rgba(205,190,240,.4);color:var(--ink);
+  box-shadow:0 8px 18px -6px rgba(0,0,0,.5),inset 0 1px 1px rgba(255,255,255,.12)}
+html.night .ghost::before{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,0))}
+html.night .ghost::after{background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.12),rgba(255,255,255,0))}
+html.night .primary{background:linear-gradient(180deg,#8F7BC6 0%,#6F5BA4 55%,#5C4B8C 100%);box-shadow:0 10px 22px -6px rgba(0,0,0,.6),inset 0 1px 1px rgba(255,255,255,.35)}
+html.night .step h2 .num{box-shadow:none}
+html.night .linehint{background:#3A3122;border-color:#7A6334;color:#F2E2C0}
+html.night .speakbar{background:rgba(31,26,38,.97);box-shadow:0 -6px 20px rgba(0,0,0,.4)}
+html.night .close .orb{box-shadow:0 0 0 6px rgba(185,169,218,.12)}
+.nighthint{margin:0;text-align:center;font-size:.85em;color:var(--muted)}
+.nighthint button{min-height:44px;border:0;background:none;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:0 6px}
+.modepick .row button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:2px}
+</style>
+
+</head>
+<body>
+<nav class="bar" aria-label="主選單">
+  <div class="bar-wrap">
+    <div class="bar-in">
+      <button id="nav-today" data-go="today">今天</button>
+      <button id="nav-notes" data-go="notes">我的收藏</button>
+      <button id="nav-intro" data-go="intro">說明</button>
+    </div>
+    <button class="fsbtn" id="nav-fs" aria-live="polite"><span class="a">字</span><span class="s" id="fs-lab">標準</span></button>
+  </div>
+</nav>
+
+<main>
+  <!-- 在 LINE 裡打開時才出現 -->
+  <div class="linehint" id="line-hint" hidden>
+    <p class="t">您現在是在 LINE 裡面打開的</p>
+    <p>在 LINE 裡，「唸給我聽」可能沒有聲音，寫下的話也可能存不住。</p>
+    <p>建議：點畫面角落的「⋯」或「⋮」，選「用預設瀏覽器開啟」（或「以其他應用程式開啟」）。</p>
+    <button class="ghost" id="line-ok">知道了</button>
+  </div>
+
+  <!-- 封面 -->
+  <section class="view col" id="v-cover">
+    <div class="hero">
+      <span class="trial">幹部試讀・3 天</span>
+      <svg viewBox="0 0 400 170" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
+        <defs>
+          <radialGradient id="sun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFF8F3"/><stop offset=".6" stop-color="#F9DDD2"/><stop offset="1" stop-color="#F9DDD2" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle class="sunglow" cx="290" cy="92" r="70" fill="url(#sun)"/>
+        <circle class="sun" cx="290" cy="92" r="26" fill="#FDE9E1"/>
+        <path d="M0 120 C60 96 110 104 160 116 S270 132 400 104 V170 H0Z" class="h1" fill="#E6DCF3"/>
+        <path d="M0 140 C70 122 140 128 210 140 S330 150 400 132 V170 H0Z" class="h2" fill="#DDD1EF"/>
+        <path d="M0 158 C90 146 180 150 260 158 S360 162 400 154 V170 H0Z" class="h3" fill="#ECE5F7"/>
+      </svg>
+      <div class="hero-text">
+        <p class="greet" id="c-greet">早安，歡迎回來</p>
+        <h1 class="brand">《聖訓在生活》</h1>
+      </div>
+    </div>
+
+    <div class="todaycard">
+      <p class="meta" id="c-date"></p>
+      <p class="daytag" id="c-day"></p>
+      <p class="bigkey" id="c-key"></p>
+      <button class="primary" id="go-read">開始讀</button>
+    </div>
+    <p class="msg" id="c-msg" hidden></p>
+    <p class="nighthint" id="c-night" hidden>晚上了，畫面已經自動調暗，比較不刺眼。<button id="c-night-off">改回白天的樣子</button></p>
+
+    <div class="firstcard" id="c-first" hidden>
+      <div class="firsthead"><button class="ghost firstbtn" id="c-intro">使用說明</button><p class="t">第一次來嗎？</p></div>
+      <p>每天讀一篇，分四步：讀聖訓、悟道理、觀自心、實踐於行。</p>
+      <p>每天只要記住「今日重點」那一句，帶著走就好。</p>
+      <p>字太小，可以按右上角的「字」放大。</p>
+    </div>
+  </section>
+
+  <!-- 每日頁 -->
+  <section class="view col" id="v-today" hidden>
+    <div class="dayhead">
+      <p class="meta" id="d-date"></p>
+      <p class="daytag" id="d-title"></p>
+    </div>
+    <div class="row" id="d-nav"><button class="ghost" id="to-past" hidden>看全部 3 天</button><button class="ghost" id="to-today" hidden>回到今天</button></div>
+    <div class="step">
+      <h2><span class="num">一</span>讀聖訓</h2>
+      <div><p class="lab"><b>開篇</b>編輯整理</p><p class="p" id="d-open"></p></div>
+      <div class="quote"><p class="lab"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
+      <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc">原文句子</span></p><p class="p" id="d-key"></p></div>
+    </div>
+
+    <div class="step">
+      <h2><span class="num">二</span>悟道理</h2>
+      <p class="hint">先自己想一想上面那句話，再點開。</p>
+      <details class="fold" id="d-more">
+        <summary>白話理解與生活例子</summary>
+        <div class="inner">
+          <div><p class="lab"><b>白話理解</b>編輯整理</p><p class="p" id="d-plain"></p></div>
+          <div><p class="lab"><b>生活例子</b>編輯整理</p><p class="p" id="d-story"></p></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="step">
+      <h2><span class="num">三</span>觀自心</h2>
+      <div><p class="lab"><b>問問自己</b>編輯整理</p><p class="p" id="d-ask"></p></div>
+      <div class="past" id="d-past" hidden></div>
+      <label class="hint" for="note">想寫就寫一句話給自己，不寫也可以。寫了會自動存好，只存在這支手機裡。</label>
+      <textarea id="note" placeholder="例如：今天我差點又急著……"></textarea>
+      <div class="row"><button class="ghost" id="save-note">存下這句話</button></div>
+      <p class="saved" id="note-msg" aria-live="polite"></p>
+    </div>
+
+    <div class="step act">
+      <h2><span class="num">四</span>實踐於行</h2>
+      <div class="trybox"><p class="lab"><b>今天可以試試</b>編輯整理</p><p class="p" id="d-try"></p></div>
+      <div class="row"><button class="primary" id="carry">收藏這一句，帶著走</button></div>
+      <p class="saved" id="carry-msg" aria-live="polite"></p>
+    </div>
+
+    <div class="close"><span class="orb" aria-hidden="true"></span><p>今天讀到這裡，就很好了。</p></div>
+    <div class="after">
+      <p id="d-next"></p>
+      <button class="ghost" id="to-top">回到最上面</button>
+    </div>
+    <p class="note">「原文」與「今日重點」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文（試讀版，內容待審閱）。</p>
+  </section>
+
+  <!-- 我的收藏 -->
+  <section class="view col" id="v-notes" hidden>
+    <div class="pagehead">
+      <p class="daytag">我的收藏</p>
+      <p class="hint">按過「收藏這一句」或寫過一句話的日子，會收在這裡，隨時可以回來看看。</p>
+    </div>
+    <ul class="list" id="n-list"></ul>
+    <p class="storenote">收藏和寫下的話，只存在這支手機的這個瀏覽器裡。換手機、換瀏覽器，或清除瀏覽紀錄，就不會跟著過去。</p>
+  </section>
+
+  <!-- 前幾天 -->
+  <section class="view col" id="v-past" hidden>
+    <div class="pagehead">
+      <p class="daytag">全部 3 天</p>
+      <p class="hint">三天的內容都在這裡，想讀哪一篇就點哪一篇。</p>
+    </div>
+    <ul class="daylist" id="p-list"></ul>
+  </section>
+
+  <!-- 說明（前言） -->
+  <section class="view col intro" id="v-intro" hidden>
+    <div class="pagehead"><p class="daytag">讀之前</p></div>
+    <div class="card">
+      <h3>玉虛篇是什麼</h3>
+      <p>天祥三年（民國 108 年）一月，天祥的道主、道母陸續聽到多位仙家的開示。這些仙家大多自稱是「玉虛」門下，所以這批開示紀錄被整理為「玉虛仙宗聖訓」。</p>
+      <p>這是天祥的信仰紀錄。對天祥家人來說，是仙家的教導；對第一次接觸的親友來說，也可以把它當作一段段談修心、談做人的話來讀。</p>
+      <h3>怎麼讀</h3>
+      <p>這是給文教部幹部試用的 3 天試讀版，內容是玉虛篇的前 3 天（正式版一共 56 天，分兩輪）。三天的內容隨時都能從「看全部 3 天」打開來讀。每天只要記住「今日重點」那一句，帶著走就好。今天沒做到也沒關係，明天再讀一次。</p>
+      <h3>讀的時候請記得</h3>
+      <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
+      <h3>夜間模式</h3>
+      <div class="modepick">
+        <p>晚上讀的時候，畫面變暗比較不刺眼。</p>
+        <div class="row"><button class="ghost" id="nm-auto">晚上自動變暗</button><button class="ghost" id="nm-on">一直用夜間</button><button class="ghost" id="nm-off">一直用白天</button></div>
+      </div>
+      <h3>頁面上的內容</h3>
+      <p>「原文」與「今日重點」是開示紀錄的原句，只統一了字形。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
+      <h3 id="contact-h" hidden>有問題找誰</h3>
+      <p id="contact" hidden></p>
+    </div>
+    <div class="row center"><button class="primary" id="intro-ok">我知道了，開始讀</button></div>
+  </section>
+</main>
+
+<!-- 唸給我聽：只在每日頁出現，往下滑也一直在 -->
+<div class="speakbar" id="speakbar" hidden>
+  <div class="speakbar-in">
+    <button class="primary" id="speak">▶ 唸給我聽</button>
+    <p class="now" id="speak-now" aria-live="polite">會唸：原文、今日重點、白話理解</p>
+  </div>
+</div>
+
+<script>
+const DAYS = [{"n": 1, "theme": "定心", "who": "玉虛真人", "date": "108 年 1 月 7 日", "開篇": "心一亂，我們常常急著做點什麼。今天這篇，玉虛真人請我們先停下來：心定了，才看得清方向。", "原文": "「心有安了嗎？有定了嗎？先把心定了、安了，你才知道是往這裡衝，而不是往那裡衝。衝錯了，不叫衝破。所以，覺得煩躁不安時，就應慎思、再慎思。」", "今日重點": "「先把心定了、安了，你才知道是往這裡衝」", "白話理解": "心慌的時候，人最想做的就是趕快做點什麼。玉虛真人卻說，先停下來。心沒定，往前衝也可能衝錯方向；衝錯了，不叫衝破，只是更累。煩躁的時候，不是加快腳步，而是慢下來，想一想、再想一想。", "情境範例": "孩子的成績單攤在桌上，數學三十八分。她的火一下子上來，已經走到房門口，手都舉起來要敲門了。她停了一下，轉身去廚房倒了一杯水，站在窗邊喝完。回到房門口時，她想說的話已經不一樣了：「這次考卷，可以拿給我看看嗎？」", "問問自己": "最近哪一次，我是心還沒定就急著往前衝？那時如果先停一下，結果會不會不一樣？", "今天可以試試": "覺得煩躁時，先去喝一杯水，再決定要說什麼、做什麼。", "keyOther": false}, {"n": 2, "theme": "看透自己", "who": "慈航道人", "date": "108 年 1 月 13 日", "開篇": "最難看清的，常常是自己。今天跟著慈航道人，誠實地看一看自己的計較和面子。", "原文": "「莫要覺得我計較、我比較，面子上放不下，這就是人性。面對它、瞭解它……瞭解之後你才可以轉化，你才可以人心轉化為道心。」", "今日重點": "「看透、澈透自己，是一件很重要的事。」", "白話理解": "「我哪有計較？」很多時候，最看不清的就是自己。慈航道人說，計較、比較、放不下面子，這就是人性，不必假裝沒有。先承認它，才有辦法轉。", "情境範例": "孫子做滿月，親家送了一條很粗的金鍊子，她送的是一對小手鐲。她嘴上說「親家真大方」，回家卻整晚悶悶的，跟先生講話也特別衝。睡前她問自己：到底在不舒服什麼？想了很久，她承認了：是在比。承認的那一刻，心裡反而鬆了一點。", "問問自己": "今天讓我不舒服的事，背後有沒有一點計較、比較或面子？我看得見嗎？", "今天可以試試": "心裡不舒服時，問自己一句：「我到底在意的是什麼？」", "keyOther": true}, {"n": 3, "theme": "轉個彎", "who": "懼留孫仙師", "date": "108 年 1 月 14 日", "開篇": "遇到過不去的事，一直硬撞只會更累。今天懼留孫仙師告訴我們：方向不變，方法可以轉個彎。", "原文": "「所以，不是什麼事都是傻傻的撞上去，有的時候要轉個彎就進去了。雖然，道只有一條，那是說吾之心不變，一心向道。要靈活、靈活、靈活。」", "今日重點": "「有的時候要轉個彎就進去了。」", "白話理解": "鑽地鑽到大石頭，硬鑽只會滿頭包，往旁邊轉個彎就過去了。懼留孫仙師說，方向不變，方法要靈活。轉個彎不是放棄，是換一條走得通的路。", "情境範例": "父親中風後，一說要去復健就發脾氣。他勸了一個月，越勸父親越不肯。有一天他不勸了，只說：「爸，我們去公園看看你以前下棋的朋友。」為了走到棋桌前，父親自己慢慢走了兩百公尺。回家的路上，父親說：「明天還要來。」", "問問自己": "有哪一件事，我一直用同一個方法，卻一直撞牆？", "今天可以試試": "挑一件卡住的事，想一個以前沒試過的方法，今天試一次。", "keyOther": false}];
+// 試讀開始日（台灣時間清晨 5:00 換篇）。大家同一天讀同一篇。
+const START = Date.UTC(2026, 9, 25); // 幹部試讀：2026-10-25 起
+const DAY = 864e5;
+// 聯絡人：填上後才會出現在「說明」頁，例如 '文教部 王小明（LINE：xxxx）'
+const CONTACT = '';
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+};
+const $ = id => document.getElementById(id);
+
+function taipeiShifted(){ return Date.now() + 8*3600e3 - 5*3600e3; }
+function todayState(){
+  const idx = Math.floor((taipeiShifted() - START) / DAY);
+  const h = (location.hash || '').match(/^#d(\d+)$/);
+  if (h && +h[1] >= 1 && +h[1] <= DAYS.length) return { day: DAYS[+h[1]-1], mode: 'preview' };
+  if (idx < 0) return { day: DAYS[0], mode: 'before' };
+  // 56 天讀完，從第 1 天重新開始（溫故自新）
+  return { day: DAYS[idx % DAYS.length], mode: 'on', cycle: Math.floor(idx / DAYS.length) };
+}
+function dateLabel(){
+  const t = new Date(Date.now() + 8*3600e3);
+  const w = '日一二三四五六'[t.getUTCDay()];
+  return `${t.getUTCMonth()+1} 月 ${t.getUTCDate()} 日（星期${w}）`;
+}
+function greeting(){
+  const h = new Date(Date.now() + 8*3600e3).getUTCHours();
+  if (h >= 4 && h < 11) return '早安，歡迎回來';
+  if (h >= 11 && h < 14) return '午安，歡迎回來';
+  if (h >= 14 && h < 18) return '午後好，歡迎回來';
+  return '晚安，歡迎回來';
+}
+const strip = s => s.replace(/^「|」$/g, '');
+
+let state, D, viewN = null;
+function openDays(){
+  if (state.mode === 'before') return [DAYS[0]];
+  if (state.mode === 'on'){ if (true) return DAYS.slice(); const idx = Math.floor((taipeiShifted() - START) / DAY); return DAYS.slice(0, idx + 1); }
+  return DAYS.slice();
+}
+const SD = new Date(START);
+const startLabel = `${SD.getUTCMonth()+1} 月 ${SD.getUTCDate()} 日`;
+function render(){
+  state = todayState();
+  const pastView = !!viewN && viewN !== state.day.n;
+  D = pastView ? DAYS[viewN - 1] : state.day;
+  $('c-greet').textContent = greeting();
+  $('c-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
+  $('c-day').textContent = `第 ${D.n} 天｜${D.theme}・${D.who}`;
+  $('c-key').textContent = D['今日重點'];
+  $('c-first').hidden = store.get('sxt-intro', false);
+  const msg = $('c-msg');
+  msg.hidden = state.mode === 'on';
+  if (state.mode === 'before') msg.textContent = `試讀從 ${startLabel}開始。今天可以先看看第 1 天。`;
+  if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的收藏」看得到。`;
+  if (state.mode === 'preview') msg.textContent = `預覽第 ${D.n} 天。`;
+
+  $('d-date').textContent = pastView ? '前幾天的內容' : (state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel());
+  $('to-past').hidden = pastView || openDays().length < 2;
+  $('to-today').hidden = !pastView;
+  $('d-nav').hidden = $('to-past').hidden && $('to-today').hidden;
+  $('d-title').textContent = `第 ${D.n} 天｜${D.theme}`;
+  $('d-open').textContent = D['開篇'];
+  $('d-src').textContent = `${D.who}，${D.date}`;
+  $('d-text').textContent = D['原文'];
+  $('d-key').textContent = D['今日重點'];
+  $('d-keysrc').textContent = D.keyOther ? '原文句子・取自同一篇開示的另一段' : '原文句子';
+  $('d-plain').textContent = D['白話理解'];
+  $('d-story').textContent = D['情境範例'];
+  $('d-ask').textContent = D['問問自己'];
+  $('d-try').textContent = D['今天可以試試'];
+  $('d-next').textContent =
+    state.mode === 'before' ? `試讀從 ${startLabel}清晨 5 點開始。` :
+    state.mode === 'after' ? `${DAYS.length} 天試讀已經讀完，謝謝您。` :
+    state.mode === 'preview' ? '這是預覽。' :
+    D.n < DAYS.length ? `明天清晨 5 點，會換成第 ${D.n + 1} 天。` : `3 天試讀到這裡，謝謝您。讀起來哪裡好懂、哪裡卡住，請告訴文教部。`;
+  if (pastView) $('d-next').textContent = '這是前幾天的內容。按上面的「回到今天」，回到今天這一篇。';
+
+  const notes = store.get('sxt-notes', {});
+  const mine = notes[D.n] || {};
+  $('note').value = mine.today === dateLabel() ? (mine.text || '') : '';
+  const past = $('d-past');
+  if (mine.text && mine.today !== dateLabel()){
+    past.hidden = false;
+    past.textContent = `上一次讀到這篇時，你寫下：「${mine.text}」`;
+  } else past.hidden = true;
+  $('note-msg').textContent = ''; $('carry-msg').textContent = mine.carried ? '已經收藏，在「我的收藏」看得到。' : '';
+}
+
+function show(name){
+  ['cover','today','notes','intro','past'].forEach(v => $('v-'+v).hidden = v !== name);
+  ['today','notes','intro'].forEach(v => {
+    const b = $('nav-'+v);
+    if ((name === v) || ((name === 'cover' || name === 'past') && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+  });
+  if (name === 'past') renderPast();
+  if (name !== 'today') stopSpeak();
+  const bar = name === 'today' && canSpeak;
+  $('speakbar').hidden = !bar; document.body.classList.toggle('has-speak', bar);
+  if (name === 'notes') renderNotes();
+  window.scrollTo(0, 0);
+}
+
+function renderNotes(){
+  const notes = store.get('sxt-notes', {});
+  const ul = $('n-list'); ul.textContent = '';
+  const keys = Object.keys(notes).filter(k => notes[k].text || notes[k].carried).sort((a,b) => (notes[b].at||0) - (notes[a].at||0));
+  if (!keys.length){ const li = document.createElement('p'); li.className='empty'; li.textContent='這裡還空空的。讀完一天，按「收藏這一句，帶著走」，那一句就會來到這裡。'; ul.appendChild(li); return; }
+  keys.forEach(k => {
+    const d = DAYS.find(x => x.n == k), n = notes[k];
+    if (!d) return;
+    const li = document.createElement('li');
+    const m = document.createElement('span'); m.className='m'; m.textContent = `${n.today || ''}・第 ${d.n} 天｜${d.theme}・${d.who}`;
+    const kk = document.createElement('span'); kk.className='k'; kk.textContent = d['今日重點'];
+    li.append(m, kk);
+    if (n.text){ const t = document.createElement('span'); t.className='mine'; t.textContent = `我寫下：${n.text}`; li.append(t); }
+    if (openDays().some(x => x.n === d.n)){ const b = document.createElement('button'); b.className='ghost'; b.textContent='再讀這一篇'; b.onclick = () => openDay(d.n); li.append(b); }
+    ul.appendChild(li);
+  });
+}
+
+function openDay(n){ viewN = n; render(); show('today'); }
+function renderPast(){
+  const ul = $('p-list'); ul.textContent = '';
+  openDays().slice().forEach(d => {
+    const li = document.createElement('li'), b = document.createElement('button');
+    const t = document.createElement('span'); t.className='t'; t.textContent = `第 ${d.n} 天｜${d.theme}` + (d.n === state.day.n ? '（今天）' : '');
+    const s = document.createElement('span'); s.className='s'; s.textContent = d.who;
+    const k = document.createElement('span'); k.className='k'; k.textContent = d['今日重點'];
+    b.append(t, s, k); b.onclick = () => openDay(d.n); li.append(b); ul.appendChild(li);
+  });
+}
+function upsert(patch){
+  const notes = store.get('sxt-notes', {});
+  notes[D.n] = Object.assign({}, notes[D.n], patch, { today: dateLabel(), at: Date.now() });
+  return store.set('sxt-notes', notes);
+}
+const FAIL = '這支手機現在沒辦法存，把這句話放在心裡就好。';
+let autoT;
+$('save-note').onclick = () => {
+  clearTimeout(autoT);
+  const t = $('note').value.trim();
+  if (!t){ $('note-msg').textContent = '還沒寫字。不寫也沒關係。'; return; }
+  $('note-msg').textContent = upsert({ text: t }) ? '存好了，在「我的收藏」看得到。' : FAIL;
+};
+// 寫字時自動存（停筆一下就存）
+$('note').addEventListener('input', () => {
+  clearTimeout(autoT);
+  autoT = setTimeout(() => {
+    const t = $('note').value.trim();
+    const had = (store.get('sxt-notes', {})[D.n] || {}).text;
+    if (!t && !had) return;
+    $('note-msg').textContent = upsert({ text: t }) ? (t ? '已經自動存好了。' : '') : FAIL;
+  }, 800);
+});
+$('carry').onclick = () => {
+  $('carry-msg').textContent = upsert({ carried: true }) ? `收好了，在「我的收藏」看得到。今天就帶著這一句，慢慢走：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，把這一句放在心裡就好。';
+};
+
+// 唸給我聽：用手機內建語音。一句一句排隊唸，比較不會唸到一半停掉
+const canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+const sp = $('speak'), spNow = $('speak-now');
+const SP_IDLE = '會唸：原文、今日重點、白話理解';
+let speakRun = 0;
+function stopSpeak(){
+  if (!canSpeak) return;
+  speakRun++; sp.dataset.on = ''; window.speechSynthesis.cancel();
+  sp.textContent = '▶ 唸給我聽'; spNow.textContent = SP_IDLE;
+}
+if (canSpeak) window.speechSynthesis.getVoices();
+sp.onclick = () => {
+  const s = window.speechSynthesis;
+  if (sp.dataset.on === '1'){ stopSpeak(); return; }
+  const run = ++speakRun;
+  const vs = s.getVoices();
+  const v = vs.find(v => /zh[-_]TW/i.test(v.lang)) || vs.find(v => /^zh/i.test(v.lang));
+  const parts = [['原文', strip(D['原文'])], ['今日重點', strip(D['今日重點'])], ['白話理解', D['白話理解']]];
+  const queue = [];
+  parts.forEach(([name, text]) => {
+    queue.push([name, name + '。']);
+    (text.match(/[^。！？]+[。！？」]*/g) || [text]).forEach(t => queue.push([name, t]));
+  });
+  s.cancel();
+  queue.forEach(([name, t], i) => {
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = 'zh-TW'; u.rate = 0.85; if (v) u.voice = v;
+    u.onstart = () => { if (run === speakRun) spNow.textContent = `正在唸：${name}`; };
+    if (i === queue.length - 1) u.onend = () => { if (run === speakRun) stopSpeak(); };
+    u.onerror = () => { if (run === speakRun) stopSpeak(); };
+    s.speak(u);
+  });
+  sp.dataset.on = '1'; sp.textContent = '■ 停止';
+};
+
+// 字的大小：標準 → 大 → 特大，再按回到標準
+const FS = ['標準', '大', '特大'];
+function applyFs(i){
+  document.documentElement.classList.remove('fs1', 'fs2');
+  if (i) document.documentElement.classList.add('fs' + i);
+  $('fs-lab').textContent = FS[i];
+  $('nav-fs').setAttribute('aria-label', `字的大小：${FS[i]}。點一下換大小`);
+}
+let fsLevel = store.get('sxt-fs', store.get('sxt-big', false) ? 1 : 0);
+if (!(fsLevel >= 0 && fsLevel < FS.length)) fsLevel = 0;
+applyFs(fsLevel);
+$('nav-fs').onclick = () => { fsLevel = (fsLevel + 1) % FS.length; applyFs(fsLevel); store.set('sxt-fs', fsLevel); };
+
+// 在 LINE 裡打開：先試著自動改用手機瀏覽器開；沒成功就顯示提醒
+const inLine = /\bLine\//i.test(navigator.userAgent);
+if (inLine && !/openExternalBrowser=1/.test(location.search)){
+  let tried = false; try{ tried = sessionStorage.getItem('sxt-ext') === '1'; sessionStorage.setItem('sxt-ext', '1'); }catch(e){}
+  if (!tried){ const u = new URL(location.href); u.searchParams.set('openExternalBrowser', '1'); location.replace(u.href); }
+}
+let lineOk = false; try{ lineOk = sessionStorage.getItem('sxt-line-ok') === '1'; }catch(e){}
+$('line-hint').hidden = !inLine || lineOk;
+$('line-ok').onclick = () => { $('line-hint').hidden = true; try{ sessionStorage.setItem('sxt-line-ok', '1'); }catch(e){} };
+
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { if (b.dataset.go === 'today'){ viewN = null; render(); } show(b.dataset.go); });
+$('to-past').onclick = () => show('past');
+$('to-today').onclick = () => { viewN = null; render(); show('today'); };
+if (CONTACT){ $('contact').textContent = CONTACT; $('contact').hidden = false; $('contact-h').hidden = false; }
+$('go-read').onclick = () => { viewN = null; render(); store.set('sxt-intro', true); $('c-first').hidden = true; show('today'); };
+$('c-intro').onclick = () => show('intro');
+$('intro-ok').onclick = () => { store.set('sxt-intro', true); $('c-first').hidden = true; show('today'); };
+$('to-top').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+// 夜間模式：auto＝晚上 7 點到清晨 5 點自動變暗（看手機時間）；on／off＝固定
+let nightMode = store.get('sxt-night', 'auto');
+function isNightHour(){ const h = new Date().getHours(); return h >= 19 || h < 5; }
+function applyNight(){
+  const on = nightMode === 'on' || (nightMode === 'auto' && isNightHour());
+  document.documentElement.classList.toggle('night', on);
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', on ? '#221C2B' : '#FBEDE8');
+  $('c-night').hidden = !(on && nightMode === 'auto');
+  [['auto','nm-auto'],['on','nm-on'],['off','nm-off']].forEach(([k,id]) => $(id).setAttribute('aria-pressed', nightMode === k ? 'true' : 'false'));
+}
+function setNight(m){ nightMode = m; store.set('sxt-night', m); applyNight(); }
+$('nm-auto').onclick = () => setNight('auto');
+$('nm-on').onclick = () => setNight('on');
+$('nm-off').onclick = () => setNight('off');
+$('c-night-off').onclick = () => setNight('off');
+applyNight();
+setInterval(applyNight, 5 * 60 * 1000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) applyNight(); });
+
+render();
+show('cover');
+// 清晨 5:00 換篇：回到畫面時重新判斷
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n && !viewN) show('cover'); } });
+window.addEventListener('hashchange', () => { viewN = null; render(); show('cover'); });
+</script>
+
+</body>
+</html>
