@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 心情投票：任何人可讀；寫入時只接受「選項序號＋第幾輪」，擋掉其他任何欄位
+    match /moodRooms/{room} {
+      allow read: if true;
+      allow create, update: if request.resource.data.keys().hasOnly(['round', 'at'])
+        && request.resource.data.round is int
+        && request.resource.data.round >= 1
+        && request.resource.data.at == request.time;
+
+      match /votes/{deviceId} {
+        allow read: if true;
+        allow create, update: if deviceId.size() <= 40
+          && request.resource.data.keys().hasOnly(['mood', 'round', 'at'])
+          && request.resource.data.mood is int
+          && request.resource.data.mood >= 0
+          && request.resource.data.mood < 6
+          && request.resource.data.round is int
+          && request.resource.data.at == request.time;
+        allow delete: if false;
+      }
+    }
+
+    // 其他集合預設禁止存取（如果你已有其他工具的規則，把上面的區塊合併進原本的檔案）
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

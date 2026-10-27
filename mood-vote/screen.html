@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light only">
+<title>心情投票・展示頁</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+<style>
+/* 展示頁：投影在大螢幕。字級跟著螢幕大小走，後排也看得清楚 */
+:root{
+  --sky:#F4F0FA; --dawn:#FBEDE8; --paper:#FFFDFB;
+  --ink:#3A3347; --muted:#5E556C; --line:#E3DBEE;
+  --accent:#7C68AE; --accent-deep:#5B4A8A;
+  --shadow:0 10px 36px rgba(91,74,138,.10),0 2px 6px rgba(91,74,138,.06);
+  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --u:min(1vw,1.78vh);   /* 以 16:9 畫面為準的尺寸單位 */
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--sky)}
+body{color:var(--ink);font-family:var(--sans);overflow:hidden;
+  background:radial-gradient(120% 80% at 10% 0%,var(--dawn) 0,transparent 60%),var(--sky)}
+.stage{height:100%;display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr;gap:calc(var(--u)*2.2) calc(var(--u)*3);padding:calc(var(--u)*3.2) calc(var(--u)*4)}
+header{grid-column:1/-1;display:flex;align-items:baseline;gap:calc(var(--u)*2);flex-wrap:wrap}
+h1{margin:0;font-family:var(--serif);font-size:calc(var(--u)*3.9);line-height:1.3;color:var(--accent-deep);text-wrap:balance}
+.demo{position:fixed;left:14px;bottom:12px;font-size:14px;color:var(--muted);background:rgba(255,255,255,.85);border-radius:999px;padding:7px 14px}
+
+.chart{display:flex;flex-direction:column;background:var(--paper);border-radius:calc(var(--u)*2.6);box-shadow:var(--shadow);padding:calc(var(--u)*2.4) calc(var(--u)*3) calc(var(--u)*2);min-height:0}
+.bars{flex:1;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:calc(var(--u)*3);min-height:0;border-bottom:3px solid var(--line)}
+.col{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;min-height:0}
+.num{font-size:calc(var(--u)*4.2);font-weight:700;line-height:1.1;color:var(--ink);font-variant-numeric:tabular-nums}
+.pct{font-size:calc(var(--u)*1.7);color:var(--muted);margin-bottom:calc(var(--u)*.8);font-variant-numeric:tabular-nums}
+.bar{width:min(100%,calc(var(--u)*16));height:0;min-height:6px;border-radius:calc(var(--u)*1.4) calc(var(--u)*1.4) 4px 4px;
+  background:linear-gradient(180deg,color-mix(in srgb,var(--c) 78%,#fff),var(--c));
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.4);transition:height .7s cubic-bezier(.2,.8,.2,1)}
+.names{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:calc(var(--u)*3);padding-top:calc(var(--u)*1.4)}
+.name{display:flex;flex-direction:column;align-items:center;text-align:center}
+.name .emo{font-size:calc(var(--u)*3.8);line-height:1.15}
+.name .lab{font-size:calc(var(--u)*2.4);font-weight:700;line-height:1.4}
+.name .note{font-size:calc(var(--u)*1.6);color:var(--muted)}
+
+aside{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u)*1.4);width:calc(var(--u)*24);min-height:0}
+.qrcard{background:#fff;border-radius:calc(var(--u)*2.2);box-shadow:var(--shadow);padding:calc(var(--u)*1.6);display:flex;flex-direction:column;align-items:center;gap:calc(var(--u)*.9);width:100%}
+#qr{width:100%;aspect-ratio:1;display:grid;place-items:center}
+#qr svg{width:100%;height:100%;display:block}
+#qr path{fill:#2E2640}
+.scan{margin:0;font-size:calc(var(--u)*1.9);font-weight:700;color:var(--accent-deep);text-align:center;line-height:1.4}
+.url{margin:0;font-size:calc(var(--u)*1.15);color:var(--muted);word-break:break-all;text-align:center}
+.total{text-align:center;color:var(--muted);font-size:calc(var(--u)*1.9)}
+.total b{display:block;font-size:calc(var(--u)*4.6);line-height:1.1;color:var(--accent-deep);font-variant-numeric:tabular-nums}
+.stage.noqr{grid-template-columns:1fr}
+.stage.noqr aside{display:none}
+
+/* 主持人工具列：平常淡淡的，滑鼠移過去才清楚 */
+.tools{position:fixed;right:14px;bottom:12px;display:flex;gap:8px;opacity:.35;transition:opacity .2s}
+.tools:hover,.tools:focus-within{opacity:1}
+.tools button{font:inherit;font-size:14px;color:var(--accent-deep);background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer}
+.tools button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+@media (max-width:700px){
+  body{overflow:auto}
+  .stage{height:auto;min-height:100%;grid-template-columns:1fr;--u:2.2vw}
+  .chart{height:60vh}
+  aside{width:100%;flex-direction:row}
+  .qrcard{width:50%}
+  .demo{position:static;display:block;margin:0 16px 10px;text-align:center}
+  .tools{position:static;justify-content:center;flex-wrap:wrap;opacity:1;padding:0 16px 20px}
+}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <header>
+    <h1 id="q"></h1>
+  </header>
+  <section class="chart" aria-label="即時投票結果">
+    <div class="bars" id="bars"></div>
+    <div class="names" id="names"></div>
+  </section>
+  <aside>
+    <div class="qrcard">
+      <div id="qr" role="img" aria-label="投票網址 QR code"></div>
+      <p class="scan">手機掃一下<br>點一下就完成</p>
+      <p class="url" id="url"></p>
+    </div>
+    <div class="total" aria-live="polite"><b id="total">0</b>人已分享</div>
+  </aside>
+</div>
+
+<span class="demo" id="demo" hidden>試看模式・尚未連上 Firebase，只有這台電腦會同步</span>
+<div class="tools">
+  <button type="button" id="fs">全螢幕</button>
+  <button type="button" id="toggleQr">隱藏 QR code</button>
+  <button type="button" id="sim" hidden>模擬 10 人投票</button>
+  <button type="button" id="reset">重新開始</button>
+</div>
+
+<script src="qrcode.js"></script>
+<script src="config.js"></script>
+<script src="store.js"></script>
+<script>
+(function () {
+  var cfg = window.MOOD_CONFIG, opts = cfg.options;
+  var room = MoodStore.room();
+  var $ = function (id) { return document.getElementById(id); };
+  var store = null, round = 1;
+
+  $("q").textContent = cfg.question;
+
+  var cols = opts.map(function (o) {
+    var c = document.createElement("div");
+    c.className = "col";
+    c.innerHTML = '<div class="num">0</div><div class="pct">0%</div><div class="bar"></div>';
+    c.querySelector(".bar").style.setProperty("--c", o.color);
+    $("bars").appendChild(c);
+
+    var n = document.createElement("div");
+    n.className = "name";
+    n.innerHTML = '<span class="emo" aria-hidden="true"></span><span class="lab"></span><span class="note"></span>';
+    n.querySelector(".emo").textContent = o.emoji;
+    n.querySelector(".lab").textContent = o.label;
+    n.querySelector(".note").textContent = o.note || "";
+    $("names").appendChild(n);
+    return c;
+  });
+
+  function render(counts) {
+    var total = counts.reduce(function (a, b) { return a + b; }, 0);
+    var max = Math.max.apply(null, counts.concat([1]));
+    counts.forEach(function (n, i) {
+      var c = cols[i];
+      c.querySelector(".num").textContent = n;
+      c.querySelector(".pct").textContent = total ? Math.round(n / total * 100) + "%" : "0%";
+      c.querySelector(".bar").style.height = (n / max * 100) + "%";
+    });
+    $("total").textContent = total;
+  }
+
+  // 學員頁網址（同一個場次）＋ QR code
+  var voteUrl = new URL("./", location.href);
+  if (room !== "main") voteUrl.searchParams.set("r", room);
+  $("url").textContent = voteUrl.href.replace(/^https?:\/\//, "");
+  try {
+    var qr = qrcode(0, "M");
+    qr.addData(voteUrl.href); qr.make();
+    $("qr").innerHTML = qr.createSvgTag({ cellSize: 8, margin: 0, scalable: true });
+  } catch (e) {
+    $("qr").textContent = "QR code 產生失敗，請改用下方網址";
+  }
+
+  $("fs").onclick = function () {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+  };
+  $("toggleQr").onclick = function () {
+    var hide = $("stage").classList.toggle("noqr");
+    this.textContent = hide ? "顯示 QR code" : "隱藏 QR code";
+  };
+  $("reset").onclick = function () {
+    if (!store) return;
+    if (confirm("要清空目前的結果，開始新的一輪投票嗎？\n（大家手機上的選擇也會一起清空）")) store.nextRound(round);
+  };
+  $("sim").onclick = function () { if (store && store.simulate) store.simulate(10); };
+
+  render(opts.map(function () { return 0; }));
+
+  MoodStore.connect(room).then(function (s) {
+    store = s;
+    $("demo").hidden = $("sim").hidden = s.mode !== "demo";
+    s.watchCounts(function (counts, r) { round = r; render(counts); });
+  }).catch(function () {
+    $("q").textContent = "連不上投票系統，請檢查網路與 config.js 的 Firebase 設定";
+  });
+})();
+</script>
+</body>
+</html>
