@@ -395,7 +395,7 @@ const L={
  calm_intro:'我們開始今天的功課。請找個舒服的姿勢，感受呼吸自然的律動，讓心慢慢安靜下來，陪自己回到當下。',
  calm_1:'吸氣時，感受空氣輕輕進來；吐氣時，讓肩膀慢慢放鬆。今天的忙碌不必立刻消失，先給自己一點安靜的空間。',
  mantra_intro:'接下來，讓我們進入鉉元祈誦。依自己的節奏，跟著音樂一起誦唸。如果一時分心了，也沒關係，再把心輕輕帶回來即可。',
- huixiang:'願以此天祥真言功德，迴向給我自己。願我身心安定，平安喜樂，智慧增長，道炁長存。',
+ huixiang:'願以此天祥真言功德，迴向給我自己。願我身心安定，平安喜樂，智慧增長，道炁常存。',
  thanks_intro:'接下來是感恩。讓我們慢一點，看看今天有哪些人、事、物，值得被看見與珍惜。',
  thanks_1:'今天有哪一件小事，讓我感受到支持、善意，或覺得值得珍惜？',
  thanks_r1:'今天，我是否留意到有人為我付出、提供幫助，或默默做好了一件事？這些付出，讓我有什麼感受？',
@@ -470,7 +470,7 @@ function buildSteps(){
   steps.push({key:'calm',name:'靜心',sub:'回到當下',items:[it('calm_intro',3),it('calm_1',T(45),{breath:true})]});
   if(settings.mantra){
     const hx=it('huixiang',3,{quietEnd:true,softIn:true,noTts:true,hint:'默念迴向',
-      text:'願以此天祥真言功德，<br>迴向給我自己：||<span class="silent">（默念自己的名字）</span>||願我身心安定，<br>平安喜樂，||<span style="white-space:nowrap">智慧增長，道炁長存。</span>'});
+      text:'願以此天祥真言功德，<br>迴向給我自己：||<span class="silent">（默念自己的名字）</span>||願我身心安定，<br>平安喜樂，||<span style="white-space:nowrap">智慧增長，道炁常存。</span>'});
     steps.push({key:'mantra',name:'祈誦',sub:'天祥真言・十一遍',type:'mantra',items:[hx],
       est:Math.round(L.mantra_intro.length*.3+BOWL_WAIT_MS/1000+3+(useChant()?chantRec.dur:MANTRA_TIMES*mantraLen())+itemEst(hx)+2.6)});
   }

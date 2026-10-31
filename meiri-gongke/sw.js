@@ -1,5 +1,5 @@
 // 每日功課：離線用的快取。修改內容後，把版本號加 1，大家下次打開就會更新。
-const VERSION = 'meiri-gongke-v55';
+const VERSION = 'meiri-gongke-v56';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './audio/music_loop.mp3', './audio/list.json', './audio/timing.json',
   './audio/bowl.mp3', './audio/calm_1.mp3', './audio/calm_intro.mp3', './audio/close.mp3', './audio/huixiang.mp3', './audio/mantra_chant.mp3', './audio/mantra_intro.mp3', './audio/pray_intro.mp3', './audio/thanks_1.mp3', './audio/thanks_intro.mp3', './audio/thanks_r1.mp3', './audio/thanks_r2.mp3', './audio/thanks_r3.mp3', './audio/wen_1.mp3', './audio/wen_2.mp3', './audio/wen_3.mp3', './audio/wen_intro.mp3', './audio/wen_r1.mp3', './audio/wen_r2.mp3', './audio/wen_r3.mp3', './audio/wen_r4.mp3', './audio/yuan_1.mp3', './audio/yuan_intro.mp3'];
 
