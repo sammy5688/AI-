@@ -6,12 +6,12 @@ window.MOOD_CONFIG = {
      填好之後 → 正式模式，全場手機即時同步。
      取得方式：Firebase 主控台 → 專案設定 → 一般 → 你的應用程式 → 網頁應用程式 → SDK 設定（Config） */
   firebase: {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    storageBucket: "",
-    messagingSenderId: "",
-    appId: ""
+    apiKey: "AIzaSyAyWpIYaDJW5CGlom5iSEXYA-rHFM5yqNk",
+    authDomain: "tendshine-18fa2.firebaseapp.com",
+    projectId: "tendshine-18fa2",
+    storageBucket: "tendshine-18fa2.firebasestorage.app",
+    messagingSenderId: "1015485869736",
+    appId: "1:1015485869736:web:210beec98454a691a95c9d"
   },
 
   /* ② 題目 */
