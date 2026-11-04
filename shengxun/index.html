@@ -222,51 +222,55 @@ body.has-speak main{padding-bottom:120px}
 /* 葉子圖形（給重點標記與卡片浮水印用） */
 :root{--leaf:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.5 3.5C11 3.5 4.5 8.5 4.5 15.2c0 1.5.4 2.9 1.1 4.1C7.3 14.6 11 11 16 9c-4.4 2.6-7.4 6-8.9 10.6 1.2.6 2.5.9 3.9.9 6.7 0 9.5-7.4 9.5-17z'/%3E%3C/svg%3E")}
 
-/* ===== 夜間模式：林間夜色，暖白字，不刺眼；晚上 7 點到清晨 5 點自動開 ===== */
+/* ===== 夜間模式：黃昏霧綠（不是全黑）。底、卡片、內框三層分明，字是柔白；晚上 7 點到清晨 5 點自動開 ===== */
 html.night{
-  --sky:#171D19; --dawn:#1C231F; --paper:#232B26; --ink:#E4ECE5; --muted:#B4C3B8; --line:#344039;
-  --accent:#8FB098; --accent-deep:#BFD6C5; --accent-ink:#FFFFFF; --veil:#2A332D;
-  --warm:#2F2E27; --clay:#E3C9A6; --clay-bg:#35302A; --sage:#35302A; --sage-ink:#E3C9A6; --glow:#5E7B66;
-  --float:0 16px 30px -14px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.05);
-  --well:inset 0 2px 6px rgba(0,0,0,.35),inset 0 0 0 1px rgba(255,255,255,.04);
+  --sky:#2E3833;        /* 底：暮色霧綠 */
+  --dawn:#33403A;
+  --paper:#3A4640;      /* 卡片：比底亮一階，浮起來 */
+  --ink:#EEF2EC; --muted:#C6D2C9; --line:#4B5A52;
+  --accent:#9DBBA5; --accent-deep:#CFE2D3; --accent-ink:#FFFFFF;
+  --veil:#425049;       /* 內框：再亮一階 */
+  --warm:#4A483E; --clay:#F0D9B8; --clay-bg:#4A463C; --sage:#4A463C; --sage-ink:#F0D9B8; --glow:#6E8B75;
+  --float:0 16px 30px -14px rgba(10,16,12,.55),0 0 0 1px rgba(255,255,255,.07),inset 0 1px 0 rgba(255,255,255,.06);
+  --well:inset 0 1px 3px rgba(10,16,12,.25),inset 0 0 0 1px rgba(255,255,255,.06);
   color-scheme:dark;
 }
-html.night body{background:radial-gradient(120% 60% at 85% 0%,rgba(143,176,152,.10) 0,rgba(143,176,152,0) 60%),var(--sky)}
+html.night body{background:radial-gradient(120% 60% at 85% 0%,rgba(240,230,200,.10) 0,rgba(240,230,200,0) 60%),linear-gradient(180deg,#34413A 0,var(--sky) 460px) no-repeat,var(--sky)}
 html.night body::before{background:var(--dawn)}
-html.night .bar{background:rgba(23,29,25,.9)}
-html.night .bar-in{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08);box-shadow:0 8px 24px rgba(0,0,0,.4)}
-html.night .bar .fsbtn{background:#262F29;color:var(--ink);border-color:rgba(191,214,197,.35);box-shadow:none}
-html.night .bar button[aria-current="page"],html.night .bar button[aria-pressed="true"]{background:linear-gradient(180deg,#5E7B66,#4A6652)}
-html.night .hero{background:linear-gradient(180deg,#1E2622 0%,#1B231F 60%,#1A211D 100%);border-color:rgba(255,255,255,.06)}
-html.night .hero-text{background:#1A211D}
-html.night .hero .sky{opacity:.12}
-html.night .hero .sunglow{opacity:.35}
-html.night .hero .sun{fill:#E8EBDD;opacity:.7}
-html.night .hero .m1{fill:#26302A} html.night .hero .m2{fill:#212A25} html.night .hero .m3{fill:#1A211D}
-html.night .hero .mist1,html.night .hero .mist2{opacity:.08}
-html.night .hero .sprig{opacity:.5}
-html.night .trial{background:rgba(26,33,29,.88);color:var(--accent-deep)}
-html.night .orb{background:radial-gradient(circle at 38% 32%,#EEF4EE,#9DB8A4 55%,#4E6A56);box-shadow:0 0 0 8px rgba(157,184,164,.12)}
+html.night .bar{background:rgba(46,56,51,.9)}
+html.night .bar-in{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);box-shadow:0 8px 22px -8px rgba(10,16,12,.6)}
+html.night .bar .fsbtn{background:var(--paper);color:var(--ink);border-color:rgba(207,226,211,.4);box-shadow:none}
+html.night .bar button[aria-current="page"],html.night .bar button[aria-pressed="true"]{background:linear-gradient(180deg,#6B8A73,#5A7863)}
+html.night .hero{background:linear-gradient(180deg,#46544C 0%,#3E4B44 60%,#3A4640 100%);border-color:rgba(255,255,255,.08)}
+html.night .hero-text{background:#3A4640}
+html.night .hero .sunglow{opacity:.55}
+html.night .hero .sun{fill:#F2EEDC;opacity:.9}
+html.night .hero .m1{fill:#55665B} html.night .hero .m2{fill:#4A5A50} html.night .hero .m3{fill:#3A4640}
+html.night .hero .mist1,html.night .hero .mist2{opacity:.18}
+html.night .hero .sprig{fill:#9DBBA5}
+html.night .hero .sprig path:first-child{stroke:#9DBBA5}
+html.night .trial{background:rgba(58,70,64,.9);color:var(--accent-deep)}
+html.night .orb{background:radial-gradient(circle at 38% 32%,#F4F7F2,#B9CFBF 50%,#7E9C86);box-shadow:0 0 0 8px rgba(185,207,191,.16)}
 html.night .todaycard,html.night .step,html.night .list li,html.night .intro .card,html.night .empty,html.night .firstcard,html.night .daylist button{
-  background:linear-gradient(180deg,#252E28,#222A25);border-color:rgba(255,255,255,.05)}
-html.night .todaycard::before{opacity:.08;background:var(--accent)}
-html.night .bigkey{border-left-color:#4A6652}
-html.night .quote{background:linear-gradient(180deg,#2A332D,#273029)}
-html.night .quote::before{background:#5E7B66}
-html.night .keybox{background:linear-gradient(160deg,#302F27,#2A312B)}
-html.night .trybox{background:linear-gradient(180deg,#35302A,#302C26)}
-html.night details.fold{background:linear-gradient(180deg,#28312B,#252D28)}
-html.night details.fold summary::after{background:#303A33;border-color:rgba(191,214,197,.3);color:var(--ink)}
-html.night textarea{background:#28312B;color:var(--ink)}
-html.night textarea::placeholder{color:#86958A}
-html.night .ghost{background:rgba(255,255,255,.06);border-color:rgba(191,214,197,.4);color:var(--ink);box-shadow:none}
-html.night .ghost:active{background:rgba(255,255,255,.1)}
-html.night .primary{background:linear-gradient(180deg,#5E7B66 0%,#4A6652 100%);box-shadow:0 10px 22px -8px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.18)}
-html.night .step h2 .num{box-shadow:inset 0 0 0 1.5px rgba(191,214,197,.25)}
-html.night .step.act h2 .num{box-shadow:inset 0 0 0 1.5px rgba(227,201,166,.3)}
-html.night .linehint{background:#332D20;border-color:#7A6334;color:#F2E2C0}
-html.night .speakbar{background:rgba(26,33,29,.96);box-shadow:0 -6px 20px rgba(0,0,0,.4)}
-html.night .close .orb{box-shadow:0 0 0 6px rgba(157,184,164,.12)}
+  background:linear-gradient(180deg,#3E4A44,var(--paper));border-color:rgba(255,255,255,.08)}
+html.night .todaycard::before{opacity:.12;background:var(--accent)}
+html.night .bigkey{border-left-color:#6E8B75}
+html.night .quote{background:linear-gradient(180deg,#44524B,#425049)}
+html.night .quote::before{background:#8FAE97}
+html.night .keybox{background:linear-gradient(160deg,#4C4A40,#454C43)}
+html.night .trybox{background:linear-gradient(180deg,#4A463C,#47443B)}
+html.night details.fold{background:linear-gradient(180deg,#424F48,#3F4B45)}
+html.night details.fold summary::after{background:var(--paper);border-color:rgba(207,226,211,.4);color:var(--ink)}
+html.night textarea{background:#424F48;color:var(--ink)}
+html.night textarea::placeholder{color:#A3B2A8}
+html.night .ghost{background:rgba(255,255,255,.08);border-color:rgba(207,226,211,.45);color:var(--ink);box-shadow:none}
+html.night .ghost:active{background:rgba(255,255,255,.14)}
+html.night .primary{background:linear-gradient(180deg,#6B8A73 0%,#5A7863 100%);box-shadow:0 10px 22px -8px rgba(10,16,12,.6),inset 0 1px 0 rgba(255,255,255,.22)}
+html.night .step h2 .num{box-shadow:inset 0 0 0 1.5px rgba(207,226,211,.35)}
+html.night .step.act h2 .num{box-shadow:inset 0 0 0 1.5px rgba(240,217,184,.35)}
+html.night .linehint{background:#4A4332;border-color:#9A8350;color:#F5E6C6}
+html.night .speakbar{background:rgba(52,64,58,.96);border-top-color:rgba(255,255,255,.08);box-shadow:0 -6px 20px -8px rgba(10,16,12,.5)}
+html.night .close .orb{box-shadow:0 0 0 6px rgba(185,207,191,.14)}
 .nighthint{margin:0;text-align:center;font-size:.85em;color:var(--muted)}
 .nighthint button{min-height:44px;border:0;background:none;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:0 6px}
 .modepick .row button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:2px}
@@ -677,7 +681,7 @@ function isNightHour(){ const h = new Date().getHours(); return h >= 19 || h < 5
 function applyNight(){
   const on = nightMode === 'on' || (nightMode === 'auto' && isNightHour());
   document.documentElement.classList.toggle('night', on);
-  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', on ? '#1C231F' : '#F5F3EA');
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', on ? '#33403A' : '#F5F3EA');
   $('c-night').hidden = !(on && nightMode === 'auto');
   [['auto','nm-auto'],['on','nm-on'],['off','nm-off']].forEach(([k,id]) => $(id).setAttribute('aria-pressed', nightMode === k ? 'true' : 'false'));
 }
