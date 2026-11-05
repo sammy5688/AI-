@@ -308,6 +308,22 @@ html.night .step.act h2 .num{box-shadow:inset 0 0 0 1.5px rgba(240,217,184,.35),
 html.night .quote+.keybox::before{opacity:.6}
 html.night .hero .rings{stroke:#DCE6D6;opacity:.45}
 html.night .hero .dots{fill:#7E9C86}
+
+/* ===== 校對模式（網址加 #check）：從第 1 天看到最後一天，一邊看一邊記 ===== */
+.checkbar{border-radius:22px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:var(--warm);box-shadow:var(--well)}
+.ck-t{margin:0;font-weight:700;color:var(--clay);font-size:.9em}
+.ck-mark{margin-left:10px;font-weight:500;color:var(--accent-deep)}
+.ck-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px}
+.ck-row .ghost,.ck-row .primary{padding:0 12px;min-height:54px;letter-spacing:.02em}
+.ck-row button:disabled{opacity:.4;cursor:default}
+.ck-prog{margin:0;font-size:.8em;color:var(--muted)}
+.ck-done{display:flex;gap:12px;align-items:center;min-height:54px;font-weight:700}
+.ck-done input{flex:none;width:28px;height:28px;margin:0;accent-color:var(--accent)}
+.step.ck h2 .num{font-family:var(--sans)}
+.ck-tools{display:flex;flex-direction:column;gap:10px}
+.daylist .ck-ok{color:var(--accent-deep);font-weight:700}
+.daylist .ck-note{color:var(--clay);font-weight:700}
+.daylist .ck-here{outline:3px solid var(--accent);outline-offset:2px}
 </style>
 
 </head>
@@ -387,6 +403,11 @@ html.night .hero .dots{fill:#7E9C86}
       <p class="daytag" id="d-title"></p>
     </div>
     <div class="row" id="d-nav"><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-today" hidden>回到今天</button></div>
+    <div class="checkbar" id="ck-bar" hidden>
+      <p class="ck-t">校對模式・第 <span id="ck-n"></span> / <span id="ck-total"></span> 天<span class="ck-mark" id="ck-mark"></span></p>
+      <div class="ck-row"><button class="ghost" id="ck-prev">‹ 上一天</button><button class="ghost" id="ck-list">全部</button><button class="ghost" id="ck-next">下一天 ›</button></div>
+      <p class="ck-prog" id="ck-prog"></p>
+    </div>
     <div class="step">
       <h2><span class="num">一</span>讀聖訓</h2>
       <div><p class="lab"><b>開篇</b>編輯整理</p><p class="p" id="d-open"></p></div>
@@ -423,6 +444,15 @@ html.night .hero .dots{fill:#7E9C86}
       <p class="saved" id="carry-msg" aria-live="polite"></p>
     </div>
 
+    <div class="step ck" id="ck-card" hidden>
+      <h2><span class="num">✓</span>校對這一天</h2>
+      <label class="ck-done"><input type="checkbox" id="ck-done">這一天看過了，沒問題</label>
+      <label class="hint" for="ck-note">要修改的地方，寫在這裡（只存在這支手機裡）：</label>
+      <textarea id="ck-note" placeholder="例如：白話理解第二句，「之」應該是「知」"></textarea>
+      <p class="saved" id="ck-msg" aria-live="polite"></p>
+      <div class="ck-row"><button class="ghost" id="ck-prev2">‹ 上一天</button><button class="ghost" id="ck-list2">全部</button><button class="primary" id="ck-next2">下一天 ›</button></div>
+    </div>
+
     <div class="close"><span class="orb" aria-hidden="true"></span><p>今天讀到這裡，就很好了。</p></div>
     <div class="after">
       <p id="d-next"></p>
@@ -444,8 +474,14 @@ html.night .hero .dots{fill:#7E9C86}
   <!-- 前幾天 -->
   <section class="view col" id="v-past" hidden>
     <div class="pagehead">
-      <p class="daytag">前幾天</p>
-      <p class="hint">錯過的日子都在這裡，想讀哪一篇就點哪一篇。</p>
+      <p class="daytag" id="p-title">前幾天</p>
+      <p class="hint" id="p-hint">錯過的日子都在這裡，想讀哪一篇就點哪一篇。</p>
+    </div>
+    <div class="ck-tools" id="ck-tools" hidden>
+      <p class="ck-prog" id="ck-prog2"></p>
+      <button class="primary" id="ck-copy">複製全部修改意見</button>
+      <p class="saved" id="ck-copymsg" aria-live="polite"></p>
+      <textarea id="ck-out" readonly hidden></textarea>
     </div>
     <ul class="daylist" id="p-list"></ul>
   </section>
@@ -529,6 +565,7 @@ const SD = new Date(START);
 const startLabel = `${SD.getUTCMonth()+1} 月 ${SD.getUTCDate()} 日`;
 function render(){
   state = todayState();
+  if (isCheck()) viewN = ckAt;
   const pastView = !!viewN && viewN !== state.day.n;
   D = pastView ? DAYS[viewN - 1] : state.day;
   $('c-greet').textContent = greeting();
@@ -572,6 +609,7 @@ function render(){
     past.textContent = `上一次讀到這篇時，你寫下：「${mine.text}」`;
   } else past.hidden = true;
   $('note-msg').textContent = ''; $('carry-msg').textContent = mine.carried ? '已經收藏，在「我的收藏」看得到。' : '';
+  ckRender();
 }
 
 function show(name){
@@ -606,16 +644,31 @@ function renderNotes(){
   });
 }
 
-function openDay(n){ viewN = n; render(); show('today'); }
+function openDay(n){ if (isCheck()) return ckGo(n); viewN = n; render(); show('today'); }
 function renderPast(){
   const ul = $('p-list'); ul.textContent = '';
-  openDays().slice().reverse().forEach(d => {
+  const ck = isCheck(), cd = ck ? ckData() : {};
+  $('p-title').textContent = ck ? `全部 ${DAYS.length} 天（校對）` : '前幾天';
+  $('p-hint').textContent = ck ? '從第 1 天排到最後一天。想看哪一天就點哪一天；打勾的是看過了，有筆的是記了要修改的地方。' : '錯過的日子都在這裡，想讀哪一篇就點哪一篇。';
+  $('ck-tools').hidden = !ck;
+  if (ck){ $('ck-prog2').textContent = ckProgress(); $('ck-copymsg').textContent = ''; $('ck-out').hidden = true; }
+  (ck ? DAYS.slice() : openDays().slice().reverse()).forEach(d => {
     const li = document.createElement('li'), b = document.createElement('button');
-    const t = document.createElement('span'); t.className='t'; t.textContent = `第 ${d.n} 天｜${d.theme}` + (d.n === state.day.n ? '（今天）' : '');
+    const t = document.createElement('span'); t.className='t'; t.textContent = `第 ${d.n} 天｜${d.theme}` + (!ck && d.n === state.day.n ? '（今天）' : '');
     const s = document.createElement('span'); s.className='s'; s.textContent = d.who;
     const k = document.createElement('span'); k.className='k'; k.textContent = d['今日重點'];
-    b.append(t, s, k); b.onclick = () => openDay(d.n); li.append(b); ul.appendChild(li);
+    b.append(t, s, k);
+    if (ck){
+      const c = cd[d.n] || {};
+      if (c.ok || c.note){ const m = document.createElement('span'); m.className = 's';
+        if (c.ok){ const o = document.createElement('span'); o.className = 'ck-ok'; o.textContent = '✓ 看過了　'; m.append(o); }
+        if (c.note){ const o = document.createElement('span'); o.className = 'ck-note'; o.textContent = '✎ 有要修改的地方'; m.append(o); }
+        b.append(m); }
+      if (d.n === ckAt) b.classList.add('ck-here');
+    }
+    b.onclick = () => ck ? ckGo(d.n) : openDay(d.n); li.append(b); ul.appendChild(li);
   });
+  if (ck){ const here = ul.querySelector('.ck-here'); if (here) setTimeout(() => here.scrollIntoView({ block: 'center' }), 0); }
 }
 function upsert(patch){
   const notes = store.get('sx-notes', {});
@@ -729,6 +782,75 @@ $('c-night-off').onclick = () => setNight('off');
 applyNight();
 setInterval(applyNight, 5 * 60 * 1000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) applyNight(); });
+
+// ===== 校對模式：網址最後加上 #check，就能從第 1 天一路看到最後一天，一邊看一邊記 =====
+// 不改變大家每天讀的那一篇；記下的勾和意見只存在這支手機裡。
+function isCheck(){ return /^#check$/i.test(location.hash || ''); }
+let ckAt = store.get('sx-ck-at', 1);
+if (!(ckAt >= 1 && ckAt <= DAYS.length)) ckAt = 1;
+function ckData(){ return store.get('sx-ck', {}); }
+function ckSave(n, patch){ const all = ckData(); all[n] = Object.assign({}, all[n], patch); if (!all[n].ok && !all[n].note) delete all[n]; return store.set('sx-ck', all); }
+function ckProgress(){
+  const all = ckData(), ok = Object.keys(all).filter(k => all[k].ok).length, nt = Object.keys(all).filter(k => all[k].note).length;
+  return `已經看過 ${ok} / ${DAYS.length} 天・記了要修改的地方 ${nt} 天`;
+}
+function ckGo(n){
+  ckAt = Math.min(DAYS.length, Math.max(1, n)); store.set('sx-ck-at', ckAt);
+  render(); show('today');
+}
+function ckRender(){
+  const on = isCheck();
+  $('ck-bar').hidden = !on; $('ck-card').hidden = !on;
+  if (!on) return;
+  const c = ckData()[ckAt] || {};
+  $('d-nav').hidden = true;
+  $('d-date').textContent = '校對模式';
+  $('c-date').textContent = '校對模式（不影響大家每天讀的那一篇）';
+  $('d-next').textContent = ckAt < DAYS.length ? `看完了，按「下一天」看第 ${ckAt + 1} 天。` : `這是最後一天（第 ${DAYS.length} 天）。`;
+  $('c-msg').hidden = false;
+  $('c-msg').textContent = `校對模式：按「開始讀」，從第 ${ckAt} 天接著看。`;
+  $('ck-n').textContent = ckAt; $('ck-total').textContent = DAYS.length;
+  $('ck-mark').textContent = c.ok ? '✓ 看過了' : '';
+  $('ck-done').checked = !!c.ok;
+  $('ck-note').value = c.note || '';
+  $('ck-msg').textContent = '';
+  $('ck-prog').textContent = ckProgress();
+  ['ck-prev','ck-prev2'].forEach(id => $(id).disabled = ckAt <= 1);
+  ['ck-next','ck-next2'].forEach(id => $(id).disabled = ckAt >= DAYS.length);
+}
+['ck-prev','ck-prev2'].forEach(id => $(id).onclick = () => ckGo(ckAt - 1));
+['ck-next','ck-next2'].forEach(id => $(id).onclick = () => ckGo(ckAt + 1));
+['ck-list','ck-list2'].forEach(id => $(id).onclick = () => show('past'));
+$('ck-done').onchange = () => {
+  const ok = $('ck-done').checked;
+  $('ck-msg').textContent = ckSave(ckAt, { ok }) ? (ok ? '打勾了。' : '取消打勾了。') : FAIL;
+  $('ck-mark').textContent = ok ? '✓ 看過了' : '';
+  $('ck-prog').textContent = ckProgress();
+};
+let ckT;
+$('ck-note').addEventListener('input', () => {
+  clearTimeout(ckT);
+  ckT = setTimeout(() => {
+    $('ck-msg').textContent = ckSave(ckAt, { note: $('ck-note').value.trim() }) ? '已經自動存好了。' : FAIL;
+    $('ck-prog').textContent = ckProgress();
+  }, 600);
+});
+$('ck-copy').onclick = async () => {
+  const all = ckData();
+  const lines = DAYS.filter(d => all[d.n] && all[d.n].note).map(d => `第 ${d.n} 天｜${d.theme}・${d.who}\n${all[d.n].note}`);
+  if (!lines.length){ $('ck-copymsg').textContent = '還沒有記下要修改的地方。'; return; }
+  const text = `《聖訓在生活》玉虛篇 校對意見（共 ${lines.length} 天）\n\n` + lines.join('\n\n');
+  let ok = false;
+  try{ await navigator.clipboard.writeText(text); ok = true; }catch(e){}
+  if (ok){ $('ck-copymsg').textContent = `複製好了（${lines.length} 天的意見），可以貼到 LINE 或訊息裡。`; return; }
+  const out = $('ck-out'); out.hidden = false; out.value = text; out.focus(); out.select();
+  $('ck-copymsg').textContent = '這支手機不能自動複製。下面的字已經選好了，長按「複製」就可以。';
+};
+document.addEventListener('keydown', e => {
+  if (!isCheck() || $('v-today').hidden || /^(TEXTAREA|INPUT)$/.test((e.target || {}).tagName || '')) return;
+  if (e.key === 'ArrowRight' && ckAt < DAYS.length) ckGo(ckAt + 1);
+  if (e.key === 'ArrowLeft' && ckAt > 1) ckGo(ckAt - 1);
+});
 
 render();
 show('cover');
