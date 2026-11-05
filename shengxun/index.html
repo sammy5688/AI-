@@ -274,6 +274,40 @@ html.night .close .orb{box-shadow:0 0 0 6px rgba(185,207,191,.14)}
 .nighthint{margin:0;text-align:center;font-size:.85em;color:var(--muted)}
 .nighthint button{min-height:44px;border:0;background:none;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:0 6px}
 .modepick .row button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:2px}
+
+/* ===== 幾何點綴：只用圓與弧，很淡、只放在邊角，不壓在字底下；不加動畫 ===== */
+:root{
+  --arcs:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72' fill='none' stroke='%23000' stroke-width='1.4'%3E%3Ccircle cx='72' cy='0' r='14'/%3E%3Ccircle cx='72' cy='0' r='28'/%3E%3Ccircle cx='72' cy='0' r='42'/%3E%3Ccircle cx='72' cy='0' r='56'/%3E%3C/svg%3E");
+  --divider:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 12'%3E%3Ccircle cx='5' cy='6' r='1.8'/%3E%3Cpath d='M12 6H24M40 6H52' stroke='%23000' stroke-width='1.2' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='6' r='3.6' fill='none' stroke='%23000' stroke-width='1.4'/%3E%3Ccircle cx='59' cy='6' r='1.8'/%3E%3C/svg%3E");
+}
+/* 卡片右上角：一圈圈淡淡的弧線，像晨光散開 */
+.step,.firstcard{position:relative;overflow:hidden}
+.step>*,.firstcard>*{position:relative}
+.step::before,.firstcard::before,.todaycard::after{content:"";position:absolute;top:0;right:0;width:72px;height:72px;pointer-events:none;opacity:.16;background:var(--accent);
+  -webkit-mask:var(--arcs) top right/contain no-repeat;mask:var(--arcs) top right/contain no-repeat}
+.step.act::before{background:var(--clay);opacity:.13}
+/* 步驟編號：雙線圓環，四步各一種淡色 */
+.step h2 .num{box-shadow:inset 0 0 0 1.5px rgba(70,98,79,.3),0 0 0 3px #FFFFFF,0 0 0 4.5px rgba(70,98,79,.2);margin-left:2px}
+.step.s2 h2 .num{background:#E2ECEA;color:#3F625E;box-shadow:inset 0 0 0 1.5px rgba(63,98,94,.3),0 0 0 3px #FFFFFF,0 0 0 4.5px rgba(63,98,94,.2)}
+.step.s3 h2 .num{background:#EEEBDC;color:#5E5A3C;box-shadow:inset 0 0 0 1.5px rgba(94,90,60,.3),0 0 0 3px #FFFFFF,0 0 0 4.5px rgba(94,90,60,.2)}
+.step.act h2 .num{box-shadow:inset 0 0 0 1.5px rgba(122,90,58,.3),0 0 0 3px #FFFFFF,0 0 0 4.5px rgba(122,90,58,.2)}
+/* 原文與今日重點之間：點・圓・點的小分隔 */
+.quote+.keybox{margin-top:18px}
+.quote+.keybox::before{content:"";position:absolute;left:50%;top:-23px;width:64px;height:12px;transform:translateX(-50%);pointer-events:none;background:var(--accent);opacity:.5;
+  -webkit-mask:var(--divider) center/contain no-repeat;mask:var(--divider) center/contain no-repeat}
+/* 封面：朝陽外的同心圓與幾顆小圓點 */
+.hero .rings{stroke:#E2D3A6}
+.hero .dots{fill:#BFD0BB}
+/* 夜間：同樣的圖形，改成稍亮的霧綠細線，像月暈 */
+html.night .step::before,html.night .firstcard::before,html.night .todaycard::after{opacity:.2}
+html.night .step.act::before{opacity:.16}
+html.night .step h2 .num{box-shadow:inset 0 0 0 1.5px rgba(207,226,211,.35),0 0 0 3px #3C4842,0 0 0 4.5px rgba(207,226,211,.22)}
+html.night .step.s2 h2 .num{background:#3F5150;color:#CDE3DF;box-shadow:inset 0 0 0 1.5px rgba(205,227,223,.35),0 0 0 3px #3C4842,0 0 0 4.5px rgba(205,227,223,.22)}
+html.night .step.s3 h2 .num{background:#4A4A3E;color:#E8DFC0;box-shadow:inset 0 0 0 1.5px rgba(232,223,192,.35),0 0 0 3px #3C4842,0 0 0 4.5px rgba(232,223,192,.22)}
+html.night .step.act h2 .num{box-shadow:inset 0 0 0 1.5px rgba(240,217,184,.35),0 0 0 3px #3C4842,0 0 0 4.5px rgba(240,217,184,.22)}
+html.night .quote+.keybox::before{opacity:.6}
+html.night .hero .rings{stroke:#DCE6D6;opacity:.45}
+html.night .hero .dots{fill:#7E9C86}
 </style>
 
 </head>
@@ -309,6 +343,8 @@ html.night .close .orb{box-shadow:0 0 0 6px rgba(185,207,191,.14)}
         </defs>
         <circle class="sunglow" cx="300" cy="70" r="72" fill="url(#sun)"/>
         <circle class="sun" cx="300" cy="70" r="22" fill="#FBF5E4"/>
+        <g class="rings" fill="none" stroke-width="1"><circle cx="300" cy="70" r="34" opacity=".8"/><circle cx="300" cy="70" r="48" opacity=".5"/><circle cx="300" cy="70" r="62" opacity=".28"/></g>
+        <g class="dots"><circle cx="56" cy="42" r="2.6"/><circle cx="74" cy="30" r="1.7"/><circle cx="88" cy="48" r="1.2"/><circle cx="196" cy="36" r="1.5"/></g>
         <path class="m1" d="M0 112 C40 96 70 82 105 88 C140 94 160 78 200 70 C240 62 270 86 305 92 C340 98 370 84 400 80 V170 H0Z" fill="#CFDDCB"/>
         <ellipse class="mist1" cx="110" cy="104" rx="150" ry="7" fill="#fff" opacity=".6" filter="url(#soft)"/>
         <path class="m2" d="M0 134 C50 120 95 112 140 118 C190 125 230 108 280 112 C330 116 365 128 400 120 V170 H0Z" fill="#BACDB6"/>
@@ -358,7 +394,7 @@ html.night .close .orb{box-shadow:0 0 0 6px rgba(185,207,191,.14)}
       <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc">原文句子</span></p><p class="p" id="d-key"></p></div>
     </div>
 
-    <div class="step">
+    <div class="step s2">
       <h2><span class="num">二</span>悟道理</h2>
       <p class="hint">先自己想一想上面那句話，再點開。</p>
       <details class="fold" id="d-more">
@@ -370,7 +406,7 @@ html.night .close .orb{box-shadow:0 0 0 6px rgba(185,207,191,.14)}
       </details>
     </div>
 
-    <div class="step">
+    <div class="step s3">
       <h2><span class="num">三</span>觀自心</h2>
       <div><p class="lab"><b>問問自己</b>編輯整理</p><p class="p" id="d-ask"></p></div>
       <div class="past" id="d-past" hidden></div>
