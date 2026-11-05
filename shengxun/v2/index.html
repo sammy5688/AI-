@@ -1,0 +1,1383 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F5F3EA">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>聖訓在生活</title>
+<meta name="color-scheme" content="light dark">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap">
+<style>
+/* 霧綠晨光：像清晨山間的薄霧，鼠尾草綠配米白紙色；
+   顏色放輕、動作放慢、按鈕不閃，讓人一打開就先把呼吸放慢。
+   設計守則：一頁只放一件事；字夠大、對比夠（長輩看得清）；聖訓原文是最安靜、最被托住的地方。 */
+:root{
+  --sky:#EDF1EA;        /* 底色：霧綠 */
+  --dawn:#F5F3EA;       /* 晨光：米白微暖 */
+  --paper:#FBFBF7;      /* 卡片：宣紙白 */
+  --ink:#2E3A32;        /* 主文字：深苔灰 */
+  --muted:#55625A;      /* 次要文字（對比 6:1，長輩看得清） */
+  --line:#DCE4DA;
+  --accent:#6E8B75;     /* 主色：鼠尾草綠 */
+  --accent-deep:#46624F;/* 深鼠尾草：標題、重點字 */
+  --accent-ink:#FFFFFF;
+  --veil:#E6EDE3;       /* 原文底：淡霧綠 */
+  --warm:#F3ECDF;       /* 今日重點：茶米色，像捧在手心的溫度 */
+  --clay:#7A5A3A;       /* 實踐：陶土色，落地、踏實 */
+  --clay-bg:#F4EDE2;
+  --sage:#F4EDE2; --sage-ink:#7A5A3A; /* 舊名稱保留，給程式用 */
+  --glow:#D7E4D3;
+  --serif:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --sans:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --float:0 16px 34px -14px rgba(56,84,64,.22),0 3px 8px rgba(56,84,64,.06),0 0 0 1px rgba(70,98,79,.07);
+  --well:inset 0 1px 3px rgba(56,84,64,.08),inset 0 0 0 1px rgba(70,98,79,.07);
+  --fs:20px; color-scheme:light;
+}
+html.fs1{--fs:24px}
+html.fs2{--fs:28px}
+html,body{background:var(--sky)}
+body{color:var(--ink);font-family:var(--sans);font-size:var(--fs);line-height:1.9;
+  background:
+    radial-gradient(120% 60% at 85% 0%,rgba(255,250,236,.9) 0,rgba(255,250,236,0) 60%),
+    linear-gradient(180deg,var(--dawn) 0,var(--sky) 460px) no-repeat,var(--sky);
+  background-attachment:fixed,scroll,scroll}
+*{box-sizing:border-box}
+button,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--dawn)}
+
+/* 上方選單：霧玻璃，很輕 */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;
+  background:rgba(240,244,237,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar-wrap{max-width:34rem;margin:0 auto;display:flex;gap:8px;align-items:center}
+.bar-in{flex:1;min-width:0;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;
+  background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.95);border-radius:999px;padding:5px;
+  box-shadow:0 8px 22px -8px rgba(56,84,64,.22),inset 0 1px 0 #fff}
+.bar button{min-height:50px;border:0;border-radius:999px;background:transparent;font-size:17px;font-weight:500;color:var(--muted);padding:0 4px;white-space:nowrap;transition:background .4s,color .4s,box-shadow .4s}
+.bar .fsbtn{flex:none;min-height:60px;min-width:64px;border-radius:18px;padding:4px 10px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;
+  background:var(--paper);color:var(--accent-deep);font-weight:700;border:1.5px solid rgba(70,98,79,.35);box-shadow:0 6px 14px -6px rgba(56,84,64,.25)}
+.fsbtn .a{font-family:var(--serif);font-size:22px}
+.fsbtn .s{font-size:13px;font-weight:500}
+.bar button[aria-current="page"],.bar button[aria-pressed="true"]{color:var(--accent-ink);
+  background:linear-gradient(180deg,#7E9A85 0%,#5E7B66 100%);
+  box-shadow:0 6px 14px -6px rgba(56,84,64,.55),inset 0 1px 0 rgba(255,255,255,.35)}
+
+main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.col{max-width:34rem;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.p{margin:0}
+
+/* 封面：晨霧山景 */
+.hero{position:relative;border-radius:28px;overflow:hidden;background:linear-gradient(180deg,#F8F4E8 0%,#EEF2E9 55%,#E4ECE2 100%);
+  box-shadow:var(--float);border:1px solid rgba(255,255,255,.85)}
+.hero svg{display:block;width:100%;height:150px}
+.hero-text{padding:2px 24px 26px;display:flex;flex-direction:column;gap:6px;background:#E4ECE2}
+.trial{position:absolute;top:14px;right:14px;z-index:1;font-size:.75em;color:var(--accent-deep);background:rgba(251,251,247,.78);border-radius:999px;padding:2px 12px}
+.greet{margin:0;color:var(--accent-deep);font-size:.85em;letter-spacing:.08em}
+.brand{font-family:var(--serif);font-size:1.9em;font-weight:700;line-height:1.3;color:var(--accent-deep);margin:0;letter-spacing:.04em;text-wrap:balance}
+.sub{margin:0;color:var(--ink);font-size:.88em}
+.motto{margin:0;color:var(--muted);font-size:.8em;letter-spacing:.08em}
+@media (prefers-reduced-motion:no-preference){
+  .hero .mist1{animation:drift 26s ease-in-out infinite alternate}
+  .hero .mist2{animation:drift 34s ease-in-out infinite alternate-reverse}
+  @keyframes drift{from{transform:translateX(-24px)}to{transform:translateX(24px)}}
+  .hero .sunglow{animation:sunbreath 10s ease-in-out infinite;transform-origin:300px 70px}
+  @keyframes sunbreath{0%,100%{opacity:.75}50%{opacity:1}}}
+
+/* 今天這一句：封面的主角 */
+.todaycard{position:relative;border-radius:26px;padding:24px 22px 24px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.todaycard::before{content:"";position:absolute;right:-26px;bottom:-30px;width:130px;height:130px;opacity:.09;pointer-events:none;
+  background:var(--accent);-webkit-mask:var(--leaf) center/contain no-repeat;mask:var(--leaf) center/contain no-repeat}
+.todaycard>*{position:relative}
+.meta{margin:0;font-size:.85em;color:var(--muted)}
+.daytag{font-family:var(--serif);font-size:1.2em;font-weight:700;margin:0;color:var(--ink)}
+.bigkey{font-family:var(--serif);font-size:1.4em;line-height:1.7;font-weight:600;color:var(--accent-deep);margin:6px 0 4px;padding-left:16px;border-left:3px solid #C9D8C6;text-wrap:balance}
+
+.breath{display:flex;align-items:center;gap:16px;padding:4px 0}
+.todaycard .primary{align-self:stretch;margin-top:6px}
+/* 呼吸的露珠 */
+.orb{flex:none;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#FFFFFF,#DDE9D9 50%,#A9C1AE);box-shadow:0 0 0 8px rgba(169,193,174,.22)}
+.breath p{margin:0;color:var(--muted);font-size:.85em}
+@media (prefers-reduced-motion:no-preference){.orb{animation:breathe 9s ease-in-out infinite}
+  @keyframes breathe{0%,100%{transform:scale(.84);box-shadow:0 0 0 4px rgba(169,193,174,.18)}50%{transform:scale(1.06);box-shadow:0 0 0 14px rgba(169,193,174,.26)}}}
+
+/* 按鈕：柔和、不閃、按下去有回彈 */
+.primary,.ghost{position:relative;transition:transform .2s,box-shadow .2s,background .3s}
+.primary{min-height:62px;border:0;border-radius:999px;color:var(--accent-ink);font-weight:700;font-size:1em;padding:0 34px;letter-spacing:.08em;
+  background:linear-gradient(180deg,#6F8E77 0%,#557560 100%);
+  box-shadow:0 12px 24px -10px rgba(56,84,64,.6),0 2px 4px rgba(56,84,64,.12),inset 0 1px 0 rgba(255,255,255,.28)}
+.primary:active{transform:translateY(2px) scale(.99);box-shadow:0 4px 10px -4px rgba(56,84,64,.5),inset 0 1px 0 rgba(255,255,255,.2)}
+.ghost{min-height:54px;border-radius:999px;padding:0 24px;font-size:.88em;font-weight:500;color:var(--accent-deep);
+  background:rgba(251,251,247,.92);border:1.5px solid rgba(70,98,79,.38);
+  box-shadow:0 8px 18px -10px rgba(56,84,64,.35)}
+.ghost:active{transform:translateY(2px);background:#EEF3EC;box-shadow:none}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.msg{margin:0;font-size:.82em;color:var(--muted);text-align:center}
+
+/* 卡片：浮起來的宣紙；內層方框：微微凹進去 */
+.todaycard,.step,.list li,.intro .card,.empty,.firstcard,.daylist button{
+  background:linear-gradient(180deg,#FFFFFF 0%,var(--paper) 100%);border:1px solid rgba(255,255,255,.95);box-shadow:var(--float)}
+
+/* 每日頁 */
+.dayhead{display:flex;flex-direction:column;gap:2px;padding:6px 4px 0}
+.step{border-radius:26px;padding:22px 20px;display:flex;flex-direction:column;gap:16px}
+.step h2{margin:0;display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:1.05em;font-weight:700;color:var(--accent-deep);letter-spacing:.06em}
+.step h2 .num{flex:none;width:1.8em;height:1.8em;border-radius:50%;display:grid;place-items:center;background:var(--veil);color:var(--accent-deep);font-size:.95em;font-weight:700;line-height:1;font-family:var(--serif);box-shadow:inset 0 0 0 1.5px rgba(70,98,79,.3)}
+.step.act h2 .num{background:var(--clay-bg);color:var(--clay);box-shadow:inset 0 0 0 1.5px rgba(122,90,58,.3)}
+.step.act h2{color:var(--clay)}
+.lab{font-size:.8em;color:var(--muted);margin:0 0 6px;letter-spacing:.04em}
+.lab b{font-weight:700;color:var(--ink);margin-right:8px;letter-spacing:.08em}
+
+/* 原文：最安靜、被托住的地方 */
+.quote{position:relative;border-radius:20px;padding:20px 18px 20px 22px;background:linear-gradient(180deg,#E6EDE3,#EDF2EA);box-shadow:var(--well)}
+.quote::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:4px;border-radius:0 4px 4px 0;background:#A9C1AE}
+.quote .p{font-family:var(--serif);font-size:1.05em;line-height:2.05}
+
+/* 今日重點：茶米色，帶一片小葉子 */
+.keybox{position:relative;border-radius:20px;padding:20px 18px;background:linear-gradient(160deg,#F6F0E4,#EEF1E6);box-shadow:var(--well)}
+.keybox .lab b::before{content:"";display:inline-block;width:1em;height:1em;margin-right:6px;vertical-align:-.12em;background:var(--accent);
+  -webkit-mask:var(--leaf) center/contain no-repeat;mask:var(--leaf) center/contain no-repeat}
+.keybox .p{font-family:var(--serif);font-size:1.28em;font-weight:700;color:var(--accent-deep);line-height:1.75;text-wrap:balance}
+
+details.fold{border-radius:20px;background:linear-gradient(180deg,#F1F4EE,#F8F9F5);box-shadow:var(--well)}
+details.fold summary{list-style:none;min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 14px 6px 18px;font-weight:500;cursor:pointer}
+details.fold summary::-webkit-details-marker{display:none}
+details.fold summary::after{content:"點開看";font-size:.8em;color:var(--accent-deep);border-radius:999px;padding:5px 18px;white-space:nowrap;
+  background:var(--paper);border:1.5px solid rgba(70,98,79,.35)}
+details[open].fold summary::after{content:"收起來"}
+details.fold .inner{display:flex;flex-direction:column;gap:16px;padding:4px 18px 18px}
+.hint{font-size:.85em;color:var(--muted);margin:0}
+textarea{width:100%;min-height:6.5em;border:0;border-radius:18px;background:#F7F8F3;padding:14px 16px;line-height:1.8;resize:vertical;box-shadow:var(--well)}
+textarea::placeholder{color:#8E9A91}
+textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(110,139,117,.3);outline:none}
+.saved{font-size:.82em;color:var(--accent-deep);min-height:1.6em;margin:0}
+.past{background:var(--warm);border-radius:16px;padding:12px 16px;font-size:.9em;box-shadow:var(--well)}
+.trybox{border-radius:20px;padding:18px;background:linear-gradient(180deg,#F4EDE2,#F7F2E9);box-shadow:var(--well)}
+.trybox .lab b{color:var(--clay)}
+.close{text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 12px 0}
+.close .orb{width:30px;height:30px;box-shadow:0 0 0 6px rgba(169,193,174,.2)}
+.close p{margin:0;font-family:var(--serif);color:var(--accent-deep);letter-spacing:.06em}
+.note{font-size:.8em;color:var(--muted);margin:0;text-align:center;padding:0 8px}
+
+/* 我的收藏 */
+.pagehead{display:flex;flex-direction:column;gap:4px;padding:6px 4px 0}
+.list{display:flex;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
+.list li{border-radius:22px;padding:18px 20px;display:flex;flex-direction:column;gap:6px}
+.list .m{font-size:.8em;color:var(--muted)}
+.list .k{font-family:var(--serif);font-weight:700;color:var(--accent-deep)}
+.list .mine{font-size:.9em;background:var(--warm);border-radius:12px;padding:8px 12px;box-shadow:var(--well)}
+.empty{color:var(--muted);border-radius:22px;padding:22px;margin:0}
+
+/* 說明 */
+.intro .card{border-radius:26px;padding:22px 22px 26px;display:flex;flex-direction:column;gap:10px}
+.intro h3{margin:12px 0 0;font-family:var(--serif);font-size:1.02em;color:var(--accent-deep)}
+.intro h3:first-child{margin-top:0}
+.intro p{margin:0}
+.center{justify-content:center}
+
+@media (prefers-reduced-motion:no-preference){.view{animation:in .6s ease-out}@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
+
+/* 第一次來 */
+.firstcard{border-radius:24px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.firstcard .t{font-family:var(--serif);font-weight:700;color:var(--accent-deep);margin:0}
+.firstcard p{margin:0}
+.firsthead{display:flex;align-items:center;justify-content:flex-start;gap:14px;flex-wrap:wrap}
+.firstcard .firstbtn{min-height:48px;padding:0 18px;font-size:.85em}
+.linkbtn{align-self:flex-start;border:0;background:none;padding:6px 0;min-height:44px;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px}
+
+/* 在 LINE 裡打開的提醒 */
+.linehint{max-width:34rem;margin:0 auto 18px;background:#FBF3E3;border:1.5px solid #DDC18F;border-radius:20px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;color:#5A4120}
+.linehint .t{font-weight:700;margin:0}
+.linehint p{margin:0;font-size:.9em}
+.linehint .ghost{align-self:flex-start;min-height:48px}
+
+/* 讀完之後 */
+.after{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.after p{margin:0;color:var(--muted);font-size:.9em}
+
+/* 前幾天 */
+.daylist{display:flex;flex-direction:column;gap:12px;margin:0;padding:0;list-style:none}
+.daylist button{width:100%;text-align:left;display:flex;flex-direction:column;gap:2px;padding:16px 20px;border-radius:22px;transition:transform .2s}
+.daylist button:active{transform:translateY(2px)}
+.daylist .t{font-family:var(--serif);font-weight:700;color:var(--ink)}
+.daylist .s{font-size:.85em;color:var(--muted)}
+.daylist .k{font-family:var(--serif);color:var(--accent-deep);font-size:.95em}
+.list li .ghost{align-self:flex-start;margin-top:6px;min-height:48px;font-size:.8em;padding:0 18px}
+.storenote{font-size:.8em;color:var(--muted);margin:0;background:var(--warm);border-radius:14px;padding:10px 14px}
+
+/* 唸給我聽：固定在畫面下方 */
+.speakbar{position:fixed;left:0;right:0;bottom:0;z-index:6;
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:rgba(250,251,247,.96);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid var(--line);box-shadow:0 -8px 22px -10px rgba(56,84,64,.25)}
+.speakbar-in{max-width:34rem;margin:0 auto;display:flex;align-items:center;gap:12px}
+.speakbar .primary{flex:none;min-height:58px;padding:0 24px;font-size:18px}
+.speakbar .now{margin:0;font-size:16px;color:var(--muted);line-height:1.4}
+body.has-speak main{padding-bottom:120px}
+
+/* 葉子圖形（給重點標記與卡片浮水印用） */
+:root{--leaf:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20.5 3.5C11 3.5 4.5 8.5 4.5 15.2c0 1.5.4 2.9 1.1 4.1C7.3 14.6 11 11 16 9c-4.4 2.6-7.4 6-8.9 10.6 1.2.6 2.5.9 3.9.9 6.7 0 9.5-7.4 9.5-17z'/%3E%3C/svg%3E")}
+
+/* ===== 夜間模式：黃昏霧綠（不是全黑）。底、卡片、內框三層分明，字是柔白；晚上 7 點到清晨 5 點自動開 ===== */
+html.night{
+  --sky:#2E3833;        /* 底：暮色霧綠 */
+  --dawn:#33403A;
+  --paper:#3A4640;      /* 卡片：比底亮一階，浮起來 */
+  --ink:#EEF2EC; --muted:#C6D2C9; --line:#4B5A52;
+  --accent:#9DBBA5; --accent-deep:#CFE2D3; --accent-ink:#FFFFFF;
+  --veil:#425049;       /* 內框：再亮一階 */
+  --warm:#4A483E; --clay:#F0D9B8; --clay-bg:#4A463C; --sage:#4A463C; --sage-ink:#F0D9B8; --glow:#6E8B75;
+  --float:0 16px 30px -14px rgba(10,16,12,.55),0 0 0 1px rgba(255,255,255,.07),inset 0 1px 0 rgba(255,255,255,.06);
+  --well:inset 0 1px 3px rgba(10,16,12,.25),inset 0 0 0 1px rgba(255,255,255,.06);
+  color-scheme:dark;
+}
+html.night body{background:radial-gradient(120% 60% at 85% 0%,rgba(240,230,200,.10) 0,rgba(240,230,200,0) 60%),linear-gradient(180deg,#34413A 0,var(--sky) 460px) no-repeat,var(--sky)}
+html.night body::before{background:var(--dawn)}
+html.night .bar{background:rgba(46,56,51,.9)}
+html.night .bar-in{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.12);box-shadow:0 8px 22px -8px rgba(10,16,12,.6)}
+html.night .bar .fsbtn{background:var(--paper);color:var(--ink);border-color:rgba(207,226,211,.4);box-shadow:none}
+html.night .bar button[aria-current="page"],html.night .bar button[aria-pressed="true"]{background:linear-gradient(180deg,#6B8A73,#5A7863)}
+html.night .hero{background:linear-gradient(180deg,#46544C 0%,#3E4B44 60%,#3A4640 100%);border-color:rgba(255,255,255,.08)}
+html.night .hero-text{background:#3A4640}
+html.night .hero .sunglow{opacity:.55}
+html.night .hero .sun{fill:#F2EEDC;opacity:.9}
+html.night .hero .m1{fill:#55665B} html.night .hero .m2{fill:#4A5A50} html.night .hero .m3{fill:#3A4640}
+html.night .hero .mist1,html.night .hero .mist2{opacity:.18}
+html.night .hero .sprig{fill:#9DBBA5}
+html.night .hero .sprig path:first-child{stroke:#9DBBA5}
+html.night .trial{background:rgba(58,70,64,.9);color:var(--accent-deep)}
+html.night .orb{background:radial-gradient(circle at 38% 32%,#F4F7F2,#B9CFBF 50%,#7E9C86);box-shadow:0 0 0 8px rgba(185,207,191,.16)}
+html.night .todaycard,html.night .step,html.night .list li,html.night .intro .card,html.night .empty,html.night .firstcard,html.night .daylist button{
+  background:linear-gradient(180deg,#3E4A44,var(--paper));border-color:rgba(255,255,255,.08)}
+html.night .todaycard::before{opacity:.12;background:var(--accent)}
+html.night .bigkey{border-left-color:#6E8B75}
+html.night .quote{background:linear-gradient(180deg,#44524B,#425049)}
+html.night .quote::before{background:#8FAE97}
+html.night .keybox{background:linear-gradient(160deg,#4C4A40,#454C43)}
+html.night .trybox{background:linear-gradient(180deg,#4A463C,#47443B)}
+html.night details.fold{background:linear-gradient(180deg,#424F48,#3F4B45)}
+html.night details.fold summary::after{background:var(--paper);border-color:rgba(207,226,211,.4);color:var(--ink)}
+html.night textarea{background:#424F48;color:var(--ink)}
+html.night textarea::placeholder{color:#A3B2A8}
+html.night .ghost{background:rgba(255,255,255,.08);border-color:rgba(207,226,211,.45);color:var(--ink);box-shadow:none}
+html.night .ghost:active{background:rgba(255,255,255,.14)}
+html.night .primary{background:linear-gradient(180deg,#6B8A73 0%,#5A7863 100%);box-shadow:0 10px 22px -8px rgba(10,16,12,.6),inset 0 1px 0 rgba(255,255,255,.22)}
+html.night .step h2 .num{box-shadow:inset 0 0 0 1.5px rgba(207,226,211,.35)}
+html.night .step.act h2 .num{box-shadow:inset 0 0 0 1.5px rgba(240,217,184,.35)}
+html.night .linehint{background:#4A4332;border-color:#9A8350;color:#F5E6C6}
+html.night .speakbar{background:rgba(52,64,58,.96);border-top-color:rgba(255,255,255,.08);box-shadow:0 -6px 20px -8px rgba(10,16,12,.5)}
+html.night .close .orb{box-shadow:0 0 0 6px rgba(185,207,191,.14)}
+.nighthint{margin:0;text-align:center;font-size:.85em;color:var(--muted)}
+.nighthint button{min-height:44px;border:0;background:none;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px;padding:0 6px}
+.modepick .row button[aria-pressed="true"]{outline:3px solid var(--accent);outline-offset:2px}
+
+/* ===== 幾何點綴：只用圓與弧，很淡、只放在邊角，不壓在字底下；不加動畫 ===== */
+:root{
+  --arcs:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72' fill='none' stroke='%23000' stroke-width='1.4'%3E%3Ccircle cx='72' cy='0' r='14'/%3E%3Ccircle cx='72' cy='0' r='28'/%3E%3Ccircle cx='72' cy='0' r='42'/%3E%3Ccircle cx='72' cy='0' r='56'/%3E%3C/svg%3E");
+  --divider:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 12'%3E%3Ccircle cx='5' cy='6' r='1.8'/%3E%3Cpath d='M12 6H24M40 6H52' stroke='%23000' stroke-width='1.2' stroke-linecap='round'/%3E%3Ccircle cx='32' cy='6' r='3.6' fill='none' stroke='%23000' stroke-width='1.4'/%3E%3Ccircle cx='59' cy='6' r='1.8'/%3E%3C/svg%3E");
+}
+/* 卡片右上角：一圈圈淡淡的弧線，像晨光散開 */
+.step,.firstcard{position:relative;overflow:hidden}
+.step>*,.firstcard>*{position:relative}
+.step::before,.firstcard::before,.todaycard::after{content:"";position:absolute;top:0;right:0;width:72px;height:72px;pointer-events:none;opacity:.16;background:var(--accent);
+  -webkit-mask:var(--arcs) top right/contain no-repeat;mask:var(--arcs) top right/contain no-repeat}
+.step.act::before{background:var(--clay);opacity:.13}
+/* 步驟編號：雙線圓環，四步各一種淡色 */
+.step h2 .num{box-shadow:inset 0 0 0 1.5px rgba(70,98,79,.3),0 0 0 3px #FFFFFF,0 0 0 4.5px rgba(70,98,79,.2);margin-left:2px}
+.step.s2 h2 .num{background:#E2ECEA;color:#3F625E;box-shadow:inset 0 0 0 1.5px rgba(63,98,94,.3),0 0 0 3px #FFFFFF,0 0 0 4.5px rgba(63,98,94,.2)}
+.step.s3 h2 .num{background:#EEEBDC;color:#5E5A3C;box-shadow:inset 0 0 0 1.5px rgba(94,90,60,.3),0 0 0 3px #FFFFFF,0 0 0 4.5px rgba(94,90,60,.2)}
+.step.act h2 .num{box-shadow:inset 0 0 0 1.5px rgba(122,90,58,.3),0 0 0 3px #FFFFFF,0 0 0 4.5px rgba(122,90,58,.2)}
+/* 原文與今日重點之間：點・圓・點的小分隔 */
+.quote+.keybox{margin-top:18px}
+.quote+.keybox::before{content:"";position:absolute;left:50%;top:-23px;width:64px;height:12px;transform:translateX(-50%);pointer-events:none;background:var(--accent);opacity:.5;
+  -webkit-mask:var(--divider) center/contain no-repeat;mask:var(--divider) center/contain no-repeat}
+/* 封面：朝陽外的同心圓與幾顆小圓點 */
+.hero .rings{stroke:#E2D3A6}
+.hero .dots{fill:#BFD0BB}
+/* 夜間：同樣的圖形，改成稍亮的霧綠細線，像月暈 */
+html.night .step::before,html.night .firstcard::before,html.night .todaycard::after{opacity:.2}
+html.night .step.act::before{opacity:.16}
+html.night .step h2 .num{box-shadow:inset 0 0 0 1.5px rgba(207,226,211,.35),0 0 0 3px #3C4842,0 0 0 4.5px rgba(207,226,211,.22)}
+html.night .step.s2 h2 .num{background:#3F5150;color:#CDE3DF;box-shadow:inset 0 0 0 1.5px rgba(205,227,223,.35),0 0 0 3px #3C4842,0 0 0 4.5px rgba(205,227,223,.22)}
+html.night .step.s3 h2 .num{background:#4A4A3E;color:#E8DFC0;box-shadow:inset 0 0 0 1.5px rgba(232,223,192,.35),0 0 0 3px #3C4842,0 0 0 4.5px rgba(232,223,192,.22)}
+html.night .step.act h2 .num{box-shadow:inset 0 0 0 1.5px rgba(240,217,184,.35),0 0 0 3px #3C4842,0 0 0 4.5px rgba(240,217,184,.22)}
+html.night .quote+.keybox::before{opacity:.6}
+html.night .hero .rings{stroke:#DCE6D6;opacity:.45}
+html.night .hero .dots{fill:#7E9C86}
+/* 封面前景的小草、小花 */
+.hero .grass{stroke:#9DB5A0}
+.hero .flower .stem{stroke:#9DB5A0}
+.hero .flower .petal{fill:#F7F0DD}
+.hero .flower .core{fill:#E3C98E}
+html.night .hero .grass,html.night .hero .flower .stem{stroke:#7E9C86}
+html.night .hero .flower .petal{fill:#DCE6D6;opacity:.85}
+html.night .hero .flower .core{fill:#E8D9B0}
+/* 花草分三層：遠（小、淡、在霧後）→ 中 → 近（大、深、靠邊） */
+.hero .far{stroke:#B4C8B1;opacity:.85}
+.hero .far-leaf{fill:#B4C8B1}
+.hero .near{fill:#6F8C77}
+.hero .near .nstem{stroke:#6F8C77}
+.hero .near-grass{stroke:#7C987F}
+html.night .hero .far{stroke:#647A6C;opacity:.9}
+html.night .hero .far-leaf{fill:#647A6C}
+html.night .hero .near{fill:#A9C6B0}
+html.night .hero .near .nstem{stroke:#A9C6B0}
+html.night .hero .near-grass{stroke:#9DBBA5}
+
+/* ===== 校對模式（網址加 #check）：從第 1 天看到最後一天，一邊看一邊記 ===== */
+.checkbar{border-radius:22px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:var(--warm);box-shadow:var(--well)}
+.ck-t{margin:0;font-weight:700;color:var(--clay);font-size:.9em}
+.ck-mark{margin-left:10px;font-weight:500;color:var(--accent-deep)}
+.ck-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px}
+.ck-row .ghost,.ck-row .primary{padding:0 12px;min-height:54px;letter-spacing:.02em}
+.ck-row button:disabled{opacity:.4;cursor:default}
+.ck-prog{margin:0;font-size:.8em;color:var(--muted)}
+.ck-done{display:flex;gap:12px;align-items:center;min-height:54px;font-weight:700}
+.ck-done input{flex:none;width:28px;height:28px;margin:0;accent-color:var(--accent)}
+.step.ck h2 .num{font-family:var(--sans)}
+.ck-tools{display:flex;flex-direction:column;gap:10px}
+.daylist .ck-ok{color:var(--accent-deep);font-weight:700}
+.daylist .ck-note{color:var(--clay);font-weight:700}
+.daylist .ck-here{outline:3px solid var(--accent);outline-offset:2px}
+
+/* ===== 第二階段原型 v2：分享、落地頁、進度、放到桌面、讀完 ===== */
+.v2card{background:linear-gradient(180deg,#FFFFFF 0%,var(--paper) 100%);border:1px solid rgba(255,255,255,.95);box-shadow:var(--float)}
+html.night .v2card{background:linear-gradient(180deg,#3E4A44,var(--paper));border-color:rgba(255,255,255,.08)}
+.todaycard .ghost{align-self:stretch}
+/* 封面：62 顆小圓點的進度 */
+.progstrip{display:flex;flex-direction:column;gap:10px;align-items:stretch;text-align:left;border-radius:22px;padding:16px 20px;color:inherit}
+.progstrip .dots{display:grid;grid-template-columns:repeat(31,1fr);gap:4px}
+.progstrip .dots i{display:block;aspect-ratio:1;border-radius:50%;background:var(--line)}
+.progstrip .dots i.on{background:var(--accent)}
+.progstrip .dots i.now{box-shadow:0 0 0 2px var(--clay)}
+.progstrip .t{font-size:.85em;color:var(--muted)}
+.progstrip .t b{color:var(--accent-deep)}
+/* 每日頁最後：讀完了 */
+.finish{border-radius:26px;padding:24px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+.finish .orb{width:30px;height:30px;box-shadow:0 0 0 6px rgba(169,193,174,.2)}
+.finish .ft{margin:0;font-family:var(--serif);color:var(--accent-deep);letter-spacing:.06em}
+.finish>.primary{align-self:stretch}
+.f-after{display:flex;flex-direction:column;gap:12px;align-self:stretch}
+.f-ok{margin:0;color:var(--accent-deep);font-weight:700}
+.f-next{margin:0;border-radius:16px;padding:12px 16px;background:var(--veil);font-size:.88em;text-align:left;box-shadow:var(--well)}
+/* 分享卡片 */
+.sharecard{border-radius:22px;overflow:hidden;box-shadow:var(--float);background:var(--paper);min-height:220px;display:grid;place-items:center}
+.sharecard img{display:block;width:100%;height:auto}
+.sharecard img:not([src]),.sharecard img[src=""]{display:none}
+.sharebtns{display:flex;flex-direction:column;gap:10px}
+.btnlink{display:flex;align-items:center;justify-content:center;text-decoration:none}
+/* 分享進來的第一頁 */
+.landcard .bigkey{font-size:1.5em}
+.card3{border-radius:24px;padding:20px 22px;display:flex;flex-direction:column;gap:8px}
+.card3 .t{margin:0;font-family:var(--serif);font-weight:700;color:var(--accent-deep)}
+.three{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+.three b{color:var(--accent-deep)}
+/* 我的進度：62 天圓點月曆 */
+.progcard{border-radius:26px;padding:22px 18px;display:flex;flex-direction:column;gap:14px}
+.progcard .t{margin:0;font-family:var(--serif);font-weight:700;color:var(--accent-deep);font-size:1.1em}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.cal button{aspect-ratio:1;min-width:0;padding:0;border-radius:50%;border:1.5px solid rgba(70,98,79,.3);background:transparent;font-size:15px;font-weight:700;color:var(--muted);display:grid;place-items:center;line-height:1}
+.cal button.read{background:var(--accent);border-color:var(--accent);color:#FFFFFF}
+.cal button.now{box-shadow:0 0 0 3px var(--paper),0 0 0 5.5px var(--clay)}
+.cal button:disabled{opacity:.4;border-style:dashed;cursor:default}
+html.night .cal button{border-color:rgba(207,226,211,.3)}
+html.night .cal button.read{color:#1F2A24}
+/* 放到手機桌面 */
+.hsteps{display:flex;flex-direction:column;gap:16px}
+.hstep{border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.hstep .t{margin:0;font-family:var(--serif);font-weight:700;color:var(--accent-deep)}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.steps li{display:flex;gap:14px;align-items:center;line-height:1.6}
+.steps .ic{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--veil);color:var(--accent-deep);font-size:22px;font-weight:700;box-shadow:inset 0 0 0 1.5px rgba(70,98,79,.25)}
+/* 原型示範面板（?demo=1） */
+.demo-fab{position:fixed;right:14px;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:8;border:0;border-radius:999px;padding:10px 16px;font-size:15px;font-weight:700;background:#7A5A3A;color:#FFFFFF;box-shadow:0 8px 18px -8px rgba(0,0,0,.45)}
+.demo-panel{position:fixed;left:14px;right:14px;bottom:calc(150px + env(safe-area-inset-bottom,0px));z-index:8;max-width:30rem;margin-left:auto;border-radius:22px;padding:14px;background:var(--paper);box-shadow:var(--float);display:flex;flex-direction:column;gap:8px}
+.demo-panel .t{margin:0;font-size:14px;font-weight:700;color:var(--clay)}
+.demo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.demo-grid button{min-height:46px;border-radius:12px;border:1px solid var(--line);background:var(--sky);font-size:14px;line-height:1.3;padding:4px}
+</style>
+
+</head>
+<body>
+<nav class="bar" aria-label="主選單">
+  <div class="bar-wrap">
+    <div class="bar-in">
+      <button id="nav-today" data-go="today">今天</button>
+      <button id="nav-notes" data-go="notes">我的進度</button>
+      <button id="nav-intro" data-go="intro">說明</button>
+    </div>
+    <button class="fsbtn" id="nav-fs" aria-live="polite"><span class="a">字</span><span class="s" id="fs-lab">標準</span></button>
+  </div>
+</nav>
+
+<main>
+  <!-- 在 LINE 裡打開時才出現 -->
+  <div class="linehint" id="line-hint" hidden>
+    <p class="t">您現在是在 LINE 裡面打開的</p>
+    <p>在 LINE 裡，「唸給我聽」可能沒有聲音，寫下的話也可能存不住。</p>
+    <p>建議：點畫面角落的「⋯」或「⋮」，選「用預設瀏覽器開啟」（或「以其他應用程式開啟」）。</p>
+    <button class="ghost" id="line-ok">知道了</button>
+  </div>
+
+  <!-- 封面 -->
+  <section class="view col" id="v-cover">
+    <div class="hero">
+      <span class="trial">原型 v2</span>
+      <svg viewBox="0 0 400 170" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
+        <defs>
+          <radialGradient id="sun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFFBEE"/><stop offset=".55" stop-color="#F6EED6" stop-opacity=".9"/><stop offset="1" stop-color="#F6EED6" stop-opacity="0"/></radialGradient>
+          <filter id="soft" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="5"/></filter>
+        </defs>
+        <circle class="sunglow" cx="300" cy="70" r="72" fill="url(#sun)"/>
+        <circle class="sun" cx="300" cy="70" r="22" fill="#FBF5E4"/>
+        <g class="rings" fill="none" stroke-width="1"><circle cx="300" cy="70" r="34" opacity=".8"/><circle cx="300" cy="70" r="48" opacity=".5"/><circle cx="300" cy="70" r="62" opacity=".28"/></g>
+        <g class="dots"><circle cx="56" cy="42" r="2.6"/><circle cx="74" cy="30" r="1.7"/><circle cx="88" cy="48" r="1.2"/><circle cx="196" cy="36" r="1.5"/></g>
+        <path class="m1" d="M0 112 C40 96 70 82 105 88 C140 94 160 78 200 70 C240 62 270 86 305 92 C340 98 370 84 400 80 V170 H0Z" fill="#CFDDCB"/>
+        <ellipse class="mist1" cx="110" cy="104" rx="150" ry="7" fill="#fff" opacity=".6" filter="url(#soft)"/>
+        <path class="m2" d="M0 134 C50 120 95 112 140 118 C190 125 230 108 280 112 C330 116 365 128 400 120 V170 H0Z" fill="#BACDB6"/>
+        <!-- 遠景：山坡上小小、淡淡的草，被薄霧蓋住一點 -->
+        <g class="far" fill="none" stroke-width="1" stroke-linecap="round">
+          <path d="M58 121 C58 118 57 116 55 115"/><path d="M60 121 C60 117 61 115 62 114"/>
+          <path d="M168 120 C168 117 167 115 165 114"/><path d="M170 120 C170 116 171 114 173 113"/><path d="M172 120 C173 118 174 117 176 117"/>
+          <path d="M246 112 C246 109 245 107 243 106"/><path d="M248 112 C248 108 249 106 250 105"/>
+          <path d="M292 115 C292 112 291 110 289 109"/><path d="M294 115 C294 111 295 109 297 108"/>
+          <path d="M372 126 C372 123 371 121 369 120"/><path d="M374 126 C374 122 375 120 376 119"/>
+        </g>
+        <g class="far far-leaf" transform="translate(206 103) scale(.42)">
+          <path d="M14 30 C13 20 11 12 6 2" fill="none" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
+          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
+        </g>
+        <ellipse class="mist2" cx="300" cy="128" rx="140" ry="6" fill="#fff" opacity=".55" filter="url(#soft)"/>
+        <path class="m3" d="M0 156 C80 146 150 150 220 156 S340 160 400 152 V170 H0Z" fill="#E4ECE2"/>
+        <g class="sprig" transform="translate(40 130)" fill="#8EA894">
+          <path d="M14 30 C13 20 11 12 6 2" stroke="#8EA894" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
+          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
+          <path d="M13 24 C19 23 23 19 24 13 C18 15 14 18 13 24Z"/>
+        </g>
+        <!-- 旁邊多幾株小草、小花，作伴 -->
+        <g class="grass" fill="none" stroke-width="1.4" stroke-linecap="round">
+          <path d="M22 162 C21 156 19 152 15 149"/><path d="M25 162 C25 155 26 151 28 147"/><path d="M28 162 C29 158 32 155 35 154"/>
+          <path d="M126 160 C125 155 123 152 120 150"/><path d="M129 160 C129 154 130 151 132 148"/>
+          <path d="M318 159 C317 154 315 151 312 149"/><path d="M321 159 C321 153 322 150 324 147"/><path d="M324 159 C325 155 328 153 331 152"/>
+        </g>
+        <g class="sprig" transform="translate(86 141) scale(-.68 .68)" fill="#8EA894">
+          <path d="M14 30 C13 20 11 12 6 2" stroke="#8EA894" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
+          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
+          <path d="M13 24 C19 23 23 19 24 13 C18 15 14 18 13 24Z"/>
+        </g>
+        <g class="sprig" transform="translate(350 137) scale(.8)" fill="#8EA894">
+          <path d="M14 30 C13 20 11 12 6 2" stroke="#8EA894" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
+          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
+          <path d="M13 24 C19 23 23 19 24 13 C18 15 14 18 13 24Z"/>
+        </g>
+        <g class="flower">
+          <path class="stem" d="M104 161 C104 155 105 150 106 145" fill="none" stroke-width="1.3" stroke-linecap="round"/>
+          <g transform="translate(106 142)"><circle class="petal" cx="0" cy="-3.2" r="2.6"/><circle class="petal" cx="3" cy="-1" r="2.6"/><circle class="petal" cx="1.9" cy="2.6" r="2.6"/><circle class="petal" cx="-1.9" cy="2.6" r="2.6"/><circle class="petal" cx="-3" cy="-1" r="2.6"/><circle class="core" r="1.6"/></g>
+          <path class="stem" d="M338 160 C338 156 337 153 336 150" fill="none" stroke-width="1.2" stroke-linecap="round"/>
+          <g transform="translate(336 148) scale(.75)"><circle class="petal" cx="0" cy="-3.2" r="2.6"/><circle class="petal" cx="3" cy="-1" r="2.6"/><circle class="petal" cx="1.9" cy="2.6" r="2.6"/><circle class="petal" cx="-1.9" cy="2.6" r="2.6"/><circle class="petal" cx="-3" cy="-1" r="2.6"/><circle class="core" r="1.6"/></g>
+        </g>
+        <!-- 近景：靠在左右兩邊、比較大也比較深的葉子，像站在草地邊往前看 -->
+        <g class="near" transform="translate(-8 120) scale(1.45)">
+          <path class="nstem" d="M14 34 C13 22 11 12 6 2" fill="none" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
+          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
+          <path d="M13 24 C19 23 23 19 24 13 C18 15 14 18 13 24Z"/>
+        </g>
+        <g class="near-grass" fill="none" stroke-width="2" stroke-linecap="round">
+          <path d="M384 172 C383 162 379 154 371 149"/><path d="M389 172 C389 160 391 152 396 145"/><path d="M394 172 C396 165 401 160 407 158"/><path d="M379 172 C377 166 373 163 366 162"/>
+        </g>
+      </svg>
+      <div class="hero-text">
+        <p class="greet" id="c-greet">早安，歡迎回來</p>
+        <h1 class="brand">《聖訓在生活》</h1>
+      </div>
+    </div>
+
+    <div class="todaycard">
+      <p class="meta" id="c-date"></p>
+      <p class="daytag" id="c-day"></p>
+      <p class="bigkey" id="c-key"></p>
+      <button class="primary" id="go-read">開始讀</button>
+      <button class="ghost" id="c-share">分享今天這一句</button>
+    </div>
+    <button class="progstrip v2card" id="c-prog" data-go2="notes">
+      <span class="dots" id="c-dots" aria-hidden="true"></span>
+      <span class="t" id="c-prog-t"></span>
+    </button>
+    <p class="msg" id="c-msg" hidden></p>
+    <p class="nighthint" id="c-night" hidden>晚上了，畫面已經自動調暗，比較不刺眼。<button id="c-night-off">改回白天的樣子</button></p>
+
+    <div class="firstcard" id="c-first" hidden>
+      <div class="firsthead"><button class="ghost firstbtn" id="c-intro">使用說明</button><p class="t">第一次來嗎？</p></div>
+      <p>每天讀一篇，分四步：讀聖訓、悟道理、觀自心、實踐於行。</p>
+      <p>每天只要記住「今日重點」那一句，帶著走就好。</p>
+      <p>字太小，可以按右上角的「字」放大。</p>
+      <button class="linkbtn" id="c-home">把這裡放到手機桌面，每天點一下就能讀</button>
+    </div>
+  </section>
+
+  <!-- 每日頁 -->
+  <section class="view col" id="v-today" hidden>
+    <div class="dayhead">
+      <p class="meta" id="d-date"></p>
+      <p class="daytag" id="d-title"></p>
+    </div>
+    <div class="row" id="d-nav"><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-today" hidden>回到今天</button></div>
+    <div class="checkbar" id="ck-bar" hidden>
+      <p class="ck-t">校對模式・第 <span id="ck-n"></span> / <span id="ck-total"></span> 天<span class="ck-mark" id="ck-mark"></span></p>
+      <div class="ck-row"><button class="ghost" id="ck-prev">‹ 上一天</button><button class="ghost" id="ck-list">全部</button><button class="ghost" id="ck-next">下一天 ›</button></div>
+      <p class="ck-prog" id="ck-prog"></p>
+    </div>
+    <div class="step">
+      <h2><span class="num">一</span>讀聖訓</h2>
+      <div><p class="lab"><b>開篇</b>編輯整理</p><p class="p" id="d-open"></p></div>
+      <div class="quote"><p class="lab"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
+      <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc">原文句子</span></p><p class="p" id="d-key"></p></div>
+    </div>
+
+    <div class="step s2">
+      <h2><span class="num">二</span>悟道理</h2>
+      <p class="hint">先自己想一想上面那句話，再點開。</p>
+      <details class="fold" id="d-more">
+        <summary>白話理解與生活例子</summary>
+        <div class="inner">
+          <div><p class="lab"><b>白話理解</b>編輯整理</p><p class="p" id="d-plain"></p></div>
+          <div><p class="lab"><b>生活例子</b>編輯整理</p><p class="p" id="d-story"></p></div>
+        </div>
+      </details>
+    </div>
+
+    <div class="step s3">
+      <h2><span class="num">三</span>觀自心</h2>
+      <div><p class="lab"><b>問問自己</b>編輯整理</p><p class="p" id="d-ask"></p></div>
+      <div class="past" id="d-past" hidden></div>
+      <label class="hint" for="note">想寫就寫一句話給自己，不寫也可以。寫了會自動存好，只存在這支手機裡。</label>
+      <textarea id="note" placeholder="例如：今天我差點又急著……"></textarea>
+      <div class="row"><button class="ghost" id="save-note">存下這句話</button></div>
+      <p class="saved" id="note-msg" aria-live="polite"></p>
+    </div>
+
+    <div class="step act">
+      <h2><span class="num">四</span>實踐於行</h2>
+      <div class="trybox"><p class="lab"><b>今天可以試試</b>編輯整理</p><p class="p" id="d-try"></p></div>
+      <div class="row"><button class="primary" id="carry">收藏這一句，帶著走</button></div>
+      <p class="saved" id="carry-msg" aria-live="polite"></p>
+    </div>
+
+    <div class="step ck" id="ck-card" hidden>
+      <h2><span class="num">✓</span>校對這一天</h2>
+      <label class="ck-done"><input type="checkbox" id="ck-done">這一天看過了，沒問題</label>
+      <label class="hint" for="ck-note">要修改的地方，寫在這裡（只存在這支手機裡）：</label>
+      <textarea id="ck-note" placeholder="例如：白話理解第二句，「之」應該是「知」"></textarea>
+      <p class="saved" id="ck-msg" aria-live="polite"></p>
+      <div class="ck-row"><button class="ghost" id="ck-prev2">‹ 上一天</button><button class="ghost" id="ck-list2">全部</button><button class="primary" id="ck-next2">下一天 ›</button></div>
+    </div>
+
+    <!-- 讀完這一篇：打勾、分享、預告明天 -->
+    <div class="finish v2card" id="d-finish">
+      <span class="orb" aria-hidden="true"></span>
+      <p class="ft">今天讀到這裡，就很好了。</p>
+      <button class="primary" id="f-done">我讀完了</button>
+      <div class="f-after" id="f-after" hidden>
+        <p class="f-ok">✓ 讀完了。已經讀了 <b id="f-count"></b> 天。</p>
+        <button class="primary" id="f-share">把這一句分享給親友</button>
+        <p class="f-next" id="f-next" hidden></p>
+      </div>
+    </div>
+    <div class="after">
+      <p id="d-next"></p>
+      <button class="ghost" id="to-top">回到最上面</button>
+    </div>
+    <p class="note">「原文」是開示紀錄的原句。「今日重點」標「原文句子」的是原句，標「編輯整理」的是編輯整理的白話。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
+  </section>
+
+  <!-- 我的收藏 -->
+  <section class="view col" id="v-notes" hidden>
+    <div class="pagehead">
+      <p class="daytag">我的進度</p>
+    </div>
+    <div class="progcard v2card">
+      <p class="t" id="pg-t"></p>
+      <div class="cal" id="pg-cal"></div>
+      <p class="hint">一個圓點是一天。亮起來的是讀過的，外面有一圈的是今天。點一下就能讀那一天。</p>
+      <button class="primary" id="pg-done" hidden>看我的結業卡</button>
+    </div>
+    <div class="pagehead">
+      <p class="daytag">我的收藏</p>
+      <p class="hint">按過「收藏這一句」或寫過一句話的日子，會收在這裡，隨時可以回來看看。</p>
+    </div>
+    <ul class="list" id="n-list"></ul>
+    <p class="storenote">收藏和寫下的話，只存在這支手機的這個瀏覽器裡。換手機、換瀏覽器，或清除瀏覽紀錄，就不會跟著過去。</p>
+  </section>
+
+  <!-- 前幾天 -->
+  <section class="view col" id="v-past" hidden>
+    <div class="pagehead">
+      <p class="daytag" id="p-title">前幾天</p>
+      <p class="hint" id="p-hint">錯過的日子都在這裡，想讀哪一篇就點哪一篇。</p>
+    </div>
+    <div class="ck-tools" id="ck-tools" hidden>
+      <p class="ck-prog" id="ck-prog2"></p>
+      <button class="primary" id="ck-copy">複製全部修改意見</button>
+      <p class="saved" id="ck-copymsg" aria-live="polite"></p>
+      <textarea id="ck-out" readonly hidden></textarea>
+    </div>
+    <ul class="daylist" id="p-list"></ul>
+  </section>
+
+  <!-- 說明（前言） -->
+  <section class="view col intro" id="v-intro" hidden>
+    <div class="pagehead"><p class="daytag">讀之前</p></div>
+    <div class="card">
+      <h3>玉虛篇是什麼</h3>
+      <p>天祥三年（民國 108 年）一月，天祥的道主、道母陸續聽到多位仙家的開示。這些仙家大多自稱是「玉虛」門下，所以這批開示紀錄被整理為「玉虛仙宗聖訓」。</p>
+      <p>這是天祥的信仰紀錄。對天祥家人來說，是仙家的教導；對第一次接觸的親友來說，也可以把它當作一段段談修心、談做人的話來讀。</p>
+      <h3>怎麼讀</h3>
+      <p>一共 62 天。第一輪 28 天，每天讀一位仙家的一段話；第二輪再回到同一批仙家，讀另一段話；最後幾天，再從同一批開示裡選出幾段。每天只要記住「今日重點」那一句，帶著走就好。今天沒做到也沒關係，明天再讀一次。</p>
+      <h3>讀的時候請記得</h3>
+      <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
+      <h3>夜間模式</h3>
+      <div class="modepick">
+        <p>晚上讀的時候，畫面變暗比較不刺眼。</p>
+        <div class="row"><button class="ghost" id="nm-auto">晚上自動變暗</button><button class="ghost" id="nm-on">一直用夜間</button><button class="ghost" id="nm-off">一直用白天</button></div>
+      </div>
+      <h3>放到手機桌面</h3>
+      <p>放到桌面後，每天點一下就能讀，不用再去 LINE 裡找連結。</p>
+      <div class="row"><button class="ghost" id="i-home">看怎麼放</button></div>
+      <h3>頁面上的內容</h3>
+      <p>「原文」是開示紀錄的原句，只統一了字形。「今日重點」標「原文句子」的是原句，標「編輯整理」的是編輯整理的白話。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
+      <h3>統計</h3>
+      <p>為了知道大家讀得好不好、哪一句最常被分享，這裡只計算次數，例如「今天有幾次分享」「第幾天讀完的人最多」。不會記錄您是誰，不用 cookie，您寫下的話、收藏的句子也不會被送出去，都只留在這支手機裡。</p>
+      <h3 id="contact-h" hidden>有問題找誰</h3>
+      <p id="contact" hidden></p>
+    </div>
+    <div class="row center"><button class="primary" id="intro-ok">我知道了，開始讀</button></div>
+  </section>
+
+  <!-- v2：分享卡片 -->
+  <section class="view col" id="v-share" hidden>
+    <div class="pagehead">
+      <p class="daytag">分享這一句</p>
+      <p class="hint">把這一句傳給想念的人。對方點連結，就能讀到同一篇。</p>
+    </div>
+    <div class="sharecard"><img id="sh-img" alt="分享用的圖片：今天這一句"><p class="hint" id="sh-wait">圖片準備中……</p></div>
+    <div class="sharebtns">
+      <button class="primary" id="sh-go">傳給親友</button>
+      <a class="ghost btnlink" id="sh-line" target="_blank" rel="noopener">用 LINE 傳連結</a>
+      <a class="ghost btnlink" id="sh-save" download="聖訓在生活.png">存下這張圖</a>
+      <button class="ghost" id="sh-copy">複製連結</button>
+    </div>
+    <p class="saved" id="sh-msg" aria-live="polite"></p>
+    <p class="note">在 iPhone 上，也可以長按上面的圖片，選「儲存影像」，再從相簿傳出去。</p>
+    <div class="row center"><button class="linkbtn" id="sh-back">回到這一篇</button></div>
+  </section>
+
+  <!-- v2：親友點分享連結進來的第一頁 -->
+  <section class="view col" id="v-land" hidden>
+    <div class="todaycard landcard">
+      <p class="meta">有人把這一句分享給您</p>
+      <p class="bigkey" id="l-key"></p>
+      <p class="meta" id="l-src"></p>
+    </div>
+    <div class="card3 v2card">
+      <p class="t">這是什麼？</p>
+      <ol class="three">
+        <li><b>每天一篇</b>，清晨 5 點換新的，一共 62 天。</li>
+        <li><b>五分鐘就讀完</b>，字很大，也可以按「唸給我聽」。</li>
+        <li><b>不用下載、不用註冊</b>，打開就能讀。</li>
+      </ol>
+    </div>
+    <button class="primary" id="l-start">從今天開始讀</button>
+    <button class="ghost" id="l-this">先看這一句的完整內容</button>
+  </section>
+
+  <!-- v2：放到手機桌面 -->
+  <section class="view col" id="v-home" hidden>
+    <div class="pagehead">
+      <p class="daytag">放到手機桌面</p>
+      <p class="hint">放好以後，桌面上會多一個圖示，每天點一下就能讀。</p>
+    </div>
+    <div class="hsteps" id="h-wrap">
+      <div class="hstep v2card" id="h-ios">
+        <p class="t">iPhone（用 Safari 打開）</p>
+        <ol class="steps">
+          <li><span class="ic">⬆︎</span><span>點畫面下方的「分享」（方框加一個向上的箭頭）</span></li>
+          <li><span class="ic">＋</span><span>往下滑，點「加入主畫面」</span></li>
+          <li><span class="ic">✓</span><span>點右上角「新增」，就完成了</span></li>
+        </ol>
+      </div>
+      <div class="hstep v2card" id="h-and">
+        <p class="t">Android 手機（用 Chrome 打開）</p>
+        <ol class="steps">
+          <li><span class="ic">⋮</span><span>點右上角的「⋮」</span></li>
+          <li><span class="ic">＋</span><span>點「加到主畫面」</span></li>
+          <li><span class="ic">✓</span><span>點「新增」，就完成了</span></li>
+        </ol>
+      </div>
+    </div>
+    <p class="storenote">如果現在是在 LINE 裡打開的，請先點右上角的「⋯」，選「用預設瀏覽器開啟」，再照上面做。</p>
+    <button class="primary" id="h-back">好，回到今天</button>
+  </section>
+
+  <!-- v2：讀完 62 天 -->
+  <section class="view col" id="v-done" hidden>
+    <div class="pagehead">
+      <p class="daytag">玉虛篇 62 天，讀完了</p>
+      <p class="hint">謝謝您每天陪自己讀一段話。這張卡可以留給自己，也可以分享給親友。</p>
+    </div>
+    <div class="sharecard"><img id="dn-img" alt="結業卡"><p class="hint" id="dn-wait">結業卡準備中……</p></div>
+    <div class="sharebtns">
+      <button class="primary" id="dn-share">分享我的結業卡</button>
+      <a class="ghost btnlink" id="dn-save" download="聖訓在生活-結業卡.png">存下這張圖</a>
+    </div>
+    <p class="saved" id="dn-msg" aria-live="polite"></p>
+    <p class="note">讀完了，也可以從第 1 天再讀一次，會讀到不一樣的自己。</p>
+    <div class="row center"><button class="ghost" id="dn-back">回到今天</button></div>
+  </section>
+</main>
+
+<!-- v2 原型示範面板：網址加 ?demo=1 才會出現，給團隊看各頁用 -->
+<div id="demo" hidden>
+  <button class="demo-fab" id="demo-fab">原型示範</button>
+  <div class="demo-panel" id="demo-panel" hidden>
+    <p class="t">看各頁</p>
+    <div class="demo-grid">
+      <button data-demo="cover">封面</button><button data-demo="today">每日頁</button><button data-demo="share">分享卡片</button><button data-demo="land">分享進來</button>
+      <button data-demo="notes">我的進度</button><button data-demo="home">放到桌面</button><button data-demo="done">讀完 62 天</button><button data-demo="intro">說明</button>
+    </div>
+    <p class="t">模擬狀態（只影響這支手機）</p>
+    <div class="demo-grid">
+      <button data-sim="12">已讀 12 天</button><button data-sim="62">讀完 62 天</button><button data-sim="0">清除示範</button><button data-demo="close">關閉</button>
+    </div>
+  </div>
+</div>
+
+<!-- 唸給我聽：只在每日頁出現，往下滑也一直在 -->
+<div class="speakbar" id="speakbar" hidden>
+  <div class="speakbar-in">
+    <button class="primary" id="speak">▶ 唸給我聽</button>
+    <p class="now" id="speak-now" aria-live="polite">會唸：原文、今日重點、白話理解</p>
+  </div>
+</div>
+
+<script>
+const DAYS = [{"n": 1, "theme": "心安了嗎？", "who": "玉虛真人", "date": "108 年 1 月 7 日", "開篇": "心一亂，我們常常急著做點什麼。今天這篇，玉虛真人請我們先停下來：心定了，才看得清方向。", "原文": "「心有安了嗎？有定了嗎？先把心定了、安了，你才知道是往這裡衝，而不是往那裡衝。衝錯了，不叫衝破。所以，覺得煩躁不安時，就應慎思、再慎思。」", "今日重點": "先把心定了、安了，你才知道是往這裡衝", "白話理解": "心慌的時候，人最想做的就是趕快做點什麼。玉虛真人卻說，先停下來。心沒定，往前衝也可能衝錯方向；衝錯了，不叫衝破，只是更累。煩躁的時候，不是加快腳步，而是慢下來，想一想、再想一想。", "情境範例": "孩子的成績單攤在桌上，數學三十八分。她的火一下子上來，已經走到房門口，手都舉起來要敲門了。她停了一下，轉身去廚房倒了一杯水，站在窗邊喝完。回到房門口時，她想說的話已經不一樣了：「這次考卷，可以拿給我看看嗎？」", "問問自己": "最近哪一次，我是心還沒定就急著往前衝？那時如果先停一下，結果會不會不一樣？", "今天可以試試": "覺得煩躁時，先去喝一杯水，再決定要說什麼、做什麼。", "keyOrig": true, "keyOther": false}, {"n": 2, "theme": "看清自己的心態", "who": "慈航道人", "date": "108 年 1 月 13 日", "開篇": "最難看清的，常常是自己。今天跟著慈航道人，誠實地看一看自己的計較和面子。", "原文": "「莫要覺得我計較、我比較，面子上放不下，這就是人性。面對它、瞭解它……瞭解之後你才可以轉化，你才可以人心轉化為道心。」", "今日重點": "看透、澈透自己，是一件很重要的事。", "白話理解": "「我哪有計較？」很多時候，最看不清的就是自己。慈航道人說，計較、比較、放不下面子，這就是人性，不必假裝沒有。先承認它，才有辦法轉。", "情境範例": "孫子做滿月，親家送了一條很粗的金鍊子，她送的是一對小手鐲。她嘴上說「親家真大方」，回家卻整晚悶悶的，跟先生講話也特別衝。睡前她問自己：到底在不舒服什麼？想了很久，她承認了：是在比。承認的那一刻，心裡反而鬆了一點。", "問問自己": "今天讓我不舒服的事，背後有沒有一點計較、比較或面子？我看得見嗎？", "今天可以試試": "心裡不舒服時，問自己一句：「我到底在意的是什麼？」", "keyOrig": true, "keyOther": true}, {"n": 3, "theme": "念頭轉個彎", "who": "懼留孫", "date": "108 年 1 月 14 日", "開篇": "遇到過不去的事，一直硬撞只會更累。今天懼留孫仙師告訴我們：方向不變，方法可以轉個彎。", "原文": "「所以，不是什麼事都是傻傻的撞上去，有的時候要轉個彎就進去了。雖然，道只有一條，那是說吾之心不變，一心向道。要靈活、靈活、靈活。」", "今日重點": "有的時候要轉個彎就通了。", "白話理解": "鑽地鑽到大石頭，硬鑽只會滿頭包，往旁邊轉個彎就過去了。懼留孫仙師說，方向不變，方法要靈活。轉個彎不是放棄，是換一條走得通的路。", "情境範例": "父親中風後，一說要去復健就發脾氣。他勸了一個月，越勸父親越不肯。有一天他不勸了，只說：「爸，我們去公園看看你以前下棋的朋友。」為了走到棋桌前，父親自己慢慢走了兩百公尺。回家的路上，父親說：「明天還要來。」", "問問自己": "有哪一件事，我一直用同一個方法，卻一直撞牆？", "今天可以試試": "挑一件卡住的事，想一個以前沒試過的方法，今天試一次。", "keyOrig": false, "keyOther": false}, {"n": 4, "theme": "教人，先教己", "who": "雲中子", "date": "108 年 1 月 15 日", "開篇": "我們常想改變別人，卻很少先看自己。今天雲中子仙師提醒：要教人，先教自己。", "原文": "「因為學子想著我要做教育，可是孰不知，最先要教育的是自己。……看了看了學子，教育他人者甚多，教育自己者甚少」", "今日重點": "最先要教育的是自己。", "白話理解": "當父母、當幹部、當前輩，很容易覺得自己是「教人的人」。雲中子仙師說，教別人的人很多，先教自己的人很少。自己做到了、體會過了，說出來的話才有人聽。", "情境範例": "她被推選帶兒童班，原本打算把自己以前學的教給孩子。準備課程時她才發現，有些道理自己也講不清楚，更沒有做到。那一個月，她先每天自己讀、自己練，做不到的地方就記下來。開課第一天，她對孩子說的第一句話是：「老師也還在學。」", "問問自己": "我想教導別人時，是否先看見自己還有哪些地方沒有做到？", "今天可以試試": "今天想要求別人之前，先自己以身作則。", "keyOrig": true, "keyOther": false}, {"n": 5, "theme": "逆境中的風雨", "who": "普賢真人", "date": "108 年 1 月 16 日", "開篇": "不順的日子，很容易讓人動搖。今天普賢真人說：風雨不只是考驗，也是養分。", "原文": "「學子為何會這樣風風雨雨，看似在考驗實則是在施肥，經過這樣的風風雨雨就是養分，這個根才會紮得深，不容易被拔起」", "今日重點": "看似在考驗實則是在施肥", "白話理解": "一帆風順時的信心，風一來就可能被拔起來。普賢真人說，跌跌撞撞中長出來的信心，根才紮得深。風雨來的時候，不必一個人硬撐；能紮根的，是不放棄的那顆心。", "情境範例": "開了十年的早餐店，因為道路施工生意少了一半。老闆娘先是哭了幾天，後來開始外送到附近的工地。施工結束那天，工地的工頭說：「下一個工地，我還要叫你的。」", "問問自己": "遇到不順的時候，我的信心是更穩了，還是更動搖了？", "今天可以試試": "遇到不順的事，寫下一句：「這件事可能在教我……」", "keyOrig": true, "keyOther": false}, {"n": 6, "theme": "心裡的那把火", "who": "赤精子", "date": "108 年 1 月 18 日", "開篇": "火可以溫暖人，也可以燒傷人。今天赤精子仙師請我們看看心裡那把火。", "原文": "「火很可愛火也很可恨，心頭一把火燒掉你的功德，為何心中會有無名火，就是你把持不住你的慾……但是心中依然要有火」", "今日重點": "火很可愛，火也很可恨", "白話理解": "突然冒出來的無名火，常常來自「我需要」卻沒有得到。赤精子仙師說，這把火一燒，前面做的好事都可能燒掉。但他也說，心裡不能沒有火：要的是溫暖人的火，不是燒傷人的火。", "情境範例": "排了半小時的隊，櫃台說資料不齊，要他明天再來。他的聲音一下子大了起來。說到一半，他看到櫃台小姐一臉驚嚇。他停下來，深吸一口氣：「抱歉，可以告訴我還缺什麼嗎？」", "問問自己": "我最近一次冒火，背後的需要是什麼？", "今天可以試試": "感覺快冒火時，在心裡問一句：「我現在需要什麼？」可以向對方表達清楚嗎？", "keyOrig": false, "keyOther": false}, {"n": 7, "theme": "本事再高，也要懂得謙卑", "who": "黃龍真人", "date": "108 年 1 月 18 日", "開篇": "一個人讓人佩服，靠的是本事，還是為人？今天黃龍真人說出自己的過去：他曾經很傲。", "原文": "「本事再高敵不過一個德字，本領修的再好也有一個境界，德行之修持無境無界」", "今日重點": "本事再高，敵不過一個德字", "白話理解": "本事再好，也有可以學到的程度；但德行的修持，沒有到此為止的一天。黃龍真人回看自己的過去，也曾經傲氣十足。這讓我們看見，一個人即使很有能力，仍然需要不斷修正自己的心性。", "情境範例": "村裡有位老木匠，手藝最好，脾氣也最大，年輕人都不敢跟他學。另一位木匠手藝普通，卻總是耐心回答問題，徒弟做錯了也不罵。十年後，村裡人家要修房子，第一個想到的，是那位手藝普通的師傅。", "問問自己": "別人願意聽我的，是因為我的本事，還是因為我的為人？", "今天可以試試": "不必要求自己一天就改變，只要今天比昨天少一分傲氣、多一分謙和，就是一次實際的修持。", "keyOrig": false, "keyOther": false}, {"n": 8, "theme": "放下自己一點，才能走近彼此", "who": "水精子", "date": "108 年 1 月 18 日", "開篇": "水倒在圓的杯裡就是圓，倒在方的盒裡就是方。今天水精子仙師說，和人相處也是這樣。", "原文": "「唯有將吾之圓形成你小一點的方形時，才能放入你之形中，如此兩者一起才能夠化為圓形」", "今日重點": "重點就是要小才放得進去", "白話理解": "我們常說要和合，心裡想的卻是「你來配合我」。水精子仙師提醒我們，與人相處，不能只要求對方接受自己的方式。有時候，我們需要放下自己的堅持，調整一下原本的做法，才能為彼此留出相處的空間。", "情境範例": "婆婆和媳婦為了廚房怎麼擺，吵了很久。有一天，媳婦先開口：「媽，你教我你的麵線怎麼煮。」婆婆一邊教，一邊自己把鍋子換到媳婦習慣的位置。", "問問自己": "這件事一定要照我的方式做嗎？如果我願意調整一點，彼此會不會更好相處？", "今天可以試試": "試著做一件事：先聽懂對方為什麼這麼想，再看看自己能不能調整一點。", "keyOrig": true, "keyOther": true}, {"n": 9, "theme": "你希望別人怎麼對你？", "who": "風大仙", "date": "108 年 1 月 18 日", "開篇": "每個人都喜歡春風。今天風大仙問：那我們帶給別人的，是春風還是颶風？", "原文": "「所以修道若是可以讓眾生如沐春風，眾生自然樂於靠近……世人很奇怪，他喜歡春風可是卻不給予他人春風，他不喜歡颶風可是卻給予他人颶風」", "今日重點": "他喜歡春風，可是卻不給予他人春風", "白話理解": "我們都希望被溫柔對待，卻常常忘了，別人也有同樣的期待。風大仙提醒我們，既然自己喜歡春風，就別總是把颶風帶給別人。我們不能決定別人如何對待自己，卻能選擇自己要成為什麼樣的人。", "情境範例": "社區警衛每天早上都對進出的住戶說「早安，路上小心」。剛開始沒什麼人回。幾個月後，過年那天，警衛室的桌上堆滿了住戶送的橘子和卡片。", "問問自己": "今天我帶給身邊的人的，比較像春風，還是颶風？", "今天可以試試": "今天，留意一下自己說話的語氣。", "keyOrig": false, "keyOther": false}, {"n": 10, "theme": "有些道理，要走過才真正懂", "who": "廣成子", "date": "108 年 1 月 19 日", "開篇": "讀過的道理，很快就忘。今天廣成子仙師告訴我們：道理要反覆咀嚼，才會變成自己的。", "原文": "「道是一層一層去參悟而來，不會是今日自己就到了道之真諦，此乃非真道，參悟中自可咀嚼出道之味道，此乃是道之糧食。同樣一句話，聽者體悟皆不同，今日體悟與明日體悟也不同」", "今日重點": "參悟中自可咀嚼出道之味道，此乃是道之糧食。", "白話理解": "同一句話，今天讀和明天讀，體會不一樣。廣成子仙師說，這個一層一層的體會，就是「道之糧食」。重要的不是記住答案，而是反覆咀嚼的過程。", "情境範例": "一位大姐把每天讀到的一句話寫在小卡片，貼在冰箱上。一個月後，她把卡片一張張重讀，發現有一句當初看不懂的話，現在突然懂了。", "問問自己": "有沒有一句話，我以前聽過，最近才真的懂？", "今天可以試試": "今天，打開「我的收藏」，挑一句前幾天讀過的重點句，再慢慢讀一次。", "keyOrig": true, "keyOther": false}, {"n": 11, "theme": "別把他人的付出，當成理所當然", "who": "土德真君", "date": "108 年 1 月 20 日", "開篇": "付出久了，常常被當成應該的。今天土德真君請我們學學腳下的土。", "原文": "「大地蘊含萬物之恩，土可滋養萬物卻被萬物踩在底下，大地依然源源不絕的蘊養萬物萬民，不發言語、不發怨念，埋著頭日復一日年復一年依然供養萬物，此乃土德之精神」", "今日重點": "大地不發言語、不發怨念", "白話理解": "大地滋養萬物，默默承載萬物的生長，即使被踩在腳下，依然一年又一年地供養著萬物。土德真君要我們看見的，是大地不求回報、默默付出的精神。回頭看看自己的生活，有多少人也像大地一樣，默默為我們付出？。", "情境範例": "她煮了四十年的飯。孩子們回家坐下就吃，吃完就滑手機，很少有人說一聲好吃。有一天，她在廚房忍不住掉了眼淚。擦乾以後，她還是把湯端上桌，只是多說了一句：「今天這鍋湯，我燉了三個鐘頭喔。」小兒子愣了一下，放下手機：「媽，難怪這麼好喝，也主動幫忙收拾碗筷。」", "問問自己": "有誰一直在為我付出，而我已經習慣接受，卻忘了好好珍惜與感謝？", "今天可以試試": "今天，選擇一個具體行動，回應你所得到的恩情。例如，主動分擔家人的一件家務、關心一位平常照顧你的人，或真誠地向幫助過你的人說聲謝謝。", "keyOrig": false, "keyOther": false}, {"n": 12, "theme": "別只看別人，也要看見自己", "who": "玉鼎真人", "date": "108 年 1 月 20 日", "開篇": "我們很會看別人哪裡不對，卻很少看自己。今天玉鼎真人說，連修行很久的仙家，也天天在察覺自己。", "原文": "「此時此日吾等修煉仍要時時自我覺察，是否傲心起？凡心起？吾至今日仍是不斷自我修煉。」", "今日重點": "察覺是一項很重要之法", "白話理解": "修行久了、經驗多了，有時反而容易相信自己的判斷，忘了繼續檢視自己。玉鼎真人提醒我們，即使修煉至今，仍然需要不斷自我覺察：自己是否起了傲心？是否又被凡心牽動？察覺不是責怪自己，而是看見念頭的變化，不讓它不知不覺地影響自己的言行。", "情境範例": "當了三十年老師的他，退休後到社區當志工。看到別人做得不夠妥當，他總忍不住立刻糾正，心裡想著：「這樣做才對，為什麼不聽我的？」一天晚上，他回想白天發生的事，忽然問自己：我是真的想幫助他們，還是因為習慣了教人，總覺得自己的方法比較好？他這才發現，自己一直注意別人做得對不對，卻很少留意自己的語氣與態度。", "問問自己": "我是在解決問題，還是在證明自己是對的？", "今天可以試試": "睡前，再花一分鐘回想：今天有沒有哪一刻，我原本可以用更謙和的方式對待別人？看見了，不必自責；看見了，就有機會改變。", "keyOrig": true, "keyOther": true}, {"n": 13, "theme": "自己先做到，言語才有力量", "who": "火龍真人", "date": "108 年 1 月 21 日", "開篇": "有些事情，說了很多遍，對方還是不願意做。或許，我們可以先停下來想一想：自己是否也做到了？今天火龍真人提醒我們，真正能影響人的，不只是言語，更是日常生活中的實際行動。", "原文": "「如同教導孩子要他擦桌子，嘴巴告訴要擦桌子，心裡不服，為何你不用？為何要我？即使今日我是你的孩子，反彈之力越大。拿著擦擦擦潛移默化，自然就成為習慣了，故言語之教育為最下乘之法」", "今日重點": "言語是提醒，行動才是最深刻的影響。", "白話理解": "當我們一再要求別人時，往往忽略了對方的感受，反而容易引起抗拒。火龍真人提醒我們，與其光用言語要求，不如自己也投入行動，讓對方在日常相處中自然受到影響，逐漸養成習慣。言語固然重要，但若沒有實際行動相互印證，就難以產生真正的影響力。", "情境範例": "他每次都提醒孫子吃完飯要把碗拿進廚房，孫子總是嗯一聲就跑去看電視。後來他不說了，每次吃完，就自己把碗端進去，順手把孫子的也帶走。過了一陣子，有一天孫子吃完，自己端著兩個碗走進廚房：「阿公，你的我也拿了。」", "問問自己": "我常用言語要求別人的那件事，自己是否真的以行動做給對方看？", "今天可以試試": "選一件平時常提醒別人的小事，今天先從自己做起，讓行動成為生活中的自然習慣。", "keyOrig": false, "keyOther": false}, {"n": 14, "theme": "心裡最放不下的，正是修心的起點", "who": "太白金星", "date": "108 年 1 月 21 日", "開篇": "心裡有一個人，一想起來就生氣。今天太白金星說：修心，就從這個人開始。", "原文": "「降服其心，你在你心中先找一點，你覺得你最難做到的點，比如說你看到他你就討厭他、生氣他痛恨他，你就在這裡下功夫。」", "今日重點": "此等釋懷，不是對他的釋懷，是對自己內心的降服。", "白話理解": "修心不必從大道理開始，就從心裡最放不下的那個人開始。太白金星仙師提醒我們，練習放下心中的怨與怒，不是要改變對方，而是讓自己不再一直被情緒牽動。放下怨，不代表一定要和好，也不代表繼續忍受傷害，必要時仍可以保持距離。", "情境範例": "她曾和姊姊因為照顧母親的事情發生爭執。每次想到姊姊當時說過的話，她就忍不住生氣，心裡反覆想著：「為什麼總是我要承擔？」後來，她開始練習，每當這些念頭又浮現時，先停下來，不讓自己一直陷在怨氣裡。她慢慢發現，自己可以不認同姊姊的做法，也可以維持適當距離，不必讓這份怨恨天天折磨自己。", "問問自己": "我心裡是否有一個人，只要想到他，就會生氣、難受，甚至久久無法平靜？", "今天可以試試": "今天，當我又想起那個人而感到生氣時，先不急著反應，靜下來看看：究竟是他的哪個言行，讓我如此放不下？", "keyOrig": true, "keyOther": true}, {"n": 15, "theme": "心有起伏，仍要守住自己的信念", "who": "木德真君", "date": "108 年 1 月 22 日", "開篇": "心起起伏伏，很正常。今天木德真君說，定不是心不動，而是動了還能回來。", "原文": "「所以弟子教他「定」，雖然心總會起伏不定，但是他還是會定。」", "今日重點": "定就是堅信", "白話理解": "人的心難免會隨著環境和遭遇而起伏，有時甚至會動搖。木德真君提醒我們，真正的定，不是心從不動搖，而是在起伏之中，仍能守住自己相信的方向。定，就是這份不輕易動搖的堅信。", "情境範例": "他一直相信，做人做事應該誠實負責。最近工作遇到挫折，有人建議他把問題推給別人，這樣自己就能少受責備。他一度猶豫，但冷靜下來後，仍決定誠實面對，把該處理的事情做好。事情雖然不容易，卻沒有因此放棄自己相信的原則。", "問問自己": "當生活遇到困難、心裡開始動搖時，我是否還記得自己的初心？", "今天可以試試": "今天，想一想最近有哪件事讓自己感到動搖，重新確認自己當初為什麼相信、為什麼開始，並選一個小行動繼續實踐。", "keyOrig": true, "keyOther": true}, {"n": 16, "theme": "你怎麼對待別人，就是你的德", "who": "明德真人", "date": "108 年 1 月 22 日", "開篇": "德，不是什麼高深的道理，而是藏在每天與人相處的細節裡。一句話、一個眼神、一份對人的態度，都可能讓人感受到溫暖，也可能帶來傷害。今天明德真人提醒我們，德，就從日常的一言一行開始。", "原文": "「語言傷人是為失德，幫贊他人乃為口德……所謂的德，沒有那麼高深，是維持人跟人之間相互良好的方法」", "今日重點": "所謂的德，沒有那麼高深", "白話理解": "德並不是什麼高深的道理，而是每天與人相處時的態度和言行。一句話可以傷人，也可以給人鼓勵；願意聽人說話、用友善的眼光看待別人，也是一種善意。明德真人提醒我們，德就在生活的細節裡，從怎麼對待身邊的人開始。", "情境範例": "辦公室裡，同事因為工作出錯而受到責備，整個上午都悶悶不樂。另一位同事沒有跟著議論，只是耐心聽他說完，接著說：「沒關係，我們一起看看怎麼處理。」一句話，讓原本沮喪的同事感到被理解，也重新有了面對問題的勇氣。", "問問自己": "今天，我如何看待別人、聆聽別人，又如何與別人說話？這些言行，是否讓人感受到善意？", "今天可以試試": "今天與人相處時，練習少一點批評，多一點理解。認真聽完別人的話，也用一句溫暖、真誠的話回應對方。", "keyOrig": true, "keyOther": false}, {"n": 17, "theme": "別忘了照顧自己的心", "who": "燃燈古佛", "date": "108 年 1 月 22 日", "開篇": "每天有忙不完的事，心裡也有放不下的煩惱。今天燃燈古佛提醒我們，忙著處理事情的同時，也別忘了停下來整理自己的心。", "原文": "「他以為他在煩惱事物、他在忙於事務，孰不知他的心在忙於應付他之心，好好地整理整理省察你之心」", "今日重點": "好好地整理整理省察你之心", "白話理解": "事情多，確實會讓人疲累，但有時更讓人心累的，是心裡不斷盤旋的擔憂、煩惱與各種念頭。燃燈古佛提醒我們，忙於處理事情之餘，也要停下來省察自己的心，看看自己究竟在煩惱什麼，有哪些事情需要處理，又有哪些念頭讓自己一直放不下。", "情境範例": "她每天忙著工作、家事，總覺得事情做不完。即使躺在床上，腦中還是不斷想著明天的工作，擔心哪裡沒做好、別人又怎麼看自己。有一天，她試著靜下來問自己：「我現在最擔心的是什麼？」這才發現，除了事情多，更讓她疲累的是總怕自己做得不夠好。她開始分清楚哪些事需要處理，哪些擔心只是反覆內耗自己。於是，心也慢慢有了喘息的空間。", "問問自己": "最近讓我心煩意亂的事情是什麼？我是否一直被自己的擔憂和念頭困住？", "今天可以試試": "今天找一個安靜的時刻，停下來問問自己：「我現在心裡最掛念的是什麼？」把它寫下來，再看看自己能做些什麼，以及哪些擔憂不必一直反覆想著。", "keyOrig": true, "keyOther": false}, {"n": 18, "theme": "一件事，不必只靠一個人完成", "who": "文殊真人", "date": "108 年 1 月 22 日", "開篇": "自己做比較快，為什麼還要找別人一起做？文殊真人提醒我們，完成一件事的價值，不只在於成果，也在於有多少人能共同參與、共同成就。", "原文": "「一個人完成工作叫做榮耀自己，兩個人完成工作叫做分享榮耀，三人完成工作乃為天下之大道也。」", "今日重點": "從個人成就，走向共同成就。", "白話理解": "一個人完成事情，成果是自己的；兩個人一起完成，就能分享彼此的付出與成果。當更多人願意參與，彼此合作，事情就不再只是某一個人的功勞，而是大家共同成就的成果。文殊真人提醒我們，做事除了看重結果，也要懂得分享參與的機會。", "情境範例": "社區要舉辦一場活動，過去總是由一位熱心的住戶從頭忙到尾。今年他邀請其他住戶一起討論，有人準備場地，有人安排活動，有人協助接待。活動結束後，大家不只覺得事情完成了，也因為自己的參與，對這個社區多了一份認同。", "問問自己": "我是否習慣自己把事情做好，卻很少想到邀請別人一起參與？", "今天可以試試": "今天找一件可以共同完成的小事，邀請身邊的人一起做，也給對方表達想法、發揮所長的機會。", "keyOrig": false, "keyOther": false}, {"n": 19, "theme": "親近與退讓，找到相處的距離", "who": "道德天尊", "date": "108 年 1 月 23 日", "開篇": "為什麼有些人太親近，反而容易產生摩擦？太疏遠，又少了情感交流？今天道德天尊提醒我們，人與人相處，需要慢慢找到彼此適合的距離。", "原文": "「心與心要合必須靠近，靠近碰觸了會不會受傷，受傷了就會往後一步，這一步太大步，聽不到就又會靠近點，如此一次兩次三次就知道，何為適當之距離。」", "今日重點": "適當的距離，是在相處中慢慢學會的。", "白話理解": "人與人要建立情感，需要靠近，但太靠近也可能因為言語、習慣或期待不同而產生摩擦。這時，有人需要一點空間，有人需要多一些關心。道德天尊提醒我們，相處不是一味靠近，也不是遇到不愉快就疏遠，而是透過一次次的互動與調整，找到彼此都能接受的距離。", "情境範例": "媽媽關心已成家的女兒，常常打電話詢問生活大小事，女兒卻覺得自己的生活受到干涉。後來媽媽改變方式，先傳訊息，有需要時再通電話。女兒也會主動分享近況。兩人的相處自在了許多。", "問問自己": "我和身邊的人相處時，是否曾因為太關心、太在意，反而讓對方感到壓力？", "今天可以試試": "今天選一段需要調整的關係，試著改變一個相處習慣：該關心時多一點關心，該給空間時就留一些空間。", "keyOrig": false, "keyOther": false}, {"n": 20, "theme": "看見就好，不必事事放在心上", "who": "南極仙翁", "date": "108 年 1 月 24 日", "開篇": "別人的一句話、一個眼神，甚至一件不順眼的小事，有時都能讓我們煩惱半天。今天南極仙翁提醒我們：定，就是看見事情，不代表一定要把它放在心裡。", "原文": "「定乃是入眼不入心，凡事入心危險矣！看待外事外物輕輕一笑帶過就可，何必計較於其中，動氣又傷神」", "今日重點": "看見事情，不必事事放在心上。", "白話理解": "生活中難免遇到不順的人事物，也會聽到不中聽的話。如果每件事都放在心上，反覆計較、生氣，最後內耗的是自己的精神。南極仙翁提醒我們，對於不值得糾結的小事，可以過即不留。", "情境範例": "開車時，前方一輛車突然插隊。以前他總會忍不住生氣大罵，一路抱怨。這次他雖然覺得不高興，卻沒有一直追著這件事生氣，而是保持安全距離，繼續專心開車。到了目的地，心情也沒有被剛才的插隊影響。", "問問自己": "最近有沒有一件小事，其實不值得糾結，我卻仍讓它影響自己的情緒？", "今天可以試試": "今天遇到讓自己不舒服的小事，先停一下，不急著抱怨或反覆回想，把注意力帶回眼前正在做的事情。", "keyOrig": false, "keyOther": false}, {"n": 21, "theme": "顧及彼此，才能雙贏", "who": "金精子", "date": "108 年 1 月 24 日", "開篇": "有時候，事情談到最後，雖然爭取到了自己想要的結果，卻讓對方心裡留下不滿。這樣的結果，真的是雙贏嗎？今天金精子仙師提醒我們，與人相處、商量事情時，除了考慮自己的想法，也要理解對方的立場與需要。", "原文": "「知自己之心，也要知他人之心，方可互相，互相幫贊。……雙贏皆為平衡，單一贏莫平衡，此方贏乙方產出怨念」", "今日重點": "真正的雙贏，是彼此都能有所收穫。", "白話理解": "與人商量事情時，如果只想到自己想要什麼，即使最後如願，也可能讓對方感到不滿。金精子仙師提醒我們，除了了解自己的想法，也要試著理解對方的立場與需要。雙贏不是一味退讓，而是透過溝通，找出彼此都能接受的做法。", "情境範例": "夫妻討論假日安排，先生想在家休息，太太則想出門走走。過去常常一方配合另一方，心裡卻不太情願。這次兩人商量後，決定上午在家休息，下午一起出門散步、吃飯。兩個人的需要都得到照顧，也少了不必要的爭執。", "問問自己": "當我希望事情照自己的意思進行時，有沒有想過對方真正需要的是什麼？", "今天可以試試": "今天與人討論一件事情時，先聽聽對方最在意的是什麼，再一起想一個雙方都能接受的做法。", "keyOrig": false, "keyOther": false}, {"n": 22, "theme": "像月光一樣", "who": "北斗真君", "date": "108 年 1 月 25 日", "開篇": "太陽很亮，卻不能直視；月光柔和，卻能靜靜照亮夜晚。今天北斗真君提醒我們，修道之人要像月光一樣，柔和而不刺眼，讓人感受到溫暖。", "原文": "「修道之人光芒強了，未能帶給蒼生溫暖，反而使其傷身。修道之人如同月光，柔柔和和可入心」", "今日重點": "柔和待人，才能讓善意走進人心。", "白話理解": "同樣是好意，太強烈，別人會想躲；柔和一點，才進得了心。北斗真君提醒我們，關心別人不必太強烈，也不必急著要求對方改變。像月光一樣柔和，讓人感受到溫暖，也更容易接受我們的心意。", "情境範例": "她平時很注重養生，讀了不少相關書籍。每次家族聚餐，總忍不住提醒大家少吃油炸、多吃蔬菜，說得多了，家人反而不太想聽。後來，她不再一味提醒，而是聚餐時多準備一道清爽的蔬菜料理。沒想到，家人吃得很喜歡，還有人主動問她怎麼做的。", "問問自己": "我給別人的好意，是不是太用力了，讓人接不住？", "今天可以試試": "今天想關心或提醒別人時，先聽聽對方的想法，再用對方容易接受的方式表達，不急著要求對方改變。", "keyOrig": false, "keyOther": false}, {"n": 23, "theme": "禮從小處做起", "who": "周公", "date": "108 年 1 月 26 日", "開篇": "禮好像是很多規矩。今天周公說：禮沒有那麼難，從小地方做起就是。", "原文": "「禮無大道理可言，禮從細微做起即是禮，大道理口說而已……禮沒有那麼難，行進間見一垃圾是否撿起也為禮」", "今日重點": "禮，表現在日常生活的細微之處。", "白話理解": "禮不只是遵守規矩，更表現在日常生活的言行中。周公舉例，走路時看到垃圾，是否願意撿起來，也是一種禮。看似微小的舉動，卻能看出一個人是否懂得尊重環境與他人。", "情境範例": "每天早上，社區大樓的清潔阿姨都會在電梯口拖地。有位住戶經過時，總會稍微繞開濕地，不讓地面又留下腳印，也會親切地說一聲早。阿姨後來跟人說，那一聲問候，讓她覺得自己的工作受到尊重。", "問問自己": "今天有沒有一個小地方，我可以多尊重別人一點？", "今天可以試試": "今天留意生活中的小細節，看到垃圾順手撿起，接受別人幫忙時真誠地說聲謝謝，或進出大門時，看到後面有人跟上來，順手幫忙扶一下門。", "keyOrig": false, "keyOther": false}, {"n": 24, "theme": "為何所求", "who": "文昌帝君", "date": "108 年 1 月 26 日", "開篇": "我們常常有很多願望，求平安、求順利、求升遷，卻很少停下來想：為什麼我這麼希望得到它？今天文昌帝君提醒我們，開口求之前，先理清自己真正想要的是什麼。", "原文": "「所以要「求」，要問自己要求甚麼？要為何所求？否則心口不一，難」", "今日重點": "所求為何，也要看能否利益眾生。", "白話理解": "求功名、求智慧，不只是為自己的前途。文昌帝君指出，若有功名卻沒有利益眾生之心，反而可能成為傷害；若求智慧是為了服務眾生，才有真正的意義。開口祈求之前，先看清自己心中是否只有私利，還是也願意把眾生放在心上。", "情境範例": "她一直希望升任主管，覺得有了職位，才能證明自己的能力。後來她想了想：如果真的升任主管，自己是否願意帶領新人、協助同事成長，讓團隊做得更好？她看見自己原本很在意頭銜與別人的眼光，也開始思考這個機會能為身邊的人帶來什麼幫助。", "問問自己": "我所求的功名、能力或機會，是只為自己的前途，還是也願意用來利益他人？", "今天可以試試": "今天寫下一個自己正在追求的目標，再補上一句：「如果得到它，我可以怎麼幫助身邊的人？」", "keyOrig": false, "keyOther": false}, {"n": 25, "theme": "懺悔不是責罰", "who": "太上老君", "date": "108 年 1 月 27 日", "開篇": "一聽到懺悔，就覺得自己做錯了，要被罰。今天太上老君說：不是這樣的。", "原文": "「莫要把懺悔誤解為受懲罰，要把懺悔當作與自己內心之交談，把懺悔當做與上天之交談，把懺悔當做靈洗滌之機會。」", "今日重點": "懺悔包含自省、與上天交談，也是洗滌靈的機會。", "白話理解": "懺悔不是受懲罰，也不是只在心裡責怪自己。原文談到三個層次：與自己的內心交談、與上天交談，以及把握機會洗滌自己的靈。原文也特別分清，洗滌的重點不是內心，而是靈；透過懺悔誠實看見自己的不足，求得赦免，並願意改變。", "情境範例": "他前幾天因為心情不好，對太太說話很不客氣。事後他知道自己做得不妥，卻一直沒有真正面對。晚上安靜下來，他回想自己的言行，承認把工作的情緒帶回家，讓最親近的人受了委屈。他不只決定向太太道歉，也誠實向上天懺悔、求赦免，並想好下次情緒上來時要如何調整。", "問問自己": "最近有哪一件言行，我已看見自己的不足，卻還沒有誠實面對、懺悔求赦免？", "今天可以試試": "睡前找一段安靜時間，回想今天的言行；若看見自己的不足，就先向自己坦承，再與上天交談、求赦免，並想好一個明天可以改正的行動。", "keyOrig": false, "keyOther": false}, {"n": 26, "theme": "別讓自己的心，受困", "who": "道行真人", "date": "108 年 1 月 28 日", "開篇": "別人一句不好聽的話，有時讓我們氣上一整天，甚至過了好幾天，還是忍不住想起來。今天道行真人提醒我們，別人的話或許讓人不舒服，但別讓自己一直困在那句話裡。", "原文": "「所講之言未必能傷你心，惟有你心才可傷之你心。人皆要爭一口氣，既然要爭一口氣，你就給你自己是兩口之氣」", "今日重點": "不必爭一時的面子，要放下意氣，守住道心。", "白話理解": "別人說了不中聽的話，心裡難免不舒服。但道行真人談到「兩口之氣」，不是要人多做幾次深呼吸，而是提醒我們：世人常為了面子爭一口氣；若願意放下這份爭勝之心，就不必讓一句話牽著自己走，也才有機會守住道心。", "情境範例": "幾個朋友聚餐時，有人開玩笑說她：「妳就是想太多了啦！」她聽了很不是滋味，立刻想回一句更重的話，讓對方知道自己不是好欺負的。話到嘴邊，她忽然看見自己急著爭的其實是面子，不一定是事情本身。她最後沒有用話刺回去，而是平靜說出自己的感受，也不再反覆揣測對方的意思。", "問問自己": "當我想爭回一口氣時，我最放不下的是什麼面子或自我感受？", "今天可以試試": "今天聽到不中聽的話時，先問自己：「我現在是想證明自己、爭回面子，還是先把心放穩？」看清楚後，再決定如何回應。", "keyOrig": false, "keyOther": false}, {"n": 27, "theme": "先蹲下，才跳得高", "who": "靈寶天尊", "date": "108 年 1 月 28 日", "開篇": "卡住了、往後退了，好像很失敗。今天靈寶天尊說：要跳高，本來就要先蹲下。", "原文": "「要跳躍、要跳高，必先往下蹲，往下蹲乃在整心。心若整出，方向清晰」", "今日重點": "要跳躍、要跳高，必先往下蹲", "白話理解": "人生有些時候，事情就是往後退。靈寶天尊說，跳高之前本來就要先蹲下；蹲下的時候，是在整理自己的心。低潮不代表自己不好，正是停下來、把方向想清楚的時候。", "情境範例": "他五十八歲那年被資遣，在家待了半年，頭三個月天天怪自己。後來他開始陪父親復健，每週去長照中心當志工。半年過去，新工作還沒有著落，但他不再怪自己了。他說：「先把方向找清楚。」", "問問自己": "我現在的停頓，是拿來怪自己，還是拿來整理方向？", "今天可以試試": "寫下一件最近讓你卡住的事，再寫一句：「這段時間，我可以先……」", "keyOrig": true, "keyOther": false}, {"n": 28, "theme": "被擁抱的人，會去擁抱別人", "who": "如來佛", "date": "108 年 1 月 29 日", "開篇": "愛是會傳下去的。今天如來佛說：被擁抱過的人，會轉身擁抱別人。", "原文": "「眾生樂於被擁抱，擁抱後感受其愛，則會轉身擁抱他人。」……「擁抱者施予愛，乃是因為感受到其愛」", "今日重點": "眾生樂於被擁抱，擁抱後感受其愛，則會轉身擁抱他人。", "白話理解": "一個人願意去愛別人，常常是因為他曾經被好好愛過。如來佛說，被擁抱、感受到愛之後，人自然會轉身去擁抱別人。溫暖要慢慢傳，有人回應得快，有人需要時間。", "情境範例": "她剛搬到這個城市時，誰都不認識。樓下雜貨店的老闆娘每次都多塞一顆橘子給她，問她吃飽沒。十年後，她開了一間小麵店。有個背著大背包的年輕人來吃麵，她多加了一顆滷蛋，問他：「剛搬來的嗎？」", "問問自己": "誰曾經給過我溫暖？我有沒有把這份溫暖傳下去？", "今天可以試試": "今天給一個人一點溫暖：一句問候、一杯水，或一個真心的笑。", "keyOrig": true, "keyOther": false}, {"n": 29, "theme": "一次又一次", "who": "文昌帝君", "date": "108 年 1 月 26 日", "開篇": "第一輪的 28 天讀完了。今天開始第二輪，回到同一批仙家，讀另一段話。文昌帝君說，參悟本來就要一次又一次。", "原文": "「參悟乃是要一次一次又一次，第一次體悟到此，以此為根基往內再去思悟思透為何如此，以此為根基再次體悟，再次以此為根基。」", "今日重點": "參悟乃是要一次一次又一次", "白話理解": "讀過一次就以為懂了，其實只是開始。文昌帝君說，第一次讀懂一點，就把這一點當地基，再往裡面想深一層；下一次又在這一層上面再想。一句話反覆讀，每次都會讀出不一樣的東西。", "情境範例": "她年輕時讀過一本書，覺得普普通通。三十年後在舊書櫃裡翻到，重讀一遍，好幾頁看得眼眶發熱。書一個字都沒變，變的是她走過的路。", "問問自己": "第一輪讀過的哪一句話，我願意再往下想深一層？", "今天可以試試": "挑第一輪裡印象最深的一天，再讀一次那天的重點。", "keyOrig": true, "keyOther": false}, {"n": 30, "theme": "熬過那一小段", "who": "玉虛真人", "date": "108 年 1 月 7 日", "開篇": "有些日子特別難熬，好像怎麼也過不去。玉虛真人說：莫洩氣，莫著急，先熬過這一小段。", "原文": "「一小段的燉養換取永久，但是要先熬得過這一小段的煎煎熬熬。」", "今日重點": "一小段的燉養換取永久", "白話理解": "燉湯要小火慢慢燉，急不得。玉虛真人說這句話時，是在勉勵人不要洩氣、不要著急，一步一步來。難熬的這一段，不必硬撐，也不必急著看到結果；累了可以歇一歇、找人說說話，再繼續。", "情境範例": "他戒菸的頭兩個禮拜，每天都想放棄。太太在冰箱貼了一張紙：「再撐一天就好。」他就一天一天撐。三個月後爬樓梯，他發現自己不喘了。", "問問自己": "我現在正在熬的，是哪一段？", "今天可以試試": "把難熬的事拆小一點，只想「今天這一段」就好。", "keyOrig": true, "keyOther": false}, {"n": 31, "theme": "自然不是隨便", "who": "慈航道人", "date": "108 年 1 月 13 日", "開篇": "很多人說「順其自然就好」。慈航道人提醒：自然，不等於隨便。", "原文": "「看似自然，其實未必自然。自然之中，自有道法，自有規則。……自然是指不受限，不受上下左右。但是它還是一個法則、一個規律的存在，否則就不叫自然了。」", "今日重點": "自然之中，自有道法，自有規則。", "白話理解": "四季看起來自自然然地來去，其實背後有一定的規律，春天不會跳過夏天直接到冬天。慈航道人說，自然是不被綁住，但不是沒有分寸。順其自然，是順著該有的道理走，不是想怎樣就怎樣。", "情境範例": "退休後他說要過「自然」的生活，睡到自然醒、想吃就吃。半年後體力差了，脾氣也差了。後來他給自己定了簡單的作息：早起散步、三餐定時。他說，現在才真的覺得自在。", "問問自己": "我說「順其自然」的時候，是在順著道理，還是在找藉口？", "今天可以試試": "給自己的一天，留一個固定的小規律。", "keyOrig": true, "keyOther": false}, {"n": 32, "theme": "失去的下一步", "who": "懼留孫", "date": "108 年 1 月 14 日", "開篇": "失去的時候最難受。懼留孫仙師說：失去和得到，本來就會輪流來。", "原文": "「現在看到好像失去很多，再往後看，其實這是得到很多。……失去的下一步就是得到了，但是得到的下一步可能就是失。所以，有何喜？又有何憂啊？」", "今日重點": "失去的下一步就是得到了，但是得到的下一步可能就是失。", "白話理解": "得到和失去，像白天和黑夜一樣輪流來。懼留孫仙師說，現在看起來失去很多，放長一點看，也許得到很多。一時的失去，不等於結局；得到時不必太喜，失去時也不必太憂。", "情境範例": "工廠收掉那年，她五十二歲。在家難過了好一陣子，後來去社區大學學做麵包。現在她週末在市集擺攤，常常賣到中午就收工，她說這是她這輩子笑最多的幾年。", "問問自己": "最近的一次失去，我是不是把它當成了結局？", "今天可以試試": "遇到不順的事，對自己說一句：「這不是結局，只是下一步之前。」", "keyOrig": true, "keyOther": false}, {"n": 33, "theme": "有撞擊還是好的", "who": "雲中子", "date": "108 年 1 月 15 日", "開篇": "被人批評、被人頂撞，誰都不喜歡。雲中子仙師說：一把好劍，是千錘百煉打出來的。", "原文": "「所以有撞擊還是好的，就如同一把上好之劍，若沒有經過火裡來水裡去，沒有經過千錘百煉，如何成為一把好劍啊！」", "今日重點": "有撞擊還是好的", "白話理解": "鐵要經過一次又一次敲打，才能成為好劍。雲中子仙師說，別人的衝撞和批評雖然不舒服，卻能把身上的鏽敲掉。不過，有道理的批評才是磨練；羞辱和傷害，不必照單全收。", "情境範例": "她六十五歲開始學唱歌，老師很嚴，常當著大家的面說她拍子不穩。她回家氣了好幾次，想乾脆不去了。半年後社區表演，她站上台，第一次覺得拍子穩穩地踩在腳下。下台時，她第一個想謝的，竟然是那位老師。", "問問自己": "最近誰的話讓我不舒服？裡面有沒有一點，是在磨我？", "今天可以試試": "今天遇到意見不同，先不急著反駁，想想對方說的有沒有一點道理。", "keyOrig": true, "keyOther": false}, {"n": 34, "theme": "道即是生活", "who": "普賢真人", "date": "108 年 1 月 16 日", "開篇": "修道好像要讀很深的書、懂很難的道理。普賢真人說：道就是生活，簡單不一定不好。", "原文": "「天祥大道看似沒什麼深奧的道理，道即是生活。……因為真、真、真，所以簡單不一定不好。」", "今日重點": "道即是生活", "白話理解": "道不是只在經書裡，而是在吃飯、工作、和家人說話的每一刻。普賢真人說，天祥大道看起來沒有深奧的道理，靠的是一個「真」字。簡單的事真心去做，就是道。", "情境範例": "她說自己不懂什麼大道理，只知道每天早上幫婆婆梳頭、晚上把明天的便當準備好。有一天孫子問她：「阿嬤，你修的是什麼道？」她想了想說：「就是把每天的事做好啊。」", "問問自己": "今天的哪一件小事，我可以用真心去做？", "今天可以試試": "選一件每天都做的事，今天放慢一點、用心做一次。", "keyOrig": true, "keyOther": false}, {"n": 35, "theme": "收起鋒芒", "who": "赤精子", "date": "108 年 1 月 18 日", "開篇": "有能力是好事，但太鋒利會傷人。赤精子仙師說，火也要學會謙虛。", "原文": "「火有心，火有火芒，灼傷人是火芒，所以火亦是要學會謙虛謙虛，鋒芒畢露傷了人也傷了自己」", "今日重點": "鋒芒畢露傷了人也傷了自己", "白話理解": "火的中心是穩定的，燒傷人的是外面那圈火焰。赤精子仙師說：「鋒芒畢露傷了人也傷了自己」。人也一樣，本事和熱情是好的，但說話做事太尖銳，就會刺傷別人，身邊的人慢慢走開，自己也跟著孤單。把鋒芒收一點，熱度還在，卻不燙人。", "情境範例": "她是家裡最能幹的大姊，兄弟姊妹有事商量，她常常一句話就點出別人的錯。慢慢地，大家有事寧可私下說，不找她。她開始改：先聽完，再說；先說對方想得好的地方，再說可以改的。去年過年前，弟弟第一次主動打電話來問她的意見。", "問問自己": "我說話的時候，有沒有哪裡太「尖」？", "今天可以試試": "今天要指出別人的錯時，先說一句肯定的話。", "keyOrig": true, "keyOther": false}, {"n": 36, "theme": "拉來排去", "who": "黃龍真人", "date": "108 年 1 月 18 日", "開篇": "合得來的就靠近，合不來的就推開，好像很自然。黃龍真人說：這樣忙了一整天，是在忙什麼呢？", "原文": "「所以大大小小都是道，有何不能容？你不能容，即是你不能容道，你不能容道，即是你不能容下自己……吾看到世間之人拉來排去、拉來排去的，我喜歡你，我就拉你，我討厭他，我就排掉他，很有趣啊，終日忙忙然，忙什麼？就是在忙這一些」", "今日重點": "你不能容道，即是你不能容下自己", "白話理解": "喜歡的拉近，不喜歡的推開，一天就這樣忙完了。黃龍真人說：「你不能容道，即是你不能容下自己」。這樣排來排去，身邊的圈子越來越小，心也越來越悶。", "情境範例": "社區群組裡，他總是把意見不同的人封鎖。封到最後，群組裡只剩跟他想法一樣的人，他卻越來越常覺得悶。有一天他把一位老鄰居解除封鎖，對方傳來一句：「好久不見，最近好嗎？」", "問問自己": "我身邊，是不是只留下了喜歡的人？", "今天可以試試": "對一個想法和你不同的人，今天先聽他把話說完。", "keyOrig": true, "keyOther": false}, {"n": 37, "theme": "形與本質", "who": "水精子", "date": "108 年 1 月 18 日", "開篇": "做法不一樣，就一定不對嗎？水精子仙師說：要看的是本質，不是形式。", "原文": "「雖然道不堅持形但它堅持本質，修煉之人現今修行之人堅持形，而不堅持本質，所以那是宇宙而言；以個體而言你堅持的是形還是本質？」", "今日重點": "以個體而言你堅持的是形還是本質？", "白話理解": "水倒進圓杯是圓的，倒進方杯是方的，但它一直是水。水精子仙師說，道不堅持形狀，只堅持本質；人卻常常堅持做法、規矩、外表，反而忘了真正要守的是什麼。", "情境範例": "過年時，媳婦想把年夜飯改到餐廳吃，婆婆很不高興，覺得沒有家的味道。後來兒子說：「媽，重要的是一家人坐在一起，對吧？」那年在餐廳，婆婆帶了自己滷的一鍋肉去，全家吃得很開心。", "問問自己": "我最近堅持的一件事，是在守住本質，還是只在守形式？", "今天可以試試": "遇到和人做法不同時，先問：「我們真正想要的是什麼？」", "keyOrig": true, "keyOther": false}, {"n": 38, "theme": "看見的是自己的心", "who": "風大仙", "date": "108 年 1 月 18 日", "開篇": "同一個人，有人覺得好，有人覺得壞。風大仙說：你看見什麼，跟你的心有關。", "原文": "「世間所見萬物來自於心，看到了他壞、他壞，其實是自己壞，看到他好、他好、他好是自己好」", "今日重點": "世間所見萬物來自於心", "白話理解": "心情好的時候，路上的人都順眼；心情差的時候，連風都覺得討厭。風大仙說，我們看別人，常常看見的是自己的心。先看看自己的心情，再看對方真正做了什麼，就不容易冤枉人。", "情境範例": "她總覺得對面的老鄰居很冷漠，碰面也不打招呼。直到有一次她住院回來，門把上掛著一袋水果和一張紙條：「保重身體。」她才知道，那位鄰居只是不太會說話。", "問問自己": "最近有沒有一個人，我是用自己的心情在看他？", "今天可以試試": "今天想批評某人之前，先問自己：「我現在的心情怎樣？」", "keyOrig": true, "keyOther": false}, {"n": 39, "theme": "未必要圓滿", "who": "廣成子", "date": "108 年 1 月 19 日", "開篇": "大家都想要圓滿。廣成子仙師說：一直追求圓，反而把自己變成了角。", "原文": "「因為角會傷人，但世間之人喜歡追求圓，但是又把自己變成角，所以一直是在追求，追求而不是得到。……所以萬事萬物未必要圓滿啊」", "今日重點": "所以萬事萬物未必要圓滿啊", "白話理解": "想要每件事都完美，結果一直在追，人也變得緊繃、容易傷人。廣成子仙師說，萬事萬物不一定要圓滿。重要的事用心做好，小地方留一點缺口，心反而圓了。", "情境範例": "她辦孫子的滿月宴，什麼都要最好：菜色、場地、回禮。宴會前一天，蛋糕店送錯口味，她急得掉眼淚。女兒抱抱她說：「媽，大家是來看寶寶的。」那天的蛋糕不是她選的，卻是她記得最清楚的一個。", "問問自己": "我是不是正在追一件「一定要完美」的事？", "今天可以試試": "今天允許一件事做到八分就好。", "keyOrig": true, "keyOther": false}, {"n": 40, "theme": "從下往上看", "who": "土德真君", "date": "108 年 1 月 20 日", "開篇": "站在高處看人，和蹲下來看人，看到的完全不一樣。土德真君說：往上看，是擁抱。", "原文": "「由高處看是俯瞰蒼生，由下而往上看是擁抱蒼生」", "今日重點": "由高處看是俯瞰蒼生，由下而往上看是擁抱蒼生", "白話理解": "站在高處看，人顯得小小的，就容易覺得自己比較大。土德真君說，從上往下看是俯瞰，從下往上看是擁抱。放下高高在上的姿態，才聽得見別人的處境。", "情境範例": "他當校長多年，習慣站在司令台上講話。退休前最後一學期，他每天中午到不同班級，坐在學生旁邊一起吃飯。畢業典禮那天，好幾個孩子跑來跟他合照，叫的不是「校長」，而是「阿伯」。", "問問自己": "在家裡，我習慣用什麼高度看孩子、看另一半、看晚輩？", "今天可以試試": "今天和一個人說話時，讓自己的視線和他一樣高。", "keyOrig": true, "keyOther": false}, {"n": 41, "theme": "像螻蟻一樣謙卑", "who": "玉鼎真人", "date": "108 年 1 月 20 日", "開篇": "螻蟻很小，生命也很短。玉鼎真人卻說：人要向螻蟻學謙卑。", "原文": "「螻蟻明白自身不高，故謙卑如日，一日復一日蛻變其內心，參研啟發於道，故以心中之智慧得道，螻蟻啊！一捏性命就沒了，珍惜其有限之生命，以己代表螻蟻，低頭謙虛學習才是真道。」", "今日重點": "低頭謙虛學習才是真道。", "白話理解": "螻蟻知道自己渺小，仍然一日復一日地蛻變內心、參研道理。玉鼎真人要我們學的，不只是低頭請教，更是珍惜有限生命，持續讓自己的心有所改變。謙卑不是自我否定，而是承認仍有可學、可修之處。", "情境範例": "她八十歲開始學用手機傳照片給孫子。每次孫子回家，她都拿著小本子問：「這個要按哪裡？」本子上寫滿歪歪的字。現在家族群組裡，最常傳早安圖的就是她。", "問問自己": "我有沒有因為覺得「我早就會了」，而停止學習？", "今天可以試試": "今天向一個比你年輕的人，請教一件事。", "keyOrig": true, "keyOther": false}, {"n": 42, "theme": "細水長流", "who": "火龍真人", "date": "108 年 1 月 21 日", "開篇": "一下子很用力，很快就累了。火龍真人說：細水長流，根才紮得深。", "原文": "「細水長流根基打得深，一時看似大，實則不深」", "今日重點": "細水長流根基打得深", "白話理解": "細水長流，說的是持續而穩定地累積，不是一時用力衝得很快。火龍真人提醒我們，根基要靠長久的實踐才能扎深；修持也要讓心保持穩定，不因一時看不見成果就急著放棄。", "情境範例": "他年初立志每天跑五公里，跑了一週膝蓋就痛，只好停下。後來他改成每天快走二十分鐘，到現在還是常常中斷，最長一次停了十天。但每次停了，他都對自己說：「明天再走就好。」", "問問自己": "有哪件好事，我曾經太用力，結果做不下去？", "今天可以試試": "把一個目標縮小成「每天都做得到」的分量；中斷了，明天接回來就好。", "keyOrig": true, "keyOther": false}, {"n": 43, "theme": "低頭的人離天近", "who": "太白金星", "date": "108 年 1 月 21 日", "開篇": "默默做事的人，常常沒人看見。太白金星說：看似低，其實心離天很近。", "原文": "「要做大道之中默默耕耘之人，唯有將己身放得很低很低很低，才可得上天之眷顧，因為此等才是可用之材。看似低了離天很遠，可是其心與天很近。」", "今日重點": "看似低了離天很遠，可是其心與天很近。", "白話理解": "太白金星說要把自己放低，重點不是做卑微的工作，而是不把自己抬高、不爭功、不居功，願意在大道中默默耕耘。外在位置看似低，若心能謙卑、願意承擔，反而更接近天心。", "情境範例": "每次活動結束，大家拍完合照就散了。總有一位阿姨留下來，把椅子一張張疊好、把垃圾分類。很少人知道她的名字，但負責場地的人說，只要她在，就放心了。", "問問自己": "我做好事的時候，是希望有人看見，還是只想把事做好？", "今天可以試試": "今天做一件沒人會知道的小事。", "keyOrig": true, "keyOther": false}, {"n": 44, "theme": "不求回報", "who": "木德真君", "date": "108 年 1 月 22 日", "開篇": "付出了，總希望有點回應。木德真君說：像樹一樣給出去，不強求回報。", "原文": "「當你把眾生為上之時，那也就是你的成就，不是你們人付出以後一定要有回報，不強求回報，但自有回報啊」", "今日重點": "不強求回報，但自有回報", "白話理解": "木德真君說，當我們把眾生放在自己之前，這本身就是一種成就。付出不必時時計算回報，也不必因為沒有立即得到感謝就心生不滿；重點是心中是否真把眾生放在前面。", "情境範例": "她種的菜吃不完，每週都送一袋給隔壁。送了半年，她發現自己開始在意：怎麼從來沒回送過一樣東西？那天她提著菜站在門口，猶豫了一下，還是按了門鈴。回家路上她想起來：當初送菜，本來就是因為菜太多，鄰居又一個人住啊。", "問問自己": "我最近的付出裡，有沒有在心裡記帳？", "今天可以試試": "今天幫一個人，幫完就放下，不在心裡記這一筆。", "keyOrig": true, "keyOther": false}, {"n": 45, "theme": "心空才過得去", "who": "明德真人", "date": "108 年 1 月 22 日", "開篇": "同樣一句話，有人說了沒事，有人說了就卡在心裡。明德真人說：問題可能不在那句話，在心裡太滿。", "原文": "「所以人要活得下去，消化道必須是中空的。可是人的心經常都是滿的呀……如果心是空的就能夠過了。」", "今日重點": "如果心是空的就能夠過了。", "白話理解": "心若被喜歡、不喜歡、得失與各種欲念塞滿，就很難自在地面對事情，也容易讓這些念頭影響自己的言語和行動。明德真人以中空的消化道作比喻，提醒我們心也要留有空間，才能消化、轉化遇到的人事物。", "情境範例": "媳婦說了一句：「媽，這個菜有點鹹。」如果是女兒說，她會笑著加水；聽媳婦說，她整個下午都不舒服。晚上她問自己：同樣一句話，為什麼差這麼多？她想起來，從媳婦嫁進門那天起，自己心裡就一直放著一點不滿。", "問問自己": "同一句話，誰說的我特別容易卡住？是不是我心裡早就放了東西？", "今天可以試試": "聽到不舒服的話，先想一想：如果是別人說的，我還會這麼在意嗎？", "keyOrig": true, "keyOther": false}, {"n": 46, "theme": "蓮子不挑人", "who": "燃燈古佛", "date": "108 年 1 月 22 日", "開篇": "我們常常很快就判斷一個人是好是壞。燃燈古佛說：蓮子不挑人。", "原文": "「蓮不會去分辨，你是好、你是壞，你有需求我就給你，它的蓮子不會因為你是好人、你是壞人，就不供用給你，因為你有需求，我即奉獻我給你，好與壞不過在於一念之判斷，此判斷乃為個人之判斷，你說他壞，他是真的壞嗎？」", "今日重點": "你說他壞，他是真的壞嗎？", "白話理解": "蓮子給人吃，不會先問你是好人還是壞人。燃燈古佛說，好壞常常只是我們一念之間的判斷。少一點先入為主，多一點慈悲；善意也可以保有分寸，不必拿自己的安全冒險。", "情境範例": "冬天殿堂發熱湯，一位衣服髒亂、身上有酒味的男人來排第二次。她本來想說「一人一碗」，想起蓮子不挑人，還是替他舀滿了。他什麼也沒說，端著湯走了。她不知道他是誰，也不需要知道。", "問問自己": "我給人方便、給人善意之前，有沒有先判斷他「配不配」？", "今天可以試試": "對一個你不太喜歡的人，照樣給他一個方便。", "keyOrig": true, "keyOther": false}, {"n": 47, "theme": "聽心，不只聽話", "who": "文殊真人", "date": "108 年 1 月 22 日", "開篇": "聽人說話，我們常常只聽字面。文殊真人說：要聽的是心。", "原文": "「眾生之心非是一者兩者三者之言，莫要聽言語而是要聽心」", "今日重點": "莫要聽言語而是要聽心", "白話理解": "文殊真人提醒我們，不要只聽見別人說出口的話，也要留意話語背後真正的心意與需要。聽心不是憑自己的猜測替對方下結論，而是願意多聽、多問，確認對方真正想表達什麼。", "情境範例": "國中的兒子回家丟下一句：「學校好無聊，我不想去了。」爸爸本來想罵人，忍住了，問他：「最近是不是發生了什麼事？」兒子沉默很久，才說班上有人一直笑他。", "問問自己": "最近有誰說的話，我只聽了字面？", "今天可以試試": "今天有人抱怨時，多問一句：「你真正在意的是什麼？」", "keyOrig": true, "keyOther": false}, {"n": 48, "theme": "塞住也是過程", "who": "道德天尊", "date": "108 年 1 月 23 日", "開篇": "心裡卡住、想不通的時候，很難受。道德天尊說：心塞住，未必不好。", "原文": "「心塞住未必不好，從塞中走到通，此乃過程，若能明瞭為何而塞，為何而通，如何從此走到此，收穫會很大」", "今日重點": "心塞住未必不好", "白話理解": "心裡感到堵塞，不一定全是壞事。重要的是弄清楚自己為什麼卡住、什麼念頭讓自己過不去，再看見自己如何從塞走向通。若只急著把不舒服壓下去，就可能錯過理解自己的機會。", "情境範例": "她寫了二十年書法，最近怎麼寫都不滿意。她沒有硬寫，也沒有放棄，而是把這半年的字攤在桌上，一張一張看。看了一個晚上，還是說不清楚。她在本子上寫：「還沒想通，但好像不是手的問題，是心太急。」", "問問自己": "我現在卡住的那件事，有沒有試著弄懂「為什麼卡」？", "今天可以試試": "把卡住的事寫下來，再寫一句：「我卡住，是因為……」", "keyOrig": true, "keyOther": false}, {"n": 49, "theme": "這一生做了什麼", "who": "南極仙翁", "date": "108 年 1 月 24 日", "開篇": "人人都希望長壽。南極仙翁卻說：比活多久更重要的，是這一生做了什麼。", "原文": "「所以應該不是在乎生與死，而是由生至死中的過程，你利用生命做了甚麼？」", "今日重點": "你利用生命做了甚麼？", "白話理解": "南極仙翁把眼光從生與死，帶回生命走過的過程：這一生究竟做了什麼、留下什麼？不只是計算完成多少事情，更要看看自己的生命是否用在有意義、有益於眾生的地方。", "情境範例": "他退休後常說自己「沒用了」。有一天孫女請他教她寫毛筆字，他從握筆開始教起。那年春節，孫女寫的春聯貼在家門口，他站在門口看了好久，說：「這個，我有份。」", "問問自己": "今天的我，想用生命做一件什麼事？", "今天可以試試": "做一件讓你覺得「今天沒白過」的小事。", "keyOrig": true, "keyOther": false}, {"n": 50, "theme": "不要拉拉扯扯", "who": "金精子", "date": "108 年 1 月 24 日", "開篇": "想做又不敢做，心裡一直拉扯，最累。金精子仙師說：拉拉扯扯，難成器。", "原文": "「修道為何要有勇氣，我就拼了，就過了，一鼓作氣而過，拉拉扯扯難成器。」", "今日重點": "拉拉扯扯難成器。", "白話理解": "金精子談修道要有勇氣，面對該面對的考驗，就要有決心一鼓作氣走過，不要因猶豫、拉扯而停在原地。這不是叫人不思考地硬衝，而是在方向清楚後，不再被畏縮與反覆猶豫拖住。", "情境範例": "她想跟多年不聯絡的妹妹和好，訊息打了又刪、刪了又打，拖了兩年。有天晚上她閉上眼睛按下送出：「最近好嗎？」五分鐘後，妹妹回：「姊，我也一直想找你。」", "問問自己": "我現在的猶豫，是因為害怕行動，還是因為還有重要的事情沒有想清楚？", "今天可以試試": "若方向已清楚，今天就踏出一小步；若仍有疑問，先釐清最關鍵的一件事。", "keyOrig": true, "keyOther": false}, {"n": 51, "theme": "自己點一盞燈", "who": "北斗真君", "date": "108 年 1 月 25 日", "開篇": "當生活遇到不順利，或心裡有放不下的煩惱時，有時會覺得眼前一片黑暗，不知道該怎麼辦。今天北斗真君提醒我們：「那就自己點一盞燈吧！」與其一直陷在害怕和不安裡，不如試著為自己找一個方向，讓心裡重新亮起來。", "原文": "「那就自己點一盞燈吧！點了燈就不怕，黑非真黑矣！乃是心中所致，怕黑不是怕外面形體之黑，乃是害怕心中所認為之黑」", "今日重點": "點亮心燈，先看見心中恐懼從何而來。", "白話理解": "北斗真君所說的黑，不只是外面的黑暗，而是心中認定的黑。害怕時，先看清自己究竟在怕什麼：是事情本身，還是心裡預想的結果？點一盞燈，不只是換個想法，也要照見恐懼的來源，再找出眼前可以面對的一步。", "情境範例": "她的工作最近接連出現狀況，晚上常擔心事情做不好。她原以為自己怕的是工作出錯，靜下來才發現，真正讓她害怕的是「別人會不會因此認為我沒有能力」。看見這個念頭後，她把眼前的問題列出來，先處理能解決的部分，不懂的地方就向同事請教。她明白，心裡的黑暗有時來自自己不斷放大的想像。", "問問自己": "最近讓我不安的事情背後，我真正害怕的是什麼？是事情本身，還是我心裡預想的結果？", "今天可以試試": "選擇一件最近讓自己煩惱的事，寫下最擔心的原因，再想一個現在可以做的小行動。先做得到的部分，讓自己一步步走出不安。", "keyOrig": false, "keyOther": false}, {"n": 52, "theme": "讓人舒服，也是禮", "who": "周公", "date": "108 年 1 月 26 日", "開篇": "我們常覺得自己已經很有禮貌，也沒有對別人說過什麼不客氣的話，但別人真的感受到我們的尊重了嗎？今天周公提醒我們：「讓他人舒適亦是禮。」尊重不能只是自己心裡認為有做到，更要透過實際行動，讓對方感受得到。", "原文": "「讓他人舒適亦是禮」……「你不能心中說我有尊重他人，可是他人永遠感受不到你之尊重，要如何讓他人感受到？那就要做到，做到必會感受到。」", "今日重點": "尊重不能只放在心裡，要實際做到，讓別人感受得到。", "白話理解": "原文指出，禮不只在自己心裡認為有尊重，更要讓對方實際感受得到。別人說話時專心聆聽、不隨意打斷；答應的事情盡可能做到；意見不同時，也不急著否定對方，都是把尊重落實出來的方式。", "情境範例": "朋友最近身體不舒服，她心裡一直惦記著，也覺得自己很關心朋友。但每次見面，她總是說：「妳要多休息、照顧好自己。」說完便談起其他事情。直到有一天，朋友提起：「那段時間真的很難熬，身邊的人都不知道我有多辛苦。」她才意識到，自己雖然心裡有關心，卻沒有真正讓朋友感受到。後來，她不只是口頭叮嚀，也會主動詢問朋友的近況，了解對方是否需要幫忙。她明白了，心裡有關懷、有尊重還不夠，必須透過實際的行動，才能讓對方感受得到。", "問問自己": "我在與人相處時，是否只覺得自己有尊重對方，卻沒有留意對方實際感受？", "今天可以試試": "今天與人交談時，先放下手機和手邊的事情，專心聽對方說話，不急著插話或給意見，讓對方感受到你的重視。", "keyOrig": false, "keyOther": false}, {"n": 53, "theme": "埋怨是路上的石頭", "who": "太上老君", "date": "108 年 1 月 27 日", "開篇": "有些事情明明已經做過很多次，心裡卻總會冒出一句：「怎麼又是我？」今天太上老君提醒我們，這樣的心念就是埋怨。埋怨就像路上的大石頭，真正被擋住的，往往是自己的心。", "原文": "「不像學子邊做邊埋怨，埋怨之心，乃道路上之大石頭，但學子都無法體悟此點，都認為我沒有埋怨，這件事怎麼又是我做，這就是埋怨。」", "今日重點": "埋怨讓心停在不滿裡，也阻礙自己往前走。", "白話理解": "有時候，我們不一定會直接說出抱怨的話，但心裡常想著：「為什麼又是我？」這其實就是埋怨。太上老君提醒我們，埋怨就像路上的大石頭，讓自己一直困在不滿之中。看見這個念頭，先了解自己為什麼不甘願；如果事情確實分配不公平，也可以適當溝通，而不是讓埋怨一直留在心裡。", "情境範例": "公司每次整理環境，主管總是請她負責收拾。她心裡很不平衡，每次整理都想著：「怎麼又是我？其他人都不用做嗎？」久了，連整理這件事都讓她覺得煩躁。後來她想了想，發現自己一直悶在心裡並沒有改變情況，於是找適當的時機向主管反映，希望大家能輪流分擔。", "問問自己": "最近有沒有哪件事，讓我常在心裡想著：「怎麼又是我？」", "今天可以試試": "當心裡又冒出「怎麼又是我」時，先停一下，問問自己：「我是在為事情不順心，還是有不合理的地方需要溝通？」看清楚原因，再決定怎麼做。", "keyOrig": false, "keyOther": false}, {"n": 54, "theme": "不必等準備好", "who": "道行真人", "date": "108 年 1 月 28 日", "開篇": "想學的事情一直放著，心裡總想著：「等我有空一點、準備充分一點再說。」結果一等再等，始終沒有開始。今天道行真人提醒我們：「莫等準備好，永遠都無準備好之日。」有些事情，不必等到完全有把握，先踏出一步，才有機會慢慢做好。", "原文": "「莫等準備好，永遠都無準備好之日，莫要小看了自己，把你自信心展現，那麼你就是嶄新之你。」", "今日重點": "不必等到完全準備好，也別小看自己，先踏出一步。", "白話理解": "我們常覺得自己還沒準備好，怕做不好、怕不熟悉，也怕別人笑話。但如果一直等到什麼都會了才開始，可能永遠都不會跨出第一步。道行真人提醒我們，不要小看自己的能力，先願意嘗試，在過程中學習，信心也會慢慢建立起來。", "情境範例": "她一直想學用手機拍照，看到別人拍出漂亮的照片，自己也很心動，卻總覺得不懂操作，怕學不會。每次有人邀她一起上課，她都說：「等我先研究清楚再去。」後來她決定不再等了，先報名參加課程。雖然一開始常常按錯功能，但跟著老師一步步練習，她也逐漸拍出自己喜歡的照片。", "問問自己": "我是否常因為怕做不好，而放棄了原本想嘗試的事情？", "今天可以試試": "挑一件想做卻一直拖著的事，今天先跨出第一步，讓自己有機會從不熟悉慢慢開始。", "keyOrig": false, "keyOther": false}, {"n": 55, "theme": "做別人的階梯", "who": "靈寶天尊", "date": "108 年 1 月 28 日", "開篇": "在工作或生活中，有時候我們怕別人比自己好，便不願分享經驗，甚至想把別人比下去。今天靈寶天尊提醒我們：「以己身為階梯，往上爬上上天之梯。」真正讓自己向上，不是踩著別人，而是願意幫助別人一起成長。", "原文": "「以己身為階梯，往上爬上上天之梯。莫要學了世俗之心把平輩、把眾生往下壓，踩著平輩、眾生之頭也要往上爬。」", "今日重點": "以自己為階梯，幫助眾生向上、回天得道。", "白話理解": "原文不只談分享經驗，更指出：幫助他人回天、得道，自己才能回天、得道。以己身為階梯，不是踩著別人往上爬，也不只是讓同事進步，而是願意成為眾生向上的助力，讓彼此都能成就。", "情境範例": "公司要選派一位同事參加重要培訓，她知道另一位同事很有能力，也很想爭取這個機會。但她擔心對方受訓後表現比自己好，便沒有把消息告訴對方。後來她看見自己其實是在擔心失去位置，於是主動告訴同事，也鼓勵他去爭取。她體會到，願意成為別人向上的助力，自己也不是因此失去成長的機會。", "問問自己": "當別人有機會進步、表現得比我好時，我是真心替他高興，還是擔心自己因此失去位置？", "今天可以試試": "今天找一個需要幫助的人，分享一項自己的經驗或技巧，讓對方少走一些冤枉路。", "keyOrig": false, "keyOther": false}, {"n": 56, "theme": "回到自己的心", "who": "如來佛", "date": "108 年 1 月 29 日", "開篇": "有時我們以為修行只要照顧好自己的心，卻忘了心中的慈悲還要走向眾生。今天如來佛談到，如來不必向外尋求，真正的如來心法就在心中；而這顆心，要能從小愛走向大愛。", "原文": "「莫要向外求如來，只因如來只在你心中。今日所言皆是如此，莫有高深之學問，乃是來自一點心。」", "今日重點": "如來不在外求，從本心發出慈悲與大愛。", "白話理解": "如來佛所說的「如來在心中」，不只是向內尋找個人的答案。原文進一步談到慈、大愛與眾生之業：放下只照顧自己或親近之人的小愛，讓心中的愛普照眾生；也不以教派、喜歡或厭惡來區分眾生。當心願意為眾生奉獻，自己也能成為引導他人走向大道的燈。", "情境範例": "她平常很願意幫助熟悉的朋友，遇到不熟悉、甚至曾讓她不愉快的人，卻常在心裡先把對方排除。有一天，她看見自己所謂的關懷，其實仍有喜歡與不喜歡的分別。後來社區有位不熟識的住戶需要協助，她沒有先評斷對方，而是先問清楚對方需要什麼，再做能力所及的幫忙。", "問問自己": "我說自己有慈悲心時，是否仍在心裡分出喜歡與厭惡、親近與疏遠？", "今天可以試試": "今天遇見一位平常不熟悉、或自己不太喜歡的人，先放下判斷，了解對方真正的需要，再做一件能力所及的關懷行動。", "keyOrig": false, "keyOther": false}, {"n": 57, "theme": "與自己談心", "who": "道行真人", "date": "108 年 1 月 28 日", "開篇": "我們常常聊別人的想法和做法，卻很少靜下來問問自己：我為什麼會這麼想？今天道行真人提醒我們：「人人皆會談心，但是皆是談他人之心，為何不與自己談心？」與其花時間猜測別人的心，不如也留一點時間，了解自己的心。", "原文": "「人人皆會談心，但是皆是談他人之心，為何不與自己談心？」", "今日重點": "別只忙著了解別人，也要花時間了解自己。", "白話理解": "別人做了什麼、為什麼這麼做，我們常常有很多看法。但輪到自己時，卻不一定清楚自己為什麼生氣、在意或不舒服。道行真人提醒我們，把注意力轉回自己身上，看看自己的想法和感受，才有機會真正認識自己。", "情境範例": "她常和朋友聊起別人的事情，總覺得某位同事愛計較、不好相處。有一天，朋友問她：「妳為什麼每次提到她都這麼生氣？」她一時答不上來。回家後，她想了想，才發現自己其實很在意對方沒有肯定自己的付出。這次，她沒有再急著評論同事，而是先弄清楚自己真正介意的是什麼。", "問問自己": "最近有沒有一件事，我一直在意別人的做法，卻沒有問過自己為什麼這麼在意？", "今天可以試試": "睡前花三分鐘，回想今天最讓自己有情緒的一件事，問問自己：「我當時為什麼會有這樣的感受？」", "keyOrig": false, "keyOther": false}, {"n": 58, "theme": "時時看看自己的方向", "who": "太上老君", "date": "108 年 1 月 27 日", "開篇": "有些事情一開始做得很好，做久了，卻可能慢慢變了樣。原本是想把事情做好，後來卻變得只在意自己的想法。今天太上老君提醒我們：「時時觀察己之內心往何處走，此刻方向正確，下一刻可能就歪了。」所以，做事情不只要看當初的出發點，也要留意現在的心是否還走在原來的道路上。", "原文": "「時時觀察己之內心往何處走，此刻方向正確，下一刻可能就歪了」", "今日重點": "不能只看當初的方向，也要留意現在的心是否偏離。", "白話理解": "原文提醒我們，內心的方向可能隨時偏移，所以不能只憑當初的好意就認定自己一直走在正確方向。要時常觀察自己的心，看看是否被情緒、得失或私心帶偏；察覺偏差，就誠實省察、懺悔並調整，讓行動仍朝向利益眾生的方向。", "情境範例": "他開始學習攝影，是因為喜歡用照片記錄生活。起初拍得好不好，他都覺得有趣。後來看到別人的作品受到很多稱讚，他開始在意自己的照片有沒有人按讚，拍照時也總想著怎麼拍才能勝過別人。有一天整理照片時，他才發現，自己已經很久沒有單純享受拍照的樂趣了。他想起當初學攝影的原因，決定重新找回那份喜歡。", "問問自己": "我現在做的事情，是否還符合當初的初衷？有沒有不知不覺改變了？", "今天可以試試": "今天選一件自己持續在做的事，想一想：「我當初為什麼開始？現在的做法還符合原本的目標嗎？」如果有偏差，就調整回來。", "keyOrig": false, "keyOther": false}, {"n": 59, "theme": "謙卑，不只說在嘴上", "who": "木德真君", "date": "108 年 1 月 22 日", "開篇": "我們有時會說：「我很謙虛，有什麼都可以指教。」可是，當別人真的提出不同意見時，自己能不能聽得進去呢？今天木德真君提醒我們：「人嘴說謙卑、謙卑、謙卑，但心有些就不是如此了。」真正的謙卑，不只是嘴上客氣，更要看心裡是否願意尊重別人、接受不同的想法。", "原文": "「故吾還得修謙卑，謙卑更謙卑，眾生於上，不像人嘴說謙卑、謙卑、謙卑，但心有些就不是如此了」", "今日重點": "謙卑不能只掛在嘴上，更要從心裡尊重別人。", "白話理解": "木德真君說，謙卑需要不斷修習，不能嘴上說謙卑，心裡卻仍把自己看得比別人高。原文的「眾生於上」，提醒我們在心中把眾生放在前面；真正的謙卑，會表現在願意尊重、聆聽與學習。真正的謙卑，是願意看見別人的長處，也願意聽聽不同的意見，不因為別人比自己年輕、經驗較少，就輕易否定對方。", "情境範例": "媽媽常說自己不懂現在年輕人的想法，要孩子多教她。有一天，孩子教她使用手機的新功能，她卻一直說：「以前那樣用就很好了，何必這麼麻煩？」孩子不再解釋，她才發現，自己雖然說要向孩子學習，卻總是習慣用自己的方式看事情。後來她請孩子再教一次，也試著接受新的使用方法。", "問問自己": "當別人提出不同意見時，我是否常覺得自己比較有經驗，而不容易接受？", "今天可以試試": "今天遇到別人提出不同意見時，先不要急著反駁。聽完對方的想法，再問自己：「這當中，有沒有值得我學習的地方？」", "keyOrig": false, "keyOther": false}, {"n": 60, "theme": "點到即可", "who": "玉鼎真人", "date": "108 年 1 月 20 日", "開篇": "看到別人做錯事，有時我們會忍不住當場指出來，甚至一急就說得比較重。但這樣做，可能讓對方下不了台。今天玉鼎真人提醒我們：「大庭廣眾之下莫要辱罵於他，引導於他點到即可。」提醒別人，不只要說出問題，也要注意說話的場合和方式。", "原文": "「大庭廣眾之下莫要辱罵於他，引導於他點到即可，若有缺失叫過來告誡他，為何今日為師要如此的教導於你，你何處錯了，讓他去體悟」", "今日重點": "大庭廣眾之下莫要辱罵於他，引導於他點到即可", "白話理解": "提醒別人的目的，不是讓對方難堪，也不只是把錯誤指出來。原文要我們先避免在眾人面前辱罵；若有缺失，再找適當時機私下告誡，說明自己為何如此提醒、對方錯在何處，讓他有機會體悟。點到即可，是引導對方自己明白，不是把話說到對方無地自容。", "情境範例": "活動進行時，一位志工把流程弄錯了，現場其他人都看見了。負責人沒有當眾責備他，只簡單提醒：「這個步驟我們再確認一下。」活動結束後，負責人才私下告訴他哪個地方做錯，以及為什麼需要注意。志工聽完後，也明白下次應該怎麼做。", "問問自己": "當別人做錯事時，我是否常急著當場指出，卻忽略了對方的感受？", "今天可以試試": "今天看到別人做錯事時，先想想是否需要當場提醒。如果不是急迫或涉及安全的問題，可以先簡單提醒，其他需要說明的地方，留到私下再談。", "keyOrig": true, "keyOther": false}, {"n": 61, "theme": "有魄力，不必兇", "who": "道行真人", "date": "108 年 1 月 28 日", "開篇": "帶人做事時，有些人覺得聲音大一點、態度嚴厲一點，別人才會聽從。但真的有魄力，就一定要兇嗎？今天道行真人提醒我們：「魄力不是兇惡，魄力是對己之要求。」有魄力的人，先要求自己做好，不必靠兇來讓別人服從。", "原文": "「魄力不是兇惡，魄力是對己之要求，兇惡是對他人之態度，不同，弟子常把威與兇搞混了，威而不凶。」", "今日重點": "魄力是嚴格要求自己，不是用兇惡的態度對待別人。", "白話理解": "有魄力，不代表聲音大或態度兇。原文把威與兇分開：魄力是對自己的要求，兇惡則是對他人的態度。真正的威而不凶，是對自己有原則、對他人有分寸；該堅持的事情不退縮，也不以怒氣壓人，拿捏剛柔之間的平衡。對別人則不必動不動就責罵。態度堅定、做事有原則，同樣能讓人感受到威信。", "情境範例": "開車時，後座的家人沒有繫安全帶，爸爸提醒了幾次，仍不在意。以前他可能會大聲責罵，這次他平靜但堅定地說：「安全帶沒繫好，車子就不會開。」直到大家都繫好安全帶，他才出發。他沒有發脾氣，也沒有因為對方不高興就改變原則。", "問問自己": "當事情沒有照我的期待完成時，我是先檢查自己，還是先責怪別人？", "今天可以試試": "今天遇到一件需要負責的事情，先把自己該做的部分做好。即使別人沒有做好，也先清楚說明要求，不急著責罵。", "keyOrig": false, "keyOther": false}, {"n": 62, "theme": "無分別的心", "who": "如來佛", "date": "108 年 1 月 29 日", "開篇": "生活中，我們有時會不自覺地看一個人的職業、收入或地位，再決定要用什麼態度與他相處。今天如來佛提醒我們：「不分貴賤貧富皆是眾生，只因眾生皆為平等。」一個人的身分不同，不代表他就比別人高一等或低一等。", "原文": "「蒼天有愛於眾生，不分貴賤貧富皆是眾生，只因眾生皆為平等，唯有世間之人才會將人分等級。」", "今日重點": "不因貧富、地位或身分不同，就把人分成高低。", "白話理解": "原文說眾生皆平等，世人才會把人分成等級。無分別心不只是不因貧富、地位而看低別人，也不以教派、喜歡或厭惡來區分眾生。看見對方也是眾生，就不必先用自己的好惡替他貼上高低標籤。但在日常生活中，我們有時會對有地位的人特別客氣，對不熟悉或看似普通的人卻比較隨便。如來佛提醒我們，不要用外在條件衡量一個人的價值，而要用平等的心對待每個人。", "情境範例": "公司來了一位新同事，大家知道他是主管介紹來的，見面時都特別熱情。另一位負責打掃環境的清潔人員，每天和大家擦身而過，卻很少有人主動打招呼。有一天，一位同事突然想到，大家都是一起工作的夥伴，為什麼對待兩個人的態度差這麼多？從那天起，他不論遇到主管、新同事或清潔人員，都一樣主動問候、尊重對方。", "問問自己": "我是否會因為對方的身分、所屬教派，或自己喜不喜歡他，而改變對他的態度？", "今天可以試試": "今天和不同身分的人接觸時，留意自己說話的態度是否有所不同。不論對方是主管、同事、服務人員，都用同樣的尊重與他相處。", "keyOrig": false, "keyOther": false}];
+// 試讀開始日（台灣時間清晨 5:00 換篇）。大家同一天讀同一篇。
+const START = Date.UTC(2026, 9, 21); // 2026-10-21
+const DAY = 864e5;
+// 聯絡人：填上後才會出現在「說明」頁，例如 '文教部 王小明（LINE：xxxx）'
+const CONTACT = '';
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); return true; }catch(e){ return false; } }
+};
+const $ = id => document.getElementById(id);
+
+function taipeiShifted(){ return Date.now() + 8*3600e3 - 5*3600e3; }
+function todayState(){
+  const idx = Math.floor((taipeiShifted() - START) / DAY);
+  const h = (location.hash || '').match(/^#d(\d+)$/);
+  if (h && +h[1] >= 1 && +h[1] <= DAYS.length) return { day: DAYS[+h[1]-1], mode: 'preview' };
+  if (idx < 0) return { day: DAYS[0], mode: 'before' };
+  // 讀完最後一天，從第 1 天重新開始（溫故自新）
+  return { day: DAYS[idx % DAYS.length], mode: 'on', cycle: Math.floor(idx / DAYS.length) };
+}
+function dateLabel(){
+  const t = new Date(Date.now() + 8*3600e3);
+  const w = '日一二三四五六'[t.getUTCDay()];
+  return `${t.getUTCMonth()+1} 月 ${t.getUTCDate()} 日（星期${w}）`;
+}
+function greeting(){
+  const h = new Date(Date.now() + 8*3600e3).getUTCHours();
+  if (h >= 4 && h < 11) return '早安，歡迎回來';
+  if (h >= 11 && h < 14) return '午安，歡迎回來';
+  if (h >= 14 && h < 18) return '午後好，歡迎回來';
+  return '晚安，歡迎回來';
+}
+const strip = s => s.replace(/^「|」$/g, '');
+
+let state, D, viewN = null;
+function openDays(){
+  if (state.mode === 'before') return [DAYS[0]];
+  if (state.mode === 'on'){ if (state.cycle > 0) return DAYS.slice(); const idx = Math.floor((taipeiShifted() - START) / DAY); return DAYS.slice(0, idx + 1); }
+  return DAYS.slice();
+}
+const SD = new Date(START);
+const startLabel = `${SD.getUTCMonth()+1} 月 ${SD.getUTCDate()} 日`;
+function render(){
+  state = todayState();
+  if (isCheck()) viewN = ckAt;
+  const pastView = !!viewN && viewN !== state.day.n;
+  D = pastView ? DAYS[viewN - 1] : state.day;
+  $('c-greet').textContent = greeting();
+  $('c-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
+  $('c-day').textContent = `第 ${D.n} 天｜${D.theme}・${D.who}`;
+  $('c-key').textContent = D['今日重點'];
+  $('c-first').hidden = store.get('sx-intro', false);
+  const msg = $('c-msg');
+  msg.hidden = state.mode === 'on';
+  if (state.mode === 'before') msg.textContent = `試讀從 ${startLabel}開始。今天可以先看看第 1 天。`;
+  if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的收藏」看得到。`;
+  if (state.mode === 'preview') msg.textContent = `預覽第 ${D.n} 天。`;
+
+  $('d-date').textContent = pastView ? '前幾天的內容' : (state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel());
+  $('to-past').hidden = pastView || openDays().length < 2;
+  $('to-today').hidden = !pastView;
+  $('d-nav').hidden = $('to-past').hidden && $('to-today').hidden;
+  $('d-title').textContent = `第 ${D.n} 天｜${D.theme}`;
+  $('d-open').textContent = D['開篇'];
+  $('d-src').textContent = `${D.who}，${D.date}`;
+  $('d-text').textContent = D['原文'];
+  $('d-key').textContent = D['今日重點'];
+  $('d-keysrc').textContent = !D.keyOrig ? '編輯整理' : (D.keyOther ? '原文句子・取自同一篇開示的另一段' : '原文句子');
+  $('d-plain').textContent = D['白話理解'];
+  $('d-story').textContent = D['情境範例'];
+  $('d-ask').textContent = D['問問自己'];
+  $('d-try').textContent = D['今天可以試試'];
+  $('d-next').textContent =
+    state.mode === 'before' ? `試讀從 ${startLabel}清晨 5 點開始。` :
+    state.mode === 'after' ? `${DAYS.length} 天試讀已經讀完，謝謝您。` :
+    state.mode === 'preview' ? '這是預覽。' :
+    D.n < DAYS.length ? `明天清晨 5 點，會換成第 ${D.n + 1} 天。` : `玉虛篇 ${DAYS.length} 天讀完了，謝謝您一起讀。明天清晨 5 點，會從第 1 天重新開始。`;
+  if (pastView) $('d-next').textContent = '這是前幾天的內容。按上面的「回到今天」，回到今天這一篇。';
+
+  const notes = store.get('sx-notes', {});
+  const mine = notes[D.n] || {};
+  $('note').value = mine.today === dateLabel() ? (mine.text || '') : '';
+  const past = $('d-past');
+  if (mine.text && mine.today !== dateLabel()){
+    past.hidden = false;
+    past.textContent = `上一次讀到這篇時，你寫下：「${mine.text}」`;
+  } else past.hidden = true;
+  $('note-msg').textContent = ''; $('carry-msg').textContent = mine.carried ? '已經收藏，在「我的收藏」看得到。' : '';
+  ckRender();
+  v2Render();
+}
+
+function show(name){
+  ['cover','today','notes','intro','past','share','land','home','done'].forEach(v => $('v-'+v).hidden = v !== name);
+  const NAV = { cover:'today', past:'today', share:'today', land:'today', done:'notes', home:'intro' };
+  ['today','notes','intro'].forEach(v => {
+    const b = $('nav-'+v);
+    if (name === v || NAV[name] === v) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+  });
+  if (name === 'notes') renderProgress();
+  track('view', { page: name });
+  if (name === 'past') renderPast();
+  if (name !== 'today') stopSpeak();
+  const bar = name === 'today' && canSpeak;
+  $('speakbar').hidden = !bar; document.body.classList.toggle('has-speak', bar);
+  if (name === 'notes') renderNotes();
+  window.scrollTo(0, 0);
+}
+
+function renderNotes(){
+  const notes = store.get('sx-notes', {});
+  const ul = $('n-list'); ul.textContent = '';
+  const keys = Object.keys(notes).filter(k => notes[k].text || notes[k].carried).sort((a,b) => (notes[b].at||0) - (notes[a].at||0));
+  if (!keys.length){ const li = document.createElement('p'); li.className='empty'; li.textContent='這裡還空空的。讀完一天，按「收藏這一句，帶著走」，那一句就會來到這裡。'; ul.appendChild(li); return; }
+  keys.forEach(k => {
+    const d = DAYS.find(x => x.n == k), n = notes[k];
+    if (!d) return;
+    const li = document.createElement('li');
+    const m = document.createElement('span'); m.className='m'; m.textContent = `${n.today || ''}・第 ${d.n} 天｜${d.theme}・${d.who}`;
+    const kk = document.createElement('span'); kk.className='k'; kk.textContent = d['今日重點'];
+    li.append(m, kk);
+    if (n.text){ const t = document.createElement('span'); t.className='mine'; t.textContent = `我寫下：${n.text}`; li.append(t); }
+    if (openDays().some(x => x.n === d.n)){ const b = document.createElement('button'); b.className='ghost'; b.textContent='再讀這一篇'; b.onclick = () => openDay(d.n); li.append(b); }
+    ul.appendChild(li);
+  });
+}
+
+function openDay(n){ if (isCheck()) return ckGo(n); viewN = n; render(); show('today'); }
+function renderPast(){
+  const ul = $('p-list'); ul.textContent = '';
+  const ck = isCheck(), cd = ck ? ckData() : {};
+  $('p-title').textContent = ck ? `全部 ${DAYS.length} 天（校對）` : '前幾天';
+  $('p-hint').textContent = ck ? '從第 1 天排到最後一天。想看哪一天就點哪一天；打勾的是看過了，有筆的是記了要修改的地方。' : '錯過的日子都在這裡，想讀哪一篇就點哪一篇。';
+  $('ck-tools').hidden = !ck;
+  if (ck){ $('ck-prog2').textContent = ckProgress(); $('ck-copymsg').textContent = ''; $('ck-out').hidden = true; }
+  (ck ? DAYS.slice() : openDays().slice().reverse()).forEach(d => {
+    const li = document.createElement('li'), b = document.createElement('button');
+    const t = document.createElement('span'); t.className='t'; t.textContent = `第 ${d.n} 天｜${d.theme}` + (!ck && d.n === state.day.n ? '（今天）' : '');
+    const s = document.createElement('span'); s.className='s'; s.textContent = d.who;
+    const k = document.createElement('span'); k.className='k'; k.textContent = d['今日重點'];
+    b.append(t, s, k);
+    if (ck){
+      const c = cd[d.n] || {};
+      if (c.ok || c.note){ const m = document.createElement('span'); m.className = 's';
+        if (c.ok){ const o = document.createElement('span'); o.className = 'ck-ok'; o.textContent = '✓ 看過了　'; m.append(o); }
+        if (c.note){ const o = document.createElement('span'); o.className = 'ck-note'; o.textContent = '✎ 有要修改的地方'; m.append(o); }
+        b.append(m); }
+      if (d.n === ckAt) b.classList.add('ck-here');
+    }
+    b.onclick = () => ck ? ckGo(d.n) : openDay(d.n); li.append(b); ul.appendChild(li);
+  });
+  if (ck){ const here = ul.querySelector('.ck-here'); if (here) setTimeout(() => here.scrollIntoView({ block: 'center' }), 0); }
+}
+function upsert(patch){
+  const notes = store.get('sx-notes', {});
+  notes[D.n] = Object.assign({}, notes[D.n], patch, { today: dateLabel(), at: Date.now() });
+  return store.set('sx-notes', notes);
+}
+const FAIL = '這支手機現在沒辦法存，把這句話放在心裡就好。';
+let autoT;
+$('save-note').onclick = () => {
+  clearTimeout(autoT);
+  const t = $('note').value.trim();
+  if (!t){ $('note-msg').textContent = '還沒寫字。不寫也沒關係。'; return; }
+  $('note-msg').textContent = upsert({ text: t }) ? '存好了，在「我的收藏」看得到。' : FAIL;
+};
+// 寫字時自動存（停筆一下就存）
+$('note').addEventListener('input', () => {
+  clearTimeout(autoT);
+  autoT = setTimeout(() => {
+    const t = $('note').value.trim();
+    const had = (store.get('sx-notes', {})[D.n] || {}).text;
+    if (!t && !had) return;
+    $('note-msg').textContent = upsert({ text: t }) ? (t ? '已經自動存好了。' : '') : FAIL;
+  }, 800);
+});
+$('carry').onclick = () => {
+  $('carry-msg').textContent = upsert({ carried: true }) ? `收好了，在「我的收藏」看得到。今天就帶著這一句，慢慢走：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，把這一句放在心裡就好。';
+};
+
+// 唸給我聽：用手機內建語音。一句一句排隊唸，比較不會唸到一半停掉
+const canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+const sp = $('speak'), spNow = $('speak-now');
+const SP_IDLE = '會唸：原文、今日重點、白話理解';
+let speakRun = 0;
+function stopSpeak(){
+  if (!canSpeak) return;
+  speakRun++; sp.dataset.on = ''; window.speechSynthesis.cancel();
+  sp.textContent = '▶ 唸給我聽'; spNow.textContent = SP_IDLE;
+}
+if (canSpeak) window.speechSynthesis.getVoices();
+sp.onclick = () => {
+  const s = window.speechSynthesis;
+  if (sp.dataset.on === '1'){ stopSpeak(); return; }
+  const run = ++speakRun;
+  const vs = s.getVoices();
+  const v = vs.find(v => /zh[-_]TW/i.test(v.lang)) || vs.find(v => /^zh/i.test(v.lang));
+  const parts = [['原文', strip(D['原文'])], ['今日重點', strip(D['今日重點'])], ['白話理解', D['白話理解']]];
+  const queue = [];
+  parts.forEach(([name, text]) => {
+    queue.push([name, name + '。']);
+    (text.match(/[^。！？]+[。！？」]*/g) || [text]).forEach(t => queue.push([name, t]));
+  });
+  s.cancel();
+  queue.forEach(([name, t], i) => {
+    const u = new SpeechSynthesisUtterance(t);
+    u.lang = 'zh-TW'; u.rate = 0.85; if (v) u.voice = v;
+    u.onstart = () => { if (run === speakRun) spNow.textContent = `正在唸：${name}`; };
+    if (i === queue.length - 1) u.onend = () => { if (run === speakRun) stopSpeak(); };
+    u.onerror = () => { if (run === speakRun) stopSpeak(); };
+    s.speak(u);
+  });
+  sp.dataset.on = '1'; sp.textContent = '■ 停止';
+};
+
+// 字的大小：標準 → 大 → 特大，再按回到標準
+const FS = ['標準', '大', '特大'];
+function applyFs(i){
+  document.documentElement.classList.remove('fs1', 'fs2');
+  if (i) document.documentElement.classList.add('fs' + i);
+  $('fs-lab').textContent = FS[i];
+  $('nav-fs').setAttribute('aria-label', `字的大小：${FS[i]}。點一下換大小`);
+}
+let fsLevel = store.get('sx-fs', store.get('sx-big', false) ? 1 : 0);
+if (!(fsLevel >= 0 && fsLevel < FS.length)) fsLevel = 0;
+applyFs(fsLevel);
+$('nav-fs').onclick = () => { fsLevel = (fsLevel + 1) % FS.length; applyFs(fsLevel); store.set('sx-fs', fsLevel); };
+
+// 在 LINE 裡打開：先試著自動改用手機瀏覽器開；沒成功就顯示提醒
+const inLine = /\bLine\//i.test(navigator.userAgent);
+if (inLine && !/openExternalBrowser=1/.test(location.search)){
+  let tried = false; try{ tried = sessionStorage.getItem('sx-ext') === '1'; sessionStorage.setItem('sx-ext', '1'); }catch(e){}
+  if (!tried){ const u = new URL(location.href); u.searchParams.set('openExternalBrowser', '1'); location.replace(u.href); }
+}
+let lineOk = false; try{ lineOk = sessionStorage.getItem('sx-line-ok') === '1'; }catch(e){}
+$('line-hint').hidden = !inLine || lineOk;
+$('line-ok').onclick = () => { $('line-hint').hidden = true; try{ sessionStorage.setItem('sx-line-ok', '1'); }catch(e){} };
+
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { if (b.dataset.go === 'today'){ viewN = null; render(); } show(b.dataset.go); });
+$('to-past').onclick = () => show('past');
+$('to-today').onclick = () => { viewN = null; render(); show('today'); };
+if (CONTACT){ $('contact').textContent = CONTACT; $('contact').hidden = false; $('contact-h').hidden = false; }
+$('go-read').onclick = () => { viewN = null; render(); store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
+$('c-intro').onclick = () => show('intro');
+$('intro-ok').onclick = () => { store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
+$('to-top').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+// 夜間模式：auto＝晚上 7 點到清晨 5 點自動變暗（看手機時間）；on／off＝固定
+let nightMode = store.get('sx-night', 'auto');
+function isNightHour(){ const h = new Date().getHours(); return h >= 19 || h < 5; }
+function applyNight(){
+  const on = nightMode === 'on' || (nightMode === 'auto' && isNightHour());
+  document.documentElement.classList.toggle('night', on);
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute('content', on ? '#33403A' : '#F5F3EA');
+  $('c-night').hidden = !(on && nightMode === 'auto');
+  [['auto','nm-auto'],['on','nm-on'],['off','nm-off']].forEach(([k,id]) => $(id).setAttribute('aria-pressed', nightMode === k ? 'true' : 'false'));
+}
+function setNight(m){ nightMode = m; store.set('sx-night', m); applyNight(); }
+$('nm-auto').onclick = () => setNight('auto');
+$('nm-on').onclick = () => setNight('on');
+$('nm-off').onclick = () => setNight('off');
+$('c-night-off').onclick = () => setNight('off');
+applyNight();
+setInterval(applyNight, 5 * 60 * 1000);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) applyNight(); });
+
+// ===== 校對模式：網址最後加上 #check，就能從第 1 天一路看到最後一天，一邊看一邊記 =====
+// 不改變大家每天讀的那一篇；記下的勾和意見只存在這支手機裡。
+function isCheck(){ return /^#check$/i.test(location.hash || ''); }
+let ckAt = store.get('sx-ck-at', 1);
+if (!(ckAt >= 1 && ckAt <= DAYS.length)) ckAt = 1;
+function ckData(){ return store.get('sx-ck', {}); }
+function ckSave(n, patch){ const all = ckData(); all[n] = Object.assign({}, all[n], patch); if (!all[n].ok && !all[n].note) delete all[n]; return store.set('sx-ck', all); }
+function ckProgress(){
+  const all = ckData(), ok = Object.keys(all).filter(k => all[k].ok).length, nt = Object.keys(all).filter(k => all[k].note).length;
+  return `已經看過 ${ok} / ${DAYS.length} 天・記了要修改的地方 ${nt} 天`;
+}
+function ckGo(n){
+  ckAt = Math.min(DAYS.length, Math.max(1, n)); store.set('sx-ck-at', ckAt);
+  render(); show('today');
+}
+function ckRender(){
+  const on = isCheck();
+  $('ck-bar').hidden = !on; $('ck-card').hidden = !on;
+  if (!on) return;
+  const c = ckData()[ckAt] || {};
+  $('d-nav').hidden = true;
+  $('d-date').textContent = '校對模式';
+  $('c-date').textContent = '校對模式（不影響大家每天讀的那一篇）';
+  $('d-next').textContent = ckAt < DAYS.length ? `看完了，按「下一天」看第 ${ckAt + 1} 天。` : `這是最後一天（第 ${DAYS.length} 天）。`;
+  $('c-msg').hidden = false;
+  $('c-msg').textContent = `校對模式：按「開始讀」，從第 ${ckAt} 天接著看。`;
+  $('ck-n').textContent = ckAt; $('ck-total').textContent = DAYS.length;
+  $('ck-mark').textContent = c.ok ? '✓ 看過了' : '';
+  $('ck-done').checked = !!c.ok;
+  $('ck-note').value = c.note || '';
+  $('ck-msg').textContent = '';
+  $('ck-prog').textContent = ckProgress();
+  ['ck-prev','ck-prev2'].forEach(id => $(id).disabled = ckAt <= 1);
+  ['ck-next','ck-next2'].forEach(id => $(id).disabled = ckAt >= DAYS.length);
+}
+['ck-prev','ck-prev2'].forEach(id => $(id).onclick = () => ckGo(ckAt - 1));
+['ck-next','ck-next2'].forEach(id => $(id).onclick = () => ckGo(ckAt + 1));
+['ck-list','ck-list2'].forEach(id => $(id).onclick = () => show('past'));
+$('ck-done').onchange = () => {
+  const ok = $('ck-done').checked;
+  $('ck-msg').textContent = ckSave(ckAt, { ok }) ? (ok ? '打勾了。' : '取消打勾了。') : FAIL;
+  $('ck-mark').textContent = ok ? '✓ 看過了' : '';
+  $('ck-prog').textContent = ckProgress();
+};
+let ckT;
+$('ck-note').addEventListener('input', () => {
+  clearTimeout(ckT);
+  ckT = setTimeout(() => {
+    $('ck-msg').textContent = ckSave(ckAt, { note: $('ck-note').value.trim() }) ? '已經自動存好了。' : FAIL;
+    $('ck-prog').textContent = ckProgress();
+  }, 600);
+});
+$('ck-copy').onclick = async () => {
+  const all = ckData();
+  const lines = DAYS.filter(d => all[d.n] && all[d.n].note).map(d => `第 ${d.n} 天｜${d.theme}・${d.who}\n${all[d.n].note}`);
+  if (!lines.length){ $('ck-copymsg').textContent = '還沒有記下要修改的地方。'; return; }
+  const text = `《聖訓在生活》玉虛篇 校對意見（共 ${lines.length} 天）\n\n` + lines.join('\n\n');
+  let ok = false;
+  try{ await navigator.clipboard.writeText(text); ok = true; }catch(e){}
+  if (ok){ $('ck-copymsg').textContent = `複製好了（${lines.length} 天的意見），可以貼到 LINE 或訊息裡。`; return; }
+  const out = $('ck-out'); out.hidden = false; out.value = text; out.focus(); out.select();
+  $('ck-copymsg').textContent = '這支手機不能自動複製。下面的字已經選好了，長按「複製」就可以。';
+};
+document.addEventListener('keydown', e => {
+  if (!isCheck() || $('v-today').hidden || /^(TEXTAREA|INPUT)$/.test((e.target || {}).tagName || '')) return;
+  if (e.key === 'ArrowRight' && ckAt < DAYS.length) ckGo(ckAt + 1);
+  if (e.key === 'ArrowLeft' && ckAt > 1) ckGo(ckAt - 1);
+});
+
+// ===== 第二階段原型 v2：分享、落地頁、進度、放到桌面、讀完 62 天 =====
+// ===== 統計：GoatCounter（不用 cookie、不記錄是誰，只算次數）=====
+// 只送「哪一頁、哪個按鈕、第幾天」這類計數；寫下的話、收藏、校對意見都不會送出去。
+// 校對模式（#check）和原型示範（?demo=1）不計數。要完全關掉統計，把 GC_CODE 改成 ''。
+const GC_CODE = 'shengxun';
+const Q = new URLSearchParams(location.search);
+const GC_Q = [];
+function gcOff(){ return !GC_CODE || isCheck() || Q.has('demo'); }
+function gcSend(p){ try{ window.goatcounter.count(p); }catch(e){} }
+function track(name, data){
+  if (gcOff()) return;
+  data = data || {};
+  const path = [name, data.page, data.day ? 'd' + data.day : '', data.how].filter(Boolean).join('/');
+  const p = { path, title: path, event: name !== 'view' };
+  if (window.goatcounter && window.goatcounter.count) gcSend(p); else GC_Q.push(p);
+}
+if (!gcOff()){
+  const s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://gc.zgo.at/count.v4.js';
+  s.integrity = 'sha384-nRw6qfbWyJha9LhsOtSb2YJDyZdKvvCFh0fJYlkquSFjUxp9FVNugbfy8q1jdxI+';
+  s.crossOrigin = 'anonymous';
+  s.dataset.goatcounter = `https://${GC_CODE}.goatcounter.com/count`;
+  s.dataset.goatcounterSettings = '{"no_onload":true,"no_events":true}';
+  s.onload = () => GC_Q.splice(0).forEach(gcSend);
+  document.head.appendChild(s);
+}
+function readMap(){ return store.get('sx2-read', {}); }
+function readCount(){ return Object.keys(readMap()).length; }
+function markRead(n){ const m = readMap(); if (!m[n]){ m[n] = dateLabel(); store.set('sx2-read', m); } }
+function shareUrl(n){ return location.origin + location.pathname + '?s=' + n; }
+function shareText(d){ return `今天讀到這一句，想分享給您：\n「${strip(d['今日重點'])}」\n——《聖訓在生活》第 ${d.n} 天・${d.who}`; }
+function isPastView(){ return !!viewN && viewN !== state.day.n; }
+
+function v2Render(){
+  // 封面：62 顆小圓點
+  const m = readMap(), dots = $('c-dots'); dots.textContent = '';
+  DAYS.forEach(d => { const i = document.createElement('i'); if (m[d.n]) i.className = 'on'; if (d.n === state.day.n) i.classList.add('now'); dots.appendChild(i); });
+  const c = readCount();
+  $('c-prog-t').innerHTML = c ? `已經讀了 <b>${c}</b> 天，很好。點這裡看我的進度。` : '一天一篇就好。讀完按「我讀完了」，這裡的小圓點就會亮起來。';
+  // 每日頁最後：讀完了
+  const ck = isCheck();
+  $('d-finish').hidden = ck;
+  const done = !!m[D.n];
+  $('f-done').hidden = done;
+  $('f-after').hidden = !done;
+  $('f-count').textContent = c;
+  const nx = !isPastView() && D.n < DAYS.length ? DAYS[D.n] : null;
+  $('f-next').hidden = !nx;
+  if (nx) $('f-next').textContent = `明天清晨 5 點，第 ${nx.n} 天：${nx.theme}・${nx.who}`;
+}
+$('f-done').onclick = () => {
+  markRead(D.n); track('read', { day: D.n }); render();
+  if (readCount() >= DAYS.length){ openDone(); return; }
+  $('f-after').scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+$('f-share').onclick = () => openShare(D);
+$('c-share').onclick = () => openShare(D);
+$('c-prog').onclick = () => show('notes');
+$('c-home').onclick = () => openHome();
+$('i-home').onclick = () => openHome();
+
+// 我的進度：62 天圓點月曆
+function renderProgress(){
+  const m = readMap(), c = readCount(), open = new Set(openDays().map(d => d.n)), cal = $('pg-cal');
+  $('pg-t').textContent = c >= DAYS.length ? `${DAYS.length} 天都讀完了，謝謝您。` : c ? `已經讀了 ${c} 天，很好。` : '從今天開始，一天一篇就好。';
+  $('pg-done').hidden = c < DAYS.length;
+  cal.textContent = '';
+  DAYS.forEach(d => {
+    const b = document.createElement('button');
+    b.textContent = d.n;
+    if (m[d.n]) b.classList.add('read');
+    if (d.n === state.day.n) b.classList.add('now');
+    const can = open.has(d.n) || !!m[d.n];
+    b.disabled = !can;
+    b.setAttribute('aria-label', `第 ${d.n} 天` + (m[d.n] ? '，讀過了' : '') + (d.n === state.day.n ? '，今天' : '') + (can ? '' : '，還沒到'));
+    b.onclick = () => { if (d.n === state.day.n){ viewN = null; render(); show('today'); } else openDay(d.n); };
+    cal.appendChild(b);
+  });
+}
+$('pg-done').onclick = () => openDone();
+
+// ===== 分享卡片：用畫布畫一張 4:5 的圖（晨霧山景＋今天這一句） =====
+const SERIF = '"Noto Serif TC","Songti TC","PMingLiU",serif', SANS = '"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+const SPRIG = ['M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z','M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z','M13 24 C19 23 23 19 24 13 C18 15 14 18 13 24Z'];
+const NOSTART = '，。、；：！？」』）》…・';
+function wrapText(x, text, maxW){
+  const lines = []; let cur = '';
+  for (const ch of text){
+    const t = cur + ch;
+    if (x.measureText(t).width > maxW && cur){ if (NOSTART.includes(ch)){ cur = t; continue; } lines.push(cur); cur = ch; }
+    else cur = t;
+  }
+  if (cur) lines.push(cur);
+  return lines;
+}
+function rr(x, l, t, w, h, r){ x.beginPath(); x.moveTo(l+r, t); x.arcTo(l+w, t, l+w, t+h, r); x.arcTo(l+w, t+h, l, t+h, r); x.arcTo(l, t+h, l, t, r); x.arcTo(l, t, l+w, t, r); x.closePath(); }
+function drawSprig(x, tx, ty, sx, sy, color, lw){
+  x.save(); x.translate(tx, ty); x.scale(sx, sy); x.fillStyle = color; SPRIG.forEach(p => x.fill(new Path2D(p)));
+  x.strokeStyle = color; x.lineWidth = lw || 1.6; x.lineCap = 'round'; x.stroke(new Path2D('M14 30 C13 20 11 12 6 2')); x.restore();
+}
+function drawScene(x){
+  // 和封面同一幅：400×170 的座標，放大 2.7 倍
+  x.save(); x.scale(2.7, 2.7);
+  const g = x.createRadialGradient(300, 70, 0, 300, 70, 72);
+  g.addColorStop(0, '#FFFBEE'); g.addColorStop(.55, 'rgba(246,238,214,.9)'); g.addColorStop(1, 'rgba(246,238,214,0)');
+  x.fillStyle = g; x.beginPath(); x.arc(300, 70, 72, 0, Math.PI*2); x.fill();
+  x.fillStyle = '#FBF5E4'; x.beginPath(); x.arc(300, 70, 22, 0, Math.PI*2); x.fill();
+  x.strokeStyle = '#E2D3A6'; x.lineWidth = 1; [[34,.8],[48,.5],[62,.28]].forEach(([r,a]) => { x.globalAlpha = a; x.beginPath(); x.arc(300, 70, r, 0, Math.PI*2); x.stroke(); });
+  x.globalAlpha = 1; x.fillStyle = '#BFD0BB'; [[56,42,2.6],[74,30,1.7],[88,48,1.2],[196,36,1.5]].forEach(([cx,cy,r]) => { x.beginPath(); x.arc(cx, cy, r, 0, Math.PI*2); x.fill(); });
+  x.fillStyle = '#CFDDCB'; x.fill(new Path2D('M0 112 C40 96 70 82 105 88 C140 94 160 78 200 70 C240 62 270 86 305 92 C340 98 370 84 400 80 V170 H0Z'));
+  x.save(); x.filter = 'blur(5px)'; x.globalAlpha = .45; x.fillStyle = '#FFFFFF'; x.beginPath(); x.ellipse(110, 104, 150, 7, 0, 0, Math.PI*2); x.fill(); x.restore();
+  x.strokeStyle = '#B4C8B1'; x.lineWidth = 1; x.lineCap = 'round';
+  ['M58 121 C58 118 57 116 55 115','M60 121 C60 117 61 115 62 114','M168 120 C168 117 167 115 165 114','M170 120 C170 116 171 114 173 113','M246 112 C246 109 245 107 243 106','M248 112 C248 108 249 106 250 105','M292 115 C292 112 291 110 289 109','M294 115 C294 111 295 109 297 108'].forEach(p => x.stroke(new Path2D(p)));
+  x.fillStyle = '#BACDB6'; x.fill(new Path2D('M0 134 C50 120 95 112 140 118 C190 125 230 108 280 112 C330 116 365 128 400 120 V170 H0Z'));
+  x.save(); x.filter = 'blur(5px)'; x.globalAlpha = .4; x.fillStyle = '#FFFFFF'; x.beginPath(); x.ellipse(300, 128, 140, 6, 0, 0, Math.PI*2); x.fill(); x.restore();
+  x.fillStyle = '#E4ECE2'; x.fill(new Path2D('M0 156 C80 146 150 150 220 156 S340 160 400 152 V170 H0Z'));
+  x.strokeStyle = '#9DB5A0'; x.lineWidth = 1.4;
+  ['M22 162 C21 156 19 152 15 149','M25 162 C25 155 26 151 28 147','M28 162 C29 158 32 155 35 154','M126 160 C125 155 123 152 120 150','M129 160 C129 154 130 151 132 148','M318 159 C317 154 315 151 312 149','M321 159 C321 153 322 150 324 147','M324 159 C325 155 328 153 331 152'].forEach(p => x.stroke(new Path2D(p)));
+  drawSprig(x, 40, 130, 1, 1, '#8EA894'); drawSprig(x, 86, 141, -.68, .68, '#8EA894'); drawSprig(x, 350, 137, .8, .8, '#8EA894');
+  [[106,142,1],[336,148,.75]].forEach(([fx,fy,s]) => {
+    x.save(); x.translate(fx, fy); x.scale(s, s); x.fillStyle = '#F7F0DD';
+    [[0,-3.2],[3,-1],[1.9,2.6],[-1.9,2.6],[-3,-1]].forEach(([px,py]) => { x.beginPath(); x.arc(px, py, 2.6, 0, Math.PI*2); x.fill(); });
+    x.fillStyle = '#E3C98E'; x.beginPath(); x.arc(0, 0, 1.6, 0, Math.PI*2); x.fill(); x.restore();
+  });
+  drawSprig(x, -8, 120, 1.45, 1.45, '#6F8C77', 1.5);
+  x.strokeStyle = '#7C987F'; x.lineWidth = 2;
+  ['M384 172 C383 162 379 154 371 149','M389 172 C389 160 391 152 396 145','M394 172 C396 165 401 160 407 158','M379 172 C377 166 373 163 366 162'].forEach(p => x.stroke(new Path2D(p)));
+  x.restore();
+}
+async function drawCard(kind, d){
+  const W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+  const x = cv.getContext('2d');
+  const key = d ? strip(d['今日重點']) : '';
+  try{ await Promise.all([document.fonts.load(`700 64px ${SERIF}`, key + '《聖訓在生活》玉虛篇讀完了天謝謝'), document.fonts.load(`500 32px ${SANS}`, '第天清晨點換一篇連結就能讀')]); }catch(e){}
+  const bg = x.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#F8F4E8'); bg.addColorStop(.34, '#EEF2E9'); bg.addColorStop(1, '#E4ECE2');
+  x.fillStyle = bg; x.fillRect(0, 0, W, H);
+  drawScene(x);
+  x.fillStyle = '#E4ECE2'; x.fillRect(0, 456, W, H - 456);
+  // 宣紙白的卡片
+  x.save(); x.shadowColor = 'rgba(56,84,64,.18)'; x.shadowBlur = 40; x.shadowOffsetY = 14; x.fillStyle = '#FBFBF7'; rr(x, 70, 430, 940, 720, 48); x.fill(); x.restore();
+  // 卡片右上角的弧線
+  x.save(); rr(x, 70, 430, 940, 720, 48); x.clip(); x.strokeStyle = 'rgba(110,139,117,.18)'; x.lineWidth = 3;
+  [40,80,120,160].forEach(r => { x.beginPath(); x.arc(1010, 430, r, 0, Math.PI*2); x.stroke(); }); x.restore();
+  x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+  if (kind === 'day'){
+    x.fillStyle = '#55625A'; x.font = `500 34px ${SANS}`; x.fillText(`第 ${d.n} 天｜${d.theme}`, 540, 530);
+    let size = 70, lines;
+    for (const s of [70, 62, 56, 50, 44]){ size = s; x.font = `700 ${s}px ${SERIF}`; lines = wrapText(x, key, 800); if (lines.length <= 5) break; }
+    const lh = size * 1.62, top = 790 - (lines.length - 1) * lh / 2;
+    x.fillStyle = '#46624F'; lines.forEach((l, i) => x.fillText(l, 540, top + i * lh + size * .35));
+    x.fillStyle = '#A9C1AE'; x.fillRect(500, 1040, 80, 4);
+    x.fillStyle = '#55625A'; x.font = `500 32px ${SANS}`; x.fillText(`${d.who}・${d.date}`, 540, 1100);
+  } else {
+    const cx = 540, cy = 640;
+    for (let i = 0; i < DAYS.length; i++){ const a = -Math.PI/2 + i * Math.PI*2 / DAYS.length; x.fillStyle = i % 2 ? '#A9C1AE' : '#6E8B75'; x.beginPath(); x.arc(cx + Math.cos(a)*150, cy + Math.sin(a)*150, 8, 0, Math.PI*2); x.fill(); }
+    x.fillStyle = '#46624F'; x.font = `700 120px ${SERIF}`; x.fillText(String(DAYS.length), cx, cy + 30);
+    x.font = `600 38px ${SERIF}`; x.fillText('天', cx, cy + 90);
+    x.font = `700 54px ${SERIF}`; x.fillText('我讀完了《聖訓在生活》', 540, 900);
+    x.font = `600 44px ${SERIF}`; x.fillText('玉虛篇', 540, 970);
+    const t = new Date(Date.now() + 8*3600e3);
+    x.fillStyle = '#55625A'; x.font = `500 32px ${SANS}`; x.fillText(`${t.getUTCFullYear()} 年 ${t.getUTCMonth()+1} 月 ${t.getUTCDate()} 日`, 540, 1040);
+    x.fillStyle = '#7A5A3A'; x.font = `600 36px ${SERIF}`; x.fillText('謝謝自己，每天讀一段話。', 540, 1105);
+  }
+  // 頁尾
+  x.fillStyle = '#46624F'; x.font = `700 44px ${SERIF}`; x.fillText('《聖訓在生活》玉虛篇', 540, 1232);
+  x.fillStyle = '#55625A'; x.font = `500 30px ${SANS}`; x.fillText('每天清晨 5 點換一篇・點連結就能讀', 540, 1290);
+  const url = cv.toDataURL('image/png');
+  const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
+  return { url, blob };
+}
+async function shareFile(blob, name, text, link, msgEl){
+  msgEl.textContent = '';
+  try{
+    const file = blob ? new File([blob], name, { type: 'image/png' }) : null;
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })){ await navigator.share({ files: [file], text: text + (link ? '\n' + link : '') }); track('share', { how: 'image' }); return; }
+    if (navigator.share){ await navigator.share({ text, url: link || undefined }); track('share', { how: 'link' }); return; }
+  }catch(e){ if (e && e.name === 'AbortError') return; }
+  msgEl.textContent = '這支手機不能直接分享。可以按「用 LINE 傳連結」，或先存下圖片再傳。';
+}
+let shareDay = null, shareBlob = null;
+async function openShare(d){
+  shareDay = d; shareBlob = null; show('share'); track('share_open', { day: d.n });
+  const link = shareUrl(d.n), text = shareText(d);
+  $('sh-img').removeAttribute('src'); $('sh-wait').hidden = false; $('sh-msg').textContent = '';
+  $('sh-line').href = 'https://line.me/R/share?text=' + encodeURIComponent(text + '\n' + link);
+  $('sh-go').hidden = !navigator.share;
+  $('sh-save').removeAttribute('href');
+  const r = await drawCard('day', d);
+  if (shareDay !== d) return;
+  shareBlob = r.blob; $('sh-img').src = r.url; $('sh-save').href = r.url; $('sh-wait').hidden = true;
+}
+$('sh-go').onclick = () => shareFile(shareBlob, '聖訓在生活.png', shareText(shareDay), shareUrl(shareDay.n), $('sh-msg'));
+$('sh-line').addEventListener('click', () => track('share', { how: 'line' }));
+$('sh-save').addEventListener('click', e => { if (!$('sh-save').getAttribute('href')) e.preventDefault(); else track('share', { how: 'save' }); });
+$('sh-copy').onclick = async () => {
+  const link = shareUrl(shareDay.n);
+  try{ await navigator.clipboard.writeText(link); $('sh-msg').textContent = '連結複製好了，可以貼到 LINE。'; track('share', { how: 'copy' }); }
+  catch(e){ $('sh-msg').textContent = '請長按下面的連結複製：' + link; }
+};
+$('sh-back').onclick = () => show('today');
+
+// 讀完 62 天
+let doneBlob = null;
+async function openDone(){
+  show('done'); track('done');
+  $('dn-img').removeAttribute('src'); $('dn-wait').hidden = false; $('dn-msg').textContent = ''; $('dn-save').removeAttribute('href');
+  const r = await drawCard('done', null);
+  doneBlob = r.blob; $('dn-img').src = r.url; $('dn-save').href = r.url; $('dn-wait').hidden = true;
+}
+$('dn-share').onclick = () => shareFile(doneBlob, '聖訓在生活-結業卡.png', `我讀完了《聖訓在生活》玉虛篇 ${DAYS.length} 天。每天清晨 5 點換一篇，五分鐘就讀完，推薦給您：`, location.origin + location.pathname, $('dn-msg'));
+$('dn-save').addEventListener('click', e => { if (!$('dn-save').getAttribute('href')) e.preventDefault(); });
+$('dn-back').onclick = () => { viewN = null; render(); show('cover'); };
+
+// 放到手機桌面：Android 手機把 Android 的步驟排前面
+function openHome(){
+  if (/Android/i.test(navigator.userAgent)) $('h-wrap').prepend($('h-and')); else $('h-wrap').prepend($('h-ios'));
+  show('home'); track('home_open');
+}
+$('h-back').onclick = () => { viewN = null; render(); show('cover'); };
+
+// 親友點分享連結（?s=天數）進來的第一頁
+let landN = 0;
+function renderLand(n){
+  landN = n; const d = DAYS[n - 1];
+  $('l-key').textContent = d['今日重點'];
+  $('l-src').textContent = `第 ${d.n} 天｜${d.theme}・${d.who}`;
+  if (!$('v-land').querySelector('.hero')){
+    const h = $('v-cover').querySelector('.hero').cloneNode(true);
+    h.querySelectorAll('#c-greet').forEach(e => e.removeAttribute('id'));
+    const g = h.querySelector('.greet'); if (g) g.textContent = '您好，歡迎來讀';
+    $('v-land').prepend(h);
+  }
+}
+function leaveLand(){ try{ history.replaceState(null, '', location.pathname + (Q.has('demo') ? '?demo=1' : '') + location.hash); }catch(e){} }
+$('l-start').onclick = () => { leaveLand(); store.set('sx-intro', true); viewN = null; render(); show('today'); track('land_start'); };
+$('l-this').onclick = () => { leaveLand(); openDay(landN); track('land_this'); };
+function startView(){
+  const s = +(Q.get('s') || 0);
+  if (s >= 1 && s <= DAYS.length && !isCheck()){ renderLand(s); show('land'); track('land', { day: s }); return; }
+  show('cover');
+}
+
+// 原型示範面板：網址加 ?demo=1 才出現
+if (Q.has('demo')){
+  $('demo').hidden = false;
+  $('demo-fab').onclick = () => { $('demo-panel').hidden = !$('demo-panel').hidden; };
+  document.querySelectorAll('[data-demo]').forEach(b => b.onclick = () => {
+    const v = b.dataset.demo; $('demo-panel').hidden = true;
+    if (v === 'close') return;
+    viewN = null; render();
+    if (v === 'share') return openShare(state.day);
+    if (v === 'land'){ renderLand(state.day.n); return show('land'); }
+    if (v === 'home') return openHome();
+    if (v === 'done') return openDone();
+    show(v);
+  });
+  document.querySelectorAll('[data-sim]').forEach(b => b.onclick = () => {
+    const k = +b.dataset.sim, m = {};
+    if (k){ const upto = k >= DAYS.length ? DAYS.length : Math.min(k, state.day.n); for (let i = 1; i <= upto; i++) m[i] = '示範'; store.set('sx2-read', m); }
+    else { try{ localStorage.removeItem('sx2-read'); }catch(e){} }
+    $('demo-panel').hidden = true; viewN = null; render();
+    const cur = ['cover','today','notes','intro','past','share','land','home','done'].find(v => !$('v-'+v).hidden) || 'cover';
+    show(cur === 'notes' || cur === 'today' ? cur : 'cover');
+  });
+}
+
+render();
+startView();
+// 清晨 5:00 換篇：回到畫面時重新判斷
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n && !viewN) show('cover'); } });
+window.addEventListener('hashchange', () => { viewN = null; render(); show('cover'); });
+</script>
+
+</body>
+</html>
