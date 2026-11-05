@@ -480,7 +480,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
       <h2><span class="num">一</span>讀聖訓</h2>
       <div><p class="lab"><b>開篇</b></p><p class="p" id="d-open"></p></div>
       <div class="quote"><p class="lab"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
-      <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc">原文句子</span></p><p class="p" id="d-key"></p></div>
+      <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc"></span></p><p class="p" id="d-key"></p></div>
     </div>
 
     <div class="step s2">
@@ -526,7 +526,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
       <p id="d-next"></p>
       <button class="ghost" id="to-top">回到最上面</button>
     </div>
-    <p class="note">「原文」是開示紀錄的原句。「今日重點」標「原文句子」的是原句，標「編輯整理」的是編輯整理的白話。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
+    <p class="note">「原文」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
   </section>
 
   <!-- 我的收藏 -->
@@ -576,7 +576,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
         <div class="row"><button class="ghost" id="nm-auto">晚上自動變暗</button><button class="ghost" id="nm-on">一直用夜間</button><button class="ghost" id="nm-off">一直用白天</button></div>
       </div>
       <h3>頁面上的內容</h3>
-      <p>「原文」是開示紀錄的原句，只統一了字形。「今日重點」標「原文句子」的是原句，標「編輯整理」的是編輯整理的白話。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
+      <p>「原文」是開示紀錄的原句，只統一了字形。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
       <h3 id="contact-h" hidden>有問題找誰</h3>
       <p id="contact" hidden></p>
     </div>
@@ -661,7 +661,7 @@ function render(){
   $('d-src').textContent = `${D.who}，${D.date}`;
   $('d-text').textContent = D['原文'];
   $('d-key').textContent = D['今日重點'];
-  $('d-keysrc').textContent = !D.keyOrig ? '編輯整理' : (D.keyOther ? '原文句子' : '原文句子');
+  $('d-keysrc').textContent = '';
   $('d-plain').textContent = D['白話理解'];
   $('d-story').textContent = D['情境範例'];
   $('d-ask').textContent = D['問問自己'];

@@ -542,7 +542,7 @@ html.night .cal button.read{color:#1F2A24}
       <h2><span class="num">一</span>讀聖訓</h2>
       <div><p class="lab"><b>開篇</b></p><p class="p" id="d-open"></p></div>
       <div class="quote"><p class="lab"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
-      <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc">原文句子</span></p><p class="p" id="d-key"></p></div>
+      <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc"></span></p><p class="p" id="d-key"></p></div>
     </div>
 
     <div class="step s2">
@@ -598,7 +598,7 @@ html.night .cal button.read{color:#1F2A24}
       <p id="d-next"></p>
       <button class="ghost" id="to-top">回到最上面</button>
     </div>
-    <p class="note">「原文」是開示紀錄的原句。「今日重點」標「原文句子」的是原句，標「編輯整理」的是編輯整理的白話。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
+    <p class="note">「原文」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
   </section>
 
   <!-- 我的收藏 -->
@@ -660,7 +660,7 @@ html.night .cal button.read{color:#1F2A24}
       <p>放到桌面後，每天點一下就能讀，不用再去 LINE 裡找連結。</p>
       <div class="row"><button class="ghost" id="i-home">看怎麼放</button></div>
       <h3>頁面上的內容</h3>
-      <p>「原文」是開示紀錄的原句，只統一了字形。「今日重點」標「原文句子」的是原句，標「編輯整理」的是編輯整理的白話。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
+      <p>「原文」是開示紀錄的原句，只統一了字形。「白話理解」「生活例子」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
       <h3>統計</h3>
       <p>為了知道大家讀得好不好、哪一句最常被分享，這裡只計算次數，例如「今天有幾次分享」「第幾天讀完的人最多」。不會記錄您是誰，不用 cookie，您寫下的話、收藏的句子也不會被送出去，都只留在這支手機裡。</p>
       <h3 id="contact-h" hidden>有問題找誰</h3>
@@ -844,7 +844,7 @@ function render(){
   $('d-src').textContent = `${D.who}，${D.date}`;
   $('d-text').textContent = D['原文'];
   $('d-key').textContent = D['今日重點'];
-  $('d-keysrc').textContent = !D.keyOrig ? '編輯整理' : (D.keyOther ? '原文句子' : '原文句子');
+  $('d-keysrc').textContent = '';
   $('d-plain').textContent = D['白話理解'];
   $('d-story').textContent = D['情境範例'];
   $('d-ask').textContent = D['問問自己'];
