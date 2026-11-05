@@ -878,7 +878,7 @@ function ckRender(){
   const c = ckData()[ckAt] || {};
   $('d-nav').hidden = true;
   $('d-date').textContent = '校對模式';
-  $('c-date').textContent = '校對模式（不影響大家每天讀的那一篇）';
+  $('c-date').textContent = '此版校對模式專用';
   $('d-next').textContent = ckAt < DAYS.length ? `看完了，按「下一天」看第 ${ckAt + 1} 天。` : `這是最後一天（第 ${DAYS.length} 天）。`;
   $('c-msg').hidden = false;
   $('c-msg').textContent = `校對模式：按「開始讀」，從第 ${ckAt} 天接著看。`;
