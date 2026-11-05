@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#F5F3EA">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>聖訓在生活</title>
+<title>玉語心晨</title>
 <meta name="color-scheme" content="light dark">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,6 +80,7 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .trial{position:absolute;top:14px;right:14px;z-index:1;font-size:.75em;color:var(--accent-deep);background:rgba(251,251,247,.78);border-radius:999px;padding:2px 12px}
 .greet{margin:0;color:var(--accent-deep);font-size:.85em;letter-spacing:.08em}
 .brand{font-family:var(--serif);font-size:1.9em;font-weight:700;line-height:1.3;color:var(--accent-deep);margin:0;letter-spacing:.04em;text-wrap:balance}
+.brand-sub{margin:0;color:var(--muted);font-size:.9em;letter-spacing:.08em}
 .sub{margin:0;color:var(--ink);font-size:.88em}
 .motto{margin:0;color:var(--muted);font-size:.8em;letter-spacing:.08em}
 @media (prefers-reduced-motion:no-preference){
@@ -441,7 +442,8 @@ html.night .hero .near-grass{stroke:#9DBBA5}
       </svg>
       <div class="hero-text">
         <p class="greet" id="c-greet">早安，歡迎回來</p>
-        <h1 class="brand">《聖訓在生活》</h1>
+        <h1 class="brand">《玉語心晨》</h1>
+        <p class="brand-sub">玉虛的話，從心開始</p>
       </div>
     </div>
 
@@ -911,7 +913,7 @@ $('ck-copy').onclick = async () => {
   const all = ckData();
   const lines = DAYS.filter(d => all[d.n] && all[d.n].note).map(d => `第 ${d.n} 天｜${d.theme}・${d.who}\n${all[d.n].note}`);
   if (!lines.length){ $('ck-copymsg').textContent = '還沒有記下要修改的地方。'; return; }
-  const text = `《聖訓在生活》玉虛篇 校對意見（共 ${lines.length} 天）\n\n` + lines.join('\n\n');
+  const text = `《玉語心晨》玉虛篇 校對意見（共 ${lines.length} 天）\n\n` + lines.join('\n\n');
   let ok = false;
   try{ await navigator.clipboard.writeText(text); ok = true; }catch(e){}
   if (ok){ $('ck-copymsg').textContent = `複製好了（${lines.length} 天的意見），可以貼到 LINE 或訊息裡。`; return; }

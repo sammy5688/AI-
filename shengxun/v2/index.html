@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#F5F3EA">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>聖訓在生活</title>
+<title>玉語心晨</title>
 <meta name="color-scheme" content="light dark">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,6 +80,7 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .trial{position:absolute;top:14px;right:14px;z-index:1;font-size:.75em;color:var(--accent-deep);background:rgba(251,251,247,.78);border-radius:999px;padding:2px 12px}
 .greet{margin:0;color:var(--accent-deep);font-size:.85em;letter-spacing:.08em}
 .brand{font-family:var(--serif);font-size:1.9em;font-weight:700;line-height:1.3;color:var(--accent-deep);margin:0;letter-spacing:.04em;text-wrap:balance}
+.brand-sub{margin:0;color:var(--muted);font-size:.9em;letter-spacing:.08em}
 .sub{margin:0;color:var(--ink);font-size:.88em}
 .motto{margin:0;color:var(--muted);font-size:.8em;letter-spacing:.08em}
 @media (prefers-reduced-motion:no-preference){
@@ -497,7 +498,8 @@ html.night .cal button.read{color:#1F2A24}
       </svg>
       <div class="hero-text">
         <p class="greet" id="c-greet">早安，歡迎回來</p>
-        <h1 class="brand">《聖訓在生活》</h1>
+        <h1 class="brand">《玉語心晨》</h1>
+        <p class="brand-sub">玉虛的話，從心開始</p>
       </div>
     </div>
 
@@ -678,7 +680,7 @@ html.night .cal button.read{color:#1F2A24}
     <div class="sharebtns">
       <button class="primary" id="sh-go">傳給親友</button>
       <a class="ghost btnlink" id="sh-line" target="_blank" rel="noopener">用 LINE 傳連結</a>
-      <a class="ghost btnlink" id="sh-save" download="聖訓在生活.png">存下這張圖</a>
+      <a class="ghost btnlink" id="sh-save" download="玉語心晨.png">存下這張圖</a>
       <button class="ghost" id="sh-copy">複製連結</button>
     </div>
     <p class="saved" id="sh-msg" aria-live="polite"></p>
@@ -742,7 +744,7 @@ html.night .cal button.read{color:#1F2A24}
     <div class="sharecard"><img id="dn-img" alt="結業卡"><p class="hint" id="dn-wait">結業卡準備中……</p></div>
     <div class="sharebtns">
       <button class="primary" id="dn-share">分享我的結業卡</button>
-      <a class="ghost btnlink" id="dn-save" download="聖訓在生活-結業卡.png">存下這張圖</a>
+      <a class="ghost btnlink" id="dn-save" download="玉語心晨-結業卡.png">存下這張圖</a>
     </div>
     <p class="saved" id="dn-msg" aria-live="polite"></p>
     <p class="note">讀完了，也可以從第 1 天再讀一次，會讀到不一樣的自己。</p>
@@ -1098,7 +1100,7 @@ $('ck-copy').onclick = async () => {
   const all = ckData();
   const lines = DAYS.filter(d => all[d.n] && all[d.n].note).map(d => `第 ${d.n} 天｜${d.theme}・${d.who}\n${all[d.n].note}`);
   if (!lines.length){ $('ck-copymsg').textContent = '還沒有記下要修改的地方。'; return; }
-  const text = `《聖訓在生活》玉虛篇 校對意見（共 ${lines.length} 天）\n\n` + lines.join('\n\n');
+  const text = `《玉語心晨》玉虛篇 校對意見（共 ${lines.length} 天）\n\n` + lines.join('\n\n');
   let ok = false;
   try{ await navigator.clipboard.writeText(text); ok = true; }catch(e){}
   if (ok){ $('ck-copymsg').textContent = `複製好了（${lines.length} 天的意見），可以貼到 LINE 或訊息裡。`; return; }
@@ -1142,7 +1144,7 @@ function readMap(){ return store.get('sx2-read', {}); }
 function readCount(){ return Object.keys(readMap()).length; }
 function markRead(n){ const m = readMap(); if (!m[n]){ m[n] = dateLabel(); store.set('sx2-read', m); } }
 function shareUrl(n){ return location.origin + location.pathname + '?s=' + n; }
-function shareText(d){ return `今天讀到這一句，想分享給您：\n「${strip(d['今日重點'])}」\n——《聖訓在生活》第 ${d.n} 天・${d.who}`; }
+function shareText(d){ return `今天讀到這一句，想分享給您：\n「${strip(d['今日重點'])}」\n——《玉語心晨》第 ${d.n} 天・${d.who}`; }
 function isPastView(){ return !!viewN && viewN !== state.day.n; }
 
 function v2Render(){
@@ -1245,7 +1247,7 @@ async function drawCard(kind, d){
   const W = 1080, H = 1350, cv = document.createElement('canvas'); cv.width = W; cv.height = H;
   const x = cv.getContext('2d');
   const key = d ? strip(d['今日重點']) : '';
-  try{ await Promise.all([document.fonts.load(`700 64px ${SERIF}`, key + '《聖訓在生活》玉虛篇讀完了天謝謝'), document.fonts.load(`500 32px ${SANS}`, '第天清晨點換一篇連結就能讀')]); }catch(e){}
+  try{ await Promise.all([document.fonts.load(`700 64px ${SERIF}`, key + '《玉語心晨》玉虛篇讀完了天謝謝'), document.fonts.load(`500 32px ${SANS}`, '第天清晨點換一篇連結就能讀')]); }catch(e){}
   const bg = x.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#F8F4E8'); bg.addColorStop(.34, '#EEF2E9'); bg.addColorStop(1, '#E4ECE2');
   x.fillStyle = bg; x.fillRect(0, 0, W, H);
   drawScene(x);
@@ -1269,14 +1271,14 @@ async function drawCard(kind, d){
     for (let i = 0; i < DAYS.length; i++){ const a = -Math.PI/2 + i * Math.PI*2 / DAYS.length; x.fillStyle = i % 2 ? '#A9C1AE' : '#6E8B75'; x.beginPath(); x.arc(cx + Math.cos(a)*150, cy + Math.sin(a)*150, 8, 0, Math.PI*2); x.fill(); }
     x.fillStyle = '#46624F'; x.font = `700 120px ${SERIF}`; x.fillText(String(DAYS.length), cx, cy + 30);
     x.font = `600 38px ${SERIF}`; x.fillText('天', cx, cy + 90);
-    x.font = `700 54px ${SERIF}`; x.fillText('我讀完了《聖訓在生活》', 540, 900);
+    x.font = `700 54px ${SERIF}`; x.fillText('我讀完了《玉語心晨》', 540, 900);
     x.font = `600 44px ${SERIF}`; x.fillText('玉虛篇', 540, 970);
     const t = new Date(Date.now() + 8*3600e3);
     x.fillStyle = '#55625A'; x.font = `500 32px ${SANS}`; x.fillText(`${t.getUTCFullYear()} 年 ${t.getUTCMonth()+1} 月 ${t.getUTCDate()} 日`, 540, 1040);
     x.fillStyle = '#7A5A3A'; x.font = `600 36px ${SERIF}`; x.fillText('謝謝自己，每天讀一段話。', 540, 1105);
   }
   // 頁尾
-  x.fillStyle = '#46624F'; x.font = `700 44px ${SERIF}`; x.fillText('《聖訓在生活》玉虛篇', 540, 1232);
+  x.fillStyle = '#46624F'; x.font = `700 44px ${SERIF}`; x.fillText('《玉語心晨》玉虛篇', 540, 1232);
   x.fillStyle = '#55625A'; x.font = `500 30px ${SANS}`; x.fillText('每天清晨 5 點換一篇・點連結就能讀', 540, 1290);
   const url = cv.toDataURL('image/png');
   const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
@@ -1303,7 +1305,7 @@ async function openShare(d){
   if (shareDay !== d) return;
   shareBlob = r.blob; $('sh-img').src = r.url; $('sh-save').href = r.url; $('sh-wait').hidden = true;
 }
-$('sh-go').onclick = () => shareFile(shareBlob, '聖訓在生活.png', shareText(shareDay), shareUrl(shareDay.n), $('sh-msg'));
+$('sh-go').onclick = () => shareFile(shareBlob, '玉語心晨.png', shareText(shareDay), shareUrl(shareDay.n), $('sh-msg'));
 $('sh-line').addEventListener('click', () => track('share', { how: 'line' }));
 $('sh-save').addEventListener('click', e => { if (!$('sh-save').getAttribute('href')) e.preventDefault(); else track('share', { how: 'save' }); });
 $('sh-copy').onclick = async () => {
@@ -1321,7 +1323,7 @@ async function openDone(){
   const r = await drawCard('done', null);
   doneBlob = r.blob; $('dn-img').src = r.url; $('dn-save').href = r.url; $('dn-wait').hidden = true;
 }
-$('dn-share').onclick = () => shareFile(doneBlob, '聖訓在生活-結業卡.png', `我讀完了《聖訓在生活》玉虛篇 ${DAYS.length} 天。每天清晨 5 點換一篇，五分鐘就讀完，推薦給您：`, location.origin + location.pathname, $('dn-msg'));
+$('dn-share').onclick = () => shareFile(doneBlob, '玉語心晨-結業卡.png', `我讀完了《玉語心晨》玉虛篇 ${DAYS.length} 天。每天清晨 5 點換一篇，五分鐘就讀完，推薦給您：`, location.origin + location.pathname, $('dn-msg'));
 $('dn-save').addEventListener('click', e => { if (!$('dn-save').getAttribute('href')) e.preventDefault(); });
 $('dn-back').onclick = () => { viewN = null; render(); show('cover'); };
 
