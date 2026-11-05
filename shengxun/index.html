@@ -478,7 +478,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
     </div>
     <div class="step">
       <h2><span class="num">一</span>讀聖訓</h2>
-      <div><p class="lab"><b>開篇</b>編輯整理</p><p class="p" id="d-open"></p></div>
+      <div><p class="lab"><b>開篇</b></p><p class="p" id="d-open"></p></div>
       <div class="quote"><p class="lab"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
       <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc">原文句子</span></p><p class="p" id="d-key"></p></div>
     </div>
@@ -489,15 +489,15 @@ html.night .hero .near-grass{stroke:#9DBBA5}
       <details class="fold" id="d-more">
         <summary>白話理解與生活例子</summary>
         <div class="inner">
-          <div><p class="lab"><b>白話理解</b>編輯整理</p><p class="p" id="d-plain"></p></div>
-          <div><p class="lab"><b>生活例子</b>編輯整理</p><p class="p" id="d-story"></p></div>
+          <div><p class="lab"><b>白話理解</b></p><p class="p" id="d-plain"></p></div>
+          <div><p class="lab"><b>生活例子</b></p><p class="p" id="d-story"></p></div>
         </div>
       </details>
     </div>
 
     <div class="step s3">
       <h2><span class="num">三</span>觀自心</h2>
-      <div><p class="lab"><b>問問自己</b>編輯整理</p><p class="p" id="d-ask"></p></div>
+      <div><p class="lab"><b>問問自己</b></p><p class="p" id="d-ask"></p></div>
       <div class="past" id="d-past" hidden></div>
       <label class="hint" for="note">想寫就寫一句話給自己，不寫也可以。寫了會自動存好，只存在這支手機裡。</label>
       <textarea id="note" placeholder="例如：今天我差點又急著……"></textarea>
@@ -507,7 +507,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
 
     <div class="step act">
       <h2><span class="num">四</span>實踐於行</h2>
-      <div class="trybox"><p class="lab"><b>今天可以試試</b>編輯整理</p><p class="p" id="d-try"></p></div>
+      <div class="trybox"><p class="lab"><b>今天可以試試</b></p><p class="p" id="d-try"></p></div>
       <div class="row"><button class="primary" id="carry">收藏這一句，帶著走</button></div>
       <p class="saved" id="carry-msg" aria-live="polite"></p>
     </div>
@@ -661,7 +661,7 @@ function render(){
   $('d-src').textContent = `${D.who}，${D.date}`;
   $('d-text').textContent = D['原文'];
   $('d-key').textContent = D['今日重點'];
-  $('d-keysrc').textContent = !D.keyOrig ? '編輯整理' : (D.keyOther ? '原文句子・取自同一篇開示的另一段' : '原文句子');
+  $('d-keysrc').textContent = !D.keyOrig ? '編輯整理' : (D.keyOther ? '原文句子' : '原文句子');
   $('d-plain').textContent = D['白話理解'];
   $('d-story').textContent = D['情境範例'];
   $('d-ask').textContent = D['問問自己'];
@@ -865,7 +865,7 @@ function ckData(){ return store.get('sx-ck', {}); }
 function ckSave(n, patch){ const all = ckData(); all[n] = Object.assign({}, all[n], patch); if (!all[n].ok && !all[n].note) delete all[n]; return store.set('sx-ck', all); }
 function ckProgress(){
   const all = ckData(), ok = Object.keys(all).filter(k => all[k].ok).length, nt = Object.keys(all).filter(k => all[k].note).length;
-  return `已經看過 ${ok} / ${DAYS.length} 天・記了要修改的地方 ${nt} 天`;
+  return `已校對完成 ${ok}/${DAYS.length}天`;
 }
 function ckGo(n){
   ckAt = Math.min(DAYS.length, Math.max(1, n)); store.set('sx-ck-at', ckAt);
