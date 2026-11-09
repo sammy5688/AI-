@@ -344,6 +344,10 @@ html.night .hero .near-grass{stroke:#9DBBA5}
 .daylist .ck-ok{color:var(--accent-deep);font-weight:700}
 .daylist .ck-note{color:var(--clay);font-weight:700}
 .daylist .ck-here{outline:3px solid var(--accent);outline-offset:2px}
+
+/* 不要：原文左邊的直線、今日重點的葉子、兩者之間的小分隔 */
+.quote::before,.keybox .lab b::before,.quote+.keybox::before{display:none!important;content:none!important}
+.quote{padding-left:18px}
 </style>
 
 </head>
