@@ -404,6 +404,23 @@ html.night .cal button.read{color:#1F2A24}
 /* 不要：原文左邊的直線、今日重點的葉子、兩者之間的小分隔 */
 .quote::before,.keybox .lab b::before,.quote+.keybox::before{display:none!important;content:none!important}
 .quote{padding-left:18px}
+
+/* ===== 簡潔版（2026-11-09）：拿掉裝飾，卡片平一點、陰影淡一點，只留內容 ===== */
+.step::before,.firstcard::before,.todaycard::before,.todaycard::after,.close .orb{display:none!important}
+.todaycard,.step,.list li,.intro .card,.empty,.firstcard,.daylist button{background:var(--paper)!important;border:0!important;box-shadow:0 1px 3px rgba(56,84,64,.08),0 0 0 1px rgba(70,98,79,.08)!important}
+.step h2 .num{box-shadow:none!important;background:var(--veil)!important;color:var(--accent-deep)!important;margin-left:0!important}
+.step.act h2 .num{background:var(--clay-bg)!important;color:var(--clay)!important}
+.quote,.keybox,.trybox,details.fold,.past,textarea{box-shadow:none!important}
+.quote{background:var(--veil)!important}
+.keybox{background:var(--warm)!important}
+.trybox{background:var(--clay-bg)!important}
+details.fold{background:transparent!important}
+details.fold summary{padding-left:0!important}
+details.fold .inner{padding-left:0!important;padding-right:0!important}
+.primary{background:#557560!important;box-shadow:none!important}
+html.night .primary{background:#5A7863!important}
+.ghost{box-shadow:none!important}
+.hero{box-shadow:none!important}
 </style>
 
 </head>

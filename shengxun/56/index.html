@@ -349,6 +349,23 @@ html.night .hero .near-grass{stroke:#9DBBA5}
 /* 不要：原文左邊的直線、今日重點的葉子、兩者之間的小分隔 */
 .quote::before,.keybox .lab b::before,.quote+.keybox::before{display:none!important;content:none!important}
 .quote{padding-left:18px}
+
+/* ===== 簡潔版（2026-11-09）：拿掉裝飾，卡片平一點、陰影淡一點，只留內容 ===== */
+.step::before,.firstcard::before,.todaycard::before,.todaycard::after,.close .orb{display:none!important}
+.todaycard,.step,.list li,.intro .card,.empty,.firstcard,.daylist button{background:var(--paper)!important;border:0!important;box-shadow:0 1px 3px rgba(56,84,64,.08),0 0 0 1px rgba(70,98,79,.08)!important}
+.step h2 .num{box-shadow:none!important;background:var(--veil)!important;color:var(--accent-deep)!important;margin-left:0!important}
+.step.act h2 .num{background:var(--clay-bg)!important;color:var(--clay)!important}
+.quote,.keybox,.trybox,details.fold,.past,textarea{box-shadow:none!important}
+.quote{background:var(--veil)!important}
+.keybox{background:var(--warm)!important}
+.trybox{background:var(--clay-bg)!important}
+details.fold{background:transparent!important}
+details.fold summary{padding-left:0!important}
+details.fold .inner{padding-left:0!important;padding-right:0!important}
+.primary{background:#557560!important;box-shadow:none!important}
+html.night .primary{background:#5A7863!important}
+.ghost{box-shadow:none!important}
+.hero{box-shadow:none!important}
 </style>
 
 </head>
@@ -476,7 +493,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
       <p class="meta" id="d-date"></p>
       <p class="daytag" id="d-title"></p>
     </div>
-    <div class="row" id="d-nav"><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-today" hidden>回到今天</button></div>
+    <div class="row" id="d-nav"><button class="ghost" id="to-today" hidden>回到今天</button></div>
     <div class="checkbar" id="ck-bar" hidden>
       <p class="ck-t">校對模式・第 <span id="ck-n"></span> / <span id="ck-total"></span> 篇<span class="ck-mark" id="ck-mark"></span></p>
       <div class="ck-row"><button class="ghost" id="ck-prev">‹ 上一天</button><button class="ghost" id="ck-list">全部</button><button class="ghost" id="ck-next">下一天 ›</button></div>
@@ -504,9 +521,9 @@ html.night .hero .near-grass{stroke:#9DBBA5}
       <h2><span class="num">三</span>觀自心</h2>
       <div><p class="lab"><b>問問自己</b></p><p class="p" id="d-ask"></p></div>
       <div class="past" id="d-past" hidden></div>
-      <label class="hint" for="note">想寫就寫一句話給自己，不寫也可以。寫了會自動存好，只存在這支手機裡。</label>
+      <label class="hint" for="note">想寫就寫一句給自己，不寫也可以，寫了會自動存好。</label>
       <textarea id="note" placeholder="例如：今天我差點又急著……"></textarea>
-      <div class="row"><button class="ghost" id="save-note">存下這句話</button></div>
+      <button id="save-note" hidden></button>
       <p class="saved" id="note-msg" aria-live="polite"></p>
     </div>
 
@@ -530,7 +547,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
     <div class="close"><span class="orb" aria-hidden="true"></span><p>今天讀到這裡，就很好了。</p></div>
     <div class="after">
       <p id="d-next"></p>
-      <button class="ghost" id="to-top">回到最上面</button>
+      <div class="row center"><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-top">回到最上面</button></div>
     </div>
     <p class="note">「原文」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
   </section>
