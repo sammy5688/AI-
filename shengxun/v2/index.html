@@ -146,9 +146,9 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .keybox .p{font-family:var(--serif);font-size:1.28em;font-weight:700;color:var(--accent-deep);line-height:1.75;text-wrap:balance}
 
 details.fold{border-radius:20px;background:linear-gradient(180deg,#F1F4EE,#F8F9F5);box-shadow:var(--well)}
-details.fold summary{list-style:none;min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 14px 6px 18px;font-weight:500;cursor:pointer}
+details.fold summary{list-style:none;min-height:58px;display:flex;flex-direction:row-reverse;align-items:center;justify-content:flex-end;gap:10px;padding:6px 12px 6px 10px;font-weight:500;cursor:pointer}
 details.fold summary::-webkit-details-marker{display:none}
-details.fold summary::after{content:"點開看";font-size:.8em;color:var(--accent-deep);border-radius:999px;padding:5px 18px;white-space:nowrap;
+details.fold summary::after{content:"點開看";font-size:.8em;color:var(--accent-deep);border-radius:999px;padding:5px 12px;white-space:nowrap;
   background:var(--paper);border:1.5px solid rgba(70,98,79,.35)}
 details[open].fold summary::after{content:"收起來"}
 details.fold .inner{display:flex;flex-direction:column;gap:16px;padding:4px 18px 18px}
@@ -547,7 +547,6 @@ html.night .cal button.read{color:#1F2A24}
 
     <div class="step s2">
       <h2><span class="num">二</span>悟道理</h2>
-      <p class="hint">先自己想一想上面那句話，再點開。</p>
       <details class="fold" id="d-more">
         <summary>白話理解、用在生活裡</summary>
         <div class="inner">
@@ -645,7 +644,7 @@ html.night .cal button.read{color:#1F2A24}
       <h3>怎麼讀</h3>
       <p>每天清晨 5 點換一篇，一篇大約 5 分鐘。每一篇都照四個步驟走：</p>
       <p><b>一、讀聖訓：</b>先讀原文，再記住「今日重點」那一句。時間不多，讀到這裡就夠了。</p>
-      <p><b>二、悟道理：</b>先自己想一想，再點開「白話理解、用在生活裡」。</p>
+      <p><b>二、悟道理：</b>點開「白話理解、用在生活裡」，看懂原文的意思，也看看生活裡的例子。</p>
       <p><b>三、觀自心：</b>用「問問自己」看看今天的心。想寫就寫一句，不寫也可以。</p>
       <p><b>四、實踐於行：</b>做一件「今天可以試試」的小事，把這一句收藏起來，帶著走。</p>
       <p>眼睛累了，可以按畫面下方的「唸給我聽」。</p>
