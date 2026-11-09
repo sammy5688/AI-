@@ -95,7 +95,8 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .todaycard::before{content:"";position:absolute;right:-26px;bottom:-30px;width:130px;height:130px;opacity:.09;pointer-events:none;
   background:var(--accent);-webkit-mask:var(--leaf) center/contain no-repeat;mask:var(--leaf) center/contain no-repeat}
 .todaycard>*{position:relative}
-.meta{margin:0;font-size:.85em;color:var(--muted)}
+.meta{margin:0;font-size:.9em;color:var(--ink)}
+.status{margin:0;white-space:pre-line;font-weight:700;font-size:.9em;color:var(--clay);background:var(--clay-bg);border-radius:14px;padding:8px 14px;line-height:1.6}
 .daytag{font-family:var(--serif);font-size:1.2em;font-weight:700;margin:0;color:var(--ink)}
 .bigkey{font-family:var(--serif);font-size:1.4em;line-height:1.7;font-weight:600;color:var(--accent-deep);margin:6px 0 4px;padding-left:16px;border-left:3px solid #C9D8C6;text-wrap:balance}
 
@@ -118,7 +119,7 @@ main{padding-block:18px 64px;padding-left:max(16px,env(safe-area-inset-left,0px)
   box-shadow:0 8px 18px -10px rgba(56,84,64,.35)}
 .ghost:active{transform:translateY(2px);background:#EEF3EC;box-shadow:none}
 .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.msg{margin:0;font-size:.82em;color:var(--muted);text-align:center}
+.msg{margin:0;font-size:.9em;color:var(--ink);text-align:center}
 
 /* 卡片：浮起來的宣紙；內層方框：微微凹進去 */
 .todaycard,.step,.list li,.intro .card,.empty,.firstcard,.daylist button{
@@ -448,6 +449,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
     </div>
 
     <div class="todaycard">
+      <p class="status" id="c-status" hidden></p>
       <p class="meta" id="c-date"></p>
       <p class="daytag" id="c-day"></p>
       <p class="bigkey" id="c-key"></p>
@@ -674,7 +676,12 @@ function render(){
   $('c-key').textContent = D['今日重點'];
   $('c-first').hidden = store.get('sx-intro', false);
   const msg = $('c-msg');
-  msg.hidden = state.mode === 'on';
+  msg.hidden = state.mode === 'on' || state.mode === 'before' || state.mode === 'free';
+  const st = $('c-status');
+  st.hidden = !(state.mode === 'before' || state.mode === 'free');
+  if (state.mode === 'before') st.textContent = `目前開放試讀\n正式共讀：${startLabel}開始`;
+  if (state.mode === 'free') st.textContent = '8 週已經讀完\n今天翻到這一篇';
+  $('go-read').textContent = state.mode === 'before' ? '試讀第 1 天' : '開始讀';
   if (state.mode === 'free') msg.textContent = '8 週 56 天讀完了。現在每天會翻到一篇：有讀過的，也有還沒讀過的延伸篇。';
   if (state.mode === 'before') msg.textContent = `8 週 56 天，從 ${startLabel}開始。今天可以先看看第 1 天。`;
   if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的收藏」看得到。`;
