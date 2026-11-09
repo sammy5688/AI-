@@ -547,7 +547,7 @@ html.night .primary{background:#5A7863!important}
     <div class="close"><span class="orb" aria-hidden="true"></span><p>今天讀到這裡，就很好了。</p></div>
     <div class="after">
       <p id="d-next"></p>
-      <div class="row center"><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-top">回到最上面</button></div>
+      <div class="row center"><button class="ghost" id="to-life">遇到事，找一篇</button><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-top">回到最上面</button></div>
     </div>
     <p class="note">「原文」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
   </section>
@@ -577,6 +577,16 @@ html.night .primary{background:#5A7863!important}
     <ul class="daylist" id="p-list"></ul>
   </section>
 
+  <!-- 生活情境：遇到這件事，可以讀哪一篇 -->
+  <section class="view col" id="v-life" hidden>
+    <div class="pagehead">
+      <p class="daytag" id="lf-title">遇到這件事，可以讀</p>
+      <p class="hint" id="lf-hint"></p>
+    </div>
+    <ul class="daylist" id="lf-list"></ul>
+    <div class="row center"><button class="ghost" id="lf-back" hidden>看其他的事</button></div>
+  </section>
+
   <!-- 說明（前言） -->
   <section class="view col intro" id="v-intro" hidden>
     <div class="pagehead"><p class="daytag">讀之前</p></div>
@@ -587,6 +597,7 @@ html.night .primary{background:#5A7863!important}
       <h3>怎麼讀</h3>
       <p>全書 8 週、56 天，一週一個主題，由淺到深：安住自己的心、看見自己的心念、學著放下、待人的心、說話與相處、一起做事、謙卑與德、走過與承擔。</p>
       <p>每天清晨 5 點換一篇，一篇大約 5 分鐘。56 天讀完以後，每天會翻到一篇，有讀過的，也有 9 篇還沒讀過的延伸篇。</p>
+      <p>心裡有事的時候，可以按每篇最下面的「遇到事，找一篇」，從「和家人鬧僵了」「一句話放不下」這些生活情境，找到可以讀的篇章。</p>
       <p>每一篇都照四個步驟走：</p>
       <p><b>一、讀聖訓：</b>先讀原文，再記住「今日重點」那一句。時間不多，讀到這裡就夠了。</p>
       <p><b>二、悟道理：</b>讀「白話理解、用在生活裡」，看懂原文的意思，也看看生活裡的例子。</p>
@@ -636,6 +647,19 @@ const EXT = [23, 57, 38, 45, 35, 43, 48, 50, 29]; // 延伸篇：讀完 56 天�
 const SEQ = ORDER.map(n => DAYS[n-1]);
 const EXTD = EXT.map(n => DAYS[n-1]);
 const ALLD = SEQ.concat(EXTD);
+// 生活情境：讀者從「我遇到什麼事」找到篇章。數字是原天次 n。八週期間只列已讀過的，讀完 56 天全部打開
+const LIFE = [
+  ['對家人說話太急、管太多',     [1, 6, 13, 19, 22, 24, 60, 61, 35]],
+  ['和家人鬧僵了、有心結',       [8, 14, 21, 25, 31, 33, 37, 63, 65]],
+  ['陪著家人，卻不懂他要什麼',   [3, 40, 42, 47, 52, 57]],
+  ['一句話、一件小事放不下',     [9, 20, 26, 38, 45]],
+  ['付出了，好像沒人看見',       [11, 18, 43, 44, 53, 59]],
+  ['忍不住比較、看人分高低',     [2, 12, 16, 36, 46, 62, 64]],
+  ['心很急、事情多、睡不著',     [10, 17, 30, 39, 58]],
+  ['失去了、生病了、孤單害怕',   [5, 27, 28, 32, 41, 48, 49, 51]],
+  ['道理懂了，卻還沒做出來',     [29, 34, 50, 54, 56]],
+  ['在工作或團體裡做事、帶人',   [4, 7, 15, 23, 55, 65]],
+];
 const pos = d => ORDER.indexOf(d.n);
 const dayLabel = d => pos(d) >= 0 ? `第 ${pos(d)+1} 天` : '延伸篇';
 const weekNo = d => Math.floor(pos(d) / 7);
@@ -711,6 +735,7 @@ function render(){
   $('to-past').hidden = pastView || openDays().length < 2;
   $('to-today').hidden = !pastView;
   $('d-nav').hidden = $('to-past').hidden && $('to-today').hidden;
+  $('to-life').hidden = isCheck();
   $('d-title').textContent = `${dayLabel(D)}｜${D.theme}`;
   $('d-open').textContent = D['開篇'];
   $('d-src').textContent = `${D.who}，${D.date}`;
@@ -743,12 +768,13 @@ function render(){
 }
 
 function show(name){
-  ['cover','today','notes','intro','past'].forEach(v => $('v-'+v).hidden = v !== name);
+  ['cover','today','notes','intro','past','life'].forEach(v => $('v-'+v).hidden = v !== name);
   ['today','notes','intro'].forEach(v => {
     const b = $('nav-'+v);
-    if ((name === v) || ((name === 'cover' || name === 'past') && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+    if ((name === v) || ((name === 'cover' || name === 'past' || name === 'life') && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
   });
   if (name === 'past') renderPast();
+  if (name === 'life') renderLife(null);
   if (name !== 'today') stopSpeak();
   const bar = name === 'today' && canSpeak;
   $('speakbar').hidden = !bar; document.body.classList.toggle('has-speak', bar);
@@ -775,6 +801,38 @@ function renderNotes(){
 }
 
 function openDay(n){ if (isCheck()) return ckGo(n); viewN = n; render(); show('today'); }
+function renderLife(ci){
+  const ul = $('lf-list'); ul.textContent = '';
+  const open = openDays(), has = n => open.some(d => d.n === n);
+  const all = state.mode === 'free' || state.mode === 'preview';
+  const sortKey = n => { const p = ORDER.indexOf(n); return p >= 0 ? p : 100 + EXT.indexOf(n); };
+  $('lf-back').hidden = ci === null;
+  if (ci === null){
+    $('lf-title').textContent = '遇到這件事，可以讀';
+    $('lf-hint').textContent = all ? '心裡有事的時候，點一下，就有可以讀的篇章。' : '心裡有事的時候，點一下。8 週期間，這裡只放您已經讀過的篇；56 天讀完以後，全部都會打開。';
+    LIFE.forEach(([name, ns], i) => {
+      const k = ns.filter(n => all || has(n)).length;
+      const li = document.createElement('li'), b = document.createElement('button');
+      const t = document.createElement('span'); t.className = 't'; t.textContent = name;
+      const sx = document.createElement('span'); sx.className = 's'; sx.textContent = k ? `${k} 篇可以讀` : '再讀幾天，這裡就會有';
+      b.append(t, sx); b.onclick = () => { renderLife(i); window.scrollTo(0, 0); }; li.append(b); ul.appendChild(li);
+    });
+    return;
+  }
+  const [name, ns] = LIFE[ci];
+  $('lf-title').textContent = name;
+  const list = ns.filter(n => all || has(n)).sort((a, b) => sortKey(a) - sortKey(b));
+  $('lf-hint').textContent = list.length ? '想讀哪一篇就點哪一篇。' : '這一類的篇章還在後面，再讀幾天，這裡就會有。';
+  list.forEach(n => {
+    const d = DAYS[n - 1];
+    const li = document.createElement('li'), b = document.createElement('button');
+    const t = document.createElement('span'); t.className = 't'; t.textContent = `${dayLabel(d)}｜${d.theme}`;
+    const k = document.createElement('span'); k.className = 'k'; k.textContent = d['今日重點'];
+    b.append(t, k); b.onclick = () => openDay(n); li.append(b); ul.appendChild(li);
+  });
+}
+$('lf-back').onclick = () => { renderLife(null); window.scrollTo(0, 0); };
+
 function renderPast(){
   const ul = $('p-list'); ul.textContent = '';
   const ck = isCheck(), cd = ck ? ckData() : {};
@@ -900,6 +958,7 @@ $('line-ok').onclick = () => { $('line-hint').hidden = true; try{ sessionStorage
 
 document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { if (b.dataset.go === 'today'){ viewN = null; render(); } show(b.dataset.go); });
 $('to-past').onclick = () => show('past');
+$('to-life').onclick = () => show('life');
 $('to-today').onclick = () => { viewN = null; render(); show('today'); };
 if (CONTACT){ $('contact').textContent = CONTACT; $('contact').hidden = false; $('contact-h').hidden = false; }
 $('go-read').onclick = () => { viewN = null; render(); store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
