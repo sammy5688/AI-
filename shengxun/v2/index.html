@@ -440,7 +440,7 @@ html.night .primary{background:#5A7863!important}
   <!-- 在 LINE 裡打開時才出現 -->
   <div class="linehint" id="line-hint" hidden>
     <p class="t">您現在是在 LINE 裡面打開的</p>
-    <p>在 LINE 裡，「唸給我聽」可能沒有聲音，寫下的話也可能存不住。</p>
+    <p>在 LINE 裡，寫下的話可能存不住。</p>
     <p>建議：點畫面角落的「⋯」或「⋮」，選「用預設瀏覽器開啟」（或「以其他應用程式開啟」）。</p>
     <button class="ghost" id="line-ok">知道了</button>
   </div>
@@ -668,7 +668,6 @@ html.night .primary{background:#5A7863!important}
       <p><b>二、悟道理：</b>點開「白話理解、用在生活裡」，看懂原文的意思，也看看生活裡的例子。</p>
       <p><b>三、觀自心：</b>用「問問自己」看看今天的心。想寫就寫一句，不寫也可以。</p>
       <p><b>四、實踐於行：</b>做一件「今天可以試試」的小事，把這一句收藏起來，帶著走。</p>
-      <p>眼睛累了，可以按畫面下方的「唸給我聽」。</p>
       <h3>讀的時候請記得</h3>
       <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
       <h3>夜間模式</h3>
@@ -718,7 +717,7 @@ html.night .primary{background:#5A7863!important}
       <p class="t">這是什麼？</p>
       <ol class="three">
         <li><b>每天一篇</b>，清晨 5 點換新的，一共 65 天。</li>
-        <li><b>五分鐘就讀完</b>，字很大，也可以按「唸給我聽」。</li>
+        <li><b>五分鐘就讀完</b>，字很大。</li>
         <li><b>不用下載、不用註冊</b>，打開就能讀。</li>
       </ol>
     </div>
@@ -978,7 +977,9 @@ $('carry').onclick = () => {
 };
 
 // 唸給我聽：用手機內建語音。一句一句排隊唸，比較不會唸到一半停掉
-const canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+// 唸給我聽：先關掉（手機內建語音不夠好），等校稿完成後改用真人錄音。要打開，把 false 改回下面那一行。
+// const canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+const canSpeak = false;
 const sp = $('speak'), spNow = $('speak-now');
 const SP_IDLE = '會唸：原文、今日重點、白話理解';
 let speakRun = 0;
