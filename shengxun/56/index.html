@@ -485,7 +485,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
 
     <div class="step s2">
       <h2><span class="num">二</span>悟道理</h2>
-      <details class="fold" id="d-more">
+      <details class="fold" id="d-more" open>
         <summary>白話理解、用在生活裡</summary>
         <div class="inner">
           <div><p class="lab"><b>白話理解</b></p><p class="p" id="d-plain"></p></div>
@@ -507,7 +507,8 @@ html.night .hero .near-grass{stroke:#9DBBA5}
     <div class="step act">
       <h2><span class="num">四</span>實踐於行</h2>
       <div class="trybox"><p class="lab"><b>今天可以試試</b></p><p class="p" id="d-try"></p></div>
-      <div class="row"><button class="primary" id="carry">收藏這一句，帶著走</button></div>
+      <div class="row"><button class="primary" id="carry">收藏這一句，帶著走</button><button class="ghost" id="share">分享給家人</button></div>
+      <p class="saved" id="share-msg" aria-live="polite"></p>
       <p class="saved" id="carry-msg" aria-live="polite"></p>
     </div>
 
@@ -565,7 +566,7 @@ html.night .hero .near-grass{stroke:#9DBBA5}
       <p>每天清晨 5 點換一篇，一篇大約 5 分鐘。56 天讀完以後，每天會翻到一篇，有讀過的，也有 9 篇還沒讀過的延伸篇。</p>
       <p>每一篇都照四個步驟走：</p>
       <p><b>一、讀聖訓：</b>先讀原文，再記住「今日重點」那一句。時間不多，讀到這裡就夠了。</p>
-      <p><b>二、悟道理：</b>點開「白話理解、用在生活裡」，看懂原文的意思，也看看生活裡的例子。</p>
+      <p><b>二、悟道理：</b>讀「白話理解、用在生活裡」，看懂原文的意思，也看看生活裡的例子。</p>
       <p><b>三、觀自心：</b>用「問問自己」看看今天的心。想寫就寫一句，不寫也可以。</p>
       <p><b>四、實踐於行：</b>做一件「今天可以試試」的小事，把這一句收藏起來，帶著走。</p>
       <p>眼睛累了，可以按畫面下方的「唸給我聽」。</p>
@@ -799,6 +800,17 @@ $('carry').onclick = () => {
   $('carry-msg').textContent = upsert({ carried: true }) ? `收好了，在「我的收藏」看得到。今天就帶著這一句，慢慢走：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，把這一句放在心裡就好。';
 };
 
+// 分享給家人：手機有分享選單就用它（可選 LINE）；沒有就複製文字，再沒有就直接開 LINE
+$('share').onclick = async () => {
+  const msg = $('share-msg'); msg.textContent = '';
+  const lab = typeof dayLabel === 'function' ? dayLabel(D) : `第 ${D.n} 天`;
+  const url = location.href.split('#')[0].split('?')[0];
+  const text = `《玉語心晨》${lab}｜${D.theme}\n「${strip(D['今日重點'])}」\n\n一起來讀：${url}`;
+  if (navigator.share){ try{ await navigator.share({ text }); return; }catch(e){ if (e && e.name === 'AbortError') return; } }
+  try{ await navigator.clipboard.writeText(text); msg.textContent = '已經複製好了，打開 LINE 貼給家人就可以。'; return; }catch(e){}
+  location.href = 'https://line.me/R/share?text=' + encodeURIComponent(text);
+};
+
 // 唸給我聽：用手機內建語音。一句一句排隊唸，比較不會唸到一半停掉
 const canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
 const sp = $('speak'), spNow = $('speak-now');
@@ -955,9 +967,10 @@ document.addEventListener('keydown', e => {
 });
 
 render();
-show('cover');
+const skipCover = () => store.get('sx-intro', false) && !isCheck();
+show(skipCover() ? 'today' : 'cover');
 // 清晨 5:00 換篇：回到畫面時重新判斷
-document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n && !viewN) show('cover'); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n && !viewN) show(skipCover() ? 'today' : 'cover'); } });
 window.addEventListener('hashchange', () => { viewN = null; render(); show('cover'); });
 </script>
 
