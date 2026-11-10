@@ -497,6 +497,12 @@ html.night .storybox{background:#424F48}
 .keybox .p span+span,.bigkey span+span{margin-top:.45em}
 .keybox{padding:18px 18px 20px}
 .bigkey{margin:10px 0 8px;padding-left:16px}
+/* 標題區：第幾天＋日期一行（小）、週次一行（淡）、留一點空再放主題 */
+.metarow{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:12px;font-size:.85em;line-height:1.7;color:var(--muted)}
+.metarow b{font-weight:700;color:var(--accent-deep);letter-spacing:.06em}
+.week{font-weight:500;color:var(--muted);font-size:.85em;letter-spacing:.02em}
+.dayhead .daytag,.todaycard .daytag{margin-top:10px;font-size:1.4em;line-height:1.45;letter-spacing:.04em}
+.who{margin-top:2px}
 </style>
 
 </head>
@@ -605,7 +611,7 @@ html.night .storybox{background:#424F48}
 
     <div class="todaycard">
       <p class="status" id="c-status" hidden></p>
-      <p class="meta" id="c-date"></p>
+      <p class="metarow"><b id="c-dayno"></b><span id="c-date"></span></p>
       <p class="week" id="c-week"></p>
       <p class="daytag" id="c-day"></p>
       <p class="who" id="c-who"></p>
@@ -627,7 +633,7 @@ html.night .storybox{background:#424F48}
   <!-- 每日頁 -->
   <section class="view col" id="v-today" hidden>
     <div class="dayhead">
-      <p class="meta" id="d-date"></p>
+      <p class="metarow"><b id="d-dayno"></b><span id="d-date"></span></p>
       <p class="week" id="d-week"></p>
       <p class="daytag" id="d-title"></p>
     </div>
@@ -907,9 +913,10 @@ function render(){
   const pastView = !!viewN && viewN !== state.day.n;
   D = pastView ? DAYS[viewN - 1] : state.day;
   $('c-greet').textContent = greeting();
-  $('c-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
-  const dwLabel = pos(D) >= 0 ? `${dayLabel(D)}・${weekLabel(D)}` : '延伸篇';
-  $('c-week').textContent = dwLabel;
+  $('c-date').textContent = dateLabel();
+  const dwLabel = pos(D) >= 0 ? `第 ${weekNo(D)+1} 週｜${WEEKS[weekNo(D)][0]}` : '';
+  $('c-dayno').textContent = $('d-dayno').textContent = dayLabel(D);
+  $('c-week').textContent = dwLabel; $('c-week').hidden = $('d-week').hidden = !dwLabel;
   $('c-day').textContent = D.theme;
   $('c-who').textContent = D.who;
   setKey($('c-key'), D['今日重點']);
@@ -928,7 +935,7 @@ function render(){
   if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的心語」看得到。`;
   if (state.mode === 'preview') msg.textContent = `預覽${dayLabel(D)}。`;
 
-  $('d-date').textContent = pastView ? '前幾天的內容' : (state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel());
+  $('d-date').textContent = pastView ? '前幾天的內容' : dateLabel();
   $('d-week').textContent = dwLabel;
   $('to-past').hidden = true;
   $('to-today').hidden = !pastView;
