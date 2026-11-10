@@ -535,6 +535,24 @@ html.night .tabs button:not([aria-current="page"]){background:rgba(255,255,255,.
 .tabs-in{gap:6px}
 .tabs{background:#F4F6F1}
 html.night .tabs{background:#2E3833}
+/* 我的心語、我的成長（11/10 重整）：自己寫的話是主角，其他退成一行小字 */
+.seg{display:flex;gap:4px;padding:4px;border-radius:999px;background:rgba(70,98,79,.07)}
+.seg button{flex:1;min-height:48px;border:0;border-radius:999px;background:transparent;color:var(--muted);font-size:.9em}
+.seg button[aria-pressed="true"]{background:var(--paper);color:var(--accent-deep);font-weight:700;box-shadow:0 1px 3px rgba(56,84,64,.14)}
+html.night .seg{background:rgba(255,255,255,.06)}
+.list li.mynote,.list li.kept{gap:0;padding:20px 20px 8px}
+.list .nt,.gtxt{margin:0;font-family:var(--serif);line-height:1.9;color:var(--ink);font-weight:500;font-size:1.04em;white-space:pre-wrap}
+.list li.kept .nt{color:var(--accent-deep);font-weight:500;font-size:.95em;line-height:1.85}
+.nf .nlink{max-width:65%}
+.nf{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding-top:4px;border-top:1px solid var(--line)}
+.nd{font-size:.8em;color:var(--muted);white-space:nowrap}
+.nlink{border:0;background:transparent;color:var(--accent-deep);font-size:.85em;min-height:44px;padding:0 2px;text-align:right;cursor:pointer}
+.gedit{align-self:flex-start;text-align:left;text-decoration:underline;text-underline-offset:4px}
+.gdone{align-self:flex-start;min-height:48px;padding:0 20px;font-size:.85em}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{min-height:44px;border:0;border-radius:999px;background:var(--clay-bg);color:var(--clay);padding:0 16px;font-size:.85em}
+.gwk .lab{margin:4px 0 0;font-size:.8em;color:var(--muted)}
+.gwk .saved:empty{display:none}
 </style>
 
 </head>
@@ -698,8 +716,9 @@ html.night .tabs{background:#2E3833}
   <section class="view col" id="v-notes" hidden>
     <div class="pagehead">
       <p class="daytag">我的心語</p>
-      <p class="hint">收藏的句子、寫給自己的話，都收在這裡，隨時可以回來看看。</p>
+      <p class="hint">你寫給自己的話，和想帶著走的句子，都收在這裡。</p>
     </div>
+    <div class="seg" id="n-switch" hidden><button id="n-sw-mine" aria-pressed="true"></button><button id="n-sw-kept" aria-pressed="false"></button></div>
     <ul class="list" id="n-list"></ul>
     <div class="backup">
       <p class="t">備份我的心語</p>
@@ -732,7 +751,7 @@ html.night .tabs{background:#2E3833}
   <section class="view col" id="v-growth" hidden>
     <div class="pagehead">
       <p class="daytag">我的成長</p>
-      <p class="hint">這裡不打分數，也不跟誰比。只是讓你回頭的時候，看得見自己走過的路。</p>
+      <p class="hint">不打分數，也不跟誰比。一週寫一句，回頭時，看得見自己走過的路。</p>
     </div>
     <div class="gsum" id="g-sum"></div>
     <div class="wklist" id="g-list"></div>
@@ -776,8 +795,8 @@ html.night .tabs{background:#2E3833}
       <p>心裡有事的時候，可以按「遇到事，找一篇」（在每篇最下面，「八週旅程」裡也有），從「和家人鬧僵了」「一句話放不下」這些生活情境，馬上找到可以讀的篇章，不用等到那一天。</p>
       <h3>下面四個入口</h3>
       <p><b>今日玉語：</b>今天這一篇，從這裡開始讀。</p>
-      <p><b>我的心語：</b>收藏的句子、寫給自己的話。這裡也可以備份。</p>
-      <p><b>我的成長：</b>一週一週回頭看：寫過什麼、試過什麼。不打分數，也不用每天都有。</p>
+      <p><b>我的心語：</b>你寫下的話、收藏的句子。這裡也可以備份。</p>
+      <p><b>我的成長：</b>一週寫一句「這一週，我有什麼不一樣」，也看得到自己試過的小事。不打分數。</p>
       <p><b>八週旅程：</b>8 週 56 天走到哪裡了；前面的日子想再讀，從這裡進去。</p>
       <p>每一篇都照四個步驟走：</p>
       <p><b>一、讀聖訓：</b>先讀原文，再記住「今日重點」那一句。</p>
@@ -992,7 +1011,7 @@ function show(name){
   const reading = name === 'today';
   $('steps').hidden = !reading; $('bar-brand').hidden = reading; $('nav-intro').hidden = reading;
   if (name === 'journey') renderJourney();
-  if (name === 'growth') renderGrowth();
+  if (name === 'growth'){ editW = null; renderGrowth(); }
   if (name === 'past') renderPast();
   if (name === 'life'){ if (!lifeAny()) return show('cover'); renderLife(null); }
   if (name !== 'today') stopSpeak();
@@ -1071,59 +1090,64 @@ function renderJourney(){
 
 // ===== 我的成長：一週一週回頭看。不打分數、不算連續幾天 =====
 const clip = (s, n) => s.length > n ? s.slice(0, n) + '……' : s;
-let weekT;
+let weekT, editW = null;
+function weekEditor(w, card, initial){
+  const id = 'gw-' + w, lb = el('label', 'hint', '這一週，我有什麼不一樣？一句就好。'); lb.htmlFor = id;
+  const ta = el('textarea'); ta.id = id; ta.value = initial || ''; ta.placeholder = '例如：這一週，我比較不急著回話了。';
+  const msg = el('p', 'saved'); msg.setAttribute('aria-live', 'polite');
+  const save = () => { const all = store.get('sx-week', {}), t = ta.value.trim();
+    if (t) all[w] = { text: t, at: Date.now() }; else delete all[w];
+    return store.set('sx-week', all); };
+  ta.addEventListener('input', () => { clearTimeout(weekT); weekT = setTimeout(() => { msg.textContent = save() ? (ta.value.trim() ? '已經自動存好了。' : '') : FAIL; }, 800); });
+  const done = el('button', 'ghost gdone', '寫好了');
+  done.onclick = () => { clearTimeout(weekT); if (!save()){ msg.textContent = FAIL; return; } editW = null; renderGrowth(); };
+  card.append(lb, ta, msg, done);
+  return ta;
+}
 function renderGrowth(){
-  const notes = store.get('sx-notes', {}), read = readMap(), tried = triedMap(), wk = store.get('sx-week', {});
-  const a = ALLD.filter(d => read[d.n]).length, b = ALLD.filter(d => (notes[d.n] || {}).text).length, c = ALLD.filter(d => tried[d.n]).length;
+  const read = readMap(), tried = triedMap(), wk = store.get('sx-week', {});
+  const a = ALLD.filter(d => read[d.n]).length, c = ALLD.filter(d => tried[d.n]).length;
   const sum = $('g-sum'); sum.textContent = '';
-  if (!a && !b && !c){
-    sum.append(el('p', 'big', '這裡會慢慢長出你的紀錄。'));
-    sum.append(el('p', '', '讀完一篇，按最下面的「讀完了，做個記號」；試過那天的小事，按「這件事，我試過了」。它們就會出現在這裡。'));
+  if (!a && !c && !Object.keys(wk).length){
+    sum.append(el('p', 'big', '這裡會慢慢長出你走過的路。'));
+    sum.append(el('p', '', '每一週，可以寫一句「這一週，我有什麼不一樣」；試過哪一天的小事，也會出現在這裡。'));
   } else {
-    sum.append(el('p', 'big', `到今天，你讀過 ${a} 篇` + (b ? `，寫下 ${b} 句話` : '') + (c ? `，試過 ${c} 件小事` : '') + '。'));
-    sum.append(el('p', 'hint', '有幾天沒讀、沒寫，都沒有關係。願意回來，就是在路上。'));
+    sum.append(el('p', 'big', `你已經讀了 ${a} 篇` + (c ? `，試過 ${c} 件小事` : '') + '。'));
+    sum.append(el('p', 'hint', '有幾天沒讀，都沒有關係。願意回來，就是在路上。'));
   }
   const box = $('g-list'); box.textContent = '';
   const tp = state.mode === 'on' ? pos(state.day) : -1;
-  const curW = state.mode === 'on' ? Math.floor(tp / 7) : (state.mode === 'before' ? -1 : 7);
-  const has = d => read[d.n] || tried[d.n] || (notes[d.n] || {}).text;
-  const records = (days, card) => {
-    const ts = days.filter(d => tried[d.n]), ns = days.filter(d => (notes[d.n] || {}).text);
-    if (ts.length){
-      card.append(el('p', 'lab', '我試過的'));
-      const ul = el('ul', 'glist');
-      ts.forEach(d => { const li = el('li', 'try'); li.append(el('small', '', `${dayLabel(d)}｜${d.theme}`), document.createTextNode(clip(d['今天可以試試'], 46))); ul.append(li); });
-      card.append(ul);
-    }
-    if (ns.length){
-      card.append(el('p', 'lab', '我寫下的'));
-      const ul = el('ul', 'glist');
-      ns.forEach(d => { const li = el('li'); li.append(el('small', '', `${dayLabel(d)}｜${d.theme}`), document.createTextNode(notes[d.n].text)); ul.append(li); });
-      card.append(ul);
-    }
-    return ts.length + ns.length;
+  const curW = state.mode === 'on' ? Math.floor(tp / 7) : (state.mode === 'before' ? 0 : 7);
+  const chips = (days, card) => {
+    const ts = days.filter(d => tried[d.n]);
+    if (!ts.length) return 0;
+    card.append(el('p', 'lab', '這一週試過的'));
+    const row = el('div', 'chips');
+    ts.forEach(d => { const b = el('button', '', `✓ ${d.theme}`); b.onclick = () => openDay(d.n); row.append(b); });
+    card.append(row); return ts.length;
   };
   for (let w = WEEKS.length - 1; w >= 0; w--){
     const days = WEEKS[w][1].map(n => DAYS[n - 1]);
-    if (w > curW && !days.some(has) && !(wk[w] || {}).text) continue;
+    const text = (wk[w] || {}).text, nTry = days.filter(d => tried[d.n]).length, k = days.filter(d => read[d.n]).length;
+    if (w > curW && !text && !nTry && !k) continue;
     const card = el('div', 'gwk'), h = el('h3');
-    const k = days.filter(d => read[d.n]).length;
-    h.append(el('small', '', `第 ${w + 1} 週${k ? `・讀過 ${k} 篇` : ''}`), document.createTextNode(WEEKS[w][0]));
+    h.append(el('small', '', `第 ${w + 1} 週${k ? `・讀了 ${k} 篇` : ''}`), document.createTextNode(WEEKS[w][0]));
     card.append(h);
-    if (!records(days, card)) card.append(el('p', 'hint', '這一週還沒有留下紀錄，沒關係。'));
-    const id = 'gw-' + w, lb = el('label', 'hint', '這一週，我有什麼不一樣？想到再寫，一句就好。'); lb.htmlFor = id;
-    const ta = el('textarea'); ta.id = id; ta.value = (wk[w] || {}).text || ''; ta.placeholder = '例如：這一週，我比較不急著回話了。';
-    const msg = el('p', 'saved'); msg.setAttribute('aria-live', 'polite');
-    ta.addEventListener('input', () => { clearTimeout(weekT); weekT = setTimeout(() => {
-      const all = store.get('sx-week', {}), t = ta.value.trim();
-      if (t) all[w] = { text: t, at: Date.now() }; else delete all[w];
-      msg.textContent = store.set('sx-week', all) ? (t ? '已經自動存好了。' : '') : FAIL;
-    }, 800); });
-    card.append(lb, ta, msg); box.append(card);
+    const reopen = () => { editW = w; renderGrowth(); const t = $('gw-' + w); if (t) t.focus(); };
+    if (editW === w || (!text && w === curW)){
+      weekEditor(w, card, text || '');
+    } else if (text){
+      card.append(el('p', 'gtxt', text));
+      const ed = el('button', 'nlink gedit', '改一改'); ed.onclick = reopen; card.append(ed);
+    } else {
+      const add = el('button', 'nlink gedit', '補寫這一週的一句'); add.onclick = reopen; card.append(add);
+    }
+    chips(days, card);
+    box.append(card);
   }
-  if (EXTD.some(has)){
+  if (EXTD.some(d => tried[d.n])){
     const card = el('div', 'gwk'), h = el('h3'); h.append(el('small', '', '讀完 8 週以後'), document.createTextNode('延伸篇'));
-    card.append(h); records(EXTD, card); box.append(card);
+    card.append(h); chips(EXTD, card); box.append(card);
   }
 }
 
@@ -1188,21 +1212,35 @@ $('rs-go').onclick = () => { const t = $('rs-in').value.trim(); if (!t){ $('rs-m
 $('rs-file').onchange = e => { const f = e.target.files && e.target.files[0]; if (!f) return;
   const r = new FileReader(); r.onload = () => restore(String(r.result || '')); r.onerror = () => { $('rs-msg').textContent = '這個檔案讀不出來。'; }; r.readAsText(f, 'utf-8'); e.target.value = ''; };
 
+// 我的心語：自己寫的話是主角；收藏的句子另外一頁。每張卡只有「那句話」和底下一行小字（日期、哪一篇）
+let notesTab = 'mine';
+const shortDate = t => (t || '').replace(/（.*?）/, '').trim();
 function renderNotes(){
   const notes = store.get('sx-notes', {});
   const ul = $('n-list'); ul.textContent = '';
-  const keys = Object.keys(notes).filter(k => notes[k].text || notes[k].carried).sort((a,b) => (notes[b].at||0) - (notes[a].at||0));
-  if (!keys.length){ const li = document.createElement('p'); li.className='empty'; li.textContent='這裡還空空的。讀完一天，按「收藏這一句，帶著走」，那一句就會來到這裡。'; ul.appendChild(li); return; }
-  keys.forEach(k => {
-    const d = DAYS.find(x => x.n == k), n = notes[k];
-    if (!d) return;
-    const li = document.createElement('li');
-    const m = document.createElement('span'); m.className='m'; m.textContent = `${n.today || ''}・${dayLabel(d)}｜${d.theme}・${d.who}`;
-    const kk = document.createElement('span'); kk.className='k'; kk.textContent = d['今日重點'];
-    li.append(m, kk);
-    if (n.text){ const t = document.createElement('span'); t.className='mine'; t.textContent = `我寫下：${n.text}`; li.append(t); }
-    if (openDays().some(x => x.n === d.n)){ const b = document.createElement('button'); b.className='ghost'; b.textContent='再讀這一篇'; b.onclick = () => openDay(d.n); li.append(b); }
-    ul.appendChild(li);
+  const ids = Object.keys(notes).filter(k => DAYS[k - 1]).sort((a, b) => (notes[b].at || 0) - (notes[a].at || 0));
+  const mine = ids.filter(k => notes[k].text), kept = ids.filter(k => notes[k].carried);
+  if (!mine.length && kept.length) notesTab = 'kept';
+  if (mine.length && !kept.length) notesTab = 'mine';
+  $('n-switch').hidden = !(mine.length && kept.length);
+  $('n-sw-mine').textContent = `我寫下的（${mine.length}）`;
+  $('n-sw-kept').textContent = `我收藏的（${kept.length}）`;
+  $('n-sw-mine').setAttribute('aria-pressed', notesTab === 'mine');
+  $('n-sw-kept').setAttribute('aria-pressed', notesTab === 'kept');
+  if (!ids.length || (!mine.length && !kept.length)){
+    const p = el('p', 'empty', '這裡還空空的。讀完一篇，在「觀自心」寫下一句心裡的話，或按「收藏這一句」，就會收在這裡。');
+    ul.appendChild(p); return;
+  }
+  const list = notesTab === 'mine' ? mine : kept;
+  list.forEach(k => {
+    const d = DAYS[k - 1], n = notes[k];
+    const li = el('li', notesTab === 'mine' ? 'mynote' : 'kept');
+    li.append(el('p', 'nt', notesTab === 'mine' ? n.text : d['今日重點']));
+    const ft = el('div', 'nf');
+    ft.append(el('span', 'nd', shortDate(n.today)));
+    const go = el('button', 'nlink', `〈${d.theme}〉›`); go.setAttribute('aria-label', `再讀〈${d.theme}〉這一篇`);
+    go.onclick = () => openDay(d.n);
+    ft.append(go); li.append(ft); ul.appendChild(li);
   });
 }
 
@@ -1386,6 +1424,8 @@ document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => {
   if (t === 'home'){ viewN = null; render(); show('cover'); } else show(t);
 });
 $('nav-intro').onclick = () => show('intro');
+$('n-sw-mine').onclick = () => { notesTab = 'mine'; renderNotes(); };
+$('n-sw-kept').onclick = () => { notesTab = 'kept'; renderNotes(); };
 $('j-life').onclick = () => show('life');
 $('to-past').onclick = () => show('journey');
 $('to-life').onclick = () => show('life');
