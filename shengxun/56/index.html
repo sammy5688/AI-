@@ -822,15 +822,16 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
     <ul class="list" id="n-list"></ul>
     <div class="backup" id="bk-card">
       <p class="t">存一份，換手機也找得回來</p>
-      <p class="hint">你寫下的話，只存在這支手機裡。存一份到手機的「備忘錄」或寄給自己，以後換了手機，還能放回來。</p>
+      <p class="hint">你寫下的話，只存在這支手機裡。存一份到 LINE 的「Keep筆記」、手機的「備忘錄」，或寄給自己，以後換了手機，還能放回來。</p>
       <p class="bk-last" id="bk-last"></p>
       <button class="primary" id="bk-copy">存一份</button>
       <ul class="bk-steps bk-opts">
-        <li><b>iPhone</b>：按了以後選「<b>備忘錄</b>」，再按「儲存」。</li>
+        <li><b>LINE</b>：按了以後選 LINE，在最上面的搜尋框打「<b>Keep</b>」，選「<b>Keep筆記</b>」，按傳送。</li>
+        <li><b>iPhone</b>：選「<b>備忘錄</b>」，再按「儲存」。</li>
         <li><b>Android</b>：選手機裡記事用的 App（例如「<b>記事本</b>」）存起來。</li>
         <li>也可以選「<b>郵件</b>」或「<b>Gmail</b>」，寄給自己。</li>
       </ul>
-      <p class="bk-how">備忘錄、記事本會跟著你的手機帳號，換新手機也還在。請不要傳給別人，裡面是你寫給自己的話。</p>
+      <p class="bk-how">選一種就好。Keep筆記只有你自己看得到；備忘錄、記事本會跟著手機帳號，換新手機也還在。請不要傳給別人，裡面是你寫給自己的話。</p>
       <p class="saved" id="bk-msg" aria-live="polite"></p>
       <div class="row" id="bk-more" hidden></div>
       <textarea id="bk-out" readonly hidden aria-label="要存起來的文字"></textarea>
@@ -839,7 +840,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
     <details id="rs-box" class="rsbox">
       <summary>換了新手機？把存好的那一份放回來</summary>
       <ol class="rs-steps">
-        <li>在新手機打開「備忘錄」、記事本或信箱，找到之前存的那一份。</li>
+        <li>在新手機打開 LINE 的「Keep筆記」（或備忘錄、記事本、信箱），找到之前存的那一份。</li>
         <li>點最下面那個連結，就會打開這裡，按「放回來」就好。</li>
       </ol>
       <p class="hint">連結點不開？把那一整份長按複製，貼在下面，再按「放回來」。</p>
@@ -911,7 +912,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <p>心裡有事的時候，可以按「遇到事，找一篇」（在每篇最下面，「八週旅程」裡也有），從「和家人鬧僵了」「一句話放不下」這些生活情境，馬上找到可以讀的篇章，不用等到那一天。</p>
       <h3>下面四個入口</h3>
       <p><b>今日玉語：</b>今天這一篇，從這裡開始讀。</p>
-      <p><b>我的心語：</b>你寫下的話、收藏的句子。在這裡也可以「存一份」到手機的備忘錄，換手機也找得回來。</p>
+      <p><b>我的心語：</b>你寫下的話、收藏的句子。在這裡也可以「存一份」到 LINE 的 Keep筆記或手機備忘錄，換手機也找得回來。</p>
       <p><b>我的成長：</b>一週寫一句「這一週，我有什麼不一樣」，也看得到自己試過的小事。不打分數。</p>
       <p><b>八週旅程：</b>8 週 56 天走到哪裡了；前面的日子想再讀，從這裡進去。</p>
       <p>每一篇都照四個步驟走：</p>
@@ -1504,7 +1505,7 @@ function expandData(c){
   return { notes, read, tried, week, letter, part: c.p };
 }
 // 連結太長時分成幾份；第一份放讀過、試過、每週一句、信，其餘只放心語
-const PART_MAX = 12000;
+const PART_MAX = 4000;
 async function backupParts(){
   const d = myData(), notes = compactNotes(d.notes || {}).sort((a, b) => a[2] - b[2]);
   const base = { v: 3, r: Object.keys(d.read || {}).map(Number), t: Object.keys(d.tried || {}).map(Number),
@@ -1529,6 +1530,7 @@ async function backupParts(){
     WEEKS.forEach(([name], w) => { const t = (full.week[w] || {}).text; if (t) body.push(`第 ${w + 1} 週，我有什麼不一樣：${t}`); });
     const tail = ['', '換了手機，點下面這個連結，就能放回來：', link];
     let lines = head.concat(body, tail);
+    if (lines.join('\n').length > 4900) lines = head.concat(['（寫下的話都在下面的連結裡。）'], tail);
 
     out.push(lines.join('\n'));
   }
@@ -1571,9 +1573,9 @@ async function sendPart(text, k, N){
     try{ await navigator.share({ text }); done(); msg.textContent = N > 1 && k < N - 1 ? `第 ${k + 1} 份存好了，請接著按「存第 ${k + 2} 份」。` : '存好了。以後換手機，打開存的那一份，點裡面的連結，就能放回來。'; return true; }
     catch(e){ if (e && e.name === 'AbortError') return false; }
   }
-  try{ await navigator.clipboard.writeText(text); done(); msg.textContent = `${N > 1 ? `第 ${k + 1} 份` : ''}已經複製好了。打開手機的「備忘錄」或「記事本」，新增一則，長按選「貼上」就存好了。`; return true; }catch(e){}
+  try{ await navigator.clipboard.writeText(text); done(); msg.textContent = `${N > 1 ? `第 ${k + 1} 份` : ''}已經複製好了。打開 LINE 的「Keep筆記」或手機的「備忘錄」，長按選「貼上」，送出或儲存就好。`; return true; }catch(e){}
   out.hidden = false; out.value = text; out.focus(); out.select();
-  msg.textContent = '這支手機不能自動複製。下面的字已經選好了，長按選「複製」，再貼到手機的「備忘錄」或「記事本」。';
+  msg.textContent = '這支手機不能自動複製。下面的字已經選好了，長按選「複製」，再貼到 LINE 的「Keep筆記」或手機的「備忘錄」。';
   return false;
 }
 let bkPartsCache = null;
