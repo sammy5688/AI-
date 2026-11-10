@@ -609,6 +609,9 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 .gans .lab{margin:0;font-size:.8em;color:var(--muted)}
 .gans .gedit{align-self:flex-end;font-size:.8em;color:var(--muted)}
 .gwk .hint{margin:0}
+.saved:empty{display:none}
+.nf{justify-content:flex-start}
+.nf .nlink{max-width:none;text-align:left;color:var(--muted);font-size:.8em;line-height:1.6;padding:8px 0}
 </style>
 
 </head>
@@ -1028,7 +1031,7 @@ function render(){
   D = pastView ? DAYS[viewN - 1] : state.day;
   $('c-greet').textContent = greeting();
   $('c-date').textContent = dateLabel();
-  const dwLabel = pos(D) >= 0 ? `本週主題｜${WEEKS[weekNo(D)][0]}` : '';
+  const dwLabel = pos(D) >= 0 && state.mode !== 'free' ? `本週主題｜${WEEKS[weekNo(D)][0]}` : '';
   $('c-dayno').textContent = $('d-dayno').textContent = dayLabel(D);
   $('c-week').textContent = dwLabel; $('c-week').hidden = $('d-week').hidden = !dwLabel;
   $('c-day').textContent = D.theme;
@@ -1507,8 +1510,9 @@ function renderNotes(){
     const li = el('li', notesTab === 'mine' ? 'mynote' : 'kept');
     li.append(el('p', 'nt', notesTab === 'mine' ? n.text : d['今日重點']));
     const ft = el('div', 'nf');
-    ft.append(el('span', 'nd', shortDate(n.today)));
-    const go = el('button', 'nlink', `〈${d.theme}〉›`); go.setAttribute('aria-label', `再讀〈${d.theme}〉這一篇`);
+    const go = el('button', 'nlink', `${shortDate(n.today) ? shortDate(n.today) + '・' : ''}讀〈${d.theme}〉時寫下 ›`);
+    if (notesTab !== 'mine') go.textContent = `${shortDate(n.today) ? shortDate(n.today) + '・' : ''}〈${d.theme}〉的今日重點 ›`;
+    go.setAttribute('aria-label', `再讀〈${d.theme}〉這一篇`);
     go.onclick = () => openDay(d.n);
     ft.append(go); li.append(ft); ul.appendChild(li);
   });
@@ -1605,13 +1609,13 @@ $('note').addEventListener('input', () => {
 });
 $('mark-read').onclick = () => {
   const r = readMap(); r[D.n] = { at: Date.now(), today: dateLabel() };
-  if (!store.set('sx-read', r)){ $('read-msg').textContent = FAIL; return; }
+  if (!store.set('sx-read', r)){ $('read-msg').textContent = '這支手機現在沒辦法記下來。不過你今天讀完了，這就很好。'; return; }
   paintDone(); $('read-msg').textContent = '✓ 記下來了。今天讀到這裡，就很好了。';
 };
 $('tried').onclick = () => {
   const t = triedMap(), on = !t[D.n];
   if (on) t[D.n] = { at: Date.now(), today: dateLabel() }; else delete t[D.n];
-  if (!store.set('sx-tried', t)){ $('tried-msg').textContent = FAIL; return; }
+  if (!store.set('sx-tried', t)){ $('tried-msg').textContent = '這支手機現在沒辦法記下來。你試過了，這就很好。'; return; }
   paintDone(); $('tried-msg').textContent = on ? '記下來了，在「我的成長」看得到。' : '';
 };
 $('carry').onclick = () => {
