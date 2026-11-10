@@ -669,6 +669,15 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 .ab .row{flex-wrap:wrap}
 .closing{margin:6px 4px 0;text-align:center;font-family:var(--serif);color:var(--muted);line-height:1.9;font-size:.95em}
 @media (max-width:359px){.ab .weeks{grid-template-columns:1fr}}
+/* 段落名稱（開篇、原文、今日重點、白話理解、用在生活裡、問問自己、今天可以試試）：七個一樣的樣子，前面一小段色條，和內文分得開 */
+.lab.sec{margin:0 0 10px;display:flex;align-items:center}
+.lab.sec b{font-size:1.12em;font-weight:700;color:var(--accent-deep);letter-spacing:.12em;margin-right:8px;display:inline-flex;align-items:center}
+.lab.sec b::before{content:"";display:inline-block!important;width:4px;height:1.05em;border-radius:2px;background:var(--accent);margin-right:8px}
+.trybox .lab.sec b{color:var(--clay)}
+.trybox .lab.sec b::before{background:var(--clay)}
+.keylab.sec{justify-content:space-between}
+.keybox .lab.sec b::before,.quote .lab.sec b::before{content:""!important;display:inline-block!important;width:4px!important;height:1.05em!important;border-radius:2px!important;background:var(--accent)!important;-webkit-mask:none!important;mask:none!important;margin-right:8px!important;vertical-align:middle!important}
+.after p:empty{display:none}
 </style>
 
 </head>
@@ -781,21 +790,21 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
     </div>
     <div class="step" id="st1">
       <h2><span class="num">一</span>讀聖訓</h2>
-      <div><p class="lab"><b>開篇</b></p><p class="p" id="d-open"></p></div>
-      <div class="quote"><p class="lab"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
-      <div class="keybox"><p class="lab keylab"><span><b>今日重點</b><span id="d-keysrc"></span></span><button class="keystar" id="carry" aria-pressed="false">☆ 收藏</button></p><p class="p" id="d-key"></p></div>
+      <div><p class="lab sec"><b>開篇</b></p><p class="p" id="d-open"></p></div>
+      <div class="quote"><p class="lab sec"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
+      <div class="keybox"><p class="lab sec keylab"><span><b>今日重點</b><span id="d-keysrc"></span></span><button class="keystar" id="carry" aria-pressed="false">☆ 收藏</button></p><p class="p" id="d-key"></p></div>
       <p class="saved" id="carry-msg" aria-live="polite"></p>
     </div>
 
     <div class="step s2" id="st2">
       <h2><span class="num">二</span>悟道理</h2>
-      <div><p class="lab sub"><b>白話理解</b></p><p class="p" id="d-plain"></p></div>
-      <div class="sepline"><p class="lab sub"><b>用在生活裡</b></p><div class="storybox"><p class="p" id="d-story"></p></div></div>
+      <div><p class="lab sec"><b>白話理解</b></p><p class="p" id="d-plain"></p></div>
+      <div class="sepline"><p class="lab sec"><b>用在生活裡</b></p><div class="storybox"><p class="p" id="d-story"></p></div></div>
     </div>
 
     <div class="step s3" id="st3">
       <h2><span class="num">三</span>觀自心</h2>
-      <div><p class="lab"><b>問問自己</b></p><p class="p" id="d-ask"></p></div>
+      <div><p class="lab sec"><b>問問自己</b></p><p class="p" id="d-ask"></p></div>
       <div class="past" id="d-past" hidden></div>
       <label class="hint" for="note">想寫就寫一句給自己。寫了會自動存好，收在「我的心語」；不寫也可以。</label>
       <textarea id="note" placeholder="例如：今天我差點又急著……"></textarea>
@@ -805,7 +814,7 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 
     <div class="step act" id="st4">
       <h2><span class="num">四</span>實踐於行</h2>
-      <div class="trybox"><p class="lab"><b>今天可以試試</b></p><p class="p" id="d-try"></p>
+      <div class="trybox"><p class="lab sec"><b>今天可以試試</b></p><p class="p" id="d-try"></p>
         <p class="tryhint" id="try-hint">試過了嗎？明天打開時，可以記下來。</p>
         <button class="nlink trylink" id="tried" aria-pressed="false" hidden>這件事，我試過了</button>
         <p class="saved" id="tried-msg" aria-live="polite"></p>
@@ -822,8 +831,8 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
     </div>
 
     <div class="close" id="d-close">
-      <button class="primary" id="mark-read">讀完了，做個記號</button>
-      <p class="bk-how" id="mark-how">做了記號，「八週旅程」會在這一天打上 ✓。</p>
+      <button class="primary" id="mark-read">讀完了，按一下</button>
+      <p class="bk-how" id="mark-how">「八週旅程」會在這一天做記號。</p>
       <p id="read-msg" aria-live="polite"></p>
       <div class="sharebox" id="d-share" hidden>
         <p class="lab">想到誰，就把今天這一句傳給他</p>
@@ -851,7 +860,6 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
       <button class="nlink lifelink" id="to-life">遇到事，找一篇 ›</button>
       <button id="to-past" hidden></button><button id="to-top" hidden></button>
     </div>
-    <p class="note">「原文」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
   </section>
 
   <!-- 我的心語 -->
@@ -1210,7 +1218,7 @@ function render(){
   $('d-ask').textContent = D['問問自己'];
   $('d-try').textContent = D['今天可以試試'];
   $('d-next').textContent =
-    state.mode === 'before' ? '現在是試讀，先開放第 1 天。' :
+    state.mode === 'before' ? '' :
     state.mode === 'after' ? `${DAYS.length} 天試讀已經讀完，謝謝您。` :
     state.mode === 'preview' ? '這是預覽。' :
     state.mode === 'free' ? '明天清晨 5 點，會再翻到一篇。' :
@@ -1525,7 +1533,7 @@ function renderGrowth(){
   const sum = $('g-sum'); sum.textContent = '';
   if (!a && !c && !Object.keys(wk).length){
     sum.append(el('p', 'big', '這裡會慢慢長出你走過的路。'));
-    sum.append(el('p', '', '讀完一篇做個記號、試過那天的小事、每週寫一句「這一週，我有什麼不一樣」，都會收在這裡。'));
+    sum.append(el('p', '', '讀完一篇按一下「讀完了」、試過那天的小事、每週寫一句「這一週，我有什麼不一樣」，都會收在這裡。'));
   } else {
     sum.append(el('p', 'big', `你已經讀了 ${a} 篇` + (c ? `，試過 ${c} 件小事` : '') + '。'));
     sum.append(el('p', 'hint', '有幾天沒讀，都沒有關係。願意回來，就是在路上。'));
