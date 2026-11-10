@@ -166,7 +166,7 @@ textarea:focus{box-shadow:var(--well),0 0 0 3px rgba(110,139,117,.3);outline:non
 .close p{margin:0;font-family:var(--serif);color:var(--accent-deep);letter-spacing:.06em}
 .note{font-size:.8em;color:var(--muted);margin:0;text-align:center;padding:0 8px}
 
-/* 我的收藏 */
+/* 我的心語 */
 .pagehead{display:flex;flex-direction:column;gap:4px;padding:6px 4px 0}
 .list{display:flex;flex-direction:column;gap:14px;margin:0;padding:0;list-style:none}
 .list li{border-radius:22px;padding:18px 20px;display:flex;flex-direction:column;gap:6px}
@@ -366,17 +366,151 @@ details.fold .inner{padding-left:0!important;padding-right:0!important}
 html.night .primary{background:#5A7863!important}
 .ghost{box-shadow:none!important}
 .hero{box-shadow:none!important}
+
+/* ===== 2026-11 改版：下方四個入口、上方步驟小標、八週旅程、我的成長、備份。顏色全部沿用鼠尾草霧綠 ===== */
+.bar{padding-block:8px}
+.bar-wrap{min-height:52px}
+.bar-brand{flex:1;min-width:0;margin:0;font-family:var(--serif);font-weight:700;font-size:19px;color:var(--accent-deep);letter-spacing:.1em;white-space:nowrap}
+.bar .helpbtn{flex:none;min-height:48px;padding:0 18px;border-radius:999px;background:var(--paper);border:1.5px solid rgba(70,98,79,.35);color:var(--accent-deep);font-size:16px}
+.bar .fsbtn{min-height:52px;min-width:58px}
+.steps{flex:1;min-width:0;display:flex;gap:6px;align-items:center}
+.steps button{flex:none;min-height:44px;min-width:44px;padding:0;border-radius:999px;background:transparent;border:1.5px solid rgba(70,98,79,.3);font-family:var(--serif);font-size:17px;font-weight:700;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
+.steps button .nm{display:none;font-family:var(--sans);font-size:16px;font-weight:500;letter-spacing:.04em}
+.steps button[aria-current="step"]{padding:0 14px;background:#557560;border-color:#557560;color:#fff}
+.steps button[aria-current="step"] .nm{display:inline}
+@media (max-width:359px){.steps button[aria-current="step"] .nm{display:none}.steps button[aria-current="step"]{padding:0}}
+.step{scroll-margin-top:84px}
+html.night .bar .helpbtn{background:var(--paper);color:var(--ink);border-color:rgba(207,226,211,.4)}
+html.night .steps button{border-color:rgba(207,226,211,.35)}
+html.night .steps button[aria-current="step"]{background:#5A7863;border-color:#5A7863}
+
+/* 下方四個入口：拇指按得到 */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:rgba(246,248,243,.97);border-top:1px solid var(--line);
+  padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+.tabs-in{max-width:34rem;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.tabs button{min-height:56px;border:0;border-radius:16px;background:transparent;font-size:17px;font-weight:500;color:var(--muted);padding:0 2px;white-space:nowrap}
+.tabs button[aria-current="page"]{background:var(--veil);color:var(--accent-deep);font-weight:700;box-shadow:inset 0 0 0 1.5px rgba(70,98,79,.22)}
+html.night .tabs{background:rgba(46,56,51,.97);border-top-color:rgba(255,255,255,.08)}
+html.night .tabs button[aria-current="page"]{box-shadow:inset 0 0 0 1.5px rgba(207,226,211,.3)}
+main{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
+.speakbar{bottom:calc(69px + env(safe-area-inset-bottom,0px));padding-bottom:10px}
+body.has-speak main{padding-bottom:calc(200px + env(safe-area-inset-bottom,0px))}
+@media (max-width:359px){.tabs button{font-size:15px}}
+
+/* 首頁：收小一點，讓「開始」按鈕不用滑就看得到 */
+.col{gap:18px}
+.hero svg{height:104px}
+.hero-text{padding:0 22px 16px;gap:2px}
+.brand{font-size:1.5em}
+.trial{display:none}
+.todaycard{padding:20px 20px 22px;gap:8px}
+.week{margin:0;font-size:.85em;font-weight:700;color:var(--accent-deep);letter-spacing:.04em}
+.who{margin:0;font-size:.85em;color:var(--muted)}
+.daytag{text-wrap:balance;line-height:1.5}
+.bigkey{margin:8px 0 6px}
+.onlykey{margin:2px 0 0;font-size:.82em;color:var(--muted);text-align:center}
+.readflag{margin:0;font-size:.85em;font-weight:700;color:var(--accent-deep)}
+.dayhead{gap:0}
+
+/* 每日頁：讀完的記號、試過了 */
+.ghost[aria-pressed="true"]{background:var(--clay-bg)!important;border-color:var(--clay);color:var(--clay);font-weight:700}
+.trybtn{align-self:flex-start}
+.close .primary{align-self:stretch;width:100%}
+.close{padding:6px 0 0;align-items:stretch}
+.close p:empty{display:none}
+details.fold summary::after{content:"點開來看"}
+details[open].fold summary::after{content:"先收起來"}
+
+/* 八週旅程 */
+.card2,details.wk,.gsum,.gwk,.backup{background:var(--paper);border-radius:22px;box-shadow:0 1px 3px rgba(56,84,64,.08),0 0 0 1px rgba(70,98,79,.08)}
+html.night details.wk,html.night .gsum,html.night .gwk,html.night .backup{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.jsum{margin:0;font-family:var(--serif);font-weight:700;color:var(--accent-deep);font-size:1.02em;line-height:1.7}
+.wklist{display:flex;flex-direction:column;gap:14px}
+details.wk summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+details.wk summary::-webkit-details-marker{display:none}
+.wk-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.wk-t{font-family:var(--serif);font-weight:700;color:var(--ink);line-height:1.5}
+.wk-t small{display:block;font-family:var(--sans);font-size:.78em;font-weight:500;color:var(--muted)}
+.wk-c{flex:none;font-size:.78em;color:var(--accent-deep);border:1.5px solid rgba(70,98,79,.35);border-radius:999px;padding:3px 12px;white-space:nowrap}
+details.wk .wk-c::after{content:"點開"}
+details[open].wk .wk-c::after{content:"收起"}
+.wkdots{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.wkdots i{height:10px;border-radius:999px;box-shadow:inset 0 0 0 1.5px rgba(70,98,79,.38)}
+.wkdots i.r{background:var(--accent-deep);box-shadow:none}
+.wkdots i.l{box-shadow:inset 0 0 0 1.5px rgba(70,98,79,.14)}
+html.night .wkdots i{box-shadow:inset 0 0 0 1.5px rgba(207,226,211,.45)}
+html.night .wkdots i.r{box-shadow:none}
+html.night .wkdots i.l{box-shadow:inset 0 0 0 1.5px rgba(207,226,211,.16)}
+.wk-days{list-style:none;margin:0;padding:0 12px 14px;display:flex;flex-direction:column;gap:8px}
+.wk-days button{width:100%;text-align:left;min-height:64px;border:0;border-radius:16px;background:var(--veil);padding:10px 14px;display:flex;gap:12px;align-items:center;line-height:1.5}
+.wk-days button:disabled{background:transparent;box-shadow:inset 0 0 0 1px var(--line);cursor:default}
+.wk-days .mk{flex:none;width:2em;height:2em;border-radius:50%;display:grid;place-items:center;font-size:.85em;font-weight:700;background:var(--paper);color:var(--accent-deep)}
+.wk-days .r .mk{background:var(--accent-deep);color:var(--paper)}
+.wk-days button:disabled .mk{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 1px var(--line)}
+.wk-days .tx{display:flex;flex-direction:column;min-width:0}
+.wk-days .tt{font-family:var(--serif);font-weight:700;color:var(--ink)}
+.wk-days .ss{font-size:.8em;color:var(--muted)}
+.wk-days .now{outline:2.5px solid var(--accent);outline-offset:1px}
+
+/* 我的成長 */
+.gsum{padding:20px;display:flex;flex-direction:column;gap:8px}
+.gsum .big{margin:0;font-family:var(--serif);font-weight:700;color:var(--accent-deep);font-size:1.08em;line-height:1.7}
+.gsum p{margin:0}
+.gwk{padding:18px 20px 20px;display:flex;flex-direction:column;gap:12px}
+.gwk h3{margin:0;font-family:var(--serif);font-size:1.02em;color:var(--accent-deep);line-height:1.5}
+.gwk h3 small{display:block;font-family:var(--sans);font-size:.78em;font-weight:500;color:var(--muted)}
+.glist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.glist li{background:var(--warm);border-radius:12px;padding:8px 12px;font-size:.9em;line-height:1.7}
+.glist li.try{background:var(--clay-bg)}
+.glist small{display:block;color:var(--muted);font-size:.88em}
+.gwk .lab{margin:0}
+
+/* 備份 */
+.backup{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px}
+.backup .t{margin:0;font-family:var(--serif);font-weight:700;color:var(--accent-deep)}
+.backup details summary{min-height:48px;display:flex;align-items:center;color:var(--accent-deep);font-weight:700;text-decoration:underline;text-underline-offset:4px;cursor:pointer;list-style:none}
+.backup details summary::-webkit-details-marker{display:none}
+.backup details[open]{display:flex;flex-direction:column;gap:10px}
+.filebtn{display:inline-flex;align-items:center;cursor:pointer}
+
+.bar-brand{line-height:1.3}
+.bar-brand small{display:block;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--muted);letter-spacing:.06em}
+.hero svg{height:78px}
+.hero-text{padding:8px 20px 12px}
+.hero .brand,.hero .brand-sub{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.greet{font-size:.9em}
+.bigkey{font-size:1.25em;line-height:1.65;padding-left:14px}
+.todaycard .meta{line-height:1.6}.week,.who{line-height:1.6}
+.backup .saved:empty,.gwk .saved:empty{display:none}
+.dayhead .daytag,.todaycard .daytag{font-size:1.3em}
+.sepline{border-top:1.5px solid rgba(70,98,79,.3);padding-top:20px;margin-top:6px}
+html.night .sepline{border-top-color:rgba(207,226,211,.34)}
+.step h2{padding-bottom:14px;border-bottom:1.5px solid rgba(70,98,79,.2)}
+html.night .step h2{border-bottom-color:rgba(207,226,211,.24)}
+.lab.sub{margin-bottom:10px}
+.lab.sub b{font-size:1.2em;color:var(--accent-deep);letter-spacing:.1em}
+.sepline{margin-top:4px}
+.storybox{border-radius:20px;padding:18px;background:#F1F5EE}
+html.night .storybox{background:#424F48}
+.keybox .p,.bigkey{font-size:1.08em;font-weight:600;line-height:1.85;text-wrap:pretty;letter-spacing:.02em}
+.keybox .p span,.bigkey span{display:block}
+.keybox .p span+span,.bigkey span+span{margin-top:.45em}
+.keybox{padding:18px 18px 20px}
+.bigkey{margin:10px 0 8px;padding-left:16px}
 </style>
 
 </head>
 <body>
-<nav class="bar" aria-label="主選單">
+<nav class="bar" aria-label="上方工具">
   <div class="bar-wrap">
-    <div class="bar-in">
-      <button id="nav-today" data-go="today">今天</button>
-      <button id="nav-notes" data-go="notes">我的收藏</button>
-      <button id="nav-intro" data-go="intro">說明</button>
+    <p class="bar-brand" id="bar-brand">玉語心晨<small>玉虛的話，從心開始</small></p>
+    <div class="steps" id="steps" hidden>
+      <button data-st="0" aria-label="第一步：讀聖訓"><span>一</span><span class="nm">讀聖訓</span></button>
+      <button data-st="1" aria-label="第二步：悟道理"><span>二</span><span class="nm">悟道理</span></button>
+      <button data-st="2" aria-label="第三步：觀自心"><span>三</span><span class="nm">觀自心</span></button>
+      <button data-st="3" aria-label="第四步：實踐於行"><span>四</span><span class="nm">實踐於行</span></button>
     </div>
+    <button class="helpbtn" id="nav-intro">說明</button>
     <button class="fsbtn" id="nav-fs" aria-live="polite"><span class="a">字</span><span class="s" id="fs-lab">標準</span></button>
   </div>
 </nav>
@@ -472,9 +606,13 @@ html.night .primary{background:#5A7863!important}
     <div class="todaycard">
       <p class="status" id="c-status" hidden></p>
       <p class="meta" id="c-date"></p>
+      <p class="week" id="c-week"></p>
       <p class="daytag" id="c-day"></p>
+      <p class="who" id="c-who"></p>
       <p class="bigkey" id="c-key"></p>
-      <button class="primary" id="go-read">開始讀</button>
+      <p class="readflag" id="c-read" hidden>✓ 這一篇讀過了</p>
+      <button class="primary" id="go-read">開始今天的閱讀</button>
+      <p class="onlykey">時間不多的日子，只記住上面這一句也可以。</p>
     </div>
     <p class="msg" id="c-msg" hidden></p>
     <p class="nighthint" id="c-night" hidden>晚上了，畫面已經自動調暗，比較不刺眼。<button id="c-night-off">改回白天的樣子</button></p>
@@ -491,6 +629,7 @@ html.night .primary{background:#5A7863!important}
   <section class="view col" id="v-today" hidden>
     <div class="dayhead">
       <p class="meta" id="d-date"></p>
+      <p class="week" id="d-week"></p>
       <p class="daytag" id="d-title"></p>
     </div>
     <div class="row" id="d-nav"><button class="ghost" id="to-today" hidden>回到今天</button></div>
@@ -499,25 +638,20 @@ html.night .primary{background:#5A7863!important}
       <div class="ck-row"><button class="ghost" id="ck-prev">‹ 上一天</button><button class="ghost" id="ck-list">全部</button><button class="ghost" id="ck-next">下一天 ›</button></div>
       <p class="ck-prog" id="ck-prog"></p>
     </div>
-    <div class="step">
+    <div class="step" id="st1">
       <h2><span class="num">一</span>讀聖訓</h2>
       <div><p class="lab"><b>開篇</b></p><p class="p" id="d-open"></p></div>
       <div class="quote"><p class="lab"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
       <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc"></span></p><p class="p" id="d-key"></p></div>
     </div>
 
-    <div class="step s2">
+    <div class="step s2" id="st2">
       <h2><span class="num">二</span>悟道理</h2>
-      <details class="fold" id="d-more" open>
-        <summary>白話理解、用在生活裡</summary>
-        <div class="inner">
-          <div><p class="lab"><b>白話理解</b></p><p class="p" id="d-plain"></p></div>
-          <div><p class="lab"><b>用在生活裡</b></p><p class="p" id="d-story"></p></div>
-        </div>
-      </details>
+      <div><p class="lab sub"><b>白話理解</b></p><p class="p" id="d-plain"></p></div>
+      <div class="sepline"><p class="lab sub"><b>用在生活裡</b></p><div class="storybox"><p class="p" id="d-story"></p></div></div>
     </div>
 
-    <div class="step s3">
+    <div class="step s3" id="st3">
       <h2><span class="num">三</span>觀自心</h2>
       <div><p class="lab"><b>問問自己</b></p><p class="p" id="d-ask"></p></div>
       <div class="past" id="d-past" hidden></div>
@@ -527,10 +661,12 @@ html.night .primary{background:#5A7863!important}
       <p class="saved" id="note-msg" aria-live="polite"></p>
     </div>
 
-    <div class="step act">
+    <div class="step act" id="st4">
       <h2><span class="num">四</span>實踐於行</h2>
       <div class="trybox"><p class="lab"><b>今天可以試試</b></p><p class="p" id="d-try"></p></div>
-      <div class="row"><button class="primary" id="carry">收藏這一句，帶著走</button><button class="ghost" id="share">分享給家人</button></div>
+      <button class="ghost trybtn" id="tried" aria-pressed="false">這件事，我試過了</button>
+      <p class="saved" id="tried-msg" aria-live="polite"></p>
+      <div class="row"><button class="ghost" id="carry">收藏這一句，帶著走</button><button class="ghost" id="share">分享給家人</button></div>
       <p class="saved" id="share-msg" aria-live="polite"></p>
       <p class="saved" id="carry-msg" aria-live="polite"></p>
     </div>
@@ -544,7 +680,10 @@ html.night .primary{background:#5A7863!important}
       <div class="ck-row"><button class="ghost" id="ck-prev2">‹ 上一天</button><button class="ghost" id="ck-list2">全部</button><button class="primary" id="ck-next2">下一天 ›</button></div>
     </div>
 
-    <div class="close"><span class="orb" aria-hidden="true"></span><p>今天讀到這裡，就很好了。</p></div>
+    <div class="close" id="d-close">
+      <button class="primary" id="mark-read">讀完了，做個記號</button>
+      <p id="read-msg" aria-live="polite"></p>
+    </div>
     <div class="after">
       <p id="d-next"></p>
       <div class="row center"><button class="ghost" id="to-life">遇到事，找一篇</button><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-top">回到最上面</button></div>
@@ -552,14 +691,48 @@ html.night .primary{background:#5A7863!important}
     <p class="note">「原文」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
   </section>
 
-  <!-- 我的收藏 -->
+  <!-- 我的心語 -->
   <section class="view col" id="v-notes" hidden>
     <div class="pagehead">
-      <p class="daytag">我的收藏</p>
-      <p class="hint">按過「收藏這一句」或寫過一句話的日子，會收在這裡，隨時可以回來看看。</p>
+      <p class="daytag">我的心語</p>
+      <p class="hint">收藏的句子、寫給自己的話，都收在這裡，隨時可以回來看看。</p>
     </div>
     <ul class="list" id="n-list"></ul>
-    <p class="storenote">收藏和寫下的話，只存在這支手機的這個瀏覽器裡。換手機、換瀏覽器，或清除瀏覽紀錄，就不會跟著過去。</p>
+    <div class="backup">
+      <p class="t">備份我的心語</p>
+      <p class="hint">收藏和寫下的話，只存在這支手機的這個瀏覽器裡，不會上傳到任何地方。換手機、換瀏覽器，或清除瀏覽紀錄，就不會跟著過去。建議每個星期備份一次。</p>
+      <div class="row"><button class="ghost" id="bk-copy">複製全部</button><button class="ghost" id="bk-file">存成檔案</button></div>
+      <p class="saved" id="bk-msg" aria-live="polite"></p>
+      <textarea id="bk-out" readonly hidden aria-label="備份文字"></textarea>
+      <details id="rs-box">
+        <summary>換了手機？把備份放回來</summary>
+        <p class="hint">把之前複製的那一整段備份文字貼在下面，或是選備份檔，再按「放回來」。這支手機裡原本的紀錄不會被蓋掉。</p>
+        <textarea id="rs-in" placeholder="把備份文字貼在這裡" aria-label="貼上備份文字"></textarea>
+        <div class="row"><button class="ghost" id="rs-go">放回來</button><label class="ghost filebtn">選備份檔<input type="file" id="rs-file" accept=".txt,text/plain" hidden></label></div>
+        <p class="saved" id="rs-msg" aria-live="polite"></p>
+      </details>
+    </div>
+  </section>
+
+  <!-- 八週旅程 -->
+  <section class="view col" id="v-journey" hidden>
+    <div class="pagehead">
+      <p class="daytag">八週旅程</p>
+      <p class="jsum" id="j-sum"></p>
+      <p class="hint">讀過的日子會打上 ✓。沒讀到的不用急著補，想讀的時候再讀就好。</p>
+    </div>
+    <div class="row"><button class="ghost" id="j-life">遇到事，找一篇</button></div>
+    <div class="wklist" id="j-list"></div>
+  </section>
+
+  <!-- 我的成長 -->
+  <section class="view col" id="v-growth" hidden>
+    <div class="pagehead">
+      <p class="daytag">我的成長</p>
+      <p class="hint">這裡不打分數，也不跟誰比。只是讓你回頭的時候，看得見自己走過的路。</p>
+    </div>
+    <div class="gsum" id="g-sum"></div>
+    <div class="wklist" id="g-list"></div>
   </section>
 
   <!-- 前幾天 -->
@@ -597,12 +770,17 @@ html.night .primary{background:#5A7863!important}
       <h3>怎麼讀</h3>
       <p>全書 8 週、56 天，一週一個主題，由淺到深：安住自己的心、看見自己的心念、學著放下、待人的心、說話與相處、一起做事、謙卑與德、走過與承擔。</p>
       <p>每天清晨 5 點換一篇，一篇大約 5 分鐘。56 天讀完以後，每天會翻到一篇，有讀過的，也有 9 篇還沒讀過的延伸篇。</p>
-      <p>心裡有事的時候，可以按每篇最下面的「遇到事，找一篇」，從「和家人鬧僵了」「一句話放不下」這些生活情境，找到可以讀的篇章。</p>
+      <p>心裡有事的時候，可以按「遇到事，找一篇」（在每篇最下面，「八週旅程」裡也有），從「和家人鬧僵了」「一句話放不下」這些生活情境，找到可以讀的篇章。</p>
+      <h3>下面四個入口</h3>
+      <p><b>今日玉語：</b>今天這一篇。時間不多，只記住「今日重點」那一句也可以。</p>
+      <p><b>我的心語：</b>收藏的句子、寫給自己的話。這裡也可以備份。</p>
+      <p><b>八週旅程：</b>8 週 56 天走到哪裡了；前面的日子想再讀，從這裡進去。</p>
+      <p><b>我的成長：</b>一週一週回頭看：寫過什麼、試過什麼。不打分數，也不用每天都有。</p>
       <p>每一篇都照四個步驟走：</p>
       <p><b>一、讀聖訓：</b>先讀原文，再記住「今日重點」那一句。時間不多，讀到這裡就夠了。</p>
-      <p><b>二、悟道理：</b>讀「白話理解、用在生活裡」，看懂原文的意思，也看看生活裡的例子。</p>
+      <p><b>二、悟道理：</b>先讀「白話理解」，看懂原文的意思；再讀「用在生活裡」，看一個生活裡的故事。這是兩段不同的文字。</p>
       <p><b>三、觀自心：</b>用「問問自己」看看今天的心。想寫就寫一句，不寫也可以。</p>
-      <p><b>四、實踐於行：</b>做一件「今天可以試試」的小事，把這一句收藏起來，帶著走。</p>
+      <p><b>四、實踐於行：</b>做一件「今天可以試試」的小事。試過了，可以按「這件事，我試過了」；喜歡這一句，就收藏起來，帶著走。</p>
       <h3>讀的時候請記得</h3>
       <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
       <h3>夜間模式</h3>
@@ -618,6 +796,15 @@ html.night .primary{background:#5A7863!important}
     <div class="row center"><button class="primary" id="intro-ok">我知道了，開始讀</button></div>
   </section>
 </main>
+
+<nav class="tabs" aria-label="主選單">
+  <div class="tabs-in">
+    <button id="tab-home" data-tab="home">今日玉語</button>
+    <button id="tab-notes" data-tab="notes">我的心語</button>
+    <button id="tab-journey" data-tab="journey">八週旅程</button>
+    <button id="tab-growth" data-tab="growth">我的成長</button>
+  </div>
+</nav>
 
 <!-- 唸給我聽：只在每日頁出現，往下滑也一直在 -->
 <div class="speakbar" id="speakbar" hidden>
@@ -693,12 +880,18 @@ function dateLabel(){
 }
 function greeting(){
   const h = new Date(Date.now() + 8*3600e3).getUTCHours();
-  if (h >= 4 && h < 11) return '早安，歡迎回來';
-  if (h >= 11 && h < 14) return '午安，歡迎回來';
-  if (h >= 14 && h < 18) return '午後好，歡迎回來';
-  return '晚安，歡迎回來';
+  const g = h >= 4 && h < 11 ? '早安' : h >= 11 && h < 14 ? '午安' : h >= 14 && h < 18 ? '午後好' : '晚安';
+  return store.get('sx-intro', false) ? g + '，歡迎回來' : g + '，歡迎你來';
 }
+const readMap = () => store.get('sx-read', {});
+const triedMap = () => store.get('sx-tried', {});
+const openDate = i => { const t = new Date(START + i * DAY); return `${t.getUTCMonth()+1} 月 ${t.getUTCDate()} 日`; };
 const strip = s => s.replace(/^「|」$/g, '');
+// 今日重點：照句號、分號分段顯示（只換行，不改字）
+function setKey(el, text){
+  el.textContent = '';
+  (text.match(/[^。；！？]+[。；！？]*[」』）]*/g) || [text]).forEach(t => { const sp = document.createElement('span'); sp.textContent = t.trim(); el.appendChild(sp); });
+}
 
 let state, D, viewN = null;
 function openDays(){
@@ -715,9 +908,14 @@ function render(){
   const pastView = !!viewN && viewN !== state.day.n;
   D = pastView ? DAYS[viewN - 1] : state.day;
   $('c-greet').textContent = greeting();
-  $('c-date').textContent = (state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel()) + `｜${weekLabel(D)}`;
-  $('c-day').textContent = `${state.mode === 'free' && !pastView ? '今天翻到這一篇・' : ''}${dayLabel(D)}｜${D.theme}・${D.who}`;
-  $('c-key').textContent = D['今日重點'];
+  $('c-date').textContent = state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel();
+  const dwLabel = pos(D) >= 0 ? `${dayLabel(D)}・${weekLabel(D)}` : '延伸篇';
+  $('c-week').textContent = dwLabel;
+  $('c-day').textContent = D.theme;
+  $('c-who').textContent = D.who;
+  setKey($('c-key'), D['今日重點']);
+  const wasRead = !!readMap()[D.n];
+  $('c-read').hidden = !wasRead || isCheck();
   $('c-first').hidden = store.get('sx-intro', false);
   const msg = $('c-msg');
   msg.hidden = state.mode === 'on' || state.mode === 'before' || state.mode === 'free';
@@ -725,22 +923,23 @@ function render(){
   st.hidden = !(state.mode === 'before' || state.mode === 'free');
   if (state.mode === 'before') st.textContent = `目前開放試讀\n正式共讀：${startLabel}開始`;
   if (state.mode === 'free') st.textContent = '8 週已經讀完\n今天翻到這一篇';
-  $('go-read').textContent = state.mode === 'before' ? '試讀第 1 天' : '開始讀';
+  $('go-read').textContent = wasRead && !isCheck() ? '再讀一次' : state.mode === 'before' ? '試讀第 1 天' : '開始今天的閱讀';
   if (state.mode === 'free') msg.textContent = '8 週 56 天讀完了。現在每天會翻到一篇：有讀過的，也有還沒讀過的延伸篇。';
   if (state.mode === 'before') msg.textContent = `8 週 56 天，從 ${startLabel}開始。今天可以先看看第 1 天。`;
-  if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的收藏」看得到。`;
+  if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的心語」看得到。`;
   if (state.mode === 'preview') msg.textContent = `預覽${dayLabel(D)}。`;
 
-  $('d-date').textContent = (pastView ? '前幾天的內容' : (state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel())) + `｜${weekLabel(D)}`;
-  $('to-past').hidden = pastView || openDays().length < 2;
+  $('d-date').textContent = pastView ? '前幾天的內容' : (state.mode === 'on' ? `今天 ${dateLabel()}` : dateLabel());
+  $('d-week').textContent = dwLabel;
+  $('to-past').hidden = true;
   $('to-today').hidden = !pastView;
-  $('d-nav').hidden = $('to-past').hidden && $('to-today').hidden;
+  $('d-nav').hidden = $('to-today').hidden;
   $('to-life').hidden = isCheck();
-  $('d-title').textContent = `${dayLabel(D)}｜${D.theme}`;
+  $('d-title').textContent = D.theme;
   $('d-open').textContent = D['開篇'];
   $('d-src').textContent = `${D.who}，${D.date}`;
   $('d-text').textContent = D['原文'];
-  $('d-key').textContent = D['今日重點'];
+  setKey($('d-key'), D['今日重點']);
   $('d-keysrc').textContent = '';
   $('d-plain').textContent = D['白話理解'];
   $('d-story').textContent = D['情境範例'];
@@ -763,24 +962,225 @@ function render(){
     past.hidden = false;
     past.textContent = `上一次讀到這篇時，你寫下：「${mine.text}」`;
   } else past.hidden = true;
-  $('note-msg').textContent = ''; $('carry-msg').textContent = mine.carried ? '已經收藏，在「我的收藏」看得到。' : '';
+  $('note-msg').textContent = ''; $('carry-msg').textContent = mine.carried ? '已經收藏，在「我的心語」看得到。' : '';
+  $('share-msg').textContent = ''; $('tried-msg').textContent = '';
+  paintDone();
   ckRender();
 }
 
+// 讀完的記號、試過了：畫面上的樣子
+function paintDone(){
+  const ck = isCheck(), r = !!readMap()[D.n], t = !!triedMap()[D.n];
+  $('d-close').hidden = ck; $('tried').hidden = ck;
+  $('mark-read').hidden = r;
+  $('read-msg').textContent = r ? '✓ 這一篇讀過了。今天讀到這裡，就很好了。' : '';
+  $('tried').setAttribute('aria-pressed', t ? 'true' : 'false');
+  $('tried').textContent = t ? '✓ 這件事，我試過了' : '這件事，我試過了';
+}
+const TAB_OF = { cover:'home', today:'home', life:'home', past:'home', notes:'notes', journey:'journey', growth:'growth' };
 function show(name){
-  ['cover','today','notes','intro','past','life'].forEach(v => $('v-'+v).hidden = v !== name);
-  ['today','notes','intro'].forEach(v => {
-    const b = $('nav-'+v);
-    if ((name === v) || ((name === 'cover' || name === 'past' || name === 'life') && v === 'today')) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+  ['cover','today','notes','intro','past','life','journey','growth'].forEach(v => $('v-'+v).hidden = v !== name);
+  ['home','notes','journey','growth'].forEach(t => {
+    const b = $('tab-'+t);
+    if (TAB_OF[name] === t) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
   });
+  const reading = name === 'today';
+  $('steps').hidden = !reading; $('bar-brand').hidden = reading; $('nav-intro').hidden = reading;
+  if (name === 'journey') renderJourney();
+  if (name === 'growth') renderGrowth();
   if (name === 'past') renderPast();
   if (name === 'life') renderLife(null);
   if (name !== 'today') stopSpeak();
   const bar = name === 'today' && canSpeak;
   $('speakbar').hidden = !bar; document.body.classList.toggle('has-speak', bar);
-  if (name === 'notes') renderNotes();
+  if (name === 'notes'){ renderNotes(); $('bk-msg').textContent = ''; $('bk-out').hidden = true; $('rs-msg').textContent = ''; }
   window.scrollTo(0, 0);
+  syncSteps();
 }
+
+// 上方的一二三四：讀到哪一步就亮哪一步，點一下可以跳過去
+const stepEls = ['st1','st2','st3','st4'].map(id => $(id));
+const stepBtns = [...document.querySelectorAll('#steps button')];
+function syncSteps(){
+  if ($('v-today').hidden) return;
+  let cur = 0; const line = window.innerHeight * 0.4;
+  stepEls.forEach((el, i) => { if (el.getBoundingClientRect().top <= line) cur = i; });
+  stepBtns.forEach((b, i) => { if (i === cur) b.setAttribute('aria-current','step'); else b.removeAttribute('aria-current'); });
+}
+window.addEventListener('scroll', syncSteps, { passive: true });
+stepBtns.forEach((b, i) => b.onclick = () => stepEls[i].scrollIntoView({ behavior: 'smooth', block: 'start' }));
+
+// ===== 八週旅程：8 週 56 天走到哪裡 =====
+function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function dayRow(d, isOpen, read, isToday, lockText){
+  const li = el('li'), b = el('button', (read ? 'r ' : '') + (isToday ? 'now' : ''));
+  const p = pos(d);
+  b.append(el('span', 'mk', read ? '✓' : (p >= 0 ? String(p + 1) : '延')));
+  const tx = el('span', 'tx');
+  if (isOpen){
+    tx.append(el('span', 'tt', d.theme + (isToday ? '（今天）' : '')));
+    tx.append(el('span', 'ss', `${p >= 0 ? `第 ${p + 1} 天・` : ''}${d.who}${read ? '・讀過了' : ''}`));
+    b.onclick = () => openDay(d.n);
+  } else {
+    tx.append(el('span', 'tt', `第 ${p + 1} 天`));
+    tx.append(el('span', 'ss', lockText));
+    b.disabled = true;
+  }
+  b.append(tx); li.append(b); return li;
+}
+function renderJourney(){
+  const box = $('j-list'); box.textContent = '';
+  const open = openDays(), isOpen = d => open.some(x => x.n === d.n), read = readMap();
+  const tp = state.mode === 'on' ? pos(state.day) : -1;
+  const nRead = SEQ.filter(d => read[d.n]).length;
+  const readTxt = nRead ? `你讀過 ${nRead} 篇。` : '';
+  $('j-sum').textContent =
+    state.mode === 'before' ? `8 週 56 天，${startLabel}開始。現在可以先試讀第 1 天。` :
+    state.mode === 'on' ? `今天是第 ${tp + 1} 天，${weekLabel(state.day)}。${readTxt}` :
+    `8 週 56 天都打開了，想讀哪一篇都可以。${readTxt}`;
+  const curW = tp >= 0 ? Math.floor(tp / 7) : (state.mode === 'before' ? 0 : -1);
+  WEEKS.forEach(([name, ns], w) => {
+    const days = ns.map(n => DAYS[n - 1]);
+    const dt = el('details', 'wk'); if (w === curW) dt.open = true;
+    const sm = el('summary'), top = el('div', 'wk-top'), t = el('span', 'wk-t');
+    const k = days.filter(d => read[d.n]).length;
+    t.append(el('small', '', `第 ${w + 1} 週${k ? `・讀過 ${k} 篇` : ''}`), document.createTextNode(name));
+    top.append(t, el('span', 'wk-c'));
+    const dots = el('div', 'wkdots'); dots.setAttribute('aria-hidden', 'true');
+    days.forEach(d => dots.append(el('i', read[d.n] ? 'r' : isOpen(d) ? '' : 'l')));
+    sm.append(top, dots);
+    const ul = el('ul', 'wk-days');
+    days.forEach(d => ul.append(dayRow(d, isOpen(d), !!read[d.n], pos(d) === tp, `${openDate(pos(d))}清晨 5 點打開`)));
+    dt.append(sm, ul); box.append(dt);
+  });
+  if (state.mode === 'free'){
+    const dt = el('details', 'wk'), sm = el('summary'), top = el('div', 'wk-top'), t = el('span', 'wk-t');
+    t.append(el('small', '', '讀完 8 週以後'), document.createTextNode('延伸篇'));
+    top.append(t, el('span', 'wk-c')); sm.append(top);
+    const ul = el('ul', 'wk-days');
+    EXTD.forEach(d => ul.append(dayRow(d, true, !!read[d.n], false, '')));
+    dt.append(sm, ul); box.append(dt);
+  }
+}
+
+// ===== 我的成長：一週一週回頭看。不打分數、不算連續幾天 =====
+const clip = (s, n) => s.length > n ? s.slice(0, n) + '……' : s;
+let weekT;
+function renderGrowth(){
+  const notes = store.get('sx-notes', {}), read = readMap(), tried = triedMap(), wk = store.get('sx-week', {});
+  const a = ALLD.filter(d => read[d.n]).length, b = ALLD.filter(d => (notes[d.n] || {}).text).length, c = ALLD.filter(d => tried[d.n]).length;
+  const sum = $('g-sum'); sum.textContent = '';
+  if (!a && !b && !c){
+    sum.append(el('p', 'big', '這裡會慢慢長出你的紀錄。'));
+    sum.append(el('p', '', '讀完一篇，按最下面的「讀完了，做個記號」；試過那天的小事，按「這件事，我試過了」。它們就會出現在這裡。'));
+  } else {
+    sum.append(el('p', 'big', `到今天，你讀過 ${a} 篇` + (b ? `，寫下 ${b} 句話` : '') + (c ? `，試過 ${c} 件小事` : '') + '。'));
+    sum.append(el('p', 'hint', '有幾天沒讀、沒寫，都沒有關係。願意回來，就是在路上。'));
+  }
+  const box = $('g-list'); box.textContent = '';
+  const tp = state.mode === 'on' ? pos(state.day) : -1;
+  const curW = state.mode === 'on' ? Math.floor(tp / 7) : (state.mode === 'before' ? -1 : 7);
+  const has = d => read[d.n] || tried[d.n] || (notes[d.n] || {}).text;
+  const records = (days, card) => {
+    const ts = days.filter(d => tried[d.n]), ns = days.filter(d => (notes[d.n] || {}).text);
+    if (ts.length){
+      card.append(el('p', 'lab', '我試過的'));
+      const ul = el('ul', 'glist');
+      ts.forEach(d => { const li = el('li', 'try'); li.append(el('small', '', `${dayLabel(d)}｜${d.theme}`), document.createTextNode(clip(d['今天可以試試'], 46))); ul.append(li); });
+      card.append(ul);
+    }
+    if (ns.length){
+      card.append(el('p', 'lab', '我寫下的'));
+      const ul = el('ul', 'glist');
+      ns.forEach(d => { const li = el('li'); li.append(el('small', '', `${dayLabel(d)}｜${d.theme}`), document.createTextNode(notes[d.n].text)); ul.append(li); });
+      card.append(ul);
+    }
+    return ts.length + ns.length;
+  };
+  for (let w = WEEKS.length - 1; w >= 0; w--){
+    const days = WEEKS[w][1].map(n => DAYS[n - 1]);
+    if (w > curW && !days.some(has) && !(wk[w] || {}).text) continue;
+    const card = el('div', 'gwk'), h = el('h3');
+    const k = days.filter(d => read[d.n]).length;
+    h.append(el('small', '', `第 ${w + 1} 週${k ? `・讀過 ${k} 篇` : ''}`), document.createTextNode(WEEKS[w][0]));
+    card.append(h);
+    if (!records(days, card)) card.append(el('p', 'hint', '這一週還沒有留下紀錄，沒關係。'));
+    const id = 'gw-' + w, lb = el('label', 'hint', '這一週，我有什麼不一樣？想到再寫，一句就好。'); lb.htmlFor = id;
+    const ta = el('textarea'); ta.id = id; ta.value = (wk[w] || {}).text || ''; ta.placeholder = '例如：這一週，我比較不急著回話了。';
+    const msg = el('p', 'saved'); msg.setAttribute('aria-live', 'polite');
+    ta.addEventListener('input', () => { clearTimeout(weekT); weekT = setTimeout(() => {
+      const all = store.get('sx-week', {}), t = ta.value.trim();
+      if (t) all[w] = { text: t, at: Date.now() }; else delete all[w];
+      msg.textContent = store.set('sx-week', all) ? (t ? '已經自動存好了。' : '') : FAIL;
+    }, 800); });
+    card.append(lb, ta, msg); box.append(card);
+  }
+  if (EXTD.some(has)){
+    const card = el('div', 'gwk'), h = el('h3'); h.append(el('small', '', '讀完 8 週以後'), document.createTextNode('延伸篇'));
+    card.append(h); records(EXTD, card); box.append(card);
+  }
+}
+
+// ===== 備份：複製全部、存成檔案、放回來。資料只在這支手機裡，不上傳 =====
+const BK_TAG = 'YYXC1:';
+function backupText(){
+  const notes = store.get('sx-notes', {}), read = readMap(), tried = triedMap(), wk = store.get('sx-week', {});
+  const lines = ['《玉語心晨》我的心語備份', `備份日期：${dateLabel()}`, ''];
+  ALLD.forEach(d => {
+    const n = notes[d.n] || {};
+    if (!n.text && !n.carried && !tried[d.n]) return;
+    lines.push(`${dayLabel(d)}｜${d.theme}・${d.who}`, `今日重點：${strip(d['今日重點'])}`);
+    if (n.text) lines.push(`我寫下：${n.text}`);
+    if (tried[d.n]) lines.push('這一天的小事，我試過了。');
+    lines.push('');
+  });
+  WEEKS.forEach(([name], w) => { if ((wk[w] || {}).text) lines.push(`第 ${w + 1} 週・${name}｜這一週我的不一樣：${wk[w].text}`, ''); });
+  const json = JSON.stringify({ v: 1, notes, read, tried, week: wk });
+  lines.push('———', '以下是放回 App 用的資料，請整段保留，不要修改：', BK_TAG + btoa(unescape(encodeURIComponent(json))));
+  return lines.join('\n');
+}
+function hasAny(){ return [store.get('sx-notes', {}), readMap(), triedMap(), store.get('sx-week', {})].some(o => Object.keys(o).length); }
+$('bk-copy').onclick = async () => {
+  const msg = $('bk-msg'), out = $('bk-out'); out.hidden = true;
+  if (!hasAny()){ msg.textContent = '現在還沒有可以備份的紀錄。'; return; }
+  const text = backupText();
+  try{ await navigator.clipboard.writeText(text); msg.textContent = '複製好了。打開 LINE 的「Keep 筆記」或手機的記事本，貼上就存好了。'; return; }catch(e){}
+  out.hidden = false; out.value = text; out.focus(); out.select();
+  msg.textContent = '這支手機不能自動複製。下面的字已經選好了，長按選「複製」，再貼到 LINE 或記事本。';
+};
+$('bk-file').onclick = () => {
+  const msg = $('bk-msg'); $('bk-out').hidden = true;
+  if (!hasAny()){ msg.textContent = '現在還沒有可以備份的紀錄。'; return; }
+  try{
+    const t = new Date(Date.now() + 8*3600e3), p = n => String(n).padStart(2, '0');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([backupText()], { type: 'text/plain;charset=utf-8' }));
+    a.download = `玉語心晨_我的心語_${t.getUTCFullYear()}${p(t.getUTCMonth()+1)}${p(t.getUTCDate())}.txt`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    msg.textContent = '檔案存好了，在手機的「下載」或「檔案」裡找得到。如果沒有看到檔案，請改按「複製全部」。';
+  }catch(e){ msg.textContent = '這支手機沒辦法存成檔案，請改按「複製全部」。'; }
+};
+function restore(text){
+  const msg = $('rs-msg');
+  const i = text.indexOf(BK_TAG);
+  if (i < 0){ msg.textContent = '找不到備份資料。請確認貼上的是整段備份文字，包含最後那一長串英文和數字。'; return; }
+  let data;
+  try{ data = JSON.parse(decodeURIComponent(escape(atob(text.slice(i + BK_TAG.length).replace(/[^A-Za-z0-9+/=]/g, ''))))); }
+  catch(e){ msg.textContent = '這份備份好像不完整，沒辦法放回來。請重新複製整段再試一次。'; return; }
+  // 合併：兩邊都有的，留比較新的那一筆；這支手機原本有的不會不見
+  const merge = (key, inc) => { const cur = store.get(key, {}); let k = 0;
+    Object.keys(inc || {}).forEach(id => { const x = inc[id]; if (!x || typeof x !== 'object') return;
+      if (!cur[id] || (x.at || 0) > (cur[id].at || 0)){ cur[id] = x; k++; } });
+    return store.set(key, cur) ? k : -1; };
+  const ks = [merge('sx-notes', data.notes), merge('sx-read', data.read), merge('sx-tried', data.tried), merge('sx-week', data.week)];
+  if (ks.some(k => k < 0)){ msg.textContent = FAIL; return; }
+  const total = ks.reduce((x, y) => x + y, 0);
+  msg.textContent = total ? `放回來了，共 ${total} 筆紀錄。` : '這份備份裡的紀錄，這支手機都已經有了。';
+  $('rs-in').value = ''; render(); renderNotes();
+}
+$('rs-go').onclick = () => { const t = $('rs-in').value.trim(); if (!t){ $('rs-msg').textContent = '還沒有貼上備份文字。'; return; } restore(t); };
+$('rs-file').onchange = e => { const f = e.target.files && e.target.files[0]; if (!f) return;
+  const r = new FileReader(); r.onload = () => restore(String(r.result || '')); r.onerror = () => { $('rs-msg').textContent = '這個檔案讀不出來。'; }; r.readAsText(f, 'utf-8'); e.target.value = ''; };
 
 function renderNotes(){
   const notes = store.get('sx-notes', {});
@@ -869,7 +1269,7 @@ $('save-note').onclick = () => {
   clearTimeout(autoT);
   const t = $('note').value.trim();
   if (!t){ $('note-msg').textContent = '還沒寫字。不寫也沒關係。'; return; }
-  $('note-msg').textContent = upsert({ text: t }) ? '存好了，在「我的收藏」看得到。' : FAIL;
+  $('note-msg').textContent = upsert({ text: t }) ? '存好了，在「我的心語」看得到。' : FAIL;
 };
 // 寫字時自動存（停筆一下就存）
 $('note').addEventListener('input', () => {
@@ -881,8 +1281,19 @@ $('note').addEventListener('input', () => {
     $('note-msg').textContent = upsert({ text: t }) ? (t ? '已經自動存好了。' : '') : FAIL;
   }, 800);
 });
+$('mark-read').onclick = () => {
+  const r = readMap(); r[D.n] = { at: Date.now(), today: dateLabel() };
+  if (!store.set('sx-read', r)){ $('read-msg').textContent = FAIL; return; }
+  paintDone(); $('read-msg').textContent = '✓ 記下來了。今天讀到這裡，就很好了。';
+};
+$('tried').onclick = () => {
+  const t = triedMap(), on = !t[D.n];
+  if (on) t[D.n] = { at: Date.now(), today: dateLabel() }; else delete t[D.n];
+  if (!store.set('sx-tried', t)){ $('tried-msg').textContent = FAIL; return; }
+  paintDone(); $('tried-msg').textContent = on ? '記下來了，在「我的成長」看得到。' : '';
+};
 $('carry').onclick = () => {
-  $('carry-msg').textContent = upsert({ carried: true }) ? `收好了，在「我的收藏」看得到。今天就帶著這一句，慢慢走：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，把這一句放在心裡就好。';
+  $('carry-msg').textContent = upsert({ carried: true }) ? `收好了，在「我的心語」看得到。今天就帶著這一句，慢慢走：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，把這一句放在心裡就好。';
 };
 
 // 分享給家人：手機有分享選單就用它（可選 LINE）；沒有就複製文字，再沒有就直接開 LINE
@@ -956,8 +1367,13 @@ let lineOk = false; try{ lineOk = sessionStorage.getItem('sx-line-ok') === '1'; 
 $('line-hint').hidden = !inLine || lineOk;
 $('line-ok').onclick = () => { $('line-hint').hidden = true; try{ sessionStorage.setItem('sx-line-ok', '1'); }catch(e){} };
 
-document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { if (b.dataset.go === 'today'){ viewN = null; render(); } show(b.dataset.go); });
-$('to-past').onclick = () => show('past');
+document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => {
+  const t = b.dataset.tab;
+  if (t === 'home'){ viewN = null; render(); show('cover'); } else show(t);
+});
+$('nav-intro').onclick = () => show('intro');
+$('j-life').onclick = () => show('life');
+$('to-past').onclick = () => show('journey');
 $('to-life').onclick = () => show('life');
 $('to-today').onclick = () => { viewN = null; render(); show('today'); };
 if (CONTACT){ $('contact').textContent = CONTACT; $('contact').hidden = false; $('contact-h').hidden = false; }
@@ -1056,9 +1472,9 @@ document.addEventListener('keydown', e => {
 
 render();
 const skipCover = () => store.get('sx-intro', false) && !isCheck();
-show(skipCover() ? 'today' : 'cover');
+show('cover');
 // 清晨 5:00 換篇：回到畫面時重新判斷
-document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n && !viewN) show(skipCover() ? 'today' : 'cover'); } });
+document.addEventListener('visibilitychange', () => { if (!document.hidden){ const n = D && D.n; render(); if (D.n !== n && !viewN) show('cover'); } });
 window.addEventListener('hashchange', () => { viewN = null; render(); show('cover'); });
 </script>
 
