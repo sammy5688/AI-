@@ -631,6 +631,23 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 .bk-line summary{min-height:44px;display:flex;align-items:center;font-size:.85em;color:var(--muted);text-decoration:underline;text-underline-offset:4px;cursor:pointer;list-style:none}
 .bk-line summary::-webkit-details-marker{display:none}
 .bk-line p{margin:4px 0;font-size:.85em;line-height:1.75}
+/* 11/10 按鈕減量：一次只給一個主要動作 */
+.keylab{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.keystar{flex:none;min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid rgba(70,98,79,.3);background:transparent;color:var(--accent-deep);font-size:.85em;font-weight:500}
+.keystar[aria-pressed="true"]{background:var(--clay-bg);border-color:var(--clay);color:var(--clay);font-weight:700}
+.tryhint{margin:8px 0 0;font-size:.82em;color:var(--muted)}
+.trylink{align-self:flex-start;text-decoration:underline;text-underline-offset:4px;font-size:.85em;text-align:left}
+.trylink[aria-pressed="true"]{color:var(--clay);text-decoration:none;font-weight:700}
+.trybox{display:flex;flex-direction:column}
+#d-share{width:100%;box-sizing:border-box;align-items:stretch;border-top:0;padding-top:4px}
+#d-share .lab{text-align:center}
+.lifelink{align-self:center;color:var(--muted);text-decoration:underline;text-underline-offset:4px;font-size:.88em}
+.after{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ytry{background:var(--paper);border-radius:22px;padding:16px 20px;display:flex;flex-direction:column;gap:8px;box-shadow:0 1px 3px rgba(56,84,64,.08),0 0 0 1px rgba(70,98,79,.08)}
+.ytry .lab{margin:0;font-family:var(--serif);font-weight:700;color:var(--accent-deep)}
+.ytry .yt{margin:0;font-size:.9em;line-height:1.8;color:var(--ink)}
+.ytry .row{align-items:center}
+html.night .ytry{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 </style>
 
 </head>
@@ -710,6 +727,12 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <p class="readflag" id="c-read" hidden>✓ 這一篇讀過了</p>
       <button class="primary" id="go-read">開始今天的閱讀</button>
     </div>
+    <div class="ytry" id="c-ytry" hidden>
+      <p class="lab">昨天的小事，有試試看嗎？</p>
+      <p class="yt" id="c-ytry-t"></p>
+      <div class="row"><button class="ghost" id="c-ytry-yes">試過了</button><button class="nlink" id="c-ytry-no">還沒，沒關係</button></div>
+      <p class="saved" id="c-ytry-msg" aria-live="polite"></p>
+    </div>
     <p class="msg" id="c-msg" hidden></p>
     <p class="nighthint" id="c-night" hidden>晚上了，畫面已經自動調暗，比較不刺眼。<button id="c-night-off">改回白天的樣子</button></p>
 
@@ -739,7 +762,8 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <h2><span class="num">一</span>讀聖訓</h2>
       <div><p class="lab"><b>開篇</b></p><p class="p" id="d-open"></p></div>
       <div class="quote"><p class="lab"><b>原文</b><span id="d-src"></span></p><p class="p" id="d-text"></p></div>
-      <div class="keybox"><p class="lab"><b>今日重點</b><span id="d-keysrc"></span></p><p class="p" id="d-key"></p></div>
+      <div class="keybox"><p class="lab keylab"><span><b>今日重點</b><span id="d-keysrc"></span></span><button class="keystar" id="carry" aria-pressed="false">☆ 收藏</button></p><p class="p" id="d-key"></p></div>
+      <p class="saved" id="carry-msg" aria-live="polite"></p>
     </div>
 
     <div class="step s2" id="st2">
@@ -760,15 +784,10 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 
     <div class="step act" id="st4">
       <h2><span class="num">四</span>實踐於行</h2>
-      <div class="trybox"><p class="lab"><b>今天可以試試</b></p><p class="p" id="d-try"></p></div>
-      <button class="ghost trybtn" id="tried" aria-pressed="false">這件事，我試過了</button>
-      <p class="saved" id="tried-msg" aria-live="polite"></p>
-      <div class="row"><button class="ghost" id="carry">收藏今日重點，帶著走</button></div>
-      <p class="saved" id="carry-msg" aria-live="polite"></p>
-      <div class="sharebox">
-        <p class="lab">把今天這一句，傳給想念的人</p>
-        <div class="row"><button class="ghost" id="card">做成圖卡</button><button class="ghost" id="share">傳連結</button></div>
-        <p class="saved" id="share-msg" aria-live="polite"></p>
+      <div class="trybox"><p class="lab"><b>今天可以試試</b></p><p class="p" id="d-try"></p>
+        <p class="tryhint" id="try-hint">試過了嗎？明天打開時，可以記下來。</p>
+        <button class="nlink trylink" id="tried" aria-pressed="false" hidden>這件事，我試過了</button>
+        <p class="saved" id="tried-msg" aria-live="polite"></p>
       </div>
     </div>
 
@@ -785,6 +804,12 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <button class="primary" id="mark-read">讀完了，做個記號</button>
       <p class="bk-how" id="mark-how">做了記號，「八週旅程」會在這一天打上 ✓。</p>
       <p id="read-msg" aria-live="polite"></p>
+      <div class="sharebox" id="d-share" hidden>
+        <p class="lab">想到誰，就把今天這一句傳給他</p>
+        <button class="ghost" id="card">傳給家人</button>
+        <button id="share" hidden></button>
+        <p class="saved" id="share-msg" aria-live="polite"></p>
+      </div>
       <div class="echo" id="d-echo" hidden>
         <p class="lab">一週前的今天，你寫下</p>
         <p class="et" id="d-echo-t"></p>
@@ -802,7 +827,8 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
     </div>
     <div class="after">
       <p id="d-next"></p>
-      <div class="row center"><button class="ghost" id="to-life">遇到事，找一篇</button><button class="ghost" id="to-past" hidden>看前幾天</button><button class="ghost" id="to-top">回到最上面</button></div>
+      <button class="nlink lifelink" id="to-life">心裡有事？找一篇來讀 ›</button>
+      <button id="to-past" hidden></button><button id="to-top" hidden></button>
     </div>
     <p class="note">「原文」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
   </section>
@@ -918,13 +944,13 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <p><b>一、讀聖訓：</b>先讀原文，再記住「今日重點」那一句。</p>
       <p><b>二、悟道理：</b>先讀「白話理解」，看懂原文的意思；再讀「用在生活裡」，看一個生活裡的故事。這是兩段不同的文字。</p>
       <p><b>三、觀自心：</b>用「問問自己」看看今天的心。想寫就寫一句，不寫也可以。</p>
-      <p><b>四、實踐於行：</b>做一件「今天可以試試」的小事。試過了，可以按「這件事，我試過了」；喜歡這一句，就收藏起來，帶著走。</p>
+      <p><b>四、實踐於行：</b>做一件「今天可以試試」的小事。隔天打開時，首頁會問你昨天試過沒有。喜歡今日重點那一句，可以按它旁邊的「☆ 收藏」。</p>
       <h3>放到手機桌面，每天一點就到</h3>
       <p><b>iPhone：</b>用 Safari 打開，按下面中間的「分享」（方框加箭頭），往下找「加入主畫面」。</p>
       <p><b>Android：</b>用 Chrome 打開，按右上角「⋮」，選「加到主畫面」。</p>
       <p>桌面上會多一個「玉語心晨」的小圖示，寫下的話也都還在。</p>
       <h3>傳給家人</h3>
-      <p>每篇最下面可以把今天這一句「做成圖卡」，傳到 LINE 給家人、朋友；也可以「傳連結」，請他們一起來讀。</p>
+      <p>讀完按「讀完了」以後，下面會出現「傳給家人」，把今天這一句做成圖卡，傳到 LINE 給家人、朋友。</p>
       <h3>讀的時候請記得</h3>
       <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
       <h3>夜間模式</h3>
@@ -1082,6 +1108,7 @@ function render(){
   setKey($('c-key'), D['今日重點']);
   const wasRead = !!readMap()[D.n];
   $('c-read').hidden = !wasRead || isCheck();
+  paintYtry();
   $('c-first').hidden = store.get('sx-intro', false);
   const msg = $('c-msg');
   msg.hidden = state.mode === 'on' || state.mode === 'before' || state.mode === 'free';
@@ -1128,7 +1155,7 @@ function render(){
     past.hidden = false;
     past.textContent = `上一次讀到這篇時，你寫下：「${mine.text}」`;
   } else past.hidden = true;
-  $('note-msg').textContent = ''; $('carry-msg').textContent = mine.carried ? '已經收藏，在「我的心語」看得到。' : '';
+  $('note-msg').textContent = ''; $('carry-msg').textContent = '';
   $('share-msg').textContent = ''; $('tried-msg').textContent = '';
   paintDone();
   ckRender();
@@ -1230,7 +1257,7 @@ $('card').onclick = async () => {
   const msg = $('share-msg'); msg.textContent = '圖卡做好之前，請稍等一下……';
   let blob;
   try{ blob = await makeCard(D, true); }
-  catch(e){ try{ blob = await makeCard(D, false); }catch(e2){ msg.textContent = '這支手機做不出圖卡，請改按「傳連結」。'; return; } }
+  catch(e){ try{ blob = await makeCard(D, false); }catch(e2){ msg.textContent = ''; return $('share').onclick(); } }
   msg.textContent = '';
   const name = `玉語心晨_${D.theme.replace(/[\\/:*?"<>|？]/g, '')}.png`;
   let file = null; try{ file = new File([blob], name, { type: 'image/png' }); }catch(e){}
@@ -1285,13 +1312,34 @@ function renderLetter(){
   card.append(ta, b, msg); box.append(card);
 }
 
+// 首頁：昨天讀過、還沒記下試過沒有，輕輕問一聲；按過「還沒」就不再問
+function paintYtry(){
+  const box = $('c-ytry'); box.hidden = true;
+  if (isCheck() || state.mode !== 'on' || viewN) return;
+  const p = pos(state.day); if (p < 1) return;
+  const y = DAYS[ORDER[p - 1] - 1], skip = store.get('sx-ytry-skip', {});
+  if (!readMap()[y.n] || triedMap()[y.n] || skip[y.n]) return;
+  $('c-ytry-t').textContent = y['今天可以試試'];
+  $('c-ytry-msg').textContent = ''; $('c-ytry-yes').hidden = false; $('c-ytry-no').hidden = false;
+  box.dataset.n = y.n; box.hidden = false;
+}
+
 function paintDone(){
   const ck = isCheck(), r = !!readMap()[D.n], t = !!triedMap()[D.n];
-  $('d-close').hidden = ck; $('tried').hidden = ck;
+  const today = !viewN || viewN === state.day.n;
+  $('d-close').hidden = ck;
   $('mark-read').hidden = r; $('mark-how').hidden = r;
-  $('read-msg').textContent = r ? '✓ 這一篇讀過了。今天讀到這裡，就很好了。' : '';
+  $('read-msg').textContent = r ? '✓ 讀完了。今天讀到這裡，就很好了。' : '';
+  $('d-share').hidden = !r || ck;
+  // 試過了：今天才讀，還沒機會試，只提醒明天再記；讀前幾天的篇章時，才給「我試過了」
+  $('try-hint').hidden = ck || !today || t;
+  $('tried').hidden = ck || (today && !t);
   $('tried').setAttribute('aria-pressed', t ? 'true' : 'false');
   $('tried').textContent = t ? '✓ 這件事，我試過了' : '這件事，我試過了';
+  const kept = !!(store.get('sx-notes', {})[D.n] || {}).carried;
+  $('carry').setAttribute('aria-pressed', kept ? 'true' : 'false');
+  $('carry').textContent = kept ? '★ 已收藏' : '☆ 收藏';
+  $('carry').hidden = ck;
   paintExtras();
 }
 const TAB_OF = { cover:'home', today:'home', life:'home', past:'home', notes:'notes', journey:'journey', growth:'growth' };
@@ -1761,8 +1809,20 @@ $('note').addEventListener('input', () => {
 });
 $('mark-read').onclick = () => {
   const r = readMap(); r[D.n] = { at: Date.now(), today: dateLabel() };
-  if (!store.set('sx-read', r)){ $('read-msg').textContent = '這支手機現在沒辦法記下來。不過你今天讀完了，這就很好。'; return; }
-  paintDone(); $('read-msg').textContent = '✓ 記下來了。今天讀到這裡，就很好了。';
+  if (!store.set('sx-read', r)){ $('read-msg').textContent = '這支手機現在沒辦法記下來。不過你今天讀完了，這就很好。'; $('d-share').hidden = false; $('mark-read').hidden = true; $('mark-how').hidden = true; return; }
+  paintDone();
+};
+$('c-ytry-yes').onclick = () => {
+  const n = $('c-ytry').dataset.n, t = triedMap(); t[n] = { at: Date.now(), today: dateLabel() };
+  $('c-ytry-yes').hidden = true; $('c-ytry-no').hidden = true;
+  $('c-ytry-msg').textContent = store.set('sx-tried', t) ? '記下來了，在「我的成長」看得到。' : '這支手機現在沒辦法記下來。你試過了，這就很好。';
+  setTimeout(() => { $('c-ytry').hidden = true; }, 2500);
+};
+$('c-ytry-no').onclick = () => {
+  const n = $('c-ytry').dataset.n, k = store.get('sx-ytry-skip', {}); k[n] = Date.now(); store.set('sx-ytry-skip', k);
+  $('c-ytry-yes').hidden = true; $('c-ytry-no').hidden = true;
+  $('c-ytry-msg').textContent = '沒關係，想試的時候再試就好。';
+  setTimeout(() => { $('c-ytry').hidden = true; }, 2500);
 };
 $('tried').onclick = () => {
   const t = triedMap(), on = !t[D.n];
@@ -1771,7 +1831,10 @@ $('tried').onclick = () => {
   paintDone(); $('tried-msg').textContent = on ? '記下來了，在「我的成長」看得到。' : '';
 };
 $('carry').onclick = () => {
-  $('carry-msg').textContent = upsert({ carried: true }) ? `收好了，在「我的心語」看得到。今天就帶著這一句，慢慢走：${strip(D['今日重點'])}` : '這支手機現在沒辦法存，把這一句放在心裡就好。';
+  const kept = !!(store.get('sx-notes', {})[D.n] || {}).carried;
+  if (kept){ if (upsert({ carried: false })){ $('carry-msg').textContent = ''; paintDone(); } return; }
+  const ok = upsert({ carried: true }); paintDone();
+  $('carry-msg').textContent = ok ? '收好了，在「我的心語」看得到。' : FAIL;
 };
 
 // 分享給家人：手機有分享選單就用它（可選 LINE）；沒有就複製文字，再沒有就直接開 LINE
