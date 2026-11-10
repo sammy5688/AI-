@@ -592,6 +592,19 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 .modal-in .hint{margin:0;text-align:center}
 .modal-in .row{justify-content:center}
 .modal-in a.ghost{display:inline-flex;align-items:center;text-decoration:none}
+/* 存一份（11/10 重寫）：一個主要按鈕、一句話說清楚為什麼；放回來的步驟另外收在下面 */
+.backup .primary{align-self:stretch}
+.bk-last{margin:0;font-size:.85em;color:var(--muted)}
+.bk-last.due{color:var(--clay);font-weight:700}
+.bk-how{margin:-4px 0 0;font-size:.8em;color:var(--muted);text-align:center}
+.bk-alt{align-self:center;text-decoration:underline;text-underline-offset:4px;font-size:.82em;color:var(--muted)}
+.rsbox{padding:4px 4px 0}
+.rsbox summary{min-height:48px;display:flex;align-items:center;justify-content:center;color:var(--accent-deep);font-size:.9em;text-decoration:underline;text-underline-offset:4px;cursor:pointer;list-style:none}
+.rsbox summary::-webkit-details-marker{display:none}
+.rsbox[open]{background:var(--paper);border-radius:22px;padding:6px 20px 18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 1px 3px rgba(56,84,64,.08),0 0 0 1px rgba(70,98,79,.08)}
+.rsbox[open] .primary{align-self:stretch}
+.rs-steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px;font-size:.92em;line-height:1.75}
+.rsbox .saved:empty{display:none}
 </style>
 
 </head>
@@ -775,20 +788,28 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
     </div>
     <div class="seg" id="n-switch" hidden><button id="n-sw-mine" aria-pressed="true"></button><button id="n-sw-kept" aria-pressed="false"></button></div>
     <ul class="list" id="n-list"></ul>
-    <div class="backup">
-      <p class="t">備份我的心語</p>
-      <p class="hint">收藏和寫下的話，只存在這支手機的這個瀏覽器裡，不會上傳到任何地方。換手機、換瀏覽器，或清除瀏覽紀錄，就不會跟著過去。建議每個星期備份一次。</p>
-      <div class="row"><button class="ghost" id="bk-copy">複製全部</button><button class="ghost" id="bk-file">存成檔案</button></div>
+    <div class="backup" id="bk-card">
+      <p class="t">存一份，換手機也找得回來</p>
+      <p class="hint">你寫下的話，只存在這支手機裡。存一份到 LINE，以後換了手機，還能放回來。</p>
+      <p class="bk-last" id="bk-last"></p>
+      <button class="primary" id="bk-copy">存一份到 LINE</button>
+      <p class="bk-how">按了以後，在 LINE 裡選「Keep 筆記」，按傳送就好。</p>
       <p class="saved" id="bk-msg" aria-live="polite"></p>
-      <textarea id="bk-out" readonly hidden aria-label="備份文字"></textarea>
-      <details id="rs-box">
-        <summary>換了手機？把備份放回來</summary>
-        <p class="hint">把之前複製的那一整段備份文字貼在下面，或是選備份檔，再按「放回來」。這支手機裡原本的紀錄不會被蓋掉。</p>
-        <textarea id="rs-in" placeholder="把備份文字貼在這裡" aria-label="貼上備份文字"></textarea>
-        <div class="row"><button class="ghost" id="rs-go">放回來</button><label class="ghost filebtn">選備份檔<input type="file" id="rs-file" accept=".txt,text/plain" hidden></label></div>
-        <p class="saved" id="rs-msg" aria-live="polite"></p>
-      </details>
+      <textarea id="bk-out" readonly hidden aria-label="要存起來的文字"></textarea>
+      <button class="nlink bk-alt" id="bk-file">沒有 LINE？改存成檔案</button>
     </div>
+    <details id="rs-box" class="rsbox">
+      <summary>換了新手機？把存好的那一份放回來</summary>
+      <ol class="rs-steps">
+        <li>打開 LINE 的「Keep 筆記」，找到之前存的那一份，長按，選「複製」。</li>
+        <li>回到這裡，貼在下面的框框裡，按「放回來」。</li>
+      </ol>
+      <textarea id="rs-in" placeholder="長按這裡，選「貼上」" aria-label="貼上存好的那一份"></textarea>
+      <button class="primary" id="rs-go">放回來</button>
+      <p class="saved" id="rs-msg" aria-live="polite"></p>
+      <label class="nlink bk-alt filebtn">之前存成檔案？選那個檔案<input type="file" id="rs-file" accept=".txt,text/plain" hidden></label>
+      <p class="hint">放回來的時候，這支手機裡原本寫的話不會被蓋掉。</p>
+    </details>
   </section>
 
   <!-- 八週旅程 -->
@@ -851,7 +872,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <p>心裡有事的時候，可以按「遇到事，找一篇」（在每篇最下面，「八週旅程」裡也有），從「和家人鬧僵了」「一句話放不下」這些生活情境，馬上找到可以讀的篇章，不用等到那一天。</p>
       <h3>下面四個入口</h3>
       <p><b>今日玉語：</b>今天這一篇，從這裡開始讀。</p>
-      <p><b>我的心語：</b>你寫下的話、收藏的句子。這裡也可以備份。</p>
+      <p><b>我的心語：</b>你寫下的話、收藏的句子。在這裡也可以「存一份到 LINE」，換手機也找得回來。</p>
       <p><b>我的成長：</b>一週寫一句「這一週，我有什麼不一樣」，也看得到自己試過的小事。不打分數。</p>
       <p><b>八週旅程：</b>8 週 56 天走到哪裡了；前面的日子想再讀，從這裡進去。</p>
       <p>每一篇都照四個步驟走：</p>
@@ -1238,7 +1259,7 @@ function show(name){
   if (name !== 'today') stopSpeak();
   const bar = name === 'today' && canSpeak;
   $('speakbar').hidden = !bar; document.body.classList.toggle('has-speak', bar);
-  if (name === 'notes'){ renderNotes(); $('bk-msg').textContent = ''; $('bk-out').hidden = true; $('rs-msg').textContent = ''; }
+  if (name === 'notes'){ renderNotes(); paintBackup(); $('bk-msg').textContent = ''; $('bk-out').hidden = true; $('rs-msg').textContent = ''; }
   window.scrollTo(0, 0);
   syncSteps();
 }
@@ -1394,30 +1415,42 @@ function backupText(){
   return lines.join('\n');
 }
 function hasAny(){ return !!(store.get('sx-letter', null) || {}).text || [store.get('sx-notes', {}), readMap(), triedMap(), store.get('sx-week', {})].some(o => Object.keys(o).length); }
+function bkDone(){ store.set('sx-bk-at', Date.now()); paintBackup(); }
+function paintBackup(){
+  const any = hasAny(); $('bk-card').hidden = !any;
+  if (!any) return;
+  const at = store.get('sx-bk-at', 0);
+  const latest = Math.max(0, ...[store.get('sx-notes', {}), triedMap(), store.get('sx-week', {})].flatMap(o => Object.values(o).map(x => (x && x.at) || 0)), (store.get('sx-letter', null) || {}).at || 0);
+  const t = at ? new Date(at + 8*3600e3) : null;
+  $('bk-last').textContent = !at ? '還沒有存過。' : latest > at ? `上次存的是 ${t.getUTCMonth()+1} 月 ${t.getUTCDate()} 日，之後又寫了新的話，再存一份吧。` : `${t.getUTCMonth()+1} 月 ${t.getUTCDate()} 日存過了，都還在。`;
+  $('bk-last').classList.toggle('due', !at || latest > at);
+}
 $('bk-copy').onclick = async () => {
-  const msg = $('bk-msg'), out = $('bk-out'); out.hidden = true;
-  if (!hasAny()){ msg.textContent = '現在還沒有可以備份的紀錄。'; return; }
+  const msg = $('bk-msg'), out = $('bk-out'); out.hidden = true; msg.textContent = '';
   const text = backupText();
-  try{ await navigator.clipboard.writeText(text); msg.textContent = '複製好了。打開 LINE 的「Keep 筆記」或手機的記事本，貼上就存好了。'; return; }catch(e){}
+  if (navigator.share){
+    try{ await navigator.share({ text }); bkDone(); msg.textContent = '存好了。以後換手機，到這裡按「把存好的那一份放回來」。'; return; }
+    catch(e){ if (e && e.name === 'AbortError') return; }
+  }
+  try{ await navigator.clipboard.writeText(text); bkDone(); msg.textContent = '已經複製好了。打開 LINE 的「Keep 筆記」，長按輸入框選「貼上」，按傳送就存好了。'; return; }catch(e){}
   out.hidden = false; out.value = text; out.focus(); out.select();
-  msg.textContent = '這支手機不能自動複製。下面的字已經選好了，長按選「複製」，再貼到 LINE 或記事本。';
+  msg.textContent = '這支手機不能自動複製。下面的字已經選好了，長按選「複製」，再貼到 LINE 的「Keep 筆記」。';
 };
 $('bk-file').onclick = () => {
   const msg = $('bk-msg'); $('bk-out').hidden = true;
-  if (!hasAny()){ msg.textContent = '現在還沒有可以備份的紀錄。'; return; }
   try{
     const t = new Date(Date.now() + 8*3600e3), p = n => String(n).padStart(2, '0');
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([backupText()], { type: 'text/plain;charset=utf-8' }));
     a.download = `玉語心晨_我的心語_${t.getUTCFullYear()}${p(t.getUTCMonth()+1)}${p(t.getUTCDate())}.txt`;
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    msg.textContent = '檔案存好了，在手機的「下載」或「檔案」裡找得到。如果沒有看到檔案，請改按「複製全部」。';
-  }catch(e){ msg.textContent = '這支手機沒辦法存成檔案，請改按「複製全部」。'; }
+    bkDone(); msg.textContent = '檔案存好了，在手機的「下載」或「檔案」裡找得到。';
+  }catch(e){ msg.textContent = '這支手機沒辦法存成檔案，請改按「存一份到 LINE」。'; }
 };
 function restore(text){
   const msg = $('rs-msg');
   const i = text.indexOf(BK_TAG);
-  if (i < 0){ msg.textContent = '找不到備份資料。請確認貼上的是整段備份文字，包含最後那一長串英文和數字。'; return; }
+  if (i < 0){ msg.textContent = '找不到存好的資料。請確認貼上的是整段文字，最後那一長串英文和數字也要一起複製。'; return; }
   let data;
   try{ data = JSON.parse(decodeURIComponent(escape(atob(text.slice(i + BK_TAG.length).replace(/[^A-Za-z0-9+/=]/g, ''))))); }
   catch(e){ msg.textContent = '這份備份好像不完整，沒辦法放回來。請重新複製整段再試一次。'; return; }
@@ -1432,7 +1465,7 @@ function restore(text){
   if (ks.some(k => k < 0)){ msg.textContent = FAIL; return; }
   const total = ks.reduce((x, y) => x + y, 0);
   msg.textContent = total ? `放回來了，共 ${total} 筆紀錄。` : '這份備份裡的紀錄，這支手機都已經有了。';
-  $('rs-in').value = ''; render(); renderNotes();
+  $('rs-in').value = ''; render(); renderNotes(); if (total) store.set('sx-bk-at', Date.now()); paintBackup();
 }
 $('rs-go').onclick = () => { const t = $('rs-in').value.trim(); if (!t){ $('rs-msg').textContent = '還沒有貼上備份文字。'; return; } restore(t); };
 $('rs-file').onchange = e => { const f = e.target.files && e.target.files[0]; if (!f) return;
