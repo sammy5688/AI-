@@ -934,11 +934,11 @@ function render(){
   msg.hidden = state.mode === 'on' || state.mode === 'before' || state.mode === 'free';
   const st = $('c-status');
   st.hidden = !(state.mode === 'before' || state.mode === 'free');
-  if (state.mode === 'before') st.textContent = `目前開放試讀\n正式共讀：${startLabel}開始`;
+  if (state.mode === 'before') st.textContent = '目前開放試讀';
   if (state.mode === 'free') st.textContent = '8 週已經讀完\n今天翻到這一篇';
   $('go-read').textContent = wasRead && !isCheck() ? '再讀一次' : state.mode === 'before' ? '試讀第 1 天' : '開始今天的閱讀';
   if (state.mode === 'free') msg.textContent = '8 週 56 天讀完了。現在每天會翻到一篇：有讀過的，也有還沒讀過的延伸篇。';
-  if (state.mode === 'before') msg.textContent = `8 週 56 天，從 ${startLabel}開始。今天可以先看看第 1 天。`;
+  if (state.mode === 'before') msg.textContent = '8 週 56 天。今天可以先看看第 1 天。';
   if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的心語」看得到。`;
   if (state.mode === 'preview') msg.textContent = `預覽${dayLabel(D)}。`;
 
@@ -959,7 +959,7 @@ function render(){
   $('d-ask').textContent = D['問問自己'];
   $('d-try').textContent = D['今天可以試試'];
   $('d-next').textContent =
-    state.mode === 'before' ? `8 週 56 天，從 ${startLabel}清晨 5 點開始。` :
+    state.mode === 'before' ? '現在是試讀，先開放第 1 天。' :
     state.mode === 'after' ? `${DAYS.length} 天試讀已經讀完，謝謝您。` :
     state.mode === 'preview' ? '這是預覽。' :
     state.mode === 'free' ? '明天清晨 5 點，會再翻到一篇。' :
@@ -1048,7 +1048,7 @@ function renderJourney(){
   const nRead = SEQ.filter(d => read[d.n]).length;
   const readTxt = nRead ? `你讀過 ${nRead} 篇。` : '';
   $('j-sum').textContent =
-    state.mode === 'before' ? `8 週 56 天，${startLabel}開始。現在可以先試讀第 1 天。` :
+    state.mode === 'before' ? '8 週 56 天。現在可以先試讀第 1 天。' :
     state.mode === 'on' ? `今天是第 ${tp + 1} 天，${weekLabel(state.day)}。${readTxt}` :
     `8 週 56 天都打開了，想讀哪一篇都可以。${readTxt}`;
   const curW = tp >= 0 ? Math.floor(tp / 7) : (state.mode === 'before' ? 0 : -1);
@@ -1063,7 +1063,7 @@ function renderJourney(){
     days.forEach(d => dots.append(el('i', read[d.n] ? 'r' : isOpen(d) ? '' : 'l')));
     sm.append(top, dots);
     const ul = el('ul', 'wk-days');
-    days.forEach(d => ul.append(dayRow(d, isOpen(d), !!read[d.n], pos(d) === tp, `${openDate(pos(d))}清晨 5 點打開`)));
+    days.forEach(d => ul.append(dayRow(d, isOpen(d), !!read[d.n], pos(d) === tp, state.mode === 'before' ? '正式開始後打開' : `${openDate(pos(d))}清晨 5 點打開`)));
     dt.append(sm, ul); box.append(dt);
   });
   if (state.mode === 'free'){
