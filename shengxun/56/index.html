@@ -716,7 +716,6 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <p>每天只要記住「今日重點」那一句，帶著走就好。</p>
       <p>字太小，可以按右上角的「字」放大。</p>
     </div>
-    <p class="maker">財團法人天祥宇宙聖道基金會 製作</p>
   </section>
 
   <!-- 每日頁 -->
@@ -1219,11 +1218,10 @@ async function makeCard(d, withScene = true){
   y = y - lh + Math.round(size * .9) + 44;
   g.fillStyle = '#55625A'; g.font = `500 32px ${SANS}`; g.fillText(`〈${d.theme}〉・${d.who}`, left, Math.min(y, 1150));
   // 頁尾
-  g.fillStyle = '#DCE4DA'; g.fillRect(110, 1196, W - 220, 2);
-  g.fillStyle = '#46624F'; g.font = `700 40px ${SERIF}`; g.fillText('玉語心晨', 110, 1258);
+  g.fillStyle = '#DCE4DA'; g.fillRect(110, 1218, W - 220, 2);
+  g.fillStyle = '#46624F'; g.font = `700 40px ${SERIF}`; g.fillText('玉語心晨', 110, 1286);
   const bw = g.measureText('玉語心晨').width;
-  g.fillStyle = '#55625A'; g.font = `500 28px ${SANS}`; g.fillText('玉虛的話，從心開始', 110 + bw + 22, 1256);
-  g.fillStyle = '#6B776F'; g.font = `500 26px ${SANS}`; g.fillText('財團法人天祥宇宙聖道基金會 製作', 110, 1306);
+  g.fillStyle = '#55625A'; g.font = `500 28px ${SANS}`; g.fillText('玉虛的話，從心開始', 110 + bw + 22, 1284);
   return await new Promise((res, rej) => { try{ cv.toBlob(b => b ? res(b) : rej(new Error('blob')), 'image/png'); }catch(e){ rej(e); } });
 }
 let cardUrl = null;
