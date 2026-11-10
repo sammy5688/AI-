@@ -648,6 +648,27 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 .ytry .yt{margin:0;font-size:.9em;line-height:1.8;color:var(--ink)}
 .ytry .row{align-items:center}
 html.night .ytry{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+/* 說明頁（11/10 改成點開式）：七個標題，要看就點開 */
+.acc{display:flex;flex-direction:column;gap:10px}
+.ac{background:var(--paper);border-radius:20px;box-shadow:0 1px 3px rgba(56,84,64,.08),0 0 0 1px rgba(70,98,79,.08);overflow:hidden}
+html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
+.ac summary{list-style:none;cursor:pointer;min-height:60px;padding:10px 18px;display:flex;align-items:center;gap:14px}
+.ac summary::-webkit-details-marker{display:none}
+.ac summary::after{content:"›";margin-left:auto;font-size:1.4em;color:var(--muted);transition:transform .2s}
+.ac[open] summary::after{transform:rotate(90deg)}
+.ac[open] summary{border-bottom:1px solid var(--line)}
+.ac .an{flex:none;width:2em;height:2em;border-radius:50%;display:grid;place-items:center;background:var(--veil);color:var(--accent-deep);font-family:var(--serif);font-weight:700;font-size:.9em}
+.ac .at{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:1.02em;line-height:1.5}
+.ac[open] .at{color:var(--accent-deep)}
+.ab{padding:14px 20px 20px;display:flex;flex-direction:column;gap:8px}
+.ab h4{margin:10px 0 0;font-family:var(--serif);font-size:.98em;color:var(--accent-deep)}
+.ab h4:first-child{margin-top:0}
+.ab p{margin:0;line-height:1.85}
+.ab .weeks{margin:0;padding-left:1.6em;display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;line-height:1.8;font-size:.95em}
+.ab .steps2{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:2px;line-height:1.8}
+.ab .row{flex-wrap:wrap}
+.closing{margin:6px 4px 0;text-align:center;font-family:var(--serif);color:var(--muted);line-height:1.9;font-size:.95em}
+@media (max-width:359px){.ab .weeks{grid-template-columns:1fr}}
 </style>
 
 </head>
@@ -827,7 +848,7 @@ html.night .ytry{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
     </div>
     <div class="after">
       <p id="d-next"></p>
-      <button class="nlink lifelink" id="to-life">心裡有事？找一篇來讀 ›</button>
+      <button class="nlink lifelink" id="to-life">遇到事，找一篇 ›</button>
       <button id="to-past" hidden></button><button id="to-top" hidden></button>
     </div>
     <p class="note">「原文」是開示紀錄的原句。其餘段落是編輯整理，幫助理解，不是聖訓原文。</p>
@@ -926,55 +947,105 @@ html.night .ytry{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 
   <!-- 說明（前言） -->
   <section class="view col intro" id="v-intro" hidden>
-    <div class="pagehead"><p class="daytag">讀之前</p></div>
-    <div class="card">
-      <h3>這些話從哪裡來</h3>
-      <p>天祥三年（民國 108 年）一月，天祥的道主、道母陸續聽到多位仙家的開示。這些仙家來自「玉虛」門下，所以這批開示紀錄被整理為「玉虛仙宗聖訓」。</p>
-      <p>這是天祥的信仰紀錄。對天祥家人來說，是仙家的教導；對第一次接觸的親友來說，也可以把它當作一段段談修心、談做人的話來讀。</p>
-      <h3>怎麼讀</h3>
-      <p>一共 8 週、56 天，一週一個主題，由淺到深：安住自己的心、看見自己的心念、學著放下、待人的心、說話與相處、一起做事、謙卑與德、走過與承擔。</p>
-      <p>每天清晨 5 點換一篇，一篇大約 5 分鐘。56 天讀完以後，每天會翻到一篇，有讀過的，也有 9 篇還沒讀過的延伸篇。</p>
-      <p>心裡有事的時候，可以按「遇到事，找一篇」（在每篇最下面，「八週旅程」裡也有），從「和家人鬧僵了」「一句話放不下」這些生活情境，馬上找到可以讀的篇章，不用等到那一天。</p>
-      <h3>下面四個入口</h3>
-      <p><b>今日玉語：</b>今天這一篇，從這裡開始讀。</p>
-      <p><b>我的心語：</b>你寫下的話、收藏的句子。在這裡也可以「存一份到 LINE」的 Keep筆記，換手機也找得回來。</p>
-      <p><b>我的成長：</b>一週寫一句「這一週，我有什麼不一樣」，也看得到自己試過的小事。不打分數。</p>
-      <p><b>八週旅程：</b>8 週 56 天走到哪裡了；前面的日子想再讀，從這裡進去。</p>
-      <p>每一篇都照四個步驟走：</p>
-      <p><b>一、讀聖訓：</b>先讀原文，再記住「今日重點」那一句。</p>
-      <p><b>二、悟道理：</b>先讀「白話理解」，看懂原文的意思；再讀「用在生活裡」，看一個生活裡的故事。這是兩段不同的文字。</p>
-      <p><b>三、觀自心：</b>用「問問自己」看看今天的心。想寫就寫一句，不寫也可以。</p>
-      <p><b>四、實踐於行：</b>做一件「今天可以試試」的小事。隔天打開時，首頁會問你昨天試過沒有。喜歡今日重點那一句，可以按它旁邊的「☆ 收藏」。</p>
-      <h3>放到手機桌面，每天一點就到</h3>
-      <p><b>iPhone：</b>用 Safari 打開，按下面中間的「分享」（方框加箭頭），往下找「加入主畫面」。</p>
-      <p><b>Android：</b>用 Chrome 打開，按右上角「⋮」，選「加到主畫面」。</p>
-      <p>桌面上會多一個「玉語心晨」的小圖示，寫下的話也都還在。</p>
-      <h3>傳給家人</h3>
-      <p>讀完按「讀完了」以後，下面會出現「傳給家人」，把今天這一句做成圖卡，傳到 LINE 給家人、朋友。</p>
-      <h3>讀的時候請記得</h3>
-      <p>謙卑、包容、放下、不求回報，都不是要人委屈自己、忍受傷害。看見自己的心，也不代表別人的不對就不存在。累了可以休息，難了可以求助，這些都是在道上走得長久的方法。</p>
-      <h3>夜間模式</h3>
-      <div class="modepick">
-        <p>晚上讀的時候，畫面變暗比較不刺眼。</p>
-        <div class="row"><button class="ghost" id="nm-auto">晚上自動變暗</button><button class="ghost" id="nm-on">一直用夜間</button><button class="ghost" id="nm-off">一直用白天</button></div>
-      </div>
+    <div class="pagehead">
+      <p class="daytag">讀之前</p>
+      <p class="hint">先認識《玉語心晨》。想看哪一項，就點開哪一項。</p>
     </div>
-    <div class="card about" id="about">
-      <h3>關於《玉語心晨》</h3>
-      <dl class="credits">
-        <div><dt>製作</dt><dd>財團法人天祥宇宙聖道基金會</dd></div>
-        <div><dt>內容來源</dt><dd>玉虛仙宗聖訓（天祥三年，民國 108 年 1 月開示紀錄）</dd></div>
-        <div><dt>版本</dt><dd>2026 年 11 月　試讀版</dd></div>
-      </dl>
-      <h3>使用前請了解</h3>
-      <p><b>內容：</b>每篇的「原文」是開示紀錄的原句，只統一了字形。「開篇」「今日重點」「白話理解」「用在生活裡」「問問自己」「今天可以試試」是本會編輯整理，幫助理解與生活應用，不是聖訓原文。</p>
-      <p><b>個人資料：</b>使用本 App 不需要登入，也不收集任何個人資料。你寫下的話只存在自己的手機裡，本會看不到，也不會上傳到任何地方。</p>
-      <p><b>分享與轉載：</b>歡迎把連結和圖卡分享給家人、朋友。如需轉載內容、印製成冊或用於其他用途，請先與本會聯絡。</p>
-      <p><b>身心照顧：</b>這些文字是修身的參考，不能取代醫療、心理諮商或其他專業協助。遇到難處時，請向專業人員或信任的人求助。</p>
-      <h3 id="contact-h" hidden>聯絡我們</h3>
-      <p id="contact" hidden></p>
-      <p class="copyright">© 2026 財團法人天祥宇宙聖道基金會　版權所有</p>
+    <div class="acc" id="intro-acc">
+      <details class="ac">
+        <summary><span class="an">一</span><span class="at">認識《玉語心晨》</span></summary>
+        <div class="ab">
+          <h4>這些話從哪裡來？</h4>
+          <p>天祥三年（民國 108 年）一月，天祥道主、道母陸續聽到多位仙家的開示。這些仙家來自「玉虛」門下，因此，這些開示紀錄整理後，稱為《玉虛仙宗聖訓》。</p>
+          <p>這是天祥的信仰紀錄，也是仙家留給天祥家人的教導。如果你是第一次接觸，也可以把它當作一篇篇談修心、做人與生活的話，從中體會不同的人生道理。</p>
+          <h4>怎麼讀這 56 天？</h4>
+          <p>《玉語心晨》安排了 8 週、56 天的學習，每週一個主題，循序漸進，從認識自己的心，到學習待人處事與生活實踐。八週主題依序是：</p>
+          <ol class="weeks"><li>安住自己的心</li><li>看見自己的心念</li><li>學著放下</li><li>待人的心</li><li>說話與相處</li><li>一起做事</li><li>謙卑與德</li><li>走過與承擔</li></ol>
+          <p>每天清晨 5 點，會自動換上當天的新篇章。每篇閱讀時間約 5 分鐘。</p>
+          <p>56 天讀完後，App 還會繼續陪伴你，每天提供一篇內容。其中有你讀過的篇章，也有 9 篇延伸閱讀，讓你可以繼續學習、反覆體會。</p>
+          <h4>遇到事情，也可以直接找聖訓</h4>
+          <p>生活中遇到煩惱，不一定要等到當天的篇章。只要按下「遇到事，找一篇」，就能依照目前的生活情況，找到適合閱讀的內容。例如：和家人鬧僵了、有一句話一直放不下、心裡有委屈、遇到事情不知道怎麼面對。</p>
+          <p>這個功能在每篇文章的最下方，也可以從「八週旅程」進入。希望你在生活遇到事情時，能找到一句話，陪自己想一想。</p>
+        </div>
+      </details>
+      <details class="ac">
+        <summary><span class="an">二</span><span class="at">四個主要功能</span></summary>
+        <div class="ab">
+          <p>畫面最下方有四個入口：</p>
+          <h4>1. 今日玉語</h4>
+          <p>每天的一篇聖訓，就從這裡開始。讀原文、看懂道理，再想想如何用在生活中。</p>
+          <h4>2. 我的心語</h4>
+          <p>這裡會保存你收藏的句子，以及自己寫下的心得。喜歡的一句話，可以收藏起來；寫下的心得，也可以「存一份到 LINE」的 Keep筆記，方便日後找回來。</p>
+          <h4>3. 我的成長</h4>
+          <p>每週可以寫下一句話：「這一週，我有什麼不一樣？」也可以回頭看看每週寫下的話，以及實際試過哪些小事。</p>
+          <p>不需要分數，也不用和別人比較，只要看見自己一點一點的成長。</p>
+          <h4>4. 八週旅程</h4>
+          <p>這裡可以看到 8 週、56 天的學習進度。想重新閱讀以前的篇章，或看看自己走到哪一天，都可以從這裡進入。</p>
+        </div>
+      </details>
+      <details class="ac">
+        <summary><span class="an">三</span><span class="at">每一篇，怎麼讀？</span></summary>
+        <div class="ab">
+          <p>每篇聖訓都安排四個步驟，帶你從閱讀、理解，到省察與實踐。</p>
+          <h4>第一步｜讀聖訓</h4>
+          <p>先讀完整的聖訓原文，再看看「今日重點」，記住這篇最重要的一句話。</p>
+          <h4>第二步｜悟道理</h4>
+          <p>這裡分成兩個部分，各有不同的作用：先了解道理，再看看如何實際運用。</p>
+          <p><b>白話理解：</b>用簡單的話，幫助你看懂聖訓原文的意思。</p>
+          <p><b>用在生活裡：</b>透過生活中的故事，看看這個道理可以怎麼運用在日常生活。</p>
+          <h4>第三步｜觀自心</h4>
+          <p>透過「問問自己」，靜下來看看今天的心情與想法。可以寫下一句心得，也可以只在心裡想一想，不一定要寫下來。</p>
+          <h4>第四步｜實踐於行</h4>
+          <p>讀懂道理之後，試著做一件「今天可以試試」的小事。不必做得很多，從一件簡單的小事開始就好。隔天打開 App 時，首頁會問你昨天有沒有試著做到。</p>
+          <p>如果「今日重點」中有一句話特別觸動你，也可以按旁邊的「☆ 收藏」，留給自己日後再看。</p>
+        </div>
+      </details>
+      <details class="ac">
+        <summary><span class="an">四</span><span class="at">把 App 放到手機桌面</span></summary>
+        <div class="ab">
+          <p>只要設定一次，手機桌面就會出現《玉語心晨》的圖示，以後不用再找網址，直接點一下就能閱讀。</p>
+          <h4>iPhone（蘋果手機）</h4>
+          <ol class="steps2"><li>使用 Safari 瀏覽器打開《玉語心晨》網址。</li><li>按下畫面下方的「分享」圖示（方框加箭頭）。</li><li>往下找到「加入主畫面」。</li><li>按下「加入」，桌面就會出現《玉語心晨》的圖示。</li></ol>
+          <h4>Android（安卓手機）</h4>
+          <ol class="steps2"><li>使用 Chrome 瀏覽器打開《玉語心晨》網址。</li><li>按下右上角的「⋮」。</li><li>選擇「加到主畫面」或「安裝」。</li><li>依照畫面提示完成設定。</li></ol>
+          <p>設定完成後，每天只要點一下桌面圖示，就能進入《玉語心晨》。</p>
+        </div>
+      </details>
+      <details class="ac">
+        <summary><span class="an">五</span><span class="at">把今天的好話分享給家人</span></summary>
+        <div class="ab">
+          <p>讀完一篇，按下「讀完了」，畫面下方就會出現「傳給家人」。按下去，就能把今天的重點製作成一張圖卡，透過 LINE 傳給家人或朋友。</p>
+          <p>一句好話，可以留給自己，也可以分享給別人。</p>
+        </div>
+      </details>
+      <details class="ac">
+        <summary><span class="an">六</span><span class="at">夜間模式</span></summary>
+        <div class="ab modepick">
+          <p>晚上閱讀時，可以調整畫面亮度，讓眼睛看得更舒服。直接按下面的按鈕就能切換：</p>
+          <div class="row"><button class="ghost" id="nm-auto">晚上自動變暗</button><button class="ghost" id="nm-on">一直用夜間</button><button class="ghost" id="nm-off">一直用白天</button></div>
+          <p class="hint"><b>晚上自動變暗：</b>到了晚上，畫面會自動切換成較暗的模式。<br><b>一直用夜間：</b>不論白天或晚上，畫面都保持較暗的顏色。<br><b>一直用白天：</b>不論什麼時間，畫面都保持明亮。</p>
+        </div>
+      </details>
+      <details class="ac" id="about">
+        <summary><span class="an">七</span><span class="at">關於《玉語心晨》</span></summary>
+        <div class="ab">
+          <dl class="credits">
+            <div><dt>製作單位</dt><dd>財團法人天祥宇宙聖道基金會</dd></div>
+            <div><dt>內容來源</dt><dd>《玉虛仙宗聖訓》（天祥三年，民國 108 年 1 月開示紀錄）</dd></div>
+            <div><dt>版本</dt><dd>2026 年 11 月・試讀版</dd></div>
+          </dl>
+          <h4>使用前，請先了解</h4>
+          <p><b>一、關於內容</b><br>每篇內容中的「聖訓原文」，都是依照原始開示紀錄整理，只統一文字字形，保留原來的語句。其他部分，包括「開篇」「今日重點」「白話理解」「用在生活裡」「問問自己」及「今天可以試試」，都是本會為了幫助大家理解聖訓、運用在生活中而編輯整理的內容，並不是聖訓原文。閱讀時，請留意兩者的區別。</p>
+          <p><b>二、關於個人資料</b><br>使用《玉語心晨》不需要註冊帳號，也不需要提供個人資料。你寫下的心得與收藏內容，只保存在自己使用的手機或瀏覽器中，本會無法查看，也不會上傳到本會的伺服器。因此，若更換手機或清除瀏覽器資料，可能影響原有紀錄，建議在「我的心語」按「存一份到 LINE」，另外備份保存。</p>
+          <p><b>三、關於分享與轉載</b><br>歡迎將《玉語心晨》的網址及分享圖卡傳給家人、朋友，一起閱讀、分享心得。如果需要轉載聖訓內容、印製成冊，或作其他用途，請先與本會聯絡。</p>
+          <p><b>四、關於身心照顧</b><br>《玉語心晨》的內容，是提供大家修心、做人及生活實踐的參考，不能取代醫療、心理諮商或其他專業協助。如果遇到身心困擾或生活難題，請適時尋求專業人員或信任的人的幫助。</p>
+          <h4 id="contact-h" hidden>聯絡我們</h4>
+          <p id="contact" hidden></p>
+          <p class="copyright">© 2026 財團法人天祥宇宙聖道基金會　版權所有</p>
+        </div>
+      </details>
     </div>
+    <p class="closing">願這 56 天的閱讀，讓我們每天多一分體會，多一分成長，也讓聖訓的道理，慢慢落實在生活中。</p>
     <div class="row center"><button class="primary" id="intro-ok">我知道了，開始讀</button></div>
   </section>
 </main>
@@ -1913,6 +1984,11 @@ document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => {
   if (t === 'home'){ viewN = null; render(); show('cover'); } else show(t);
 });
 $('nav-intro').onclick = () => show('intro');
+document.querySelectorAll('#intro-acc details').forEach(d => d.addEventListener('toggle', () => {
+  if (!d.open) return;
+  document.querySelectorAll('#intro-acc details').forEach(o => { if (o !== d) o.open = false; });
+  const top = d.getBoundingClientRect().top; if (top < 70) window.scrollBy({ top: top - 76 });
+}));
 $('n-sw-mine').onclick = () => { notesTab = 'mine'; renderNotes(); };
 $('n-sw-kept').onclick = () => { notesTab = 'kept'; renderNotes(); };
 $('j-life').onclick = () => show('life');
