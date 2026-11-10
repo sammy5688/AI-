@@ -773,7 +773,7 @@ html.night .tabs{background:#2E3833}
       <h3>怎麼讀</h3>
       <p>全書 8 週、56 天，一週一個主題，由淺到深：安住自己的心、看見自己的心念、學著放下、待人的心、說話與相處、一起做事、謙卑與德、走過與承擔。</p>
       <p>每天清晨 5 點換一篇，一篇大約 5 分鐘。56 天讀完以後，每天會翻到一篇，有讀過的，也有 9 篇還沒讀過的延伸篇。</p>
-      <p>心裡有事的時候，可以按「遇到事，找一篇」（在每篇最下面，「八週旅程」裡也有），從「和家人鬧僵了」「一句話放不下」這些生活情境，找到可以讀的篇章。</p>
+      <p>心裡有事的時候，可以按「遇到事，找一篇」（在每篇最下面，「八週旅程」裡也有），從「和家人鬧僵了」「一句話放不下」這些生活情境，馬上找到可以讀的篇章，不用等到那一天。</p>
       <h3>下面四個入口</h3>
       <p><b>今日玉語：</b>今天這一篇，從這裡開始讀。</p>
       <p><b>我的心語：</b>收藏的句子、寫給自己的話。這裡也可以備份。</p>
@@ -909,6 +909,7 @@ function render(){
   state = todayState();
   if (isCheck()) viewN = ALLD[ckAt - 1].n;
   const pastView = !!viewN && viewN !== state.day.n;
+  const aheadView = pastView && !openDays().some(x => x.n === viewN);
   D = pastView ? DAYS[viewN - 1] : state.day;
   $('c-greet').textContent = greeting();
   $('c-date').textContent = dateLabel();
@@ -933,12 +934,12 @@ function render(){
   if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的心語」看得到。`;
   if (state.mode === 'preview') msg.textContent = `預覽${dayLabel(D)}。`;
 
-  $('d-date').textContent = pastView ? '前幾天的內容' : ''; $('d-date').hidden = !pastView;
+  $('d-date').textContent = aheadView ? '這一篇還沒輪到，先讀也沒關係' : pastView ? '前幾天的內容' : ''; $('d-date').hidden = !pastView;
   $('d-week').textContent = dwLabel;
   $('to-past').hidden = true;
   $('to-today').hidden = !pastView;
   $('d-nav').hidden = $('to-today').hidden;
-  $('to-life').hidden = isCheck();
+  $('to-life').hidden = isCheck() || !lifeAny();
   $('d-title').textContent = D.theme;
   $('d-open').textContent = D['開篇'];
   $('d-src').textContent = `${D.who}，${D.date}`;
@@ -956,7 +957,7 @@ function render(){
     state.mode === 'free' ? '明天清晨 5 點，會再翻到一篇。' :
     pos(D) < SEQ.length - 1 ? (pos(D) % 7 === 6 ? `這一週讀完了。明天清晨 5 點，進入第 ${weekNo(D) + 2} 週：${WEEKS[weekNo(D) + 1][0]}。` : `明天清晨 5 點，會換成第 ${pos(D) + 2} 天。`) :
     '8 週 56 天讀完了，謝謝您一起讀。從明天起，每天會翻到一篇，也會有沒讀過的延伸篇。';
-  if (pastView) $('d-next').textContent = '這是前幾天的內容。按上面的「回到今天」，回到今天這一篇。';
+  if (pastView) $('d-next').textContent = aheadView ? '這一篇是你遇到事時先讀的。等日子走到這裡，還會再讀到它。按上面的「回到今天」，回到今天這一篇。' : '這是前幾天的內容。按上面的「回到今天」，回到今天這一篇。';
 
   const notes = store.get('sx-notes', {});
   const mine = notes[D.n] || {};
@@ -993,7 +994,7 @@ function show(name){
   if (name === 'journey') renderJourney();
   if (name === 'growth') renderGrowth();
   if (name === 'past') renderPast();
-  if (name === 'life') renderLife(null);
+  if (name === 'life'){ if (!lifeAny()) return show('cover'); renderLife(null); }
   if (name !== 'today') stopSpeak();
   const bar = name === 'today' && canSpeak;
   $('speakbar').hidden = !bar; document.body.classList.toggle('has-speak', bar);
@@ -1033,6 +1034,7 @@ function dayRow(d, isOpen, read, isToday, lockText){
   b.append(tx); li.append(b); return li;
 }
 function renderJourney(){
+  $('j-life').hidden = !lifeAny();
   const box = $('j-list'); box.textContent = '';
   const open = openDays(), isOpen = d => open.some(x => x.n === d.n), read = readMap();
   const tp = state.mode === 'on' ? pos(state.day) : -1;
@@ -1205,32 +1207,40 @@ function renderNotes(){
 }
 
 function openDay(n){ if (isCheck()) return ckGo(n); viewN = n; render(); show('today'); }
+// 遇到事，找一篇：只列出「現在點進去就有篇章可讀」的情境。
+// 8 週期間只放前面已經打開的日子（不含今天這一篇，今天本來就在讀）；一篇都沒有的情境不列，全部沒有就連入口都不出現。
+function lifeAvail(ns){
+  // 心裡有事的時候，就是現在需要。相關的篇章全部馬上可讀，不等 8 週進度；只有延伸篇留到讀完 56 天以後。
+  const all = state.mode === 'free' || state.mode === 'preview';
+  return ns.filter(n => all || ORDER.includes(n));
+}
+const lifeAny = () => LIFE.some(([, ns]) => lifeAvail(ns).length);
 function renderLife(ci){
   const ul = $('lf-list'); ul.textContent = '';
-  const open = openDays(), has = n => open.some(d => d.n === n);
   const all = state.mode === 'free' || state.mode === 'preview';
   const sortKey = n => { const p = ORDER.indexOf(n); return p >= 0 ? p : 100 + EXT.indexOf(n); };
   $('lf-back').hidden = ci === null;
   if (ci === null){
     $('lf-title').textContent = '遇到這件事，可以讀';
-    $('lf-hint').textContent = all ? '心裡有事的時候，點一下，就有可以讀的篇章。' : '心裡有事的時候，點一下。8 週期間，這裡只放您已經讀過的篇；56 天讀完以後，全部都會打開。';
+    $('lf-hint').textContent = '心裡有事的時候，點一下，就有可以讀的篇章。';
     LIFE.forEach(([name, ns], i) => {
-      const k = ns.filter(n => all || has(n)).length;
+      const k = lifeAvail(ns).length;
+      if (!k) return;
       const li = document.createElement('li'), b = document.createElement('button');
       const t = document.createElement('span'); t.className = 't'; t.textContent = name;
-      const sx = document.createElement('span'); sx.className = 's'; sx.textContent = k ? `${k} 篇可以讀` : '再讀幾天，這裡就會有';
+      const sx = document.createElement('span'); sx.className = 's'; sx.textContent = `${k} 篇可以讀`;
       b.append(t, sx); b.onclick = () => { renderLife(i); window.scrollTo(0, 0); }; li.append(b); ul.appendChild(li);
     });
     return;
   }
   const [name, ns] = LIFE[ci];
   $('lf-title').textContent = name;
-  const list = ns.filter(n => all || has(n)).sort((a, b) => sortKey(a) - sortKey(b));
-  $('lf-hint').textContent = list.length ? '想讀哪一篇就點哪一篇。' : '這一類的篇章還在後面，再讀幾天，這裡就會有。';
+  const list = lifeAvail(ns).sort((a, b) => sortKey(a) - sortKey(b));
+  $('lf-hint').textContent = '每一篇都可以馬上讀。先看看下面這幾句，哪一句說中你的心，就點哪一篇。';
   list.forEach(n => {
     const d = DAYS[n - 1];
     const li = document.createElement('li'), b = document.createElement('button');
-    const t = document.createElement('span'); t.className = 't'; t.textContent = `${dayLabel(d)}｜${d.theme}`;
+    const t = document.createElement('span'); t.className = 't'; t.textContent = d.theme + (readMap()[d.n] ? '　✓ 讀過' : '');
     const k = document.createElement('span'); k.className = 'k'; k.textContent = d['今日重點'];
     b.append(t, k); b.onclick = () => openDay(n); li.append(b); ul.appendChild(li);
   });
