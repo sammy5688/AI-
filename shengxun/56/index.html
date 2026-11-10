@@ -529,6 +529,12 @@ html.night .hero .htrees{fill:#7E9C86;opacity:.6}
 html.night .hero .hgrass{stroke:#9DBBA5;opacity:.7}
 html.night .hero .sunglow{opacity:.2!important;animation:none}
 html.night .hero ellipse{opacity:.12}
+/* 下方四個入口：還沒點開的，有一塊很淡的底；正在看的那一個維持原樣（較深、有框、粗字） */
+.tabs button:not([aria-current="page"]){background:rgba(70,98,79,.055)}
+html.night .tabs button:not([aria-current="page"]){background:rgba(255,255,255,.055)}
+.tabs-in{gap:6px}
+.tabs{background:#F4F6F1}
+html.night .tabs{background:#2E3833}
 </style>
 
 </head>
