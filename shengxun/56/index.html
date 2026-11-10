@@ -621,6 +621,13 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 .bk-opts{list-style:none;padding-left:0}
 .bk-opts li{padding-left:1em;text-indent:-1em}
 .bk-opts li::before{content:"・"}
+.about h3:first-child{margin-top:0}
+.credits{margin:0;display:flex;flex-direction:column;gap:6px}
+.credits div{display:grid;grid-template-columns:5em 1fr;gap:8px;align-items:baseline}
+.credits dt{color:var(--muted);font-size:.88em}
+.credits dd{margin:0;font-weight:500}
+.copyright{margin:6px 0 0;font-size:.8em;color:var(--muted);text-align:center}
+.maker{margin:4px 0 0;text-align:center;font-size:.78em;color:var(--muted);letter-spacing:.04em}
 </style>
 
 </head>
@@ -709,6 +716,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <p>每天只要記住「今日重點」那一句，帶著走就好。</p>
       <p>字太小，可以按右上角的「字」放大。</p>
     </div>
+    <p class="maker">財團法人天祥宇宙聖道基金會 製作</p>
   </section>
 
   <!-- 每日頁 -->
@@ -925,10 +933,22 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
         <p>晚上讀的時候，畫面變暗比較不刺眼。</p>
         <div class="row"><button class="ghost" id="nm-auto">晚上自動變暗</button><button class="ghost" id="nm-on">一直用夜間</button><button class="ghost" id="nm-off">一直用白天</button></div>
       </div>
-      <h3>頁面上的內容</h3>
-      <p>「原文」是開示紀錄的原句，只統一了字形。「白話理解」「用在生活裡」「問問自己」「今天可以試試」是編輯整理，幫助理解，不是聖訓原文。</p>
-      <h3 id="contact-h" hidden>有問題找誰</h3>
+    </div>
+    <div class="card about" id="about">
+      <h3>關於《玉語心晨》</h3>
+      <dl class="credits">
+        <div><dt>製作</dt><dd>財團法人天祥宇宙聖道基金會</dd></div>
+        <div><dt>內容來源</dt><dd>玉虛仙宗聖訓（天祥三年，民國 108 年 1 月開示紀錄）</dd></div>
+        <div><dt>版本</dt><dd>2026 年 11 月　試讀版</dd></div>
+      </dl>
+      <h3>使用前請了解</h3>
+      <p><b>內容：</b>每篇的「原文」是開示紀錄的原句，只統一了字形。「開篇」「今日重點」「白話理解」「用在生活裡」「問問自己」「今天可以試試」是本會編輯整理，幫助理解與生活應用，不是聖訓原文。</p>
+      <p><b>個人資料：</b>使用本 App 不需要登入，也不收集任何個人資料。你寫下的話只存在自己的手機裡，本會看不到，也不會上傳到任何地方。</p>
+      <p><b>分享與轉載：</b>歡迎把連結和圖卡分享給家人、朋友。如需轉載內容、印製成冊或用於其他用途，請先與本會聯絡。</p>
+      <p><b>身心照顧：</b>這些文字是修身的參考，不能取代醫療、心理諮商或其他專業協助。遇到難處時，請向專業人員或信任的人求助。</p>
+      <h3 id="contact-h" hidden>聯絡我們</h3>
       <p id="contact" hidden></p>
+      <p class="copyright">© 2026 財團法人天祥宇宙聖道基金會　版權所有</p>
     </div>
     <div class="row center"><button class="primary" id="intro-ok">我知道了，開始讀</button></div>
   </section>
@@ -1180,7 +1200,7 @@ async function makeCard(d, withScene = true){
   // 今日一句
   g.textBaseline = 'alphabetic';
   const parts = (d['今日重點'].match(/[^。；！？]+[。；！？]*[」』）]*/g) || [d['今日重點']]).map(t => t.trim()).filter(Boolean);
-  const left = 132, maxW = W - left - 110, areaTop = 600, bottom = 1110;
+  const left = 132, maxW = W - left - 110, areaTop = 590, bottom = 1090;
   let size = 64, lines, lh, gap;
   for (; size >= 40; size -= 2){
     g.font = `600 ${size}px ${SERIF}`; lh = Math.round(size * 1.62); gap = Math.round(size * .5);
@@ -1190,19 +1210,20 @@ async function makeCard(d, withScene = true){
   }
   const total = lines.reduce((a, l) => a + l.length * lh, 0) + gap * (lines.length - 1);
   // 整塊（標籤＋句子＋出處）放在晨景和頁尾之間的正中間
-  const block = 60 + total + 80, top = Math.max(areaTop, Math.round((480 + 1200) / 2 - block / 2) + 60);
+  const block = 60 + total + 80, top = Math.max(areaTop, Math.round((480 + 1170) / 2 - block / 2) + 60);
   g.fillStyle = '#46624F'; g.font = `700 34px ${SANS}`; g.fillText('今 日 一 句', 110, top - 60);
   g.fillStyle = '#C9D8CB'; g.fillRect(104, top + 8, 5, total - 8);
   g.fillStyle = '#2E3A32'; g.font = `600 ${size}px ${SERIF}`;
   let y = top + size;
   lines.forEach((l, i) => { l.forEach(t => { g.fillText(t, left, y); y += lh; }); if (i < lines.length - 1) y += gap; });
   y = y - lh + Math.round(size * .9) + 44;
-  g.fillStyle = '#55625A'; g.font = `500 32px ${SANS}`; g.fillText(`〈${d.theme}〉・${d.who}`, left, Math.min(y, 1180));
+  g.fillStyle = '#55625A'; g.font = `500 32px ${SANS}`; g.fillText(`〈${d.theme}〉・${d.who}`, left, Math.min(y, 1150));
   // 頁尾
-  g.fillStyle = '#DCE4DA'; g.fillRect(110, 1228, W - 220, 2);
-  g.fillStyle = '#46624F'; g.font = `700 40px ${SERIF}`; g.fillText('玉語心晨', 110, 1292);
+  g.fillStyle = '#DCE4DA'; g.fillRect(110, 1196, W - 220, 2);
+  g.fillStyle = '#46624F'; g.font = `700 40px ${SERIF}`; g.fillText('玉語心晨', 110, 1258);
   const bw = g.measureText('玉語心晨').width;
-  g.fillStyle = '#55625A'; g.font = `500 28px ${SANS}`; g.fillText('玉虛的話，從心開始', 110 + bw + 22, 1290);
+  g.fillStyle = '#55625A'; g.font = `500 28px ${SANS}`; g.fillText('玉虛的話，從心開始', 110 + bw + 22, 1256);
+  g.fillStyle = '#6B776F'; g.font = `500 26px ${SANS}`; g.fillText('財團法人天祥宇宙聖道基金會 製作', 110, 1306);
   return await new Promise((res, rej) => { try{ cv.toBlob(b => b ? res(b) : rej(new Error('blob')), 'image/png'); }catch(e){ rej(e); } });
 }
 let cardUrl = null;
