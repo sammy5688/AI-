@@ -825,36 +825,28 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
     <ul class="list" id="n-list"></ul>
     <div class="backup" id="bk-card">
       <p class="t">存一份，換手機也找得回來</p>
-      <p class="hint">你寫下的話，只存在這支手機裡。存一份到手機的「備忘錄」，或寄給自己，以後換了手機，還能放回來。</p>
+      <p class="hint">你寫下的話，只存在這支手機裡。存一份到 LINE 的「Keep筆記」，以後換了手機，還能放回來。</p>
       <p class="bk-last" id="bk-last"></p>
-      <button class="primary" id="bk-copy">存一份</button>
-      <ul class="bk-steps bk-opts">
-        <li><b>iPhone</b>：按了以後選「<b>備忘錄</b>」，再按「儲存」。</li>
-        <li><b>Android</b>：選手機裡記事用的 App（例如「<b>記事本</b>」）存起來。</li>
-        <li>也可以選「<b>郵件</b>」或「<b>Gmail</b>」，寄給自己。</li>
-      </ul>
-      <p class="bk-how">選一種就好。備忘錄、記事本和信箱都會跟著你的手機帳號，換新手機登入後就回來了。請不要傳給別人，裡面是你寫給自己的話。</p>
-      <details class="bk-line">
-        <summary>想存在 LINE 的 Keep筆記？</summary>
-        <p>可以：按「存一份」後選 LINE，在搜尋框打「Keep」，選「Keep筆記」傳送。</p>
-        <p>但要注意：換手機時，LINE 若沒有先備份聊天記錄，只會帶走最近 14 天的內容，比較早存的那一份可能就不見了。所以比較建議存在備忘錄或寄給自己。</p>
-      </details>
+      <button class="primary" id="bk-copy">存一份到 LINE</button>
+      <ol class="bk-steps">
+        <li>按了以後選「LINE」。</li>
+        <li>在最上面的搜尋框打「<b>Keep</b>」，選「<b>Keep筆記</b>」，按傳送。</li>
+      </ol>
+      <p class="bk-how">Keep筆記只有你自己看得到，請不要傳給別人。換手機前，記得先在 LINE 備份聊天記錄，存的這一份才會跟著過去。</p>
       <p class="saved" id="bk-msg" aria-live="polite"></p>
       <div class="row" id="bk-more" hidden></div>
       <textarea id="bk-out" readonly hidden aria-label="要存起來的文字"></textarea>
-      <button class="nlink bk-alt" id="bk-file">也可以存成檔案</button>
     </div>
     <details id="rs-box" class="rsbox">
       <summary>換了新手機？把存好的那一份放回來</summary>
       <ol class="rs-steps">
-        <li>在新手機打開「備忘錄」、記事本或信箱（或 LINE 的 Keep筆記），找到之前存的那一份。</li>
+        <li>在新手機打開 LINE 的「Keep筆記」，找到之前存的那一份。</li>
         <li>點最下面那個連結，就會打開這裡，按「放回來」就好。</li>
       </ol>
       <p class="hint">連結點不開？把那一整份長按複製，貼在下面，再按「放回來」。</p>
       <textarea id="rs-in" placeholder="長按這裡，選「貼上」" aria-label="貼上存好的那一份"></textarea>
       <button class="primary" id="rs-go">放回來</button>
       <p class="saved" id="rs-msg" aria-live="polite"></p>
-      <label class="nlink bk-alt filebtn">之前存成檔案？選那個檔案<input type="file" id="rs-file" accept=".txt,text/plain" hidden></label>
       <p class="hint">放回來的時候，這支手機裡原本寫的話不會被蓋掉。</p>
     </details>
   </section>
@@ -919,7 +911,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <p>心裡有事的時候，可以按「遇到事，找一篇」（在每篇最下面，「八週旅程」裡也有），從「和家人鬧僵了」「一句話放不下」這些生活情境，馬上找到可以讀的篇章，不用等到那一天。</p>
       <h3>下面四個入口</h3>
       <p><b>今日玉語：</b>今天這一篇，從這裡開始讀。</p>
-      <p><b>我的心語：</b>你寫下的話、收藏的句子。在這裡也可以「存一份」到手機的備忘錄或寄給自己，換手機也找得回來。</p>
+      <p><b>我的心語：</b>你寫下的話、收藏的句子。在這裡也可以「存一份到 LINE」的 Keep筆記，換手機也找得回來。</p>
       <p><b>我的成長：</b>一週寫一句「這一週，我有什麼不一樣」，也看得到自己試過的小事。不打分數。</p>
       <p><b>八週旅程：</b>8 週 56 天走到哪裡了；前面的日子想再讀，從這裡進去。</p>
       <p>每一篇都照四個步驟走：</p>
@@ -1577,12 +1569,12 @@ async function sendPart(text, k, N){
   const msg = $('bk-msg'), out = $('bk-out'); out.hidden = true;
   const done = () => { if (k === N - 1) bkDone(); };
   if (navigator.share){
-    try{ await navigator.share({ text }); done(); msg.textContent = N > 1 && k < N - 1 ? `第 ${k + 1} 份存好了，請接著按「存第 ${k + 2} 份」。` : '存好了。以後換手機，打開存的那一份，點裡面的連結，就能放回來。'; return true; }
+    try{ await navigator.share({ text }); done(); msg.textContent = N > 1 && k < N - 1 ? `第 ${k + 1} 份存好了，請接著按「存第 ${k + 2} 份」。` : '存好了。以後換手機，在 Keep筆記裡點那個連結，就能放回來。'; return true; }
     catch(e){ if (e && e.name === 'AbortError') return false; }
   }
-  try{ await navigator.clipboard.writeText(text); done(); msg.textContent = `${N > 1 ? `第 ${k + 1} 份` : ''}已經複製好了。打開手機的「備忘錄」或「記事本」，新增一則，長按選「貼上」就存好了。`; return true; }catch(e){}
+  try{ await navigator.clipboard.writeText(text); done(); msg.textContent = `${N > 1 ? `第 ${k + 1} 份` : ''}已經複製好了。打開 LINE，搜尋「Keep」進到「Keep筆記」，長按輸入框選「貼上」，按傳送就存好了。`; return true; }catch(e){}
   out.hidden = false; out.value = text; out.focus(); out.select();
-  msg.textContent = '這支手機不能自動複製。下面的字已經選好了，長按選「複製」，再貼到手機的「備忘錄」或「記事本」。';
+  msg.textContent = '這支手機不能自動複製。下面的字已經選好了，長按選「複製」，再貼到 LINE 的「Keep筆記」。';
   return false;
 }
 let bkPartsCache = null;
@@ -1595,17 +1587,6 @@ $('bk-copy').onclick = async () => {
     $('bk-more').hidden = false; return;
   }
   await sendPart(parts[0], 0, 1);
-};
-$('bk-file').onclick = async () => {
-  const msg = $('bk-msg'); $('bk-out').hidden = true;
-  try{
-    const t = new Date(Date.now() + 8*3600e3), p = n => String(n).padStart(2, '0');
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([await backupText()], { type: 'text/plain;charset=utf-8' }));
-    a.download = `玉語心晨_我的心語_${t.getUTCFullYear()}${p(t.getUTCMonth()+1)}${p(t.getUTCDate())}.txt`;
-    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    bkDone(); msg.textContent = '檔案存好了，在手機的「下載」或「檔案」裡找得到。';
-  }catch(e){ msg.textContent = '這支手機沒辦法存成檔案，請改按上面的「存一份」。'; }
 };
 async function readBackup(text){
   const m = text.replace(/\s+/g, '').match(/#r=([zb][A-Za-z0-9_-]+)/);
@@ -1647,15 +1628,13 @@ async function checkRestoreLink(){
   $('rl-card').hidden = false; $('rl-msg').textContent = '';
   $('rl-go').hidden = !pendingRestore;
   const pt = pendingRestore && pendingRestore.part;
-  $('rl-sum').textContent = pendingRestore ? `${pt ? `這是第 ${pt[0]} 份（共 ${pt[1]} 份）。` : ''}裡面有：${dataSummary(pendingRestore) || '還沒有紀錄'}。${pt ? '放回來以後，也請點其他幾份的連結。' : ''}` : '這個連結好像不完整，沒辦法放回來。請回到存的那一份，把整份長按複製，貼在下面「換了新手機？」裡。';
+  $('rl-sum').textContent = pendingRestore ? `${pt ? `這是第 ${pt[0]} 份（共 ${pt[1]} 份）。` : ''}裡面有：${dataSummary(pendingRestore) || '還沒有紀錄'}。${pt ? '放回來以後，也請點其他幾份的連結。' : ''}` : '這個連結好像不完整，沒辦法放回來。請回到 Keep筆記，把整份長按複製，貼在下面「換了新手機？」裡。';
   window.scrollTo(0, 0);
   return true;
 }
 $('rl-go').onclick = () => { if (!pendingRestore) return; if (mergeBackup(pendingRestore, $('rl-msg'))){ pendingRestore = null; $('rl-go').hidden = true; $('rl-no').textContent = '好了'; } };
 $('rl-no').onclick = () => { pendingRestore = null; $('rl-card').hidden = true; $('rl-no').textContent = '先不要'; };
 $('rs-go').onclick = () => { const t = $('rs-in').value.trim(); if (!t){ $('rs-msg').textContent = '還沒有貼上存好的那一份。'; return; } restore(t); };
-$('rs-file').onchange = e => { const f = e.target.files && e.target.files[0]; if (!f) return;
-  const r = new FileReader(); r.onload = () => restore(String(r.result || '')); r.onerror = () => { $('rs-msg').textContent = '這個檔案讀不出來。'; }; r.readAsText(f, 'utf-8'); e.target.value = ''; };
 
 // 我的心語：自己寫的話是主角；收藏的句子另外一頁。每張卡只有「那句話」和底下一行小字（日期、哪一篇）
 let notesTab = 'mine';
