@@ -605,6 +605,10 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 .rsbox[open] .primary{align-self:stretch}
 .rs-steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px;font-size:.92em;line-height:1.75}
 .rsbox .saved:empty{display:none}
+.gans{background:var(--veil);border-radius:16px;padding:12px 16px 4px;display:flex;flex-direction:column;gap:4px}
+.gans .lab{margin:0;font-size:.8em;color:var(--muted)}
+.gans .gedit{align-self:flex-end;font-size:.8em;color:var(--muted)}
+.gwk .hint{margin:0}
 </style>
 
 </head>
@@ -1380,10 +1384,13 @@ function renderGrowth(){
     if (editW === w || (!text && w === curW)){
       weekEditor(w, card, text || '');
     } else if (text){
-      card.append(el('p', 'gtxt', text));
-      const ed = el('button', 'nlink gedit', '改一改'); ed.onclick = reopen; card.append(ed);
+      const q = el('div', 'gans');
+      q.append(el('p', 'lab', '這一週，我有什麼不一樣？'), el('p', 'gtxt', text));
+      const ed = el('button', 'nlink gedit', '改一改'); ed.onclick = reopen; q.append(ed);
+      card.append(q);
     } else {
-      const add = el('button', 'nlink gedit', '補寫這一週的一句'); add.onclick = reopen; card.append(add);
+      card.append(el('p', 'hint', '這一週還沒寫下「我有什麼不一樣」。'));
+      const add = el('button', 'nlink gedit', '補寫一句'); add.onclick = reopen; card.append(add);
     }
     chips(days, card);
     box.append(card);
