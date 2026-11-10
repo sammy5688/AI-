@@ -730,7 +730,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <h2><span class="num">三</span>觀自心</h2>
       <div><p class="lab"><b>問問自己</b></p><p class="p" id="d-ask"></p></div>
       <div class="past" id="d-past" hidden></div>
-      <label class="hint" for="note">想寫就寫一句給自己，不寫也可以，寫了會自動存好。</label>
+      <label class="hint" for="note">想寫就寫一句給自己。寫了會自動存好，收在「我的心語」；不寫也可以。</label>
       <textarea id="note" placeholder="例如：今天我差點又急著……"></textarea>
       <button id="save-note" hidden></button>
       <p class="saved" id="note-msg" aria-live="polite"></p>
@@ -741,7 +741,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
       <div class="trybox"><p class="lab"><b>今天可以試試</b></p><p class="p" id="d-try"></p></div>
       <button class="ghost trybtn" id="tried" aria-pressed="false">這件事，我試過了</button>
       <p class="saved" id="tried-msg" aria-live="polite"></p>
-      <div class="row"><button class="ghost" id="carry">收藏這一句，帶著走</button></div>
+      <div class="row"><button class="ghost" id="carry">收藏今日重點，帶著走</button></div>
       <p class="saved" id="carry-msg" aria-live="polite"></p>
       <div class="sharebox">
         <p class="lab">把今天這一句，傳給想念的人</p>
@@ -761,6 +761,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 
     <div class="close" id="d-close">
       <button class="primary" id="mark-read">讀完了，做個記號</button>
+      <p class="bk-how" id="mark-how">做了記號，「八週旅程」會在這一天打上 ✓。</p>
       <p id="read-msg" aria-live="polite"></p>
       <div class="echo" id="d-echo" hidden>
         <p class="lab">一週前的今天，你寫下</p>
@@ -831,7 +832,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
   <section class="view col" id="v-growth" hidden>
     <div class="pagehead">
       <p class="daytag">我的成長</p>
-      <p class="hint">不打分數，也不跟誰比。一週寫一句，回頭時，看得見自己走過的路。</p>
+      <p class="hint">不打分數，也不跟誰比。</p>
     </div>
     <div class="gsum" id="g-sum"></div>
     <div id="g-letter"></div>
@@ -867,11 +868,11 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
   <section class="view col intro" id="v-intro" hidden>
     <div class="pagehead"><p class="daytag">讀之前</p></div>
     <div class="card">
-      <h3>玉虛篇是什麼</h3>
+      <h3>這些話從哪裡來</h3>
       <p>天祥三年（民國 108 年）一月，天祥的道主、道母陸續聽到多位仙家的開示。這些仙家來自「玉虛」門下，所以這批開示紀錄被整理為「玉虛仙宗聖訓」。</p>
       <p>這是天祥的信仰紀錄。對天祥家人來說，是仙家的教導；對第一次接觸的親友來說，也可以把它當作一段段談修心、談做人的話來讀。</p>
       <h3>怎麼讀</h3>
-      <p>全書 8 週、56 天，一週一個主題，由淺到深：安住自己的心、看見自己的心念、學著放下、待人的心、說話與相處、一起做事、謙卑與德、走過與承擔。</p>
+      <p>一共 8 週、56 天，一週一個主題，由淺到深：安住自己的心、看見自己的心念、學著放下、待人的心、說話與相處、一起做事、謙卑與德、走過與承擔。</p>
       <p>每天清晨 5 點換一篇，一篇大約 5 分鐘。56 天讀完以後，每天會翻到一篇，有讀過的，也有 9 篇還沒讀過的延伸篇。</p>
       <p>心裡有事的時候，可以按「遇到事，找一篇」（在每篇最下面，「八週旅程」裡也有），從「和家人鬧僵了」「一句話放不下」這些生活情境，馬上找到可以讀的篇章，不用等到那一天。</p>
       <h3>下面四個入口</h3>
@@ -1040,7 +1041,7 @@ function render(){
   msg.hidden = state.mode === 'on' || state.mode === 'before' || state.mode === 'free';
   const st = $('c-status');
   st.hidden = !(state.mode === 'before' || state.mode === 'free');
-  if (state.mode === 'before') st.textContent = '目前開放試讀';
+  if (state.mode === 'before') st.textContent = '現在是試讀，先開放第 1 天\n正式開始後，每天清晨換一篇';
   if (state.mode === 'free') st.textContent = '8 週已經讀完\n今天翻到這一篇';
   $('go-read').textContent = wasRead && !isCheck() ? '再讀一次' : state.mode === 'before' ? '試讀第 1 天' : '開始今天的閱讀';
   if (state.mode === 'free') msg.textContent = '8 週 56 天讀完了。現在每天會翻到一篇：有讀過的，也有還沒讀過的延伸篇。';
@@ -1240,7 +1241,7 @@ function renderLetter(){
 function paintDone(){
   const ck = isCheck(), r = !!readMap()[D.n], t = !!triedMap()[D.n];
   $('d-close').hidden = ck; $('tried').hidden = ck;
-  $('mark-read').hidden = r;
+  $('mark-read').hidden = r; $('mark-how').hidden = r;
   $('read-msg').textContent = r ? '✓ 這一篇讀過了。今天讀到這裡，就很好了。' : '';
   $('tried').setAttribute('aria-pressed', t ? 'true' : 'false');
   $('tried').textContent = t ? '✓ 這件事，我試過了' : '這件事，我試過了';
@@ -1357,7 +1358,7 @@ function renderGrowth(){
   const sum = $('g-sum'); sum.textContent = '';
   if (!a && !c && !Object.keys(wk).length){
     sum.append(el('p', 'big', '這裡會慢慢長出你走過的路。'));
-    sum.append(el('p', '', '每一週，可以寫一句「這一週，我有什麼不一樣」；試過哪一天的小事，也會出現在這裡。'));
+    sum.append(el('p', '', '讀完一篇做個記號、試過那天的小事、每週寫一句「這一週，我有什麼不一樣」，都會收在這裡。'));
   } else {
     sum.append(el('p', 'big', `你已經讀了 ${a} 篇` + (c ? `，試過 ${c} 件小事` : '') + '。'));
     sum.append(el('p', 'hint', '有幾天沒讀，都沒有關係。願意回來，就是在路上。'));
@@ -1381,8 +1382,11 @@ function renderGrowth(){
     h.append(el('small', '', `第 ${w + 1} 週${k ? `・讀了 ${k} 篇` : ''}`), document.createTextNode(WEEKS[w][0]));
     card.append(h);
     const reopen = () => { editW = w; renderGrowth(); const t = $('gw-' + w); if (t) t.focus(); };
-    if (editW === w || (!text && w === curW)){
+    const dayInWeek = state.mode === 'on' ? tp - w * 7 : (state.mode === 'free' ? 6 : 0);
+    if (editW === w || (!text && w === curW && dayInWeek >= 4)){
       weekEditor(w, card, text || '');
+    } else if (!text && w === curW){
+      card.append(el('p', 'hint', '讀到這一週的第 5 天以後，再回來寫一句「這一週，我有什麼不一樣」。'));
     } else if (text){
       const q = el('div', 'gans');
       q.append(el('p', 'lab', '這一週，我有什麼不一樣？'), el('p', 'gtxt', text));
