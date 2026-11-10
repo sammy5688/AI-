@@ -758,9 +758,9 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
       <button class="primary" id="go-read">開始今天的閱讀</button>
     </div>
     <div class="ytry" id="c-ytry" hidden>
-      <p class="lab">昨天的小事，有試試看嗎？</p>
+      <p class="lab">昨天的練習，做到了嗎？</p>
       <p class="yt" id="c-ytry-t"></p>
-      <div class="row"><button class="ghost" id="c-ytry-yes">試過了</button><button class="nlink" id="c-ytry-no">還沒，沒關係</button></div>
+      <div class="row"><button class="ghost" id="c-ytry-yes">練習了</button><button class="nlink" id="c-ytry-no">還沒，沒關係</button></div>
       <p class="saved" id="c-ytry-msg" aria-live="polite"></p>
     </div>
     <p class="msg" id="c-msg" hidden></p>
@@ -815,8 +815,8 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
     <div class="step act" id="st4">
       <h2><span class="num">四</span>實踐於行</h2>
       <div class="trybox"><p class="lab sec"><b>今天可以試試</b></p><p class="p" id="d-try"></p>
-        <p class="tryhint" id="try-hint">今天找個機會試試看。明天打開 App 時，首頁會問你：昨天試了嗎？</p>
-        <button class="nlink trylink" id="tried" aria-pressed="false" hidden>這件事，我試過了</button>
+        <p class="tryhint" id="try-hint">今天找個機會練習。明天打開 App 時，首頁會問你：昨天的練習，做到了嗎？</p>
+        <button class="nlink trylink" id="tried" aria-pressed="false" hidden>這件事，我練習過了</button>
         <p class="saved" id="tried-msg" aria-live="polite"></p>
       </div>
     </div>
@@ -985,7 +985,7 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
           <h4>2. 我的心語</h4>
           <p>這裡會保存你收藏的句子，以及自己寫下的心得。喜歡的一句話，可以收藏起來；寫下的心得，也可以「存一份到 LINE」的 Keep筆記，方便日後找回來。</p>
           <h4>3. 我的成長</h4>
-          <p>每週可以寫下一句話：「這一週，我有什麼不一樣？」也可以回頭看看每週寫下的話，以及實際試過哪些小事。</p>
+          <p>每週可以寫下一句話：「這一週，我有什麼不一樣？」也可以回頭看看每週寫下的話，以及實際練習過哪些小事。</p>
           <p>不需要分數，也不用和別人比較，只要看見自己一點一點的成長。</p>
           <h4>4. 八週旅程</h4>
           <p>這裡可以看到 8 週、56 天的學習進度。想重新閱讀以前的篇章，或看看自己走到哪一天，都可以從這裡進入。</p>
@@ -1004,7 +1004,7 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
           <h4>第三步｜觀自心</h4>
           <p>透過「問問自己」，靜下來看看今天的心情與想法。可以寫下一句心得，也可以只在心裡想一想，不一定要寫下來。</p>
           <h4>第四步｜實踐於行</h4>
-          <p>讀懂道理之後，試著做一件「今天可以試試」的小事。不必做得很多，從一件簡單的小事開始就好。隔天打開 App 時，首頁會問你昨天有沒有試著做到。</p>
+          <p>讀懂道理之後，練習一件「今天可以試試」的小事。不必做得很多，從一件簡單的小事開始就好。隔天打開 App 時，首頁會問你昨天的練習做到了沒有。</p>
           <p>如果「今日重點」中有一句話特別觸動你，也可以按旁邊的「☆ 收藏」，留給自己日後再看。</p>
         </div>
       </details>
@@ -1414,7 +1414,7 @@ function paintDone(){
   $('try-hint').hidden = ck || !today || t;
   $('tried').hidden = ck || (today && !t);
   $('tried').setAttribute('aria-pressed', t ? 'true' : 'false');
-  $('tried').textContent = t ? '✓ 這件事，我試過了' : '這件事，我試過了';
+  $('tried').textContent = t ? '✓ 這件事，我練習過了' : '這件事，我練習過了';
   const kept = !!(store.get('sx-notes', {})[D.n] || {}).carried;
   $('carry').setAttribute('aria-pressed', kept ? 'true' : 'false');
   $('carry').textContent = kept ? '★ 已收藏' : '☆ 收藏';
@@ -1533,9 +1533,9 @@ function renderGrowth(){
   const sum = $('g-sum'); sum.textContent = '';
   if (!a && !c && !Object.keys(wk).length){
     sum.append(el('p', 'big', '這裡會慢慢長出你走過的路。'));
-    sum.append(el('p', '', '讀完一篇按一下「讀完了」、試過那天的小事、每週寫一句「這一週，我有什麼不一樣」，都會收在這裡。'));
+    sum.append(el('p', '', '讀完一篇按一下「讀完了」、練習那天的小事、每週寫一句「這一週，我有什麼不一樣」，都會收在這裡。'));
   } else {
-    sum.append(el('p', 'big', `你已經讀了 ${a} 篇` + (c ? `，試過 ${c} 件小事` : '') + '。'));
+    sum.append(el('p', 'big', `你已經讀了 ${a} 篇` + (c ? `，練習過 ${c} 件小事` : '') + '。'));
     sum.append(el('p', 'hint', '有幾天沒讀，都沒有關係。願意回來，就是在路上。'));
   }
   const box = $('g-list'); box.textContent = '';
@@ -1544,7 +1544,7 @@ function renderGrowth(){
   const chips = (days, card) => {
     const ts = days.filter(d => tried[d.n]);
     if (!ts.length) return 0;
-    card.append(el('p', 'lab', '這一週試過的'));
+    card.append(el('p', 'lab', '這一週練習過的'));
     const row = el('div', 'chips');
     ts.forEach(d => { const b = el('button', '', `✓ ${d.theme}`); b.onclick = () => openDay(d.n); row.append(b); });
     card.append(row); return ts.length;
@@ -1612,7 +1612,7 @@ function dataSummary(d){
   if (nRead) parts.push(`讀過 ${nRead} 篇`);
   if (nText) parts.push(`寫下 ${nText} 句話`);
   if (nKeep) parts.push(`收藏 ${nKeep} 句`);
-  if (nTry) parts.push(`試過 ${nTry} 件小事`);
+  if (nTry) parts.push(`練習過 ${nTry} 件小事`);
   if (nWeek) parts.push(`寫了 ${nWeek} 週的「我有什麼不一樣」`);
   if (d.letter && d.letter.text) parts.push('一封給八週後自己的信');
   return parts.join('、');
@@ -1672,7 +1672,7 @@ function oldBackupText(){
     if (!n.text && !n.carried && !tried[d.n]) return;
     lines.push(`${dayLabel(d)}｜${d.theme}・${d.who}`, `今日重點：${strip(d['今日重點'])}`);
     if (n.text) lines.push(`我寫下：${n.text}`);
-    if (tried[d.n]) lines.push('這一天的小事，我試過了。');
+    if (tried[d.n]) lines.push('這一天的小事，我練習過了。');
     lines.push('');
   });
   WEEKS.forEach(([name], w) => { if ((wk[w] || {}).text) lines.push(`第 ${w + 1} 週・${name}｜這一週我的不一樣：${wk[w].text}`, ''); });
@@ -1894,19 +1894,19 @@ $('mark-read').onclick = () => {
 $('c-ytry-yes').onclick = () => {
   const n = $('c-ytry').dataset.n, t = triedMap(); t[n] = { at: Date.now(), today: dateLabel() };
   $('c-ytry-yes').hidden = true; $('c-ytry-no').hidden = true;
-  $('c-ytry-msg').textContent = store.set('sx-tried', t) ? '記下來了，在「我的成長」看得到。' : '這支手機現在沒辦法記下來。你試過了，這就很好。';
+  $('c-ytry-msg').textContent = store.set('sx-tried', t) ? '記下來了，在「我的成長」看得到。' : '這支手機現在沒辦法記下來。你練習了，這就很好。';
   setTimeout(() => { $('c-ytry').hidden = true; }, 2500);
 };
 $('c-ytry-no').onclick = () => {
   const n = $('c-ytry').dataset.n, k = store.get('sx-ytry-skip', {}); k[n] = Date.now(); store.set('sx-ytry-skip', k);
   $('c-ytry-yes').hidden = true; $('c-ytry-no').hidden = true;
-  $('c-ytry-msg').textContent = '沒關係，想試的時候再試就好。';
+  $('c-ytry-msg').textContent = '沒關係，想練習的時候再練習就好。';
   setTimeout(() => { $('c-ytry').hidden = true; }, 2500);
 };
 $('tried').onclick = () => {
   const t = triedMap(), on = !t[D.n];
   if (on) t[D.n] = { at: Date.now(), today: dateLabel() }; else delete t[D.n];
-  if (!store.set('sx-tried', t)){ $('tried-msg').textContent = '這支手機現在沒辦法記下來。你試過了，這就很好。'; return; }
+  if (!store.set('sx-tried', t)){ $('tried-msg').textContent = '這支手機現在沒辦法記下來。你練習了，這就很好。'; return; }
   paintDone(); $('tried-msg').textContent = on ? '記下來了，在「我的成長」看得到。' : '';
 };
 $('carry').onclick = () => {
