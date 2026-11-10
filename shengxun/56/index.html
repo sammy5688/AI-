@@ -510,15 +510,20 @@ html.night .storybox{background:#424F48}
 .dayhead .daytag,.todaycard .daytag{margin-top:0}
 .dayhead .week,.todaycard .week{line-height:1.7}
 /* 首頁晨景（11/10 重畫）：層層遠山沒入晨霧，邊緣帶一點水彩的不規則；顏色仍是鼠尾草霧綠 */
-.hero{--hs1:#FBF5E6;--hs2:#EDF2E8;--hbase:#E4ECE2;--hsun:#FFF8E2;--hr1:#C6D6C6;--hr2:#AFC5B1;--hr3:#9AB59F;--hr4:#D5E2D2;background:var(--hbase)!important}
+.hero{--hs0:#E9F0E8;--hs1:#FBF2DC;--hs2:#EEF2E6;--hbase:#E4ECE2;--hsun:#FFEDC2;--hr1:#C6D6C6;--hr2:#AFC5B1;--hr3:#9AB59F;--hr4:#D5E2D2;background:var(--hbase)!important}
 .hero svg.scene{height:118px}
-.hero .hsun{fill:#FFFBEE;opacity:.95}
+.hero .hsun{fill:#FFF6DC;opacity:1}
+.hero .hdawn{fill:#FFE9BC;opacity:.4}
+.hero .hwarm{fill:#FFF8E6}
+.hero .hdew{fill:#FFFFFF;opacity:.9}
 .hero .hbirds{stroke:#8FA694;opacity:.7}
 .hero .htrees{fill:#8FAA94;opacity:.75}
 .hero .hgrass{stroke:#7E9B84;opacity:.8}
 .hero-text{background:var(--hbase)!important;padding-top:4px}
-html.night .hero{--hs1:#46544C;--hs2:#3F4C45;--hbase:#3A4640;--hsun:#F2EEDC;--hr1:#5C6F63;--hr2:#536659;--hr3:#4A5C50;--hr4:#40504A}
+html.night .hero{--hs0:#48564E;--hs1:#46544C;--hs2:#3F4C45;--hbase:#3A4640;--hsun:#F2EEDC;--hr1:#5C6F63;--hr2:#536659;--hr3:#4A5C50;--hr4:#40504A}
 html.night .hero .hsun{fill:#F2EEDC;opacity:.85}
+html.night .hero .hdawn{opacity:0}
+html.night .hero .hdew{opacity:.35}
 html.night .hero .hbirds{stroke:#A9C1AE;opacity:.5}
 html.night .hero .htrees{fill:#7E9C86;opacity:.6}
 html.night .hero .hgrass{stroke:#9DBBA5;opacity:.7}
@@ -557,7 +562,7 @@ html.night .hero ellipse{opacity:.12}
       <span class="trial">試讀版</span>
       <svg class="scene" viewBox="0 0 400 150" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
         <defs>
-          <linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--hs1)"/><stop offset=".62" style="stop-color:var(--hs2)"/><stop offset="1" style="stop-color:var(--hbase)"/></linearGradient>
+          <linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--hs0)"/><stop offset=".34" style="stop-color:var(--hs1)"/><stop offset=".66" style="stop-color:var(--hs2)"/><stop offset="1" style="stop-color:var(--hbase)"/></linearGradient>
           <radialGradient id="hsun" cx="50%" cy="50%" r="50%"><stop offset="0" style="stop-color:var(--hsun);stop-opacity:.95"/><stop offset=".35" style="stop-color:var(--hsun);stop-opacity:.5"/><stop offset="1" style="stop-color:var(--hsun);stop-opacity:0"/></radialGradient>
           <linearGradient id="hr1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--hr1)"/><stop offset="1" style="stop-color:var(--hs2)"/></linearGradient>
           <linearGradient id="hr2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--hr2)"/><stop offset="1" style="stop-color:var(--hs2)"/></linearGradient>
@@ -568,11 +573,13 @@ html.night .hero ellipse{opacity:.12}
           <filter id="hwc" x="-2%" y="-10%" width="104%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".018 .05" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5"/><feGaussianBlur stdDeviation=".5"/></filter>
         </defs>
         <rect width="400" height="150" fill="url(#hsky)"/>
-        <circle class="sunglow" cx="306" cy="44" r="64" fill="url(#hsun)"/>
-        <circle class="hsun" cx="306" cy="44" r="13"/>
-        <g class="hbirds" fill="none" stroke-width="1.1" stroke-linecap="round"><path d="M238 30 q4 -4 7 0 q3 -4 7 0"/><path d="M222 40 q3 -3 5 0 q2 -3 5 0"/></g>
-        <path filter="url(#hwc)" fill="url(#hr1)" d="M-10 80 C24 72 46 54 78 57 C104 60 118 43 148 40 C178 37 192 58 222 60 C254 62 272 47 302 51 C332 55 356 68 410 62 V150 H-10Z"/>
-        <ellipse class="mist1" cx="150" cy="84" rx="170" ry="8" fill="#fff" opacity=".55" filter="url(#hmist)"/>
+        <ellipse class="hdawn" cx="300" cy="56" rx="190" ry="20" filter="url(#hmist)"/>
+        <circle class="sunglow" cx="300" cy="52" r="78" fill="url(#hsun)"/>
+        <circle class="hsun" cx="300" cy="52" r="15"/>
+        <g class="hbirds" fill="none" stroke-width="1.1" stroke-linecap="round"><path d="M212 24 q4 -4 7 0 q3 -4 7 0"/><path d="M196 34 q3 -3 5 0 q2 -3 5 0"/></g>
+        <path filter="url(#hwc)" fill="url(#hr1)" d="M-10 80 C24 72 46 54 78 57 C104 60 118 43 148 40 C178 37 192 58 222 60 C254 62 270 50 300 52 C330 54 356 68 410 62 V150 H-10Z"/>
+        <ellipse class="mist1 hwarm" cx="150" cy="84" rx="170" ry="8" opacity=".55" filter="url(#hmist)"/>
+        <ellipse class="hwarm" cx="310" cy="70" rx="90" ry="6" opacity=".5" filter="url(#hmist)"/>
         <path filter="url(#hwc)" fill="url(#hr2)" d="M-10 98 C26 92 50 79 86 83 C122 87 142 71 174 73 C208 75 228 91 264 89 C302 87 324 73 358 77 C380 79 394 85 410 87 V150 H-10Z"/>
         <g class="htrees" filter="url(#hsoft)"><path d="M92 83 l3 -9 l3 9z M99 84 l2.5 -7 l2.5 7z M180 73 l3 -10 l3 10z M187 74 l2.4 -7 l2.4 7z M172 74 l2 -6 l2 6z M340 76 l2.6 -8 l2.6 8z M347 77 l2 -6 l2 6z"/></g>
         <ellipse class="mist2" cx="280" cy="104" rx="170" ry="7" fill="#fff" opacity=".5" filter="url(#hmist)"/>
@@ -584,6 +591,7 @@ html.night .hero ellipse{opacity:.12}
           <path stroke-width="1.3" d="M372 150 C371 140 368 133 363 128 M378 150 C378 138 380 131 384 125 M384 150 C386 142 390 138 395 136"/>
           <path stroke-width="1" d="M58 150 C58 144 56 140 53 138 M62 150 C62 143 64 140 66 137 M330 150 C330 144 328 141 325 139 M334 150 C334 143 336 140 338 138"/>
         </g>
+        <g class="hdew"><circle cx="4" cy="124" r="1.5"/><circle cx="25" cy="121" r="1.3"/><circle cx="363" cy="128" r="1.3"/><circle cx="384" cy="125" r="1.5"/><circle cx="66" cy="137" r="1"/></g>
       </svg>
       <div class="hero-text">
         <p class="greetrow"><span class="greet" id="c-greet">早安，歡迎回來</span><span class="hdate" id="c-date"></span></p>
