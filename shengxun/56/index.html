@@ -1218,10 +1218,11 @@ async function makeCard(d, withScene = true){
   y = y - lh + Math.round(size * .9) + 44;
   g.fillStyle = '#55625A'; g.font = `500 32px ${SANS}`; g.fillText(`〈${d.theme}〉・${d.who}`, left, Math.min(y, 1150));
   // 頁尾
-  g.fillStyle = '#DCE4DA'; g.fillRect(110, 1218, W - 220, 2);
-  g.fillStyle = '#46624F'; g.font = `700 40px ${SERIF}`; g.fillText('玉語心晨', 110, 1286);
+  g.fillStyle = '#DCE4DA'; g.fillRect(110, 1206, W - 220, 2);
+  g.fillStyle = '#46624F'; g.font = `700 40px ${SERIF}`; g.fillText('玉語心晨', 110, 1268);
   const bw = g.measureText('玉語心晨').width;
-  g.fillStyle = '#55625A'; g.font = `500 28px ${SANS}`; g.fillText('玉虛的話，從心開始', 110 + bw + 22, 1284);
+  g.fillStyle = '#55625A'; g.font = `500 28px ${SANS}`; g.fillText('玉虛的話，從心開始', 110 + bw + 22, 1266);
+  g.fillStyle = '#7C877F'; g.font = `400 22px ${SANS}`; g.fillText('出處：玉虛仙宗聖訓｜財團法人天祥宇宙聖道基金會製作', 110, 1312);
   return await new Promise((res, rej) => { try{ cv.toBlob(b => b ? res(b) : rej(new Error('blob')), 'image/png'); }catch(e){ rej(e); } });
 }
 let cardUrl = null;
