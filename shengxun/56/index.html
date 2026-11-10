@@ -1777,7 +1777,7 @@ $('carry').onclick = () => {
 $('share').onclick = async () => {
   const msg = $('share-msg'); msg.textContent = '';
   const url = shareUrl();
-  const text = `《玉語心晨》〈${D.theme}〉\n「${strip(D['今日重點'])}」\n\n每天一句，一起來讀：${url}`;
+  const text = `《玉語心晨》〈${D.theme}〉\n「${strip(D['今日重點'])}」\n——${D.who}\n\n每天一句，一起來讀：${url}\n\n出處：玉虛仙宗聖訓｜財團法人天祥宇宙聖道基金會製作`;
   if (navigator.share){ try{ await navigator.share({ text }); return; }catch(e){ if (e && e.name === 'AbortError') return; } }
   try{ await navigator.clipboard.writeText(text); msg.textContent = '已經複製好了，打開 LINE 貼給家人就可以。'; return; }catch(e){}
   location.href = 'https://line.me/R/share?text=' + encodeURIComponent(text);
