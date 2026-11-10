@@ -509,6 +509,21 @@ html.night .storybox{background:#424F48}
 .dayno{margin:14px 0 0;font-size:.9em;font-weight:700;color:var(--accent-deep);letter-spacing:.1em;line-height:1.5}
 .dayhead .daytag,.todaycard .daytag{margin-top:0}
 .dayhead .week,.todaycard .week{line-height:1.7}
+/* 首頁晨景（11/10 重畫）：層層遠山沒入晨霧，邊緣帶一點水彩的不規則；顏色仍是鼠尾草霧綠 */
+.hero{--hs1:#FBF5E6;--hs2:#EDF2E8;--hbase:#E4ECE2;--hsun:#FFF8E2;--hr1:#C6D6C6;--hr2:#AFC5B1;--hr3:#9AB59F;--hr4:#D5E2D2;background:var(--hbase)!important}
+.hero svg.scene{height:118px}
+.hero .hsun{fill:#FFFBEE;opacity:.95}
+.hero .hbirds{stroke:#8FA694;opacity:.7}
+.hero .htrees{fill:#8FAA94;opacity:.75}
+.hero .hgrass{stroke:#7E9B84;opacity:.8}
+.hero-text{background:var(--hbase)!important;padding-top:4px}
+html.night .hero{--hs1:#46544C;--hs2:#3F4C45;--hbase:#3A4640;--hsun:#F2EEDC;--hr1:#5C6F63;--hr2:#536659;--hr3:#4A5C50;--hr4:#40504A}
+html.night .hero .hsun{fill:#F2EEDC;opacity:.85}
+html.night .hero .hbirds{stroke:#A9C1AE;opacity:.5}
+html.night .hero .htrees{fill:#7E9C86;opacity:.6}
+html.night .hero .hgrass{stroke:#9DBBA5;opacity:.7}
+html.night .hero .sunglow{opacity:.2!important;animation:none}
+html.night .hero ellipse{opacity:.12}
 </style>
 
 </head>
@@ -540,72 +555,34 @@ html.night .storybox{background:#424F48}
   <section class="view col" id="v-cover">
     <div class="hero">
       <span class="trial">試讀版</span>
-      <svg viewBox="0 0 400 170" aria-hidden="true" preserveAspectRatio="xMidYMax slice">
+      <svg class="scene" viewBox="0 0 400 150" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
         <defs>
-          <radialGradient id="sun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFFBEE"/><stop offset=".55" stop-color="#F6EED6" stop-opacity=".9"/><stop offset="1" stop-color="#F6EED6" stop-opacity="0"/></radialGradient>
-          <filter id="soft" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="5"/></filter>
+          <linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--hs1)"/><stop offset=".62" style="stop-color:var(--hs2)"/><stop offset="1" style="stop-color:var(--hbase)"/></linearGradient>
+          <radialGradient id="hsun" cx="50%" cy="50%" r="50%"><stop offset="0" style="stop-color:var(--hsun);stop-opacity:.95"/><stop offset=".35" style="stop-color:var(--hsun);stop-opacity:.5"/><stop offset="1" style="stop-color:var(--hsun);stop-opacity:0"/></radialGradient>
+          <linearGradient id="hr1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--hr1)"/><stop offset="1" style="stop-color:var(--hs2)"/></linearGradient>
+          <linearGradient id="hr2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--hr2)"/><stop offset="1" style="stop-color:var(--hs2)"/></linearGradient>
+          <linearGradient id="hr3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--hr3)"/><stop offset=".9" style="stop-color:var(--hbase)"/></linearGradient>
+          <linearGradient id="hfore" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--hr4)"/><stop offset="1" style="stop-color:var(--hbase)"/></linearGradient>
+          <filter id="hmist" x="-20%" y="-300%" width="140%" height="700%"><feGaussianBlur stdDeviation="7"/></filter>
+          <filter id="hsoft" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation=".7"/></filter>
+          <filter id="hwc" x="-2%" y="-10%" width="104%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".018 .05" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5"/><feGaussianBlur stdDeviation=".5"/></filter>
         </defs>
-        <circle class="sunglow" cx="300" cy="70" r="72" fill="url(#sun)"/>
-        <circle class="sun" cx="300" cy="70" r="22" fill="#FBF5E4"/>
-        <g class="rings" fill="none" stroke-width="1"><circle cx="300" cy="70" r="34" opacity=".8"/><circle cx="300" cy="70" r="48" opacity=".5"/><circle cx="300" cy="70" r="62" opacity=".28"/></g>
-        <g class="dots"><circle cx="56" cy="42" r="2.6"/><circle cx="74" cy="30" r="1.7"/><circle cx="88" cy="48" r="1.2"/><circle cx="196" cy="36" r="1.5"/></g>
-        <path class="m1" d="M0 112 C40 96 70 82 105 88 C140 94 160 78 200 70 C240 62 270 86 305 92 C340 98 370 84 400 80 V170 H0Z" fill="#CFDDCB"/>
-        <ellipse class="mist1" cx="110" cy="104" rx="150" ry="7" fill="#fff" opacity=".6" filter="url(#soft)"/>
-        <path class="m2" d="M0 134 C50 120 95 112 140 118 C190 125 230 108 280 112 C330 116 365 128 400 120 V170 H0Z" fill="#BACDB6"/>
-        <!-- 遠景：山坡上小小、淡淡的草，被薄霧蓋住一點 -->
-        <g class="far" fill="none" stroke-width="1" stroke-linecap="round">
-          <path d="M58 121 C58 118 57 116 55 115"/><path d="M60 121 C60 117 61 115 62 114"/>
-          <path d="M168 120 C168 117 167 115 165 114"/><path d="M170 120 C170 116 171 114 173 113"/><path d="M172 120 C173 118 174 117 176 117"/>
-          <path d="M246 112 C246 109 245 107 243 106"/><path d="M248 112 C248 108 249 106 250 105"/>
-          <path d="M292 115 C292 112 291 110 289 109"/><path d="M294 115 C294 111 295 109 297 108"/>
-          <path d="M372 126 C372 123 371 121 369 120"/><path d="M374 126 C374 122 375 120 376 119"/>
-        </g>
-        <g class="far far-leaf" transform="translate(206 103) scale(.42)">
-          <path d="M14 30 C13 20 11 12 6 2" fill="none" stroke-width="2.4" stroke-linecap="round"/>
-          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
-          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
-        </g>
-        <ellipse class="mist2" cx="300" cy="128" rx="140" ry="6" fill="#fff" opacity=".55" filter="url(#soft)"/>
-        <path class="m3" d="M0 156 C80 146 150 150 220 156 S340 160 400 152 V170 H0Z" fill="#E4ECE2"/>
-        <g class="sprig" transform="translate(40 130)" fill="#8EA894">
-          <path d="M14 30 C13 20 11 12 6 2" stroke="#8EA894" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
-          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
-          <path d="M13 24 C19 23 23 19 24 13 C18 15 14 18 13 24Z"/>
-        </g>
-        <!-- 旁邊多幾株小草、小花，作伴 -->
-        <g class="grass" fill="none" stroke-width="1.4" stroke-linecap="round">
-          <path d="M22 162 C21 156 19 152 15 149"/><path d="M25 162 C25 155 26 151 28 147"/><path d="M28 162 C29 158 32 155 35 154"/>
-          <path d="M126 160 C125 155 123 152 120 150"/><path d="M129 160 C129 154 130 151 132 148"/>
-          <path d="M318 159 C317 154 315 151 312 149"/><path d="M321 159 C321 153 322 150 324 147"/><path d="M324 159 C325 155 328 153 331 152"/>
-        </g>
-        <g class="sprig" transform="translate(86 141) scale(-.68 .68)" fill="#8EA894">
-          <path d="M14 30 C13 20 11 12 6 2" stroke="#8EA894" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
-          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
-          <path d="M13 24 C19 23 23 19 24 13 C18 15 14 18 13 24Z"/>
-        </g>
-        <g class="sprig" transform="translate(350 137) scale(.8)" fill="#8EA894">
-          <path d="M14 30 C13 20 11 12 6 2" stroke="#8EA894" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
-          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
-          <path d="M13 24 C19 23 23 19 24 13 C18 15 14 18 13 24Z"/>
-        </g>
-        <g class="flower">
-          <path class="stem" d="M104 161 C104 155 105 150 106 145" fill="none" stroke-width="1.3" stroke-linecap="round"/>
-          <g transform="translate(106 142)"><circle class="petal" cx="0" cy="-3.2" r="2.6"/><circle class="petal" cx="3" cy="-1" r="2.6"/><circle class="petal" cx="1.9" cy="2.6" r="2.6"/><circle class="petal" cx="-1.9" cy="2.6" r="2.6"/><circle class="petal" cx="-3" cy="-1" r="2.6"/><circle class="core" r="1.6"/></g>
-          <path class="stem" d="M338 160 C338 156 337 153 336 150" fill="none" stroke-width="1.2" stroke-linecap="round"/>
-          <g transform="translate(336 148) scale(.75)"><circle class="petal" cx="0" cy="-3.2" r="2.6"/><circle class="petal" cx="3" cy="-1" r="2.6"/><circle class="petal" cx="1.9" cy="2.6" r="2.6"/><circle class="petal" cx="-1.9" cy="2.6" r="2.6"/><circle class="petal" cx="-3" cy="-1" r="2.6"/><circle class="core" r="1.6"/></g>
-        </g>
-        <!-- 近景：靠在左右兩邊、比較大也比較深的葉子，像站在草地邊往前看 -->
-        <g class="near" transform="translate(-8 120) scale(1.45)">
-          <path class="nstem" d="M14 34 C13 22 11 12 6 2" fill="none" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M11 18 C4 17 0 12 0 6 C6 7 10 11 11 18Z"/>
-          <path d="M12 12 C18 10 21 5 21 0 C15 2 12 6 12 12Z"/>
-          <path d="M13 24 C19 23 23 19 24 13 C18 15 14 18 13 24Z"/>
-        </g>
-        <g class="near-grass" fill="none" stroke-width="2" stroke-linecap="round">
-          <path d="M384 172 C383 162 379 154 371 149"/><path d="M389 172 C389 160 391 152 396 145"/><path d="M394 172 C396 165 401 160 407 158"/><path d="M379 172 C377 166 373 163 366 162"/>
+        <rect width="400" height="150" fill="url(#hsky)"/>
+        <circle class="sunglow" cx="306" cy="44" r="64" fill="url(#hsun)"/>
+        <circle class="hsun" cx="306" cy="44" r="13"/>
+        <g class="hbirds" fill="none" stroke-width="1.1" stroke-linecap="round"><path d="M238 30 q4 -4 7 0 q3 -4 7 0"/><path d="M222 40 q3 -3 5 0 q2 -3 5 0"/></g>
+        <path filter="url(#hwc)" fill="url(#hr1)" d="M-10 80 C24 72 46 54 78 57 C104 60 118 43 148 40 C178 37 192 58 222 60 C254 62 272 47 302 51 C332 55 356 68 410 62 V150 H-10Z"/>
+        <ellipse class="mist1" cx="150" cy="84" rx="170" ry="8" fill="#fff" opacity=".55" filter="url(#hmist)"/>
+        <path filter="url(#hwc)" fill="url(#hr2)" d="M-10 98 C26 92 50 79 86 83 C122 87 142 71 174 73 C208 75 228 91 264 89 C302 87 324 73 358 77 C380 79 394 85 410 87 V150 H-10Z"/>
+        <g class="htrees" filter="url(#hsoft)"><path d="M92 83 l3 -9 l3 9z M99 84 l2.5 -7 l2.5 7z M180 73 l3 -10 l3 10z M187 74 l2.4 -7 l2.4 7z M172 74 l2 -6 l2 6z M340 76 l2.6 -8 l2.6 8z M347 77 l2 -6 l2 6z"/></g>
+        <ellipse class="mist2" cx="280" cy="104" rx="170" ry="7" fill="#fff" opacity=".5" filter="url(#hmist)"/>
+        <path filter="url(#hwc)" fill="url(#hr3)" d="M-10 118 C40 110 82 105 122 111 C166 118 202 105 246 107 C296 109 342 121 410 111 V150 H-10Z"/>
+        <ellipse cx="120" cy="126" rx="150" ry="6" fill="#fff" opacity=".4" filter="url(#hmist)"/>
+        <path fill="url(#hfore)" d="M0 136 C70 128 150 131 230 136 S350 139 400 133 V150 H0Z"/>
+        <g class="hgrass" fill="none" stroke-linecap="round" filter="url(#hsoft)">
+          <path stroke-width="1.5" d="M14 150 C13 138 10 130 4 124 M19 150 C19 136 21 128 25 121 M24 150 C26 141 30 136 36 133 M9 150 C8 143 6 139 2 137"/>
+          <path stroke-width="1.3" d="M372 150 C371 140 368 133 363 128 M378 150 C378 138 380 131 384 125 M384 150 C386 142 390 138 395 136"/>
+          <path stroke-width="1" d="M58 150 C58 144 56 140 53 138 M62 150 C62 143 64 140 66 137 M330 150 C330 144 328 141 325 139 M334 150 C334 143 336 140 338 138"/>
         </g>
       </svg>
       <div class="hero-text">
