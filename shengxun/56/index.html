@@ -2049,15 +2049,37 @@ function auPlay(i){
   auIdx = i; au.src = list[i]; au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL);
   au.play().catch(() => { $('pl-now').textContent = '聲音放不出來，請再按一次 ▶'; });
   if ('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({ title: `${DAYS[auDay - 1].theme}・${SEC_NAMES[i]}`, artist: '玉語心晨' }); }catch(e){} }
-  auPaint();
+  auPaint(); auFollow();
 }
-function auStop(){ au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
+// 畫面跟著聲音：每開始唸新的一段，就捲到那一段的開頭。
+// 使用者自己在滑的時候（8 秒內），不搶畫面。
+let auTouchAt = 0;
+['touchmove', 'wheel'].forEach(ev => addEventListener(ev, () => { auTouchAt = Date.now(); }, { passive: true }));
+function auFollow(){
+  if (auDay !== D.n || $('v-today').hidden || Date.now() - auTouchAt < 8000) return;
+  const l = secLabels()[auIdx]; if (!l) return;
+  const bar = document.querySelector('.bar'), top = bar ? bar.getBoundingClientRect().bottom : 0;
+  const y = l.getBoundingClientRect().top + scrollY - top - 16;
+  try{ scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }catch(e){ scrollTo(0, Math.max(0, y)); }
+}
+// 聽的時候，螢幕保持亮著；停下來就交還手機原本的設定
+let auLock = null;
+async function auWake(on){
+  try{
+    if (on && !auLock && 'wakeLock' in navigator && document.visibilityState === 'visible'){
+      auLock = await navigator.wakeLock.request('screen');
+      auLock.addEventListener('release', () => { auLock = null; });
+    } else if (!on && auLock){ const l = auLock; auLock = null; await l.release(); }
+  }catch(e){ auLock = null; }
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !au.paused && auDay !== null) auWake(true); });
+function auStop(){ auWake(false); au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
 function auStart(from){
   if (auDay === D.n && auIdx >= 0 && from === undefined){ if (au.paused){ au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); au.play(); } else au.pause(); auPaint(); return; }
   auDay = D.n; auPlay(from || 0);
 }
 au.addEventListener('ended', () => auPlay(auIdx + 1));
-au.addEventListener('play', auPaint); au.addEventListener('pause', auPaint);
+au.addEventListener('play', () => { auPaint(); auWake(true); }); au.addEventListener('pause', () => { auPaint(); setTimeout(() => { if (au.paused && !au.ended) auWake(false); }, 400); }); // 段與段之間不放掉
 au.addEventListener('timeupdate', () => { const list = AUDIO[auDay]; if (!list || !au.duration) return;
   $('pl-bar').style.width = (((auIdx + au.currentTime / au.duration) / list.length) * 100).toFixed(1) + '%'; });
 $('d-listen').onclick = () => auStart();
