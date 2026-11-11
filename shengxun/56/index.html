@@ -2025,6 +2025,8 @@ const AUDIO_BASE = 'https://platform.r2.fish.audio/tasks/2026-11-11/';
 const AUDIO = {
   1: ['0018181bea7e49a4860f0131e7ab27b3', '1f39b50d74fd4fe2b98e731f77d76e78', '932517f8deb345ecbe25401e1eb14250', '3b9bd9b5611f488e8a0832d5d337f40b', 'dea66797a8c544dba7640e294084b3f3', '995df28ec2674b5f872ad374fcfedb13', 'a7795d3ac9ac41f2b8be822bd43daa3f'].map(id => AUDIO_BASE + id + '.mp3'),
 };
+// 語速：長輩聽得清楚為主。平常就放慢一些；「慢一點」再更慢
+const RATE_NORMAL = 0.85, RATE_SLOW = 0.72;
 const SEC_NAMES = ['開篇', '原文', '今日重點', '白話理解', '用在生活裡', '問問自己', '今天可以試試'];
 const au = new Audio(); au.preload = 'none';
 let auDay = null, auIdx = -1, auSlow = false;
@@ -2044,14 +2046,14 @@ function auPaint(){
 }
 function auPlay(i){
   const list = AUDIO[auDay]; if (!list || i >= list.length){ auStop(); return; }
-  auIdx = i; au.src = list[i]; au.playbackRate = auSlow ? 0.85 : 1;
+  auIdx = i; au.src = list[i]; au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL);
   au.play().catch(() => { $('pl-now').textContent = '聲音放不出來，請再按一次 ▶'; });
   if ('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({ title: `${DAYS[auDay - 1].theme}・${SEC_NAMES[i]}`, artist: '玉語心晨' }); }catch(e){} }
   auPaint();
 }
 function auStop(){ au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
 function auStart(from){
-  if (auDay === D.n && auIdx >= 0 && from === undefined){ if (au.paused){ au.playbackRate = auSlow ? 0.85 : 1; au.play(); } else au.pause(); auPaint(); return; }
+  if (auDay === D.n && auIdx >= 0 && from === undefined){ if (au.paused){ au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); au.play(); } else au.pause(); auPaint(); return; }
   auDay = D.n; auPlay(from || 0);
 }
 au.addEventListener('ended', () => auPlay(auIdx + 1));
@@ -2062,7 +2064,7 @@ $('d-listen').onclick = () => auStart();
 $('c-listen').onclick = () => { $('go-read').click(); auStart(); };
 $('pl-toggle').onclick = () => auStart();
 $('pl-x').onclick = auStop;
-$('pl-slow').onclick = () => { auSlow = !auSlow; store.set('sx-slow', auSlow); au.playbackRate = auSlow ? 0.85 : 1; auPaint(); };
+$('pl-slow').onclick = () => { auSlow = !auSlow; store.set('sx-slow', auSlow); au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); auPaint(); };
 // 點段落名稱，就從那一段開始聽
 document.addEventListener('click', e => { const l = e.target.closest('#v-today .lab.sec'); if (!l || !AUDIO[D.n] || isCheck() || e.target.closest('button')) return;
   const i = secLabels().indexOf(l); if (i >= 0){ auDay = D.n; auPlay(i); } });
