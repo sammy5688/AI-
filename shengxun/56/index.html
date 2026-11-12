@@ -1169,12 +1169,15 @@ const store = {
 };
 const $ = id => document.getElementById(id);
 
+const TRIAL_N = 3; // 試讀開放幾天
 function taipeiShifted(){ return Date.now() + 8*3600e3 - 5*3600e3; }
 function todayState(){
   const idx = Math.floor((taipeiShifted() - START) / DAY);
   const h = (location.hash || '').match(/^#d(\d+)$/);
   if (h && +h[1] >= 1 && +h[1] <= SEQ.length) return { day: SEQ[+h[1]-1], mode: 'preview' };
-  if (idx < 0) return { day: SEQ[0], mode: 'before' };
+  // 試讀：前 TRIAL_N 天一次全開；首頁顯示第一篇還沒讀的
+  if (idx < 0){ let rd = {}; try{ rd = store.get('sx-read', {}) || {}; }catch(e){}
+    return { day: SEQ.slice(0, TRIAL_N).find(d => !rd[d.n]) || SEQ[0], mode: 'before' }; }
   if (idx < SEQ.length) return { day: SEQ[idx], mode: 'on' };
   // 56 天讀完以後：每天翻到一篇，有讀過的，也有延伸篇
   return { day: freePick(idx - SEQ.length), mode: 'free' };
@@ -1246,7 +1249,7 @@ function setKey(el, text){
 
 let state, D, viewN = null;
 function openDays(){
-  if (state.mode === 'before') return [SEQ[0]];
+  if (state.mode === 'before') return SEQ.slice(0, TRIAL_N);
   if (state.mode === 'on'){ const idx = Math.floor((taipeiShifted() - START) / DAY); return SEQ.slice(0, idx + 1); }
   if (state.mode === 'free') return ALLD.slice();
   return SEQ.slice();
@@ -1275,11 +1278,11 @@ function render(){
   msg.hidden = state.mode === 'on' || state.mode === 'before' || state.mode === 'free';
   const st = $('c-status');
   st.hidden = !(state.mode === 'before' || state.mode === 'free');
-  if (state.mode === 'before') st.textContent = '現在是試讀，先開放第 1 天\n正式開始後，每天清晨換一篇';
+  if (state.mode === 'before') st.textContent = `現在是試讀，先開放前 ${TRIAL_N} 天\n正式開始後，每天清晨換一篇`;
   if (state.mode === 'free') st.textContent = '8 週已經讀完\n今天翻到這一篇';
-  $('go-read').textContent = wasRead && !isCheck() ? '再讀一次' : state.mode === 'before' ? '試讀第 1 天' : '開始今天的閱讀';
+  $('go-read').textContent = wasRead && !isCheck() ? '再讀一次' : state.mode === 'before' ? `試讀第 ${pos(D) + 1} 天` : '開始今天的閱讀';
   if (state.mode === 'free') msg.textContent = '8 週 56 天讀完了。現在每天會翻到一篇：有讀過的，也有還沒讀過的延伸篇。';
-  if (state.mode === 'before') msg.textContent = '8 週 56 天。今天可以先看看第 1 天。';
+  if (state.mode === 'before') msg.textContent = `8 週 56 天。現在可以先試讀前 ${TRIAL_N} 天。`;
   if (state.mode === 'after') msg.textContent = `${DAYS.length} 天試讀已經讀完，謝謝您。按過收藏或寫過一句話的日子，在「我的心語」看得到。`;
   if (state.mode === 'preview') msg.textContent = `預覽${dayLabel(D)}。`;
 
@@ -1302,7 +1305,7 @@ function render(){
   $('d-ask').textContent = D['問問自己'];
   $('d-try').textContent = D['今天可以試試'];
   $('d-next').textContent =
-    state.mode === 'before' ? '' :
+    state.mode === 'before' ? (pos(D) >= 0 && pos(D) < TRIAL_N - 1 ? `回到首頁，接著讀第 ${pos(D) + 2} 天。` : pos(D) === TRIAL_N - 1 ? `試讀的 ${TRIAL_N} 天讀完了，謝謝您。` : '') :
     state.mode === 'after' ? `${DAYS.length} 天試讀已經讀完，謝謝您。` :
     state.mode === 'preview' ? '這是預覽。' :
     state.mode === 'free' ? '明天清晨 5 點，會再翻到一篇。' :
@@ -1507,6 +1510,9 @@ function paintDone(){
 }
 const TAB_OF = { cover:'home', today:'home', life:'home', past:'home', notes:'notes', journey:'journey', growth:'growth' };
 function show(name){
+  // 試讀時：回到首頁，換成下一篇還沒讀的（正在聽導讀時先不換，免得聲音和畫面對不上）
+  if (name === 'cover' && !viewN && state && state.mode === 'before'){ let listening = false; try{ listening = auDay !== null; }catch(e){}
+    if (!listening && todayState().day.n !== state.day.n) render(); }
   document.body.dataset.view = name;
   ['cover','today','notes','intro','past','life','journey','growth'].forEach(v => $('v-'+v).hidden = v !== name);
   ['home','notes','journey','growth'].forEach(t => {
@@ -1566,7 +1572,7 @@ function renderJourney(){
   const nRead = SEQ.filter(d => read[d.n]).length;
   const readTxt = nRead ? `你讀過 ${nRead} 篇。` : '';
   $('j-sum').textContent =
-    state.mode === 'before' ? '8 週 56 天。現在可以先試讀第 1 天。' :
+    state.mode === 'before' ? `8 週 56 天。現在可以先試讀前 ${TRIAL_N} 天。` :
     state.mode === 'on' ? `今天是第 ${tp + 1} 天，${weekLabel(state.day)}。${readTxt}` :
     `8 週 56 天都打開了，想讀哪一篇都可以。${readTxt}`;
   const curW = tp >= 0 ? Math.floor(tp / 7) : (state.mode === 'before' ? 0 : -1);
@@ -2081,6 +2087,8 @@ const AUDIO_BASE = 'https://platform.r2.fish.audio/tasks/2026-11-11/';
 const AUDIO = {
   // 第 1 天：已剪掉頭尾雜音與多出來的「嗯」，放在自己的網站上
   1: ['t', 0, 1, 2, 3, 4, 5, 6].map(i => `audio/d1-${i}.mp3`),
+  34: ['t', 0, 1, 2, 3, 4, 5, 6].map(i => `audio/d34-${i}.mp3`), // 第 2 天
+  17: ['t', 0, 1, 2, 3, 4, 5, 6].map(i => `audio/d17-${i}.mp3`), // 第 3 天
 };
 // 語速：長輩聽得清楚為主。平常就放慢一些；「慢一點」再更慢
 const RATE_NORMAL = 1.1, RATE_SLOW = 0.9; // Fancis 冥想本身就慢、句間有停頓，不再放太慢
