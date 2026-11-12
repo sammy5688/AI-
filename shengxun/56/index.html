@@ -639,6 +639,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 .trylink{align-self:flex-start;text-decoration:underline;text-underline-offset:4px;font-size:.85em;text-align:left}
 .trylink[aria-pressed="true"]{color:var(--clay);text-decoration:none;font-weight:700}
 .trybox{display:flex;flex-direction:column}
+#d-go{align-self:stretch;margin-top:4px}
 #d-share{width:100%;box-sizing:border-box;align-items:stretch;border-top:0;padding-top:4px}
 #d-share .lab{text-align:center}
 .lifelink{align-self:center;color:var(--muted);text-decoration:underline;text-underline-offset:4px;font-size:.88em}
@@ -887,6 +888,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
     </div>
     <div class="after">
       <p id="d-next"></p>
+      <button class="primary" id="d-go" hidden></button>
       <button class="nlink lifelink" id="to-life">遇到事，找一篇 ›</button>
       <button id="to-past" hidden></button><button id="to-top" hidden></button>
     </div>
@@ -1306,7 +1308,7 @@ function render(){
   $('d-ask').textContent = D['問問自己'];
   $('d-try').textContent = D['今天可以試試'];
   $('d-next').textContent =
-    state.mode === 'before' ? (pos(D) >= 0 && pos(D) < TRIAL_N - 1 ? `回到首頁，接著讀第 ${pos(D) + 2} 天。` : pos(D) === TRIAL_N - 1 ? `試讀的 ${TRIAL_N} 天讀完了，謝謝您。` : '') :
+    state.mode === 'before' ? (pos(D) === TRIAL_N - 1 ? `這是試讀的最後一天，謝謝您。` : '') :
     state.mode === 'after' ? `${DAYS.length} 天試讀已經讀完，謝謝您。` :
     state.mode === 'preview' ? '這是預覽。' :
     state.mode === 'free' ? '明天清晨 5 點，會再翻到一篇。' :
@@ -1494,6 +1496,13 @@ function paintYtry(){
 function paintDone(){
   const ck = isCheck(), r = !!readMap()[D.n], t = !!triedMap()[D.n];
   const today = !viewN || viewN === state.day.n;
+  // 讀完了以後，最下面給一顆按鈕：試讀時「接著讀下一天」，平常「回到首頁」
+  const go = $('d-go'), p0 = pos(D);
+  go.hidden = true;
+  if (r && !ck && today){
+    if (state.mode === 'before' && p0 >= 0 && p0 < TRIAL_N - 1){ go.textContent = `接著讀第 ${p0 + 2} 天 ›`; go.dataset.to = SEQ[p0 + 1].n; go.hidden = false; }
+    else if (state.mode !== 'preview'){ go.textContent = '回到首頁'; go.dataset.to = ''; go.hidden = false; }
+  }
   $('d-close').hidden = ck;
   $('mark-read').hidden = r; $('mark-how').hidden = r;
   $('read-msg').textContent = r ? '✓ 讀完了。今天讀到這裡，就很好了。' : '';
@@ -2227,6 +2236,12 @@ $('go-read').onclick = () => { viewN = null; render(); store.set('sx-intro', tru
 $('c-intro').onclick = () => show('intro');
 $('intro-ok').onclick = () => { store.set('sx-intro', true); $('c-first').hidden = true; show('today'); };
 $('to-top').onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+$('d-go').onclick = () => {
+  const to = +$('d-go').dataset.to;
+  if (to){ viewN = todayState().day.n === to ? null : to; render(); show('today'); }
+  else show('cover');
+  window.scrollTo(0, 0);
+};
 
 // 夜間模式：auto＝晚上 7 點到清晨 5 點自動變暗（看手機時間）；on／off＝固定
 let nightMode = store.get('sx-night', 'auto');
