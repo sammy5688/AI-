@@ -2321,6 +2321,18 @@ function auPlay(i){
 // 使用者自己在滑的時候（8 秒內），不搶畫面。
 let auTouchAt = 0;
 ['touchmove', 'wheel'].forEach(ev => addEventListener(ev, () => { auTouchAt = Date.now(); }, { passive: true }));
+// 暫停後手滑過畫面，再按繼續：畫面先回到正在唸的地方（那一段、那個段落）
+function auRealign(){
+  auTouchAt = 0; auTurnAt = Date.now();
+  if (auDay !== D.n || $('v-today').hidden) return;
+  if (auIdx === 0){ try{ scrollTo({ top: 0, behavior: 'smooth' }); }catch(e){ scrollTo(0, 0); } return; }
+  const l = secEl(auIdx); if (!l) return;
+  const t = l.parentElement.querySelector('.p'), paras = t ? [...t.querySelectorAll('.para')] : [];
+  const target = (paras.length > 1 && auPara > 0) ? paras[auPara] : l;
+  const bar = document.querySelector('.bar'), top = bar ? bar.getBoundingClientRect().bottom : 0;
+  const y = scrollY + target.getBoundingClientRect().top - top - 14;
+  try{ scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }catch(e){ scrollTo(0, Math.max(0, y)); }
+}
 function auFollow(){
   if (auDay !== D.n || $('v-today').hidden || Date.now() - auTouchAt < 8000) return;
   if (auIdx === 0){ try{ scrollTo({ top: 0, behavior: 'smooth' }); }catch(e){ scrollTo(0, 0); } return; }
@@ -2385,7 +2397,7 @@ function auBar(){
 }
 function auStop(){ clearTimeout(auGap); auGap = null; auWake(false); au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
 function auStart(from){
-  if (auDay === D.n && auIdx >= 0 && from === undefined){ if (auGap){ clearTimeout(auGap); auGap = null; auPaint(); auWake(false); return; } if (au.paused && au.ended){ auPlay(auIdx + 1); return; } if (au.paused){ au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); au.play(); } else au.pause(); auPaint(); return; }
+  if (auDay === D.n && auIdx >= 0 && from === undefined){ if (auGap){ clearTimeout(auGap); auGap = null; auPaint(); auWake(false); return; } if (au.paused && au.ended){ auPlay(auIdx + 1); return; } if (au.paused){ au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); au.play(); auRealign(); } else au.pause(); auPaint(); return; }
   auDay = D.n; auPlay(from || 0);
 }
 // 段與段之間，空 1 秒再唸下一段（錄音稿結尾不再放 [long pause]）
@@ -2399,7 +2411,7 @@ $('c-listen').onclick = () => { $('go-read').click(); auStart(); };
 function auResume(){
   const n = auDay; if (n === null) return;
   if (!isCheck() && state.day.n === n && state.mode !== 'free'){ viewN = null; render(); show('today'); } else openDay(n);
-  auStart();
+  auStart(); setTimeout(auRealign, 80);
 }
 $('rsm-play').onclick = auResume; $('rsm-go').onclick = auResume;
 $('rsm-x').onclick = auStop;
@@ -2420,7 +2432,7 @@ $('v-today').addEventListener('click', e => {
 // 手機鎖定畫面、控制中心、耳機的播放／暫停鍵，也能控制導讀
 if ('mediaSession' in navigator){
   try{
-    navigator.mediaSession.setActionHandler('play', () => { if (auDay !== null){ if (au.ended) auPlay(auIdx + 1); else au.play(); auPaint(); } });
+    navigator.mediaSession.setActionHandler('play', () => { if (auDay !== null){ if (au.ended) auPlay(auIdx + 1); else { au.play(); auRealign(); } auPaint(); } });
     navigator.mediaSession.setActionHandler('pause', () => { clearTimeout(auGap); auGap = null; au.pause(); auPaint(); });
     navigator.mediaSession.setActionHandler('nexttrack', () => $('pl-next').click());
   }catch(e){}
