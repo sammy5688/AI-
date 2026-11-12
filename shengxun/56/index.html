@@ -687,12 +687,9 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 .pl-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .pl-now{margin:0;white-space:nowrap;overflow:hidden}.pl-now b{font-size:.95em;color:var(--accent-deep)}
 .pl-prog{height:5px;border-radius:3px;background:var(--veil);overflow:hidden}.pl-prog i{display:block;height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .4s linear}
-.pl-slow{flex:none;min-height:44px;padding:0 10px;border-radius:999px;border:1.5px solid rgba(70,98,79,.3);background:transparent;color:var(--accent-deep);font-size:.82em}
-.pl-slow[aria-pressed="true"]{background:var(--clay-bg);border-color:var(--clay);color:var(--clay);font-weight:700}
 .pl-next{flex:none;width:52px;min-height:48px;border:0;border-radius:14px;background:transparent;color:var(--accent-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px 0;line-height:1.1}
 .pl-next span{font-size:18px}.pl-next small{font-size:11px;font-weight:700;letter-spacing:.02em}
 .pl-next:disabled{opacity:.3}
-.pl-slow{font-size:13px;padding:0 8px}
 .pl-txt{min-width:64px}
 .pl-now b{font-size:15px}
 @media (max-width:360px){.pl-now{white-space:normal;line-height:1.25}.pl-now b{font-size:14px}.pl-in{gap:6px;padding:8px}.pl-main{width:46px;height:46px}.pl-next{width:46px}.pl-x{width:36px}}
@@ -1103,7 +1100,6 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
     <button class="pl-main" id="pl-toggle" aria-label="先停一下">⏸</button>
     <div class="pl-txt"><p class="pl-now"><b id="pl-now"></b></p><div class="pl-prog"><i id="pl-bar"></i></div></div>
     <button class="pl-next" id="pl-next" aria-label="下一段"><span>⏭</span><small>下一段</small></button>
-    <button class="pl-slow" id="pl-slow" aria-pressed="false">慢一點</button>
     <button class="pl-x" id="pl-x" aria-label="不聽了">✕</button>
   </div>
 </div>
@@ -2092,21 +2088,20 @@ const RATE_NORMAL = 1.1, RATE_SLOW = 0.9; // Fancis 冥想本身就慢、句間�
 const SEC_NAMES = ['今天的題目', '開篇', '原文', '今日重點', '白話理解', '用在生活裡', '問問自己', '今天可以試試'];
 const au = new Audio(); au.preload = 'none';
 let auDay = null, auIdx = -1, auSlow = false; let auGap = null;
-try{ auSlow = store.get('sx-slow', false) === true; }catch(e){}
+// 「慢一點」已拿掉（按鈕減量）：語速固定，若長輩反映太快，整體調 RATE_NORMAL
 const secLabels = () => [...document.querySelectorAll('#v-today .lab.sec')];
 // 第 i 個音檔對應畫面上的哪裡：0 = 最上面的題目，其餘 = 各段段名
 const secEl = i => i === 0 ? $('d-titlebox') : secLabels()[i - 1];
 function auPaint(){
   const on = auDay !== null && auIdx >= 0, playing = on && (!au.paused || !!auGap);
   $('player').hidden = !on; document.body.classList.toggle('has-player', on);
-  const txt = playing ? '⏸ 先停一下' : on ? '▶ 繼續' : '▶ 導讀';
-  ['c-listen', 'd-listen'].forEach(id => { $(id).textContent = (auDay === null || auDay === D.n) ? txt : '▶ 導讀'; });
+  // 聽的時候，上面的「▶ 導讀」收起來，只留下方播放列（不要兩顆按鈕做同一件事）
+  const hasAu = !!AUDIO[D.n] && !isCheck();
+  ['c-listen', 'd-listen'].forEach(id => { $(id).textContent = '▶ 導讀'; $(id).hidden = !hasAu || on; });
   $('pl-toggle').textContent = playing ? '⏸' : '▶';
   $('pl-toggle').setAttribute('aria-label', playing ? '先停一下' : '繼續');
   $('pl-now').textContent = on ? SEC_NAMES[auIdx] : '';
   $('pl-next').disabled = !on || !AUDIO[auDay] || auIdx >= AUDIO[auDay].length - 1;
-  $('pl-slow').setAttribute('aria-pressed', auSlow ? 'true' : 'false');
-  $('pl-slow').textContent = auSlow ? '✓ 慢一點' : '慢一點';
   secLabels().forEach((l, i) => l.classList.toggle('playing', on && auDay === D.n && i + 1 === auIdx));
   $('d-titlebox').classList.toggle('playing', on && auDay === D.n && auIdx === 0);
 }
@@ -2178,7 +2173,6 @@ $('pl-next').onclick = () => {
   const list = AUDIO[auDay]; if (!list || auIdx < 0 || auIdx >= list.length - 1) return;
   clearTimeout(auGap); auGap = null; auTouchAt = 0; auPlay(auIdx + 1);
 };
-$('pl-slow').onclick = () => { auSlow = !auSlow; store.set('sx-slow', auSlow); au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); auPaint(); };
 // 點段落名稱，就從那一段開始聽
 document.addEventListener('click', e => { const l = e.target.closest('#v-today .lab.sec'); if (!l || !AUDIO[D.n] || isCheck() || e.target.closest('button')) return;
   const i = secLabels().indexOf(l); if (i >= 0){ auDay = D.n; auPlay(i + 1); } });
