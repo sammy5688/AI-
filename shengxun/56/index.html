@@ -1579,6 +1579,7 @@ function show(name){
   });
   const reading = name === 'today';
   $('steps').hidden = !reading; $('bar-brand').hidden = reading; $('nav-intro').hidden = reading; $('nav-music').hidden = !reading || isCheck();
+  try{ auBar(); }catch(e){}
   try{ bgmUpdate(); }catch(e){}
   if (name === 'journey') renderJourney();
   if (name === 'growth'){ editW = null; renderGrowth(); }
@@ -2259,6 +2260,7 @@ function auPaint(){
   $('pl-next').disabled = !on || !AUDIO[auDay] || auIdx >= AUDIO[auDay].length - 1;
   secLabels().forEach((l, i) => l.classList.toggle('playing', on && auDay === D.n && i + 1 === auIdx));
   $('d-titlebox').classList.toggle('playing', on && auDay === D.n && auIdx === 0);
+  auBar();
   try{ bgmUpdate(); }catch(e){}
 }
 function auPlay(i){
@@ -2327,6 +2329,13 @@ async function auWake(on){
   }catch(e){ auLock = null; }
 }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !au.paused && auDay !== null) auWake(true); });
+// 導讀時，上方的「一二三四」藏起來（只用下方播放列），換成 App 名稱；不聽了再出現
+function auBar(){
+  const listening = auDay !== null && auIdx >= 0, reading = document.body.dataset.view === 'today';
+  if (!reading) return;
+  $('steps').hidden = listening; $('bar-brand').hidden = !listening;
+  $('nav-music').hidden = listening || isCheck(); // 聽的時候音樂本來就停，♪ 也先收起來
+}
 function auStop(){ clearTimeout(auGap); auGap = null; auWake(false); au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
 function auStart(from){
   if (auDay === D.n && auIdx >= 0 && from === undefined){ if (auGap){ clearTimeout(auGap); auGap = null; auPaint(); auWake(false); return; } if (au.paused && au.ended){ auPlay(auIdx + 1); return; } if (au.paused){ au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); au.play(); } else au.pause(); auPaint(); return; }
