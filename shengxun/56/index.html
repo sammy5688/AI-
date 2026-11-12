@@ -724,6 +724,14 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 @media (prefers-reduced-motion:reduce){.drcard.flip{animation:none}}
 html.night .drcard{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 .noaudio{margin:8px 0 0;font-size:.82em;color:var(--muted)}
+/* 背景音樂：上方小音符＋第一次的詢問 */
+.bar .musicbtn{flex:none;width:44px;min-height:44px;padding:0;border-radius:50%;background:var(--paper);border:1.5px solid rgba(70,98,79,.3);color:var(--muted);font-size:20px;position:relative}
+.bar .musicbtn[aria-pressed="true"]{background:#557560;border-color:#557560;color:#fff}
+.bar .musicbtn[aria-pressed="false"]::after{content:"";position:absolute;left:9px;right:9px;top:50%;height:2px;border-radius:1px;background:var(--clay);transform:rotate(45deg)}
+.bgmask{background:var(--paper);border-radius:20px;padding:14px 18px;margin:4px 0 6px;box-shadow:0 0 0 1px rgba(70,98,79,.12);display:flex;flex-direction:column;gap:8px}
+.bgmask p{margin:0;font-size:.95em;color:var(--ink);line-height:1.7}.bgmask small{color:var(--muted);font-size:.85em}
+.bgmask .row{align-items:center;gap:14px}
+@media (max-width:419px){.steps{gap:4px}.steps button{min-width:40px;min-height:40px}.steps button[aria-current="step"]{padding:0 10px}.bar .musicbtn{width:40px;min-height:40px}.bar-wrap{gap:6px}}
 </style>
 
 </head>
@@ -737,6 +745,7 @@ html.night .drcard{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
       <button data-st="2" aria-label="第三步：觀自心"><span>三</span><span class="nm">觀自心</span></button>
       <button data-st="3" aria-label="第四步：實踐於行"><span>四</span><span class="nm">實踐於行</span></button>
     </div>
+    <button class="musicbtn" id="nav-music" aria-label="背景音樂" aria-pressed="false" hidden>♪&#xFE0E;</button>
     <button class="helpbtn" id="nav-intro">說明</button>
     <button class="fsbtn" id="nav-fs" aria-live="polite"><span class="a">字</span><span class="s" id="fs-lab">標準</span></button>
   </div>
@@ -830,6 +839,10 @@ html.night .drcard{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
       <div class="titlebox" id="d-titlebox"><p class="daytag" id="d-title"></p><p class="who" id="d-who"></p></div>
       <p class="noaudio" id="d-noaudio" hidden>這一篇的導讀，還在錄製中</p>
       <button class="ghost listen-btn" id="d-listen" hidden>▶&#xFE0E; 導讀</button>
+    </div>
+    <div class="bgmask" id="bgm-ask" hidden>
+      <p>讀的時候，要不要一點輕輕的音樂？<br><small>用「▶&#xFE0E; 導讀」聽的時候，音樂會自動停下來。之後想開或關，按上方的 ♪&#xFE0E;。</small></p>
+      <div class="row"><button class="ghost" id="bgm-yes">好，放一點</button><button class="nlink" id="bgm-no">不用</button></div>
     </div>
     <div class="row" id="d-nav"><button class="ghost" id="to-today" hidden>回到今天</button></div>
     <div class="checkbar" id="ck-bar" hidden>
@@ -1053,6 +1066,8 @@ html.night .drcard{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
           <p>這裡可以看到 8 週、56 天的學習進度。想重新閱讀以前的篇章，或看看自己走到哪一天，都可以從這裡進入。</p>
           <h4>5. 心事相伴</h4>
           <p>心裡有事的時候，例如跟家人起了摩擦、心很急、放不下，按這裡，選一個最像你現在的情況，就能找到相關的篇章，馬上讀。不知道選哪一個，也可以按「抽一張」，從 56 天和 9 篇延伸篇裡，隨手抽一篇來讀。</p>
+          <h4>讀的時候，可以放輕音樂</h4>
+          <p>用看的時候，可以放一點輕輕的冥想音樂。按閱讀頁上方的 ♪&#xFE0E; 就能打開或關掉。用「▶&#xFE0E; 導讀」聽的時候，音樂會自動停下來，不會和聲音打架。</p>
         </div>
       </details>
       <details class="ac">
@@ -1563,7 +1578,8 @@ function show(name){
     if (TAB_OF[name] === t) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
   });
   const reading = name === 'today';
-  $('steps').hidden = !reading; $('bar-brand').hidden = reading; $('nav-intro').hidden = reading;
+  $('steps').hidden = !reading; $('bar-brand').hidden = reading; $('nav-intro').hidden = reading; $('nav-music').hidden = !reading || isCheck();
+  try{ bgmUpdate(); }catch(e){}
   if (name === 'journey') renderJourney();
   if (name === 'growth'){ editW = null; renderGrowth(); }
   if (name === 'past') renderPast();
@@ -2143,6 +2159,75 @@ document.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => {
   if (t === 'home'){ viewN = null; render(); show('cover'); } else show(t);
 });
 $('nav-intro').onclick = () => show('intro');
+// ===== 讀的時候的背景音樂（每日問心那首冥想曲）=====
+// 只在「閱讀頁、用看的」時候放；按「▶ 導讀」用聽的時候，音樂淡出停下，關掉播放列才回來。
+// 用 Web Audio 播放：iPhone 不能直接調音樂播放器的音量，淡入淡出要靠這個。
+const BGM_URL = 'audio/music_loop.mp3', BGM_VOL = 0.3, BGM_XF = 4;
+const bgm = { ac: null, gain: null, buf: null, loading: null, playing: false, srcs: [], loopT: null, stopT: null, tok: 0 };
+const bgmPref = () => store.get('sx-bgm', null); // 'on'、'off'，還沒選過是 null
+function bgmCtx(){
+  if (bgm.ac) return bgm.ac;
+  const C = window.AudioContext || window.webkitAudioContext; if (!C) return null;
+  try{ bgm.ac = new C(); bgm.gain = bgm.ac.createGain(); bgm.gain.gain.value = 0; bgm.gain.connect(bgm.ac.destination); }catch(e){ bgm.ac = null; }
+  return bgm.ac;
+}
+function bgmLoad(){
+  if (bgm.buf) return Promise.resolve(bgm.buf);
+  if (bgm.loading) return bgm.loading;
+  const c = bgmCtx(); if (!c) return Promise.resolve(null);
+  bgm.loading = fetch(BGM_URL).then(r => r.ok ? r.arrayBuffer() : null)
+    .then(b => b ? new Promise(res => { try{ c.decodeAudioData(b, x => { bgm.buf = x; res(x); }, () => res(null)); }catch(e){ res(null); } }) : null)
+    .catch(() => null);
+  return bgm.loading;
+}
+function bgmFade(to, sec){ try{ const t = bgm.ac.currentTime; bgm.gain.gain.cancelScheduledValues(t); bgm.gain.gain.setTargetAtTime(to, t, sec / 3); }catch(e){} }
+function bgmSched(when, off, fadeIn, tok){
+  if (!bgm.playing || tok !== bgm.tok) return;
+  const c = bgm.ac, b = bgm.buf, s = c.createBufferSource(), g = c.createGain();
+  s.buffer = b; s.connect(g); g.connect(bgm.gain);
+  const end = when + (b.duration - off);
+  g.gain.setValueAtTime(fadeIn ? 0 : 1, when); if (fadeIn) g.gain.linearRampToValueAtTime(1, when + BGM_XF);
+  g.gain.setValueAtTime(1, end - BGM_XF); g.gain.linearRampToValueAtTime(0, end);
+  try{ s.start(when, off); s.stop(end + 0.05); }catch(e){ return; }
+  bgm.srcs.push(s); s.onended = () => { bgm.srcs = bgm.srcs.filter(x => x !== s); };
+  clearTimeout(bgm.loopT);
+  bgm.loopT = setTimeout(() => bgmSched(Math.max(end - BGM_XF, c.currentTime + 0.05), 0, true, tok), Math.max(0, (end - BGM_XF - c.currentTime - 1.5) * 1000));
+}
+function bgmWant(){
+  let listening = false; try{ listening = auDay !== null; }catch(e){}
+  return bgmPref() === 'on' && document.body.dataset.view === 'today' && !isCheck() && !listening && document.visibilityState === 'visible';
+}
+function bgmUpdate(){
+  const want = bgmWant();
+  $('nav-music').setAttribute('aria-pressed', bgmPref() === 'on' ? 'true' : 'false');
+  $('bgm-ask').hidden = bgmPref() !== null || document.body.dataset.view !== 'today' || isCheck();
+  if (want){
+    clearTimeout(bgm.stopT); bgm.stopT = null;
+    const c = bgmCtx(); if (!c) return;
+    try{ if (c.state === 'suspended') c.resume(); }catch(e){}
+    if (bgm.playing){ bgmFade(BGM_VOL, 2); return; }
+    bgm.playing = true; const tok = ++bgm.tok;
+    bgmLoad().then(b => {
+      if (!b || tok !== bgm.tok || !bgm.playing) return;
+      // 每次從曲子不同的地方開始，不會每篇都聽到同一段開頭
+      const off = Math.random() * Math.max(0, b.duration - BGM_XF * 3 - 10);
+      bgm.gain.gain.cancelScheduledValues(c.currentTime); bgm.gain.gain.setValueAtTime(0, c.currentTime);
+      bgmSched(c.currentTime + 0.05, off, false, tok); bgmFade(BGM_VOL, 3);
+    });
+  } else if (bgm.playing && !bgm.stopT){
+    bgmFade(0, 1.5);
+    bgm.stopT = setTimeout(() => {
+      bgm.stopT = null; if (bgmWant()) return;
+      bgm.playing = false; bgm.tok++; clearTimeout(bgm.loopT);
+      bgm.srcs.forEach(x => { try{ x.stop(); }catch(e){} }); bgm.srcs = [];
+    }, 1700);
+  }
+}
+$('nav-music').onclick = () => { store.set('sx-bgm', bgmPref() === 'on' ? 'off' : 'on'); bgmUpdate(); };
+$('bgm-yes').onclick = () => { store.set('sx-bgm', 'on'); bgmUpdate(); };
+$('bgm-no').onclick = () => { store.set('sx-bgm', 'off'); bgmUpdate(); };
+document.addEventListener('visibilitychange', bgmUpdate);
+
 // ===== ▶ 導讀：每篇七段，一段一個音檔（Fish Audio「Fancis 冥想」） =====
 const AUDIO_BASE = 'https://platform.r2.fish.audio/tasks/2026-11-11/';
 const AUDIO = {
@@ -2174,6 +2259,7 @@ function auPaint(){
   $('pl-next').disabled = !on || !AUDIO[auDay] || auIdx >= AUDIO[auDay].length - 1;
   secLabels().forEach((l, i) => l.classList.toggle('playing', on && auDay === D.n && i + 1 === auIdx));
   $('d-titlebox').classList.toggle('playing', on && auDay === D.n && auIdx === 0);
+  try{ bgmUpdate(); }catch(e){}
 }
 function auPlay(i){
   const list = AUDIO[auDay]; if (!list || i >= list.length){ auStop(); return; }
