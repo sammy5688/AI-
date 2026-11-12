@@ -723,6 +723,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 @keyframes drflip{from{opacity:0;transform:perspective(600px) rotateY(-70deg)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.drcard.flip{animation:none}}
 html.night .drcard{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
+.noaudio{margin:8px 0 0;font-size:.82em;color:var(--muted)}
 </style>
 
 </head>
@@ -827,6 +828,7 @@ html.night .drcard{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
       <p class="week" id="d-week"></p>
       <p class="dayno" id="d-dayno"></p>
       <div class="titlebox" id="d-titlebox"><p class="daytag" id="d-title"></p><p class="who" id="d-who"></p></div>
+      <p class="noaudio" id="d-noaudio" hidden>這一篇的導讀，還在錄製中</p>
       <button class="ghost listen-btn" id="d-listen" hidden>▶&#xFE0E; 導讀</button>
     </div>
     <div class="row" id="d-nav"><button class="ghost" id="to-today" hidden>回到今天</button></div>
@@ -2264,6 +2266,8 @@ document.addEventListener('click', e => { const l = e.target.closest('#v-today .
 function paintListen(){
   const has = !!AUDIO[D.n] && !isCheck();
   $('d-listen').hidden = !has; $('c-listen').hidden = !has;
+  // 還沒錄好聲音的篇章：淡淡一行字說明（全部錄好後就不會再出現）
+  $('d-noaudio').hidden = has || isCheck();
   document.body.classList.toggle('has-audio', has);
   if (auDay !== null && auDay !== D.n && !au.paused){ /* 換到別篇時，正在聽的那篇繼續播 */ }
   auPaint();
