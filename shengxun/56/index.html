@@ -683,19 +683,20 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 .dayhead .listen-btn{align-self:flex-start;margin-top:12px;min-height:48px;padding:0 22px}
 .player{position:fixed;left:0;right:0;bottom:calc(68px + env(safe-area-inset-bottom,0px));z-index:7;padding:0 12px 8px}
 .pl-in{max-width:34rem;margin:0 auto;background:var(--paper);border-radius:22px;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 -2px 14px rgba(40,60,46,.14),0 0 0 1px rgba(70,98,79,.12)}
-.pl-main{flex:none;width:52px;height:52px;border-radius:50%;border:0;background:#557560;color:#fff;font-size:20px}
+.pl-main{flex:none;width:52px;height:52px;border-radius:50%;border:0;background:#557560;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center}
 .pl-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
 .pl-now{margin:0;white-space:nowrap;overflow:hidden}.pl-now b{font-size:.95em;color:var(--accent-deep)}
 .pl-prog{height:5px;border-radius:3px;background:var(--veil);overflow:hidden}.pl-prog i{display:block;height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .4s linear}
 .pl-next{flex:none;width:52px;min-height:48px;border:0;border-radius:14px;background:transparent;color:var(--accent-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px 0;line-height:1.1}
-.pl-next span{font-size:18px}.pl-next small{font-size:11px;font-weight:700;letter-spacing:.02em}
+.pl-next span{display:flex;line-height:0}.pl-next small{font-size:11px;font-weight:700;letter-spacing:.02em}
 .pl-next:disabled{opacity:.3}
 .pl-txt{min-width:64px}
 .pl-now b{font-size:15px}
 @media (max-width:360px){.pl-now{white-space:normal;line-height:1.25}.pl-now b{font-size:14px}.pl-in{gap:6px;padding:8px}.pl-main{width:46px;height:46px}.pl-next{width:46px}.pl-x{width:36px}}
 .pl-x{flex:none;width:44px;height:44px;border:0;background:transparent;color:var(--muted);font-size:18px}
-.lab.sec.playing b{background:var(--veil);padding:4px 12px 4px 8px;border-radius:999px}
-.lab.sec.playing b::after{content:"　正在聽";font-size:.78em;font-weight:500;color:var(--muted);letter-spacing:0}
+.lab.sec.playing b{background:rgba(85,117,96,.18);padding:4px 12px 4px 8px;border-radius:999px}
+/* 正在唸的段名：只加淡綠底，不再加「正在聽」三個字（原文那一行有出處，加字會把段名擠成直的） */
+.lab.sec b{white-space:nowrap}
 body.has-audio .lab.sec{cursor:pointer}
 body.has-player main{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))}
 html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
@@ -783,7 +784,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
       <p class="bigkey" id="c-key"></p>
       <p class="readflag" id="c-read" hidden>✓ 這一篇讀過了</p>
       <button class="primary" id="go-read">開始今天的閱讀</button>
-      <button class="ghost listen-btn" id="c-listen" hidden>▶ 導讀</button>
+      <button class="ghost listen-btn" id="c-listen" hidden>▶&#xFE0E; 導讀</button>
     </div>
     <div class="ytry" id="c-ytry" hidden>
       <p class="lab">昨天的練習，做到了嗎？</p>
@@ -809,7 +810,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
       <p class="week" id="d-week"></p>
       <p class="dayno" id="d-dayno"></p>
       <div class="titlebox" id="d-titlebox"><p class="daytag" id="d-title"></p><p class="who" id="d-who"></p></div>
-      <button class="ghost listen-btn" id="d-listen" hidden>▶ 導讀</button>
+      <button class="ghost listen-btn" id="d-listen" hidden>▶&#xFE0E; 導讀</button>
     </div>
     <div class="row" id="d-nav"><button class="ghost" id="to-today" hidden>回到今天</button></div>
     <div class="checkbar" id="ck-bar" hidden>
@@ -1097,9 +1098,9 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 
 <div class="player" id="player" hidden>
   <div class="pl-in">
-    <button class="pl-main" id="pl-toggle" aria-label="先停一下">⏸</button>
+    <button class="pl-main" id="pl-toggle" aria-label="先停一下"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg></button>
     <div class="pl-txt"><p class="pl-now"><b id="pl-now"></b></p><div class="pl-prog"><i id="pl-bar"></i></div></div>
-    <button class="pl-next" id="pl-next" aria-label="下一段"><span>⏭</span><small>下一段</small></button>
+    <button class="pl-next" id="pl-next" aria-label="下一段"><span><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 6.2v11.6a.8.8 0 0 0 1.2.7l8.6-5.8a.8.8 0 0 0 0-1.4L6.2 5.5A.8.8 0 0 0 5 6.2z" fill="currentColor"/><rect x="16.5" y="5.5" width="2.5" height="13" rx="1" fill="currentColor"/></svg></span><small>下一段</small></button>
     <button class="pl-x" id="pl-x" aria-label="不聽了">✕</button>
   </div>
 </div>
@@ -2105,8 +2106,9 @@ function auPaint(){
   $('player').hidden = !on; document.body.classList.toggle('has-player', on);
   // 聽的時候，上面的「▶ 導讀」收起來，只留下方播放列（不要兩顆按鈕做同一件事）
   const hasAu = !!AUDIO[D.n] && !isCheck();
-  ['c-listen', 'd-listen'].forEach(id => { $(id).textContent = '▶ 導讀'; $(id).hidden = !hasAu || on; });
-  $('pl-toggle').textContent = playing ? '⏸' : '▶';
+  ['c-listen', 'd-listen'].forEach(id => { $(id).textContent = '▶\uFE0E 導讀'; $(id).hidden = !hasAu || on; });
+  // 用畫的圖示，不用表情符號（iPhone 會把 ⏸ ⏭ 顯示成藍色方塊）
+  $('pl-toggle').innerHTML = playing ? '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>' : '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.8l-10-6.5A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>';
   $('pl-toggle').setAttribute('aria-label', playing ? '先停一下' : '繼續');
   $('pl-now').textContent = on ? SEC_NAMES[auIdx] : '';
   $('pl-next').disabled = !on || !AUDIO[auDay] || auIdx >= AUDIO[auDay].length - 1;
@@ -2118,7 +2120,7 @@ function auPlay(i){
   auIdx = i; au.src = list[i]; au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL);
   au.play().catch(() => { $('pl-now').textContent = '聲音放不出來，請再按一次 ▶'; });
   if ('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({ title: `${DAYS[auDay - 1].theme}・${SEC_NAMES[i]}`, artist: '玉語心晨' }); }catch(e){} }
-  auPaint(); auFollow(); auTurnAt = Date.now();
+  auPara = -1; auPaint(); auFollow(); auTurnAt = Date.now();
 }
 // 畫面跟著聲音：每開始唸新的一段，就捲到那一段的開頭。
 // 使用者自己在滑的時候（8 秒內），不搶畫面。
@@ -2134,7 +2136,7 @@ function auFollow(){
 }
 // 一段很長、手機一個畫面放不下時：照聲音唸到的比例估計讀到哪一行，
 // 快要被下方的播放列擋住時，就往上「翻」一點，讓正在唸的那幾行留在畫面上半部。
-let auTurnAt = 0;
+let auTurnAt = 0, auPara = -1;
 function auTrack(){
   if (auDay !== D.n || $('v-today').hidden || au.paused || !au.duration) return;
   const now = Date.now(); if (now - auTouchAt < 8000 || now - auTurnAt < 1500) return;
@@ -2144,7 +2146,24 @@ function auTrack(){
   const bar = document.querySelector('.bar'), pl = $('player');
   const vTop = bar ? bar.getBoundingClientRect().bottom : 0;
   const vBot = (pl && !pl.hidden) ? pl.getBoundingClientRect().top : innerHeight;
-  const yRead = r.top + r.height * frac, room = vBot - vTop;
+  const room = vBot - vTop;
+  // 有分段的（白話理解、用在生活裡）：照字數估計唸到第幾段，換段時就把那一段捲到畫面上方
+  const paras = [...t.querySelectorAll('.para')];
+  if (paras.length > 1){
+    const lens = paras.map(x => x.textContent.length), lab = (SEC_NAMES[auIdx] || '').length + 1;
+    let at = frac * (lab + lens.reduce((a, b) => a + b, 0)) - lab, k = 0;
+    while (k < lens.length - 1 && at > lens[k]){ at -= lens[k]; k++; }
+    if (k !== auPara){
+      const first = auPara < 0; auPara = k;
+      if (!first && k > 0){
+        auTurnAt = now;
+        const y = scrollY + paras[k].getBoundingClientRect().top - vTop - 14;
+        try{ scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }catch(e){ scrollTo(0, Math.max(0, y)); }
+        return;
+      }
+    }
+  }
+  const yRead = r.top + r.height * frac;
   if (yRead > vTop + room * 0.72){
     auTurnAt = now;
     const y = scrollY + yRead - vTop - room * 0.28;
