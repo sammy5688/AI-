@@ -697,8 +697,10 @@ body.has-player main{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px)
 html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 .p .para{display:block}
 .p .para + .para{margin-top:.85em}
-#d-title.playing{background:var(--veil);border-radius:14px;padding:2px 10px;margin-left:-10px;margin-right:-10px}
-#d-title.playing::after{content:"　正在聽";font-family:var(--sans);font-size:.5em;font-weight:500;color:var(--muted);letter-spacing:0;vertical-align:middle}
+.dayhead .titlebox{display:flex;flex-direction:column;gap:2px}
+.dayhead #d-who{margin:0;font-family:var(--serif);font-size:1em;color:var(--muted);letter-spacing:.06em}
+#d-titlebox.playing{background:var(--veil);border-radius:14px;padding:4px 10px 6px;margin-left:-10px;margin-right:-10px}
+#d-titlebox.playing #d-title::after{content:"　正在聽";font-family:var(--sans);font-size:.5em;font-weight:500;color:var(--muted);letter-spacing:0;vertical-align:middle}
 </style>
 
 </head>
@@ -802,7 +804,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
       <p class="week" id="d-date"></p>
       <p class="week" id="d-week"></p>
       <p class="dayno" id="d-dayno"></p>
-      <p class="daytag" id="d-title"></p>
+      <div class="titlebox" id="d-titlebox"><p class="daytag" id="d-title"></p><p class="who" id="d-who"></p></div>
       <button class="ghost listen-btn" id="d-listen" hidden>▶ 導讀</button>
     </div>
     <div class="row" id="d-nav"><button class="ghost" id="to-today" hidden>回到今天</button></div>
@@ -1284,6 +1286,7 @@ function render(){
   $('d-nav').hidden = $('to-today').hidden;
   $('to-life').hidden = isCheck() || !lifeAny();
   $('d-title').textContent = D.theme;
+  $('d-who').textContent = D.who;
   $('d-open').textContent = D['開篇'];
   $('d-src').textContent = `${D.who}，${D.date}`;
   $('d-text').textContent = D['原文'];
@@ -2084,7 +2087,7 @@ let auDay = null, auIdx = -1, auSlow = false; let auGap = null;
 try{ auSlow = store.get('sx-slow', false) === true; }catch(e){}
 const secLabels = () => [...document.querySelectorAll('#v-today .lab.sec')];
 // 第 i 個音檔對應畫面上的哪裡：0 = 最上面的題目，其餘 = 各段段名
-const secEl = i => i === 0 ? $('d-title') : secLabels()[i - 1];
+const secEl = i => i === 0 ? $('d-titlebox') : secLabels()[i - 1];
 function auPaint(){
   const on = auDay !== null && auIdx >= 0, playing = on && (!au.paused || !!auGap);
   $('player').hidden = !on; document.body.classList.toggle('has-player', on);
@@ -2096,7 +2099,7 @@ function auPaint(){
   $('pl-slow').setAttribute('aria-pressed', auSlow ? 'true' : 'false');
   $('pl-slow').textContent = auSlow ? '✓ 慢一點' : '慢一點';
   secLabels().forEach((l, i) => l.classList.toggle('playing', on && auDay === D.n && i + 1 === auIdx));
-  $('d-title').classList.toggle('playing', on && auDay === D.n && auIdx === 0);
+  $('d-titlebox').classList.toggle('playing', on && auDay === D.n && auIdx === 0);
 }
 function auPlay(i){
   const list = AUDIO[auDay]; if (!list || i >= list.length){ auStop(); return; }
