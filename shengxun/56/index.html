@@ -708,6 +708,21 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 .dayhead #d-who{margin:0;font-family:var(--serif);font-size:1em;color:var(--muted);letter-spacing:.06em}
 #d-titlebox.playing{background:var(--veil);border-radius:14px;padding:4px 10px 6px;margin-left:-10px;margin-right:-10px}
 #d-titlebox.playing #d-title::after{content:"　正在聽";font-family:var(--sans);font-size:.5em;font-weight:500;color:var(--muted);letter-spacing:0;vertical-align:middle}
+/* 心事相伴：抽一張 */
+.drawbox{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin:2px 0 18px}
+.dr-ask{margin:0;text-align:center;color:var(--muted);font-size:.92em}
+.dr-go{min-height:54px;font-size:1.05em;font-weight:700;color:var(--accent-deep);border-color:rgba(70,98,79,.4)}
+.drcard{background:var(--paper);border-radius:22px;padding:22px 22px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 2px 14px rgba(40,60,46,.12),0 0 0 1px rgba(70,98,79,.12);text-align:center}
+.drcard .dr-day{margin:0;font-size:.8em;color:var(--muted);letter-spacing:.08em}
+.drcard .dr-theme{margin:0;font-family:var(--serif);font-size:1.3em;font-weight:700;color:var(--accent-deep)}
+.drcard .dr-key{margin:4px 0 0;font-family:var(--serif);font-size:1.05em;line-height:1.9;color:var(--ink);text-align:left}
+.drcard .dr-who{margin:0;font-size:.85em;color:var(--muted);text-align:right}
+.drcard .primary{margin-top:6px}
+.drcard .nlink{align-self:center;color:var(--muted);text-decoration:underline;text-underline-offset:4px}
+.drcard.flip{animation:drflip .5s ease-out}
+@keyframes drflip{from{opacity:0;transform:perspective(600px) rotateY(-70deg)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.drcard.flip{animation:none}}
+html.night .drcard{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 </style>
 
 </head>
@@ -982,6 +997,18 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
       <p class="daytag" id="lf-title">遇到這件事，可以讀</p>
       <p class="hint" id="lf-hint"></p>
     </div>
+    <div class="drawbox" id="lf-draw">
+      <p class="dr-ask">不知道選哪一個？讓今天的一句話來找你。</p>
+      <button class="ghost dr-go" id="dr-go">抽一張</button>
+      <div class="drcard" id="dr-card" hidden>
+        <p class="dr-day" id="dr-day"></p>
+        <p class="dr-theme" id="dr-theme"></p>
+        <p class="dr-key" id="dr-key"></p>
+        <p class="dr-who" id="dr-who"></p>
+        <button class="primary" id="dr-read">讀這一篇 ›</button>
+        <button class="nlink" id="dr-again">再抽一張</button>
+      </div>
+    </div>
     <ul class="daylist" id="lf-list"></ul>
     <div class="row center"><button class="ghost" id="lf-back" hidden>看其他的事</button></div>
   </section>
@@ -1023,7 +1050,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
           <h4>4. 八週旅程</h4>
           <p>這裡可以看到 8 週、56 天的學習進度。想重新閱讀以前的篇章，或看看自己走到哪一天，都可以從這裡進入。</p>
           <h4>5. 心事相伴</h4>
-          <p>心裡有事的時候，例如跟家人起了摩擦、心很急、放不下，按這裡，選一個最像你現在的情況，就能找到相關的篇章，馬上讀。</p>
+          <p>心裡有事的時候，例如跟家人起了摩擦、心很急、放不下，按這裡，選一個最像你現在的情況，就能找到相關的篇章，馬上讀。不知道選哪一個，也可以按「抽一張」，從 56 天和 9 篇延伸篇裡，隨手抽一篇來讀。</p>
         </div>
       </details>
       <details class="ac">
@@ -1916,8 +1943,9 @@ function renderLife(ci){
   const sortKey = n => { const p = ORDER.indexOf(n); return p >= 0 ? p : 100 + EXT.indexOf(n); };
   $('lf-back').hidden = ci === null;
   if (ci === null){
-    $('lf-title').textContent = '遇到這件事，可以讀';
-    $('lf-hint').textContent = '心裡有事的時候，點一下，就有可以讀的篇章。';
+    $('lf-title').textContent = '心事相伴';
+    $('lf-hint').textContent = '心裡有事的時候，選一個最像你現在的情況，點一下，就有可以讀的篇章。';
+    $('lf-draw').hidden = false;
     LIFE.forEach(([name, ns], i) => {
       const k = lifeAvail(ns).length;
       if (!k) return;
@@ -1929,6 +1957,7 @@ function renderLife(ci){
     return;
   }
   const [name, ns] = LIFE[ci];
+  $('lf-draw').hidden = true;
   $('lf-title').textContent = name;
   const list = lifeAvail(ns).sort((a, b) => sortKey(a) - sortKey(b));
   $('lf-hint').textContent = '每一篇都可以馬上讀。先看看下面這幾句，哪一句說中你的心，就點哪一篇。';
@@ -1941,6 +1970,22 @@ function renderLife(ci){
   });
 }
 $('lf-back').onclick = () => { renderLife(null); window.scrollTo(0, 0); };
+// 抽一張：56 天＋9 篇延伸篇全部放進來，隨手抽一篇；連續兩次不會抽到同一篇
+let drLast = 0;
+function drawOne(){
+  const pool = ALLD.filter(d => d.n !== drLast), d = pool[Math.floor(Math.random() * pool.length)];
+  drLast = d.n;
+  $('dr-day').textContent = dayLabel(d);
+  $('dr-theme').textContent = d.theme;
+  $('dr-key').textContent = d['今日重點'];
+  $('dr-who').textContent = d.who;
+  const c = $('dr-card'); c.hidden = false; $('dr-go').hidden = true;
+  c.classList.remove('flip'); void c.offsetWidth; c.classList.add('flip');
+  c.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+$('dr-go').onclick = drawOne;
+$('dr-again').onclick = drawOne;
+$('dr-read').onclick = () => { if (drLast) openDay(drLast); };
 
 function renderPast(){
   const ul = $('p-list'); ul.textContent = '';
