@@ -1578,7 +1578,8 @@ function show(name){
     if (TAB_OF[name] === t) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
   });
   const reading = name === 'today';
-  $('steps').hidden = !reading; $('bar-brand').hidden = reading; $('nav-intro').hidden = reading; $('nav-music').hidden = !reading || isCheck();
+  // 上方的一二三四已取消（跟導讀聲音無關，容易誤會）：閱讀時上方只留 App 名稱、♪、字
+  $('steps').hidden = true; $('bar-brand').hidden = false; $('nav-intro').hidden = reading; $('nav-music').hidden = !reading || isCheck();
   try{ auBar(); }catch(e){}
   try{ bgmUpdate(); }catch(e){}
   if (name === 'journey') renderJourney();
@@ -2329,11 +2330,11 @@ async function auWake(on){
   }catch(e){ auLock = null; }
 }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !au.paused && auDay !== null) auWake(true); });
-// 導讀時，上方的「一二三四」藏起來（只用下方播放列），換成 App 名稱；不聽了再出現
+// 上方的「一二三四」已全部取消，閱讀時上方固定顯示 App 名稱；聽導讀時 ♪ 收起來
 function auBar(){
   const listening = auDay !== null && auIdx >= 0, reading = document.body.dataset.view === 'today';
   if (!reading) return;
-  $('steps').hidden = listening; $('bar-brand').hidden = !listening;
+  $('steps').hidden = true; $('bar-brand').hidden = false;
   $('nav-music').hidden = listening || isCheck(); // 聽的時候音樂本來就停，♪ 也先收起來
 }
 function auStop(){ clearTimeout(auGap); auGap = null; auWake(false); au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
