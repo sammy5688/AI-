@@ -2070,17 +2070,18 @@ $('nav-intro').onclick = () => show('intro');
 // ===== ▶ 導讀：每篇七段，一段一個音檔（Fish Audio「Fancis 冥想」） =====
 const AUDIO_BASE = 'https://platform.r2.fish.audio/tasks/2026-11-11/';
 const AUDIO = {
-  1: ['9ec723b318f64519b7180e582c4d99f7', '140c68608b99403d9142e81e0814afa1', '72a86e68e1964bc5b2ce136d6daa7e79', '0b81b193a565475981594eb66f5d6708', '2751a00d15f04c348a30fa3f1fcaf656', '72625f6a93d54b1ba0e534df22f1ce40', 'd38fc41a6d4a41a6974450587338456c'].map(id => AUDIO_BASE + id + '.mp3'),
+  // 第 1 天：已剪掉頭尾雜音與多出來的「嗯」，放在自己的網站上
+  1: [0, 1, 2, 3, 4, 5, 6].map(i => `audio/d1-${i}.mp3`),
 };
 // 語速：長輩聽得清楚為主。平常就放慢一些；「慢一點」再更慢
 const RATE_NORMAL = 1.1, RATE_SLOW = 0.9; // Fancis 冥想本身就慢、句間有停頓，不再放太慢
 const SEC_NAMES = ['開篇', '原文', '今日重點', '白話理解', '用在生活裡', '問問自己', '今天可以試試'];
 const au = new Audio(); au.preload = 'none';
-let auDay = null, auIdx = -1, auSlow = false;
+let auDay = null, auIdx = -1, auSlow = false; let auGap = null;
 try{ auSlow = store.get('sx-slow', false) === true; }catch(e){}
 const secLabels = () => [...document.querySelectorAll('#v-today .lab.sec')];
 function auPaint(){
-  const on = auDay !== null && auIdx >= 0, playing = on && !au.paused;
+  const on = auDay !== null && auIdx >= 0, playing = on && (!au.paused || !!auGap);
   $('player').hidden = !on; document.body.classList.toggle('has-player', on);
   const txt = playing ? '⏸ 先停一下' : on ? '▶ 繼續' : '▶ 導讀';
   ['c-listen', 'd-listen'].forEach(id => { $(id).textContent = (auDay === null || auDay === D.n) ? txt : '▶ 導讀'; });
@@ -2138,12 +2139,13 @@ async function auWake(on){
   }catch(e){ auLock = null; }
 }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && !au.paused && auDay !== null) auWake(true); });
-function auStop(){ auWake(false); au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
+function auStop(){ clearTimeout(auGap); auGap = null; auWake(false); au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
 function auStart(from){
-  if (auDay === D.n && auIdx >= 0 && from === undefined){ if (au.paused){ au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); au.play(); } else au.pause(); auPaint(); return; }
+  if (auDay === D.n && auIdx >= 0 && from === undefined){ if (auGap){ clearTimeout(auGap); auGap = null; auPaint(); auWake(false); return; } if (au.paused && au.ended){ auPlay(auIdx + 1); return; } if (au.paused){ au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); au.play(); } else au.pause(); auPaint(); return; }
   auDay = D.n; auPlay(from || 0);
 }
-au.addEventListener('ended', () => auPlay(auIdx + 1));
+// 段與段之間，空 1 秒再唸下一段（錄音稿結尾不再放 [long pause]）
+au.addEventListener('ended', () => { const next = auIdx + 1; clearTimeout(auGap); auGap = setTimeout(() => { auGap = null; if (auDay !== null && auIdx === next - 1) auPlay(next); }, 1000); auPaint(); });
 au.addEventListener('play', () => { auPaint(); auWake(true); }); au.addEventListener('pause', () => { auPaint(); setTimeout(() => { if (au.paused && !au.ended) auWake(false); }, 400); }); // 段與段之間不放掉
 au.addEventListener('timeupdate', () => { const list = AUDIO[auDay]; if (!list || !au.duration) return; auTrack();
   $('pl-bar').style.width = (((auIdx + au.currentTime / au.duration) / list.length) * 100).toFixed(1) + '%'; });
