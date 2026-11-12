@@ -689,6 +689,13 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 .pl-prog{height:5px;border-radius:3px;background:var(--veil);overflow:hidden}.pl-prog i{display:block;height:100%;width:0;background:var(--accent);border-radius:3px;transition:width .4s linear}
 .pl-slow{flex:none;min-height:44px;padding:0 10px;border-radius:999px;border:1.5px solid rgba(70,98,79,.3);background:transparent;color:var(--accent-deep);font-size:.82em}
 .pl-slow[aria-pressed="true"]{background:var(--clay-bg);border-color:var(--clay);color:var(--clay);font-weight:700}
+.pl-next{flex:none;width:52px;min-height:48px;border:0;border-radius:14px;background:transparent;color:var(--accent-deep);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px 0;line-height:1.1}
+.pl-next span{font-size:18px}.pl-next small{font-size:11px;font-weight:700;letter-spacing:.02em}
+.pl-next:disabled{opacity:.3}
+.pl-slow{font-size:13px;padding:0 8px}
+.pl-txt{min-width:64px}
+.pl-now b{font-size:15px}
+@media (max-width:360px){.pl-now{white-space:normal;line-height:1.25}.pl-now b{font-size:14px}.pl-in{gap:6px;padding:8px}.pl-main{width:46px;height:46px}.pl-next{width:46px}.pl-x{width:36px}}
 .pl-x{flex:none;width:44px;height:44px;border:0;background:transparent;color:var(--muted);font-size:18px}
 .lab.sec.playing b{background:var(--veil);padding:4px 12px 4px 8px;border-radius:999px}
 .lab.sec.playing b::after{content:"　正在聽";font-size:.78em;font-weight:500;color:var(--muted);letter-spacing:0}
@@ -1095,6 +1102,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
   <div class="pl-in">
     <button class="pl-main" id="pl-toggle" aria-label="先停一下">⏸</button>
     <div class="pl-txt"><p class="pl-now"><b id="pl-now"></b></p><div class="pl-prog"><i id="pl-bar"></i></div></div>
+    <button class="pl-next" id="pl-next" aria-label="下一段"><span>⏭</span><small>下一段</small></button>
     <button class="pl-slow" id="pl-slow" aria-pressed="false">慢一點</button>
     <button class="pl-x" id="pl-x" aria-label="不聽了">✕</button>
   </div>
@@ -2096,6 +2104,7 @@ function auPaint(){
   $('pl-toggle').textContent = playing ? '⏸' : '▶';
   $('pl-toggle').setAttribute('aria-label', playing ? '先停一下' : '繼續');
   $('pl-now').textContent = on ? SEC_NAMES[auIdx] : '';
+  $('pl-next').disabled = !on || !AUDIO[auDay] || auIdx >= AUDIO[auDay].length - 1;
   $('pl-slow').setAttribute('aria-pressed', auSlow ? 'true' : 'false');
   $('pl-slow').textContent = auSlow ? '✓ 慢一點' : '慢一點';
   secLabels().forEach((l, i) => l.classList.toggle('playing', on && auDay === D.n && i + 1 === auIdx));
@@ -2164,6 +2173,11 @@ $('d-listen').onclick = () => auStart();
 $('c-listen').onclick = () => { $('go-read').click(); auStart(); };
 $('pl-toggle').onclick = () => auStart();
 $('pl-x').onclick = auStop;
+// ⏭ 下一段：不想聽這段，直接跳到下一段（最後一段時按不了）
+$('pl-next').onclick = () => {
+  const list = AUDIO[auDay]; if (!list || auIdx < 0 || auIdx >= list.length - 1) return;
+  clearTimeout(auGap); auGap = null; auTouchAt = 0; auPlay(auIdx + 1);
+};
 $('pl-slow').onclick = () => { auSlow = !auSlow; store.set('sx-slow', auSlow); au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); auPaint(); };
 // 點段落名稱，就從那一段開始聽
 document.addEventListener('click', e => { const l = e.target.closest('#v-today .lab.sec'); if (!l || !AUDIO[D.n] || isCheck() || e.target.closest('button')) return;
