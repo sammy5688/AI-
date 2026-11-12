@@ -749,6 +749,9 @@ html.night .tabs button:not([aria-current="page"]){color:#D3DDD5!important}
 html.night .tabs button[aria-current="page"]{background:#6E8B75!important;color:#fff!important}
 html.night .bar{background:rgba(33,41,36,.93)!important}
 html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,html.night .gsum,html.night .gwk,html.night .ac,html.night .drcard,html.night .intro .card{box-shadow:0 0 0 1px rgba(255,255,255,.12)!important}
+.resume .rs-txt{flex:1;min-width:0;border:0;background:transparent;text-align:left;display:flex;flex-direction:column;gap:2px;padding:4px 0;color:var(--ink)}
+.resume .rs-txt b{font-size:16px;color:var(--accent-deep)}
+.resume .rs-txt span{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style>
 
 </head>
@@ -1162,6 +1165,13 @@ html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,h
   </div>
 </div>
 
+<div class="player resume" id="resume" hidden>
+  <div class="pl-in">
+    <button class="pl-main" id="rsm-play" aria-label="繼續導讀"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.8l-10-6.5A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg></button>
+    <button class="rs-txt" id="rsm-go"><b>繼續導讀</b><span id="rsm-what"></span></button>
+    <button class="pl-x" id="rsm-x" aria-label="不聽了">✕</button>
+  </div>
+</div>
 <div class="player" id="player" hidden>
   <div class="pl-in">
     <button class="pl-main" id="pl-toggle" aria-label="先停一下"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg></button>
@@ -1600,7 +1610,7 @@ function show(name){
   // 上方的一二三四已取消（跟導讀聲音無關，容易誤會）：閱讀時上方只留 App 名稱、♪、字
   $('steps').hidden = true; $('bar-brand').hidden = false; $('nav-intro').hidden = reading; $('nav-music').hidden = !reading || isCheck();
   try{ auBar(); }catch(e){}
-  try{ bgmUpdate(); }catch(e){}
+  try{ auPaint(); }catch(e){} try{ bgmUpdate(); }catch(e){}
   if (name === 'journey') renderJourney();
   if (name === 'growth'){ editW = null; renderGrowth(); }
   if (name === 'past') renderPast();
@@ -2271,7 +2281,12 @@ function auPaint(){
   const on = auDay !== null && auIdx >= 0, playing = on && (!au.paused || !!auGap);
   // 播放列只在「正在聽的那一篇」的閱讀頁出現；離開閱讀頁，聲音會先停下（見 show）
   const here = on && document.body.dataset.view === 'today' && auDay === D.n;
-  $('player').hidden = !here; document.body.classList.toggle('has-player', here);
+  $('player').hidden = !here;
+  // 在別的畫面：下方顯示一條「繼續導讀」，不用滑到首頁下面找按鈕
+  const away = on && !here && !isCheck() && document.body.dataset.view !== 'intro';
+  $('resume').hidden = !away;
+  if (away){ const d = DAYS[auDay - 1]; $('rsm-what').textContent = `${dayLabel(d)}・${d.theme}（${SEC_NAMES[auIdx] || ''}）`; }
+  document.body.classList.toggle('has-player', here || away);
   // 聽的時候，上面的「▶ 導讀」收起來，只留下方播放列（不要兩顆按鈕做同一件事）
   const hasAu = !!AUDIO[D.n] && !isCheck(), mine = on && auDay === D.n;
   $('d-listen').textContent = '▶\uFE0E 導讀'; $('d-listen').hidden = !hasAu || mine;
@@ -2372,6 +2387,14 @@ au.addEventListener('timeupdate', () => { const list = AUDIO[auDay]; if (!list |
   $('pl-bar').style.width = (((auIdx + au.currentTime / au.duration) / list.length) * 100).toFixed(1) + '%'; });
 $('d-listen').onclick = () => auStart();
 $('c-listen').onclick = () => { $('go-read').click(); auStart(); };
+// 繼續導讀：回到正在聽的那一篇，從停下的地方接著唸
+function auResume(){
+  const n = auDay; if (n === null) return;
+  if (!isCheck() && state.day.n === n && state.mode !== 'free'){ viewN = null; render(); show('today'); } else openDay(n);
+  auStart();
+}
+$('rsm-play').onclick = auResume; $('rsm-go').onclick = auResume;
+$('rsm-x').onclick = auStop;
 $('pl-toggle').onclick = () => auStart();
 $('pl-x').onclick = auStop;
 // ⏭ 下一段：不想聽這段，直接跳到下一段（最後一段時按不了）
