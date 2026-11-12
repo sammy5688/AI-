@@ -753,7 +753,10 @@ html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,h
 .resume .rs-txt b{font-size:16px;color:var(--accent-deep)}
 .resume .rs-txt span{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* 播放列、繼續導讀列：精短一點，置中，不拉滿整個寬度 */
-.player .pl-in{max-width:340px}
+.player .pl-in{max-width:280px;gap:8px;padding:8px 10px}
+.player .pl-main{width:48px;height:48px}
+.player .pl-next{width:46px}
+.player .pl-x{width:38px}
 .player .pl-txt{min-width:56px}
 .taphint{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);z-index:9;pointer-events:none;background:rgba(85,117,96,.95);color:#fff;font-size:18px;font-weight:700;padding:14px 22px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .taphint.show{animation:tapin .25s ease-out}
@@ -2293,7 +2296,7 @@ function auPaint(){
   // 在別的畫面：下方顯示一條「繼續導讀」，不用滑到首頁下面找按鈕
   const away = on && !here && !isCheck() && document.body.dataset.view !== 'intro';
   $('resume').hidden = !away;
-  if (away){ const d = DAYS[auDay - 1]; $('rsm-what').textContent = `${dayLabel(d)}・${d.theme}（${SEC_NAMES[auIdx] || ''}）`; }
+  if (away){ const d = DAYS[auDay - 1]; $('rsm-what').textContent = `${dayLabel(d)}・${d.theme}`; }
   document.body.classList.toggle('has-player', here || away);
   // 聽的時候，上面的「▶ 導讀」收起來，只留下方播放列（不要兩顆按鈕做同一件事）
   const hasAu = !!AUDIO[D.n] && !isCheck(), mine = on && auDay === D.n;
