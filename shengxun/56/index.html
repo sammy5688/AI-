@@ -755,6 +755,10 @@ html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,h
 /* 播放列、繼續導讀列：精短一點，置中，不拉滿整個寬度 */
 .player .pl-in{max-width:340px}
 .player .pl-txt{min-width:56px}
+.taphint{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);z-index:9;pointer-events:none;background:rgba(46,58,50,.86);color:#fff;font-size:18px;font-weight:700;padding:14px 22px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.taphint.show{animation:tapin .25s ease-out}
+@keyframes tapin{from{opacity:0;transform:translate(-50%,-50%) scale(.92)}to{opacity:1;transform:translate(-50%,-50%)}}
+@media (max-width:359px){.taphint{font-size:15px;padding:12px 16px}}
 </style>
 
 </head>
@@ -1168,6 +1172,7 @@ html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,h
   </div>
 </div>
 
+<div class="taphint" id="tap-hint" aria-live="polite" hidden></div>
 <div class="player resume" id="resume" hidden>
   <div class="pl-in">
     <button class="pl-main" id="rsm-play" aria-label="繼續導讀"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.8l-10-6.5A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg></button>
@@ -2398,6 +2403,28 @@ function auResume(){
 }
 $('rsm-play').onclick = auResume; $('rsm-go').onclick = auResume;
 $('rsm-x').onclick = auStop;
+// 導讀中，輕點文字（不是捲動、不是按鈕）＝先停一下；停著時再點一下＝繼續。畫面中央淡淡提示。
+let tapT = null;
+function tapHint(txt){
+  const h = $('tap-hint'); h.textContent = txt; h.hidden = false; h.classList.remove('show'); void h.offsetWidth; h.classList.add('show');
+  clearTimeout(tapT); tapT = setTimeout(() => { h.hidden = true; }, txt.startsWith('⏸') ? 2600 : 1400);
+}
+$('v-today').addEventListener('click', e => {
+  if (auDay === null || auDay !== D.n || auIdx < 0 || isCheck()) return;
+  if (e.target.closest('button,a,input,textarea,select,label,summary,details .acc-h,.lab.sec,.player,.bgmask')) return;
+  const sel = window.getSelection && String(window.getSelection()); if (sel && sel.length > 1) return;
+  const wasPlaying = !au.paused || !!auGap;
+  auStart();
+  tapHint(wasPlaying ? '⏸︎ 先停一下　再點一下就繼續' : '▶︎ 繼續');
+});
+// 手機鎖定畫面、控制中心、耳機的播放／暫停鍵，也能控制導讀
+if ('mediaSession' in navigator){
+  try{
+    navigator.mediaSession.setActionHandler('play', () => { if (auDay !== null){ if (au.ended) auPlay(auIdx + 1); else au.play(); auPaint(); } });
+    navigator.mediaSession.setActionHandler('pause', () => { clearTimeout(auGap); auGap = null; au.pause(); auPaint(); });
+    navigator.mediaSession.setActionHandler('nexttrack', () => $('pl-next').click());
+  }catch(e){}
+}
 $('pl-toggle').onclick = () => auStart();
 $('pl-x').onclick = auStop;
 // ⏭ 下一段：不想聽這段，直接跳到下一段（最後一段時按不了）
