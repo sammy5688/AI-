@@ -2026,7 +2026,7 @@ const AUDIO = {
   1: ['9ec723b318f64519b7180e582c4d99f7', '140c68608b99403d9142e81e0814afa1', '72a86e68e1964bc5b2ce136d6daa7e79', '0b81b193a565475981594eb66f5d6708', '2751a00d15f04c348a30fa3f1fcaf656', '72625f6a93d54b1ba0e534df22f1ce40', 'd38fc41a6d4a41a6974450587338456c'].map(id => AUDIO_BASE + id + '.mp3'),
 };
 // 語速：長輩聽得清楚為主。平常就放慢一些；「慢一點」再更慢
-const RATE_NORMAL = 0.9, RATE_SLOW = 0.78; // Fancis 冥想本身就慢、句間有停頓，不再放太慢
+const RATE_NORMAL = 1, RATE_SLOW = 0.85; // Fancis 冥想本身就慢、句間有停頓，不再放太慢
 const SEC_NAMES = ['開篇', '原文', '今日重點', '白話理解', '用在生活裡', '問問自己', '今天可以試試'];
 const au = new Audio(); au.preload = 'none';
 let auDay = null, auIdx = -1, auSlow = false;
