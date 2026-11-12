@@ -1585,6 +1585,8 @@ function paintDone(){
 }
 const TAB_OF = { cover:'home', today:'home', life:'life', past:'home', notes:'notes', journey:'journey', growth:'growth' };
 function show(name){
+  // 聽導讀時離開閱讀頁（按下方五個按鈕、說明……）：聲音先停下，回到這一篇再按繼續
+  if (name !== 'today'){ try{ if (auDay !== null){ clearTimeout(auGap); auGap = null; if (!au.paused) au.pause(); auWake(false); } }catch(e){} }
   // 試讀時：回到首頁，換成下一篇還沒讀的（正在聽導讀時先不換，免得聲音和畫面對不上）
   if (name === 'cover' && !viewN && state && state.mode === 'before'){ let listening = false; try{ listening = auDay !== null; }catch(e){}
     if (!listening && todayState().day.n !== state.day.n) render(); }
@@ -2213,7 +2215,7 @@ function bgmSched(when, off, fadeIn, tok){
   bgm.loopT = setTimeout(() => bgmSched(Math.max(end - BGM_XF, c.currentTime + 0.05), 0, true, tok), Math.max(0, (end - BGM_XF - c.currentTime - 1.5) * 1000));
 }
 function bgmWant(){
-  let listening = false; try{ listening = auDay !== null; }catch(e){}
+  let listening = false; try{ listening = auDay !== null && auDay === D.n; }catch(e){}
   return bgmPref() === 'on' && document.body.dataset.view === 'today' && !isCheck() && !listening && document.visibilityState === 'visible';
 }
 function bgmUpdate(){
@@ -2267,10 +2269,14 @@ const secLabels = () => [...document.querySelectorAll('#v-today .lab.sec')];
 const secEl = i => i === 0 ? $('d-titlebox') : secLabels()[i - 1];
 function auPaint(){
   const on = auDay !== null && auIdx >= 0, playing = on && (!au.paused || !!auGap);
-  $('player').hidden = !on; document.body.classList.toggle('has-player', on);
+  // 播放列只在「正在聽的那一篇」的閱讀頁出現；離開閱讀頁，聲音會先停下（見 show）
+  const here = on && document.body.dataset.view === 'today' && auDay === D.n;
+  $('player').hidden = !here; document.body.classList.toggle('has-player', here);
   // 聽的時候，上面的「▶ 導讀」收起來，只留下方播放列（不要兩顆按鈕做同一件事）
-  const hasAu = !!AUDIO[D.n] && !isCheck();
-  ['c-listen', 'd-listen'].forEach(id => { $(id).textContent = '▶\uFE0E 導讀'; $(id).hidden = !hasAu || on; });
+  const hasAu = !!AUDIO[D.n] && !isCheck(), mine = on && auDay === D.n;
+  $('d-listen').textContent = '▶\uFE0E 導讀'; $('d-listen').hidden = !hasAu || mine;
+  // 首頁：聽到一半離開的，按鈕變成「繼續導讀」，回來接著聽
+  $('c-listen').textContent = mine ? '▶\uFE0E 繼續導讀' : '▶\uFE0E 導讀'; $('c-listen').hidden = !hasAu;
   // 用畫的圖示，不用表情符號（iPhone 會把 ⏸ ⏭ 顯示成藍色方塊）
   $('pl-toggle').innerHTML = playing ? '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>' : '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.8l-10-6.5A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>';
   $('pl-toggle').setAttribute('aria-label', playing ? '先停一下' : '繼續');
