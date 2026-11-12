@@ -401,15 +401,16 @@ html.night .steps button[aria-current="step"]{background:#5A7863;border-color:#5
 /* 下方四個入口：拇指按得到 */
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:rgba(246,248,243,.97);border-top:1px solid var(--line);
   padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
-.tabs-in{max-width:34rem;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.tabs button{min-height:56px;border:0;border-radius:16px;background:transparent;font-size:17px;font-weight:500;color:var(--muted);padding:0 2px;white-space:nowrap}
+.tabs-in{max-width:34rem;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.tabs button{min-height:56px;border:0;border-radius:14px;background:transparent;font-size:16px;font-weight:500;color:var(--muted);padding:0 2px;white-space:nowrap}
 .tabs button[aria-current="page"]{background:var(--veil);color:var(--accent-deep);font-weight:700;box-shadow:inset 0 0 0 1.5px rgba(70,98,79,.22)}
 html.night .tabs{background:rgba(46,56,51,.97);border-top-color:rgba(255,255,255,.08)}
 html.night .tabs button[aria-current="page"]{box-shadow:inset 0 0 0 1.5px rgba(207,226,211,.3)}
 main{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}
 .speakbar{bottom:calc(69px + env(safe-area-inset-bottom,0px));padding-bottom:10px}
 body.has-speak main{padding-bottom:calc(200px + env(safe-area-inset-bottom,0px))}
-@media (max-width:359px){.tabs button{font-size:15px}}
+@media (max-width:389px){.tabs button{font-size:15px}}
+@media (max-width:359px){.tabs button{font-size:13px}.tabs-in{gap:2px}}
 
 /* 首頁：收小一點，讓「開始」按鈕不用滑就看得到 */
 .col{gap:18px}
@@ -1009,9 +1010,9 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
         </div>
       </details>
       <details class="ac">
-        <summary><span class="an">二</span><span class="at">四個主要功能</span></summary>
+        <summary><span class="an">二</span><span class="at">五個主要功能</span></summary>
         <div class="ab">
-          <p>畫面最下方有四個入口：</p>
+          <p>畫面最下方有五個入口：</p>
           <h4>1. 今日玉語</h4>
           <p>每天的一篇聖訓，就從這裡開始。讀原文、看懂道理，再想想如何用在生活中。</p>
           <h4>2. 我的心語</h4>
@@ -1021,6 +1022,8 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
           <p>不需要分數，也不用和別人比較，只要看見自己一點一點的成長。</p>
           <h4>4. 八週旅程</h4>
           <p>這裡可以看到 8 週、56 天的學習進度。想重新閱讀以前的篇章，或看看自己走到哪一天，都可以從這裡進入。</p>
+          <h4>5. 遇到事</h4>
+          <p>心裡有事的時候，例如跟家人起了摩擦、心很急、放不下，按這裡，選一個最像你現在的情況，就能找到相關的篇章，馬上讀。</p>
         </div>
       </details>
       <details class="ac">
@@ -1112,6 +1115,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
     <button id="tab-notes" data-tab="notes">我的心語</button>
     <button id="tab-growth" data-tab="growth">我的成長</button>
     <button id="tab-journey" data-tab="journey">八週旅程</button>
+    <button id="tab-life" data-tab="life">遇到事</button>
   </div>
 </nav>
 
@@ -1294,7 +1298,7 @@ function render(){
   $('to-past').hidden = true;
   $('to-today').hidden = !pastView;
   $('d-nav').hidden = $('to-today').hidden;
-  $('to-life').hidden = isCheck() || !lifeAny();
+  $('to-life').hidden = true; // 已移到下方分頁鈕「遇到事」
   $('d-title').textContent = D.theme;
   $('d-who').textContent = D.who;
   $('d-open').textContent = D['開篇'];
@@ -1518,14 +1522,14 @@ function paintDone(){
   $('carry').hidden = ck;
   paintExtras();
 }
-const TAB_OF = { cover:'home', today:'home', life:'home', past:'home', notes:'notes', journey:'journey', growth:'growth' };
+const TAB_OF = { cover:'home', today:'home', life:'life', past:'home', notes:'notes', journey:'journey', growth:'growth' };
 function show(name){
   // 試讀時：回到首頁，換成下一篇還沒讀的（正在聽導讀時先不換，免得聲音和畫面對不上）
   if (name === 'cover' && !viewN && state && state.mode === 'before'){ let listening = false; try{ listening = auDay !== null; }catch(e){}
     if (!listening && todayState().day.n !== state.day.n) render(); }
   document.body.dataset.view = name;
   ['cover','today','notes','intro','past','life','journey','growth'].forEach(v => $('v-'+v).hidden = v !== name);
-  ['home','notes','journey','growth'].forEach(t => {
+  ['home','notes','journey','growth','life'].forEach(t => {
     const b = $('tab-'+t);
     if (TAB_OF[name] === t) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
   });
@@ -1575,7 +1579,7 @@ function dayRow(d, isOpen, read, isToday, lockText){
   b.append(tx); li.append(b); return li;
 }
 function renderJourney(){
-  $('j-life').hidden = !lifeAny();
+  $('j-life').hidden = true; // 已移到下方分頁鈕「遇到事」
   const box = $('j-list'); box.textContent = '';
   const open = openDays(), isOpen = d => open.some(x => x.n === d.n), read = readMap();
   const tp = state.mode === 'on' ? pos(state.day) : -1;
