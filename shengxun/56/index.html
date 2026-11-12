@@ -695,6 +695,8 @@ html.night .ac{box-shadow:0 0 0 1px rgba(255,255,255,.08)}
 body.has-audio .lab.sec{cursor:pointer}
 body.has-player main{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px))}
 html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
+.p .para{display:block}
+.p .para + .para{margin-top:.85em}
 </style>
 
 </head>
@@ -1184,6 +1186,51 @@ const triedMap = () => store.get('sx-tried', {});
 const openDate = i => { const t = new Date(START + i * DAY); return `${t.getUTCMonth()+1} 月 ${t.getUTCDate()} 日`; };
 const strip = s => s.replace(/^「|」$/g, '');
 // 今日重點：照句號、分號分段顯示（只換行，不改字）
+// ===== 分段：長的白話理解、生活情境，在手機上切成 2～3 段，長輩比較好讀（只在畫面上分段，不改原稿） =====
+// 把一長段字，照句子切成 2～4 個段落：長度盡量平均，優先在「轉折」的地方換段
+const TURN = /^(後來|這時|那時|過了|隔天|第二天|當天|晚上|那天|那一刻|回到|回家|下次|從那|於是|可是|但是|但|不過|其實|原來|所以|因此|也就是說|換句話說|真人|祂|仙師|天尊|如來|古佛|帝君|道人|他想|她想|他忽然|她忽然|他放下|她放下|他停|她停|他深吸|她深吸|他想起|她想起|有一天|一杯|幾天後|一週後|週末|現在|今天|這樣|這就是|人一|人常|我們)/;
+function sentences(t){
+  const out = []; let cur = '', depth = 0;
+  for (let i = 0; i < t.length; i++){
+    const c = t[i]; cur += c;
+    if (c === '「' || c === '『') depth++;
+    else if (c === '」' || c === '』') depth = Math.max(0, depth - 1);
+    if (depth === 0 && /[。！？]/.test(c) || (depth === 0 && /[」』]/.test(c) && /[。！？]/.test(t[i-1]))){
+      while (/[」』]/.test(t[i+1] || '') ){ i++; cur += t[i]; }
+      out.push(cur); cur = '';
+    }
+  }
+  if (cur) { if (out.length && cur.length < 4) out[out.length-1] += cur; else out.push(cur); }
+  return out;
+}
+function paras(t){
+  const s = sentences(t), L = t.length;
+  if (L <= 90 || s.length < 2) return [t];
+  const n = Math.max(2, Math.min(4, Math.round(L / 85)));
+  const target = L / n, m = s.length;
+  const len = (a, b) => s.slice(a, b).join('').length;
+  // dp[k][j] = 用 k 段排到第 j 句的最小代價
+  const INF = 1e18, dp = Array.from({length: n + 1}, () => Array(m + 1).fill(INF)), pr = Array.from({length: n + 1}, () => Array(m + 1).fill(-1));
+  dp[0][0] = 0;
+  for (let k = 1; k <= n; k++) for (let j = 1; j <= m; j++) for (let i = k - 1; i < j; i++){
+    if (dp[k-1][i] >= INF) continue;
+    const l = len(i, j); if (l < 22) continue;
+    let c = (l - target) ** 2;
+    if (i > 0 && TURN.test(s[i])) c -= target * target * 0.25;
+    if (i > 0 && /^(「|想了想|又|也|還|然後|而且|並且|接著)/.test(s[i])) c += target * target * 0.25;
+    if (dp[k-1][i] + c < dp[k][j]){ dp[k][j] = dp[k-1][i] + c; pr[k][j] = i; }
+  }
+  let best = -1, bk = 0; for (let k = 2; k <= n; k++) if (dp[k][m] < INF && (best < 0 || dp[k][m] < dp[bk][m] - 1e-9 && k === n || bk === 0)) { bk = k; best = dp[k][m]; }
+  if (!bk) return [t];
+  const cuts = []; let j = m; for (let k = bk; k > 0; k--){ cuts.unshift(pr[k][j]); j = pr[k][j]; }
+  const res = []; for (let x = 0; x < cuts.length; x++) res.push(s.slice(cuts[x], x + 1 < cuts.length ? cuts[x+1] : m).join(''));
+  return res;
+}
+function setParas(el, t){
+  el.textContent = '';
+  let ps; try{ ps = paras(t || ''); }catch(e){ ps = [t || '']; }
+  ps.forEach(x => { const sp = document.createElement('span'); sp.className = 'para'; sp.textContent = x; el.appendChild(sp); });
+}
 function setKey(el, text){
   el.textContent = '';
   (text.match(/[^。；！？]+[。；！？]*[」』）]*/g) || [text]).forEach(t => { const sp = document.createElement('span'); sp.textContent = t.trim(); el.appendChild(sp); });
@@ -1241,8 +1288,8 @@ function render(){
   setKey($('d-key'), D['今日重點']);
   if (typeof paintListen === 'function') paintListen();
   $('d-keysrc').textContent = '';
-  $('d-plain').textContent = D['白話理解'];
-  $('d-story').textContent = D['情境範例'];
+  setParas($('d-plain'), D['白話理解']);
+  setParas($('d-story'), D['情境範例']);
   $('d-ask').textContent = D['問問自己'];
   $('d-try').textContent = D['今天可以試試'];
   $('d-next').textContent =
@@ -2026,7 +2073,7 @@ const AUDIO = {
   1: ['9ec723b318f64519b7180e582c4d99f7', '140c68608b99403d9142e81e0814afa1', '72a86e68e1964bc5b2ce136d6daa7e79', '0b81b193a565475981594eb66f5d6708', '2751a00d15f04c348a30fa3f1fcaf656', '72625f6a93d54b1ba0e534df22f1ce40', 'd38fc41a6d4a41a6974450587338456c'].map(id => AUDIO_BASE + id + '.mp3'),
 };
 // 語速：長輩聽得清楚為主。平常就放慢一些；「慢一點」再更慢
-const RATE_NORMAL = 1, RATE_SLOW = 0.85; // Fancis 冥想本身就慢、句間有停頓，不再放太慢
+const RATE_NORMAL = 1.1, RATE_SLOW = 0.9; // Fancis 冥想本身就慢、句間有停頓，不再放太慢
 const SEC_NAMES = ['開篇', '原文', '今日重點', '白話理解', '用在生活裡', '問問自己', '今天可以試試'];
 const au = new Audio(); au.preload = 'none';
 let auDay = null, auIdx = -1, auSlow = false;
