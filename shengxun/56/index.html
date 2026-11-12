@@ -1005,8 +1005,8 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
           <p>每天清晨 5 點，會自動換上當天的新篇章。每篇閱讀時間約 5 分鐘。</p>
           <p>56 天讀完後，App 還會繼續陪伴你，每天提供一篇內容。其中有你讀過的篇章，也有 9 篇延伸閱讀，讓你可以繼續學習、反覆體會。</p>
           <h4>遇到事情，也可以直接找聖訓</h4>
-          <p>生活中遇到煩惱，不一定要等到當天的篇章。只要按下「遇到事，找一篇」，就能依照目前的生活情況，找到適合閱讀的內容。例如：和家人鬧僵了、有一句話一直放不下、心裡有委屈、遇到事情不知道怎麼面對。</p>
-          <p>這個功能在每篇文章的最下方，也可以從「八週旅程」進入。希望你在生活遇到事情時，能找到一句話，陪自己想一想。</p>
+          <p>生活中遇到煩惱，不一定要等到當天的篇章。只要按下畫面最下方的「心事相伴」，就能依照目前的生活情況，找到適合閱讀的內容。例如：和家人鬧僵了、有一句話一直放不下、心裡有委屈、遇到事情不知道怎麼面對。</p>
+          <p>不管在哪個畫面，都按得到。希望你在生活遇到事情時，能找到一句話，陪自己想一想。</p>
         </div>
       </details>
       <details class="ac">
@@ -1022,7 +1022,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
           <p>不需要分數，也不用和別人比較，只要看見自己一點一點的成長。</p>
           <h4>4. 八週旅程</h4>
           <p>這裡可以看到 8 週、56 天的學習進度。想重新閱讀以前的篇章，或看看自己走到哪一天，都可以從這裡進入。</p>
-          <h4>5. 遇到事</h4>
+          <h4>5. 心事相伴</h4>
           <p>心裡有事的時候，例如跟家人起了摩擦、心很急、放不下，按這裡，選一個最像你現在的情況，就能找到相關的篇章，馬上讀。</p>
         </div>
       </details>
@@ -1115,7 +1115,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
     <button id="tab-notes" data-tab="notes">我的心語</button>
     <button id="tab-growth" data-tab="growth">我的成長</button>
     <button id="tab-journey" data-tab="journey">八週旅程</button>
-    <button id="tab-life" data-tab="life">遇到事</button>
+    <button id="tab-life" data-tab="life">心事相伴</button>
   </div>
 </nav>
 
@@ -1298,7 +1298,7 @@ function render(){
   $('to-past').hidden = true;
   $('to-today').hidden = !pastView;
   $('d-nav').hidden = $('to-today').hidden;
-  $('to-life').hidden = true; // 已移到下方分頁鈕「遇到事」
+  $('to-life').hidden = true; // 已移到下方分頁鈕「心事相伴」
   $('d-title').textContent = D.theme;
   $('d-who').textContent = D.who;
   $('d-open').textContent = D['開篇'];
@@ -1579,7 +1579,7 @@ function dayRow(d, isOpen, read, isToday, lockText){
   b.append(tx); li.append(b); return li;
 }
 function renderJourney(){
-  $('j-life').hidden = true; // 已移到下方分頁鈕「遇到事」
+  $('j-life').hidden = true; // 已移到下方分頁鈕「心事相伴」
   const box = $('j-list'); box.textContent = '';
   const open = openDays(), isOpen = d => open.some(x => x.n === d.n), read = readMap();
   const tp = state.mode === 'on' ? pos(state.day) : -1;
