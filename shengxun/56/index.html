@@ -753,10 +753,15 @@ html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,h
 .resume .rs-txt b{font-size:16px;color:var(--accent-deep)}
 .resume .rs-txt span{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* 播放列、繼續導讀列：精短一點，置中，不拉滿整個寬度 */
-.player .pl-in{max-width:280px;gap:8px;padding:8px 10px}
-.player .pl-main{width:48px;height:48px}
-.player .pl-next{width:46px}
-.player .pl-x{width:38px}
+.player .pl-in{max-width:244px;gap:6px;padding:6px 8px;border-radius:18px}
+.player .pl-main{width:44px;height:44px}
+.player .pl-main svg{width:20px;height:20px}
+.player .pl-next{width:40px;min-height:44px}
+.player .pl-next small{font-size:10px}
+.player .pl-x{width:32px;height:40px;font-size:16px}
+.player .pl-now b{font-size:14px}
+.player .pl-txt{min-width:0;gap:5px}
+.resume .rs-txt b{font-size:15px}.resume .rs-txt span{font-size:12px}
 .player .pl-txt{min-width:56px}
 .taphint{position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);z-index:9;pointer-events:none;background:rgba(85,117,96,.95);color:#fff;font-size:18px;font-weight:700;padding:14px 22px;border-radius:999px;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .taphint.show{animation:tapin .25s ease-out}
