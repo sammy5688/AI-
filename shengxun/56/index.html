@@ -697,6 +697,8 @@ body.has-player main{padding-bottom:calc(190px + env(safe-area-inset-bottom,0px)
 html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 .p .para{display:block}
 .p .para + .para{margin-top:.85em}
+#d-title.playing{background:var(--veil);border-radius:14px;padding:2px 10px;margin-left:-10px;margin-right:-10px}
+#d-title.playing::after{content:"　正在聽";font-family:var(--sans);font-size:.5em;font-weight:500;color:var(--muted);letter-spacing:0;vertical-align:middle}
 </style>
 
 </head>
@@ -2071,15 +2073,18 @@ $('nav-intro').onclick = () => show('intro');
 const AUDIO_BASE = 'https://platform.r2.fish.audio/tasks/2026-11-11/';
 const AUDIO = {
   // 第 1 天：已剪掉頭尾雜音與多出來的「嗯」，放在自己的網站上
-  1: [0, 1, 2, 3, 4, 5, 6].map(i => `audio/d1-${i}.mp3`),
+  1: ['t', 0, 1, 2, 3, 4, 5, 6].map(i => `audio/d1-${i}.mp3`),
 };
 // 語速：長輩聽得清楚為主。平常就放慢一些；「慢一點」再更慢
 const RATE_NORMAL = 1.1, RATE_SLOW = 0.9; // Fancis 冥想本身就慢、句間有停頓，不再放太慢
-const SEC_NAMES = ['開篇', '原文', '今日重點', '白話理解', '用在生活裡', '問問自己', '今天可以試試'];
+// 每篇 8 個音檔：第 0 個是題目（第幾天・主題・誰），接著是 7 個段落
+const SEC_NAMES = ['今天的題目', '開篇', '原文', '今日重點', '白話理解', '用在生活裡', '問問自己', '今天可以試試'];
 const au = new Audio(); au.preload = 'none';
 let auDay = null, auIdx = -1, auSlow = false; let auGap = null;
 try{ auSlow = store.get('sx-slow', false) === true; }catch(e){}
 const secLabels = () => [...document.querySelectorAll('#v-today .lab.sec')];
+// 第 i 個音檔對應畫面上的哪裡：0 = 最上面的題目，其餘 = 各段段名
+const secEl = i => i === 0 ? $('d-title') : secLabels()[i - 1];
 function auPaint(){
   const on = auDay !== null && auIdx >= 0, playing = on && (!au.paused || !!auGap);
   $('player').hidden = !on; document.body.classList.toggle('has-player', on);
@@ -2090,7 +2095,8 @@ function auPaint(){
   $('pl-now').textContent = on ? SEC_NAMES[auIdx] : '';
   $('pl-slow').setAttribute('aria-pressed', auSlow ? 'true' : 'false');
   $('pl-slow').textContent = auSlow ? '✓ 慢一點' : '慢一點';
-  secLabels().forEach((l, i) => l.classList.toggle('playing', on && auDay === D.n && i === auIdx));
+  secLabels().forEach((l, i) => l.classList.toggle('playing', on && auDay === D.n && i + 1 === auIdx));
+  $('d-title').classList.toggle('playing', on && auDay === D.n && auIdx === 0);
 }
 function auPlay(i){
   const list = AUDIO[auDay]; if (!list || i >= list.length){ auStop(); return; }
@@ -2105,7 +2111,8 @@ let auTouchAt = 0;
 ['touchmove', 'wheel'].forEach(ev => addEventListener(ev, () => { auTouchAt = Date.now(); }, { passive: true }));
 function auFollow(){
   if (auDay !== D.n || $('v-today').hidden || Date.now() - auTouchAt < 8000) return;
-  const l = secLabels()[auIdx]; if (!l) return;
+  if (auIdx === 0){ try{ scrollTo({ top: 0, behavior: 'smooth' }); }catch(e){ scrollTo(0, 0); } return; }
+  const l = secEl(auIdx); if (!l) return;
   const bar = document.querySelector('.bar'), top = bar ? bar.getBoundingClientRect().bottom : 0;
   const y = l.getBoundingClientRect().top + scrollY - top - 16;
   try{ scrollTo({ top: Math.max(0, y), behavior: 'smooth' }); }catch(e){ scrollTo(0, Math.max(0, y)); }
@@ -2116,7 +2123,8 @@ let auTurnAt = 0;
 function auTrack(){
   if (auDay !== D.n || $('v-today').hidden || au.paused || !au.duration) return;
   const now = Date.now(); if (now - auTouchAt < 8000 || now - auTurnAt < 1500) return;
-  const l = secLabels()[auIdx]; const t = l && l.parentElement.querySelector('.p'); if (!t) return;
+  if (auIdx === 0) return;
+  const l = secEl(auIdx); const t = l && l.parentElement.querySelector('.p'); if (!t) return;
   const r = t.getBoundingClientRect(), frac = Math.min(1, au.currentTime / au.duration);
   const bar = document.querySelector('.bar'), pl = $('player');
   const vTop = bar ? bar.getBoundingClientRect().bottom : 0;
@@ -2156,7 +2164,7 @@ $('pl-x').onclick = auStop;
 $('pl-slow').onclick = () => { auSlow = !auSlow; store.set('sx-slow', auSlow); au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); auPaint(); };
 // 點段落名稱，就從那一段開始聽
 document.addEventListener('click', e => { const l = e.target.closest('#v-today .lab.sec'); if (!l || !AUDIO[D.n] || isCheck() || e.target.closest('button')) return;
-  const i = secLabels().indexOf(l); if (i >= 0){ auDay = D.n; auPlay(i); } });
+  const i = secLabels().indexOf(l); if (i >= 0){ auDay = D.n; auPlay(i + 1); } });
 function paintListen(){
   const has = !!AUDIO[D.n] && !isCheck();
   $('d-listen').hidden = !has; $('c-listen').hidden = !has;
