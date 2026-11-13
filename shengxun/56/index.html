@@ -772,6 +772,10 @@ html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,h
 .tabs{padding-top:5px!important;padding-bottom:var(--tabpad)!important}
 .tabs button{min-height:50px}
 .player{bottom:calc(60px + var(--tabpad))!important}
+/* 「我讀完了」：按鈕縮短，說明放右邊 */
+.markrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;width:100%}
+.markrow #mark-read{flex:none;width:auto;min-width:9.5em;padding:0 22px;align-self:auto}
+.markrow #mark-how{flex:1 1 7.5em;min-width:0;margin:0;text-align:left;line-height:1.6}
 </style>
 
 </head>
@@ -933,8 +937,10 @@ html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,h
     </div>
 
     <div class="close" id="d-close">
-      <button class="primary" id="mark-read">讀完了，按一下</button>
-      <p class="bk-how" id="mark-how">「八週旅程」會在這一天做記號。</p>
+      <div class="markrow" id="mark-row">
+        <button class="primary" id="mark-read">✓ 我讀完了</button>
+        <p class="bk-how" id="mark-how">按一下，八週旅程會幫您記下來。</p>
+      </div>
       <p id="read-msg" aria-live="polite"></p>
       <div class="sharebox" id="d-share" hidden>
         <p class="lab">想到誰，就把今天這一句傳給他</p>
@@ -1141,7 +1147,7 @@ html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,h
       <details class="ac">
         <summary><span class="an">五</span><span class="at">把今天的好話分享給家人</span></summary>
         <div class="ab">
-          <p>讀完一篇，按下「讀完了」，畫面下方就會出現「傳給家人」。按下去，就能把今天的重點製作成一張圖卡，透過 LINE 傳給家人或朋友。</p>
+          <p>讀完一篇，按下「我讀完了」，畫面下方就會出現「傳給家人」。按下去，就能把今天的重點製作成一張圖卡，透過 LINE 傳給家人或朋友。</p>
           <p>一句好話，可以留給自己，也可以分享給別人。</p>
         </div>
       </details>
@@ -1600,7 +1606,7 @@ function paintDone(){
     else if (state.mode !== 'preview'){ go.textContent = '回到首頁'; go.dataset.to = ''; go.hidden = false; }
   }
   $('d-close').hidden = ck;
-  $('mark-read').hidden = r; $('mark-how').hidden = r;
+  $('mark-read').hidden = r; $('mark-how').hidden = r; $('mark-row').hidden = r;
   $('read-msg').textContent = r ? '✓ 讀完了。今天讀到這裡，就很好了。' : '';
   $('d-share').hidden = !r || ck;
   // 試過了：今天才讀，還沒機會試，只提醒明天再記；讀前幾天的篇章時，才給「我試過了」
@@ -1734,7 +1740,7 @@ function renderGrowth(){
   const sum = $('g-sum'); sum.textContent = '';
   if (!a && !c && !Object.keys(wk).length){
     sum.append(el('p', 'big', '這裡會慢慢長出你走過的路。'));
-    sum.append(el('p', '', '讀完一篇按一下「讀完了」、練習那天的小事、每週寫一句「這一週，我有什麼不一樣」，都會收在這裡。'));
+    sum.append(el('p', '', '讀完一篇按一下「我讀完了」、練習那天的小事、每週寫一句「這一週，我有什麼不一樣」，都會收在這裡。'));
   } else {
     sum.append(el('p', 'big', `你已經讀了 ${a} 篇` + (c ? `，練習過 ${c} 件小事` : '') + '。'));
     sum.append(el('p', 'hint', '有幾天沒讀，都沒有關係。願意回來，就是在路上。'));
@@ -2107,7 +2113,7 @@ $('note').addEventListener('input', () => {
 });
 $('mark-read').onclick = () => {
   const r = readMap(); r[D.n] = { at: Date.now(), today: dateLabel() };
-  if (!store.set('sx-read', r)){ $('read-msg').textContent = '這支手機現在沒辦法記下來。不過你今天讀完了，這就很好。'; $('d-share').hidden = false; $('mark-read').hidden = true; $('mark-how').hidden = true; return; }
+  if (!store.set('sx-read', r)){ $('read-msg').textContent = '這支手機現在沒辦法記下來。不過你今天讀完了，這就很好。'; $('d-share').hidden = false; $('mark-read').hidden = true; $('mark-how').hidden = true; $('mark-row').hidden = true; return; }
   paintDone();
 };
 $('c-ytry-yes').onclick = () => {
