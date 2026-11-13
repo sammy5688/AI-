@@ -2289,11 +2289,11 @@ const AUDIO = {
   17: ['t', 0, 1, 2, 3, 4, 5, 6].map(i => `audio/d17-${i}.mp3`), // 第 3 天
 };
 // 語速：長輩聽得清楚為主。平常就放慢一些；「慢一點」再更慢
-const RATE_NORMAL = 1.1, RATE_SLOW = 0.9; // Fancis 冥想本身就慢、句間有停頓，不再放太慢
+const RATE_NORMAL = 0.95, RATE_SLOW = 0.85; // 11/13 長輩反映 1.1 倍太快，改 0.95 倍（約每分鐘 165 字） // Fancis 冥想本身就慢、句間有停頓，不再放太慢
 // 每篇 8 個音檔：第 0 個是題目（第幾天・主題・誰），接著是 7 個段落
 const SEC_NAMES = ['今天的題目', '開篇', '原文', '今日重點', '白話理解', '用在生活裡', '問問自己', '今天可以試試'];
 const au = new Audio(); au.preload = 'none';
-let auDay = null, auIdx = -1, auSlow = false; let auGap = null;
+let auDay = null, auIdx = -1, auSlow = false, auFin = false; let auGap = null;
 // 「慢一點」已拿掉（按鈕減量）：語速固定，若長輩反映太快，整體調 RATE_NORMAL
 const secLabels = () => [...document.querySelectorAll('#v-today .lab.sec')];
 // 第 i 個音檔對應畫面上的哪裡：0 = 最上面的題目，其餘 = 各段段名
@@ -2304,7 +2304,7 @@ function auPaint(){
   const here = on && document.body.dataset.view === 'today' && auDay === D.n;
   $('player').hidden = !here;
   // 在別的畫面：下方顯示一條「繼續導讀」，不用滑到首頁下面找按鈕
-  const away = on && !here && !isCheck() && document.body.dataset.view !== 'intro';
+  const away = on && !auFin && !here && !isCheck() && document.body.dataset.view !== 'intro';
   $('resume').hidden = !away;
   if (away){ const d = DAYS[auDay - 1]; $('rsm-what').textContent = `${dayLabel(d)}・${d.theme}`; }
   document.body.classList.toggle('has-player', here || away);
@@ -2314,17 +2314,21 @@ function auPaint(){
   // 首頁：聽到一半離開的，按鈕變成「繼續導讀」，回來接著聽
   $('c-listen').textContent = mine ? '▶\uFE0E 繼續導讀' : '▶\uFE0E 導讀'; $('c-listen').hidden = !hasAu;
   // 用畫的圖示，不用表情符號（iPhone 會把 ⏸ ⏭ 顯示成藍色方塊）
-  $('pl-toggle').innerHTML = playing ? '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>' : '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.8l-10-6.5A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>';
+  $('pl-toggle').innerHTML = auFin ? '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 5a7 7 0 1 1-6.6 4.7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M4.2 4.5v5h5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' : playing ? '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/></svg>' : '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10-6.5a1 1 0 0 0 0-1.8l-10-6.5A1 1 0 0 0 8 5.5z" fill="currentColor"/></svg>';
   $('pl-toggle').setAttribute('aria-label', playing ? '先停一下' : '繼續');
-  $('pl-now').textContent = on ? SEC_NAMES[auIdx] : '';
+  $('pl-now').textContent = auFin ? '聽完了，再聽一次？' : on ? SEC_NAMES[auIdx] : '';
+  if (auFin) $('pl-toggle').setAttribute('aria-label', '再聽一次');
   $('pl-next').disabled = !on || !AUDIO[auDay] || auIdx >= AUDIO[auDay].length - 1;
+  $('pl-next').hidden = auFin; // 唸完了，不需要下一段，讓出位置給「再聽一次」
   secLabels().forEach((l, i) => l.classList.toggle('playing', on && auDay === D.n && i + 1 === auIdx));
   $('d-titlebox').classList.toggle('playing', on && auDay === D.n && auIdx === 0);
   auBar();
   try{ bgmUpdate(); }catch(e){}
 }
 function auPlay(i){
-  const list = AUDIO[auDay]; if (!list || i >= list.length){ auStop(); return; }
+  const list = AUDIO[auDay]; if (!list){ auStop(); return; }
+  if (i >= list.length){ auFin = true; clearTimeout(auGap); auGap = null; auWake(false); $('pl-bar').style.width = '100%'; auPaint(); return; } // 整篇唸完：播放列留著，變成「再聽一次」
+  auFin = false;
   auIdx = i; au.src = list[i]; au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL);
   au.play().catch(() => { $('pl-now').textContent = '聲音放不出來，請再按一次 ▶'; });
   if ('mediaSession' in navigator){ try{ navigator.mediaSession.metadata = new MediaMetadata({ title: `${DAYS[auDay - 1].theme}・${SEC_NAMES[i]}`, artist: '玉語心晨' }); }catch(e){} }
@@ -2408,8 +2412,9 @@ function auBar(){
   $('steps').hidden = true; $('bar-brand').hidden = false;
   $('nav-music').hidden = listening || isCheck(); // 聽的時候音樂本來就停，♪ 也先收起來
 }
-function auStop(){ clearTimeout(auGap); auGap = null; auWake(false); au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
+function auStop(){ auFin = false; clearTimeout(auGap); auGap = null; auWake(false); au.pause(); au.removeAttribute('src'); auDay = null; auIdx = -1; $('pl-bar').style.width = '0'; auPaint(); }
 function auStart(from){
+  if (auFin && auDay === D.n && from === undefined){ auFin = false; auTouchAt = 0; auPlay(0); return; } // 再聽一次：從題目重新唸
   if (auDay === D.n && auIdx >= 0 && from === undefined){ if (auGap){ clearTimeout(auGap); auGap = null; auPaint(); auWake(false); return; } if (au.paused && au.ended){ auPlay(auIdx + 1); return; } if (au.paused){ au.playbackRate = (auSlow ? RATE_SLOW : RATE_NORMAL); au.play(); auRealign(); } else au.pause(); auPaint(); return; }
   auDay = D.n; auPlay(from || 0);
 }
@@ -2435,7 +2440,7 @@ function tapHint(txt){
   clearTimeout(tapT); tapT = setTimeout(() => { h.hidden = true; }, txt.startsWith('先停') ? 2600 : 1400);
 }
 $('v-today').addEventListener('click', e => {
-  if (auDay === null || auDay !== D.n || auIdx < 0 || isCheck()) return;
+  if (auDay === null || auDay !== D.n || auIdx < 0 || isCheck() || auFin) return;
   if (e.target.closest('button,a,input,textarea,select,label,summary,details .acc-h,.lab.sec,.player,.bgmask')) return;
   const sel = window.getSelection && String(window.getSelection()); if (sel && sel.length > 1) return;
   const wasPlaying = !au.paused || !!auGap;
