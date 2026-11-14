@@ -2288,12 +2288,10 @@ document.addEventListener('visibilitychange', bgmUpdate);
 
 // ===== ▶ 導讀：每篇七段，一段一個音檔（Fish Audio「Fancis 冥想」） =====
 const AUDIO_BASE = 'https://platform.r2.fish.audio/tasks/2026-11-11/';
-const AUDIO = {
-  // 第 1 天：已剪掉頭尾雜音與多出來的「嗯」，放在自己的網站上
-  1: ['t', 0, 1, 2, 3, 4, 5, 6].map(i => `audio/d1-${i}.mp3`),
-  34: ['t', 0, 1, 2, 3, 4, 5, 6].map(i => `audio/d34-${i}.mp3`), // 第 2 天
-  17: ['t', 0, 1, 2, 3, 4, 5, 6].map(i => `audio/d17-${i}.mp3`), // 第 3 天
-};
+// 八週 56 篇全部錄好（11/14）：每篇 8 個檔 audio/d{篇號}-t.mp3、d{篇號}-0..6.mp3，放在自己的網站上
+// 延伸的 9 篇還沒錄，會顯示「這一篇的導讀，還在錄製中」
+const AUDIO = {};
+ORDER.forEach(n => { AUDIO[n] = ['t', 0, 1, 2, 3, 4, 5, 6].map(i => `audio/d${n}-${i}.mp3`); });
 // 語速：長輩聽得清楚為主。平常就放慢一些；「慢一點」再更慢
 const RATE_NORMAL = 0.95, RATE_SLOW = 0.85; // 11/13 長輩反映 1.1 倍太快，改 0.95 倍（約每分鐘 165 字） // Fancis 冥想本身就慢、句間有停頓，不再放太慢
 // 每篇 8 個音檔：第 0 個是題目（第幾天・主題・誰），接著是 7 個段落
