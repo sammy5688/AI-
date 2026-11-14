@@ -53,6 +53,8 @@
 }
 html.fs1{--fs:24px}
 html.fs2{--fs:28px}
+html.fs3{--fs:34px}
+html.fs3 body{font-weight:500;-webkit-text-stroke:.2px}
 html,body{background:var(--sky)}
 body{color:var(--ink);font-family:var(--sans);font-size:var(--fs);line-height:1.9;
   background:
@@ -633,7 +635,7 @@ html.night .weekask,html.night .letter{box-shadow:0 0 0 1px rgba(255,255,255,.08
 .bk-line summary::-webkit-details-marker{display:none}
 .bk-line p{margin:4px 0;font-size:.85em;line-height:1.75}
 /* 11/10 按鈕減量：一次只給一個主要動作 */
-.keylab{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.keylab{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
 .keystar{flex:none;min-height:44px;padding:0 14px;border-radius:999px;border:1.5px solid rgba(70,98,79,.3);background:transparent;color:var(--accent-deep);font-size:.85em;font-weight:500}
 .keystar[aria-pressed="true"]{background:var(--clay-bg);border-color:var(--clay);color:var(--clay);font-weight:700}
 .tryhint{margin:8px 0 0;font-size:.82em;color:var(--muted)}
@@ -707,7 +709,7 @@ html.night .pl-in{box-shadow:0 0 0 1px rgba(255,255,255,.1)}
 .dayhead .titlebox{display:flex;flex-direction:column;gap:2px}
 .dayhead #d-who{margin:0;font-family:var(--serif);font-size:1em;color:var(--muted);letter-spacing:.06em}
 #d-titlebox.playing{background:var(--veil);border-radius:14px;padding:4px 10px 6px;margin-left:-10px;margin-right:-10px}
-#d-titlebox.playing #d-title::after{content:"　正在聽";font-family:var(--sans);font-size:.5em;font-weight:500;color:var(--muted);letter-spacing:0;vertical-align:middle}
+#d-titlebox.playing #d-title::after{content:"正在聽";display:block;margin-top:.15em;font-family:var(--sans);font-size:.42em;line-height:1.3;font-weight:500;color:var(--muted);letter-spacing:0} /* 放在題目下一行，字放大時才不會把題目擠斷 */
 /* 心事相伴：抽一張 */
 .drawbox{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin:2px 0 18px}
 .dr-ask{margin:0;text-align:center;color:var(--muted);font-size:.92em}
@@ -774,7 +776,7 @@ html.night .todaycard,html.night .step,html.night .card2,html.night details.wk,h
 .player{bottom:calc(60px + var(--tabpad))!important}
 /* 「我讀完了」：按鈕縮短，說明放右邊 */
 .markrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;width:100%}
-.markrow #mark-read{flex:none;width:auto;min-width:9.5em;padding:0 22px;align-self:auto}
+.markrow #mark-read{flex:none;width:auto;min-width:min(9.5em,100%);max-width:100%;padding:0 22px;align-self:auto}
 .markrow #mark-how{flex:1 1 7.5em;min-width:0;margin:0;text-align:left;line-height:1.6}
 </style>
 
@@ -2188,10 +2190,10 @@ sp.onclick = () => {
   sp.dataset.on = '1'; sp.textContent = '■ 停止';
 };
 
-// 字的大小：標準 → 大 → 特大，再按回到標準
-const FS = ['標準', '大', '特大'];
+// 字的大小：標準 → 大 → 特大 → 超大，再按回到標準（超大：老花眼試讀者反映特大還不夠，11/14 加）
+const FS = ['標準', '大', '特大', '超大'];
 function applyFs(i){
-  document.documentElement.classList.remove('fs1', 'fs2');
+  document.documentElement.classList.remove('fs1', 'fs2', 'fs3');
   if (i) document.documentElement.classList.add('fs' + i);
   $('fs-lab').textContent = FS[i];
   $('nav-fs').setAttribute('aria-label', `字的大小：${FS[i]}。點一下換大小`);
